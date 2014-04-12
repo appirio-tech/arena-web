@@ -1,0 +1,66 @@
+<div class="hero">
+    <div class="container">
+        <div class="row form signup">
+            <div class="col-sm-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                <div class="loginBox"> 
+                    <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <span class="errorMessage" data-ng-show="hasError">Invalid username or password. Please try again.</span>
+                        <header>Login with your TopCoder account<span class="hidden-xs">or</span></header>
+                        <form name="accountLoginForm" novalidate class=" tcAccountBox" data-ng-class="{error: hasError}" data-ng-submit="accountLogin();">
+                          <p class="data">
+                            <label>Username</label>
+                            <input type="text" name="username" required data-ng-model="username" data-ng-pattern="/^[A-z][A-z0-9]*$/" />
+                          </p>
+                          <p class="data">
+                            <label>Password</label>
+                            <input type="password" name="password" required data-ng-model="password" data-ng-pattern="/^.+$/" />
+                          </p>
+                          <p>
+                            <input type="checkbox" name="remember" id="remember" class="rememberCheckbox"/>
+                            <label for="remember" class="rememberCheckboxLabel"></label>
+                            <label for="remember" class="rememberLbl">Remember me</label>
+                          </p>
+                          <p>  
+                            <input type="submit" value="Login" class="btn btn-primary btn-lg" />
+                          </p>  
+                            <div class="clearfix"></div>
+                        </form>
+                        <!-- /.tcAccountBox -->
+                        <div class="separator hidden-xs"></div>
+                    </div>
+                    <!-- / account box -->
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 social">
+                        <header>Login with your social media account</header>
+                        <div>
+                            <p><a data-ng-click="socialLogin();" class="btn btn-primary btn-lg btn-facebook">Facebook</a></p>
+                            <p><a data-ng-click="socialLogin();" class="btn btn-primary btn-lg btn-twitter">Twitter</a></p>
+                            <p><a data-ng-click="socialLogin();" class="btn btn-primary btn-lg btn-google">Google+</a></p>
+                            <p><a data-ng-click="socialLogin();" class="btn btn-primary btn-lg btn-linkedIn">LinkedIn</a></p>
+                        </div>
+                    </div>
+                    <!-- /.social -->
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 registerRow">
+                        New User? <a>Click here to Register</a>
+                    </div>
+                    <footer class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <p>OWR SPONSOR</p>
+                        <p><span class="sponsorLogo">Logo</span></p>
+                        <p><span>VENI VIDI VICI!</span> WE ARE HIRING!</p>
+                    </footer>
+                </div>
+                <!-- /.loginBox -->
+            </div>
+                
+        </div>
+        <!-- /.loginBox -->
+        <div class="row text">
+            <p class="col-xs-12 col-sm-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                <span>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            </span>
+            </p>
+        </div>
+    </div><!-- /.container -->
+</div>
+<!-- /.hero -->
+

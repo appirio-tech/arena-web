@@ -1,0 +1,51 @@
+{
+    "id": 1009,
+    "name": "Single Round Match 999",
+    "organizer": "Organizer Name",
+    "isMeOrganizer": true,
+    "difficulty": "Level 2 - Medium",
+    "languages": "C++, C#, Java, Python, VB",
+    "registrants": 999,
+    "schedule": [
+        {
+            "title": "Registration Phase",
+            "start": "Fri Feb 7, 4:00 PM EST",
+            "end": "Fri Feb 7, 4:01 PM EST"
+        },
+        {
+            "title": "Coding Phase",
+            "start": "Fri Feb 7, 4:02 PM EST",
+            "end": "Fri Feb 7, 4:03 PM EST"
+        },
+        {
+            "title": "Challenge Phase",
+            "start": "Fri Feb 7, 4:04 PM EST",
+            "end": "Fri Feb 7, 4:05 PM EST"
+        },
+        {
+            "title": "System Testing Phase",
+            "start": "Fri Feb 7, 4:06 PM EST",
+            "end": ""
+        },
+        {
+            "title": "Contest Complete",
+            "start": "",
+            "end": ""
+        }
+    ],
+    "tcCurrentTime": "Fri Feb 7, 4:06 PM EST",
+    "problems": [
+        {
+            "points": 250,
+            "title": "Lorem Ipsum Dolor Sit Amet"
+        },
+        {
+            "points": 500,
+            "title": "Lorem Ipsum Dolor Sit Amet"
+        },
+        {
+            "points": 950,
+            "title": "Lorem Ipsum Dolor Sit Amet"
+        }
+    ]
+}
