@@ -10,9 +10,7 @@
   ],
   "main": "index.html",
   "scripts": {
-    "test": "",
-    "install": "bower install",
-    "start": "node node_modules/http-server/bin/http-server build -p 3000"
+    "postinstall": "node_modules/.bin/bower install"
   },
   "repository": {
     "type": "git",
@@ -21,17 +19,17 @@
   "author": "[topcoder]",
   "license": "All rights reserved.",
   "devDependencies": {
+  },
+  "dependencies": {
+    "bower": "1.3.2",
     "grunt-contrib-copy": "~0.4.1",
     "grunt": "~0.4.2",
     "browserify": "~3.4.0",
     "grunt-browserify": "~1.3.0",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-cssmin": "~0.7.0",
-    "http-server": "~0.6.1",
     "grunt-contrib-uglify": "~0.2.7",
     "grunt-replace": "~0.5.1",
     "grunt-contrib-watch": "~0.5.3"
-  },
-  "dependencies": {
   }
 }
