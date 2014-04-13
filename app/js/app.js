@@ -4,11 +4,41 @@ require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
 require('./../../bower_components/angular-sanitize/angular-sanitize');
 require('./../../bower_components/angular-ui-router/release/angular-ui-router');
-var resolvers = require('./resolvers');
-var factories = require('./factories');
-var controllers = require('./controllers');
-var directives = require('./directives');
+require('./../../bower_components/angular-timer/dist/angular-timer');
 require('./../../bower_components/angular-ui-bootstrap/ui-bootstrap-tpls-0.9.0');
+
+var resolvers = require('./resolvers'),
+    factories = require('./factories'),
+    controllers = {},
+    directives = {},
+    // from directives.js originally, keep it for future use?
+    defaultOptions = {
+        slideInput                      : true,
+        labelStartTop                   : '',
+        labelEndTop                     : '',
+        transitionDuration              : 0.3,
+        transitionEasing                : 'ease-in-out',
+        labelClass                      : 'floating-label',
+        typeMatches                     : /text|password|email|number|search|url/
+    };
+
+// load controllers
+controllers.anonHomeCtrl = require('./controllers/anonHomeCtrl');
+controllers.errorCtrl = require('./controllers/errorCtrl');
+controllers.userProfileCtrl = require('./controllers/userProfileCtrl');
+controllers.userDashboardCtrl = require('./controllers/userDashboardCtrl');
+controllers.leaderboardUsersCtrl = require('./controllers/leaderboardUsersCtrl');
+controllers.activeContestsCtrl = require('./controllers/activeContestsCtrl');
+controllers.userContestCtrl = require('./controllers/userContestCtrl');
+controllers.contestCountdownCtrl = require('./controllers/contestCountdownCtrl');
+controllers.contestStatsCtrl = require('./controllers/contestStatsCtrl');
+
+// load directives
+directives.leaderboardusers = require('./directives/leaderboardusers');
+directives.activecontests = require('./directives/activecontests');
+directives.contestcountdown = require('./directives/contestcountdown');
+directives.conteststats = require('./directives/conteststats');
+
 /*global $ : false, angular : false */
 /*jslint nomen: true, browser: true */
 
@@ -32,7 +62,7 @@ $(document).ready(function () {
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer']);
 
 ///////////////
 // FACTORIES //
@@ -40,17 +70,19 @@ var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstra
 main.factory('API', factories.API);
 main.factory('sessionHelper', factories.sessionHelper);
 main.factory('dashboardHelper', factories.dashboardHelper);
-
+main.factory('appHelper', factories.appHelper);
 
 /////////////////
 // CONTROLLERS //
-
 main.controller('anonHomeCtrl', controllers.anonHomeCtrl);
 main.controller('errorCtrl', controllers.errorCtrl);
 main.controller('userProfileCtrl', controllers.userProfileCtrl);
 main.controller('userDashboardCtrl', controllers.userDashboardCtrl);
 main.controller('leaderboardUsersCtrl', controllers.leaderboardUsersCtrl);
 main.controller('activeContestsCtrl', controllers.activeContestsCtrl);
+main.controller('userContestCtrl', controllers.userContestCtrl);
+main.controller('contestCountdownCtrl', controllers.contestCountdownCtrl);
+main.controller('contestStatsCtrl', controllers.contestStatsCtrl);
 
 
 /////////////////
@@ -58,6 +90,9 @@ main.controller('activeContestsCtrl', controllers.activeContestsCtrl);
 
 main.directive('leaderboardusers', directives.leaderboardusers);
 main.directive('activecontests', directives.activecontests);
+main.directive('contestcountdown', directives.contestcountdown);
+main.directive('conteststats', directives.conteststats);
+
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
@@ -94,6 +129,15 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
             },
             templateUrl: 'partials/user.dashboard.html',
             controller: 'userDashboardCtrl'
+        })
+        .state('user.contest', {
+            url: '/contests/{contestId}',
+            data: {
+                pageTitle: "Contest",
+                pageMetaKeywords: "contest"
+            },
+            templateUrl: 'partials/user.contest.html',
+            controller: 'userContestCtrl'
         })
         .state('user.profile', {
             url: '/profile',

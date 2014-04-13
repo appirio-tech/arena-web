@@ -23,28 +23,28 @@
                   <li data-ng-class="{ active: $state.includes('user.dashboard') }">
                     <a data-ui-sref="user.dashboard">LOBBY</a>
                   </li>
-                  <li data-ng-class="">
-                    <a href="#">CONTESTS</a>
+                  <li data-ng-class="{ active: $state.includes('user.contests') || $state.includes('user.contest')}">
+                    <a>CONTESTS</a>
                   </li>
                   <li data-ng-class="">
-                    <a href="#">VIRTUAL CONTEST</a>
+                    <a>VIRTUAL CONTEST</a>
                   </li>
                   <li data-ng-class="">
-                    <a href="#">SETTINGS</a>
+                    <a>SETTINGS</a>
                   </li>
                   <li data-ng-class="">
-                    <a href="#">TOOLS</a>
+                    <a>TOOLS</a>
                   </li>
                   <li data-ng-class="">
-                    <a href="#">HELP</a>
+                    <a>HELP</a>
                   </li>
                   <li data-ng-class="">
-                    <a href="#">PROBLEM TRACKER</a>
+                    <a>PROBLEM TRACKER</a>
                   </li>
                   <li>
                     <div class="userInfo">
                       Welcome
-                      <a href="#" class="username">{{ username() }}</a> <!-- data-ui-sref="user.profile.details" -->
+                      <a class="username">{{ username() }}</a> <!-- data-ui-sref="user.profile.details" -->
                       <label class="notification"><span data-ng-show="notifications.length > 0">{{ notifications.length }}</span></label>
                       <a data-ui-sref="user.logout" class="arrow"></a>
                     </div> 

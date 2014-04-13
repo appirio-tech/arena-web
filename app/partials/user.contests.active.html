@@ -1,8 +1,8 @@
-<div class="panel panel-custom">
+<div class="panel panel-custom" data-ng-click="collapseNav = true;">
 	<div class="panel-heading">
 		Active Contests
 	</div>
-	<div class="panel-body row">
+	<div class="panel-body">
 		<div data-ng-repeat="contest in contests track by $index" data-ng-show="$index == currentContest" class="mainContent">
 		    <p class="infoRow">
 		    	<span >{{ contest.type }}</span>
@@ -12,11 +12,24 @@
 		    </p>
 		    <!-- /.infoRow -->
 		    <div class="tabs">
-		    	<ul class="nav nav-tabs">
+		    	<ul class="nav nav-tabs hidden-xs">
 		    		<li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0)">Contest Summary</li>
 		    		<li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1)">Contest Schedule</li>
 		    		<li data-ng-class="{'textActive': contest.detailIndex == 2}" data-ng-click="setDetailIndex(contest, 2)" data-ng-show="contest.isRegistered">My Status</li>
 		    	</ul>
+		    	<!-- button and label will show when window is very narrow -->		
+	    		<ul class="nav altNav visible-xs">
+	    			<li class="dropdown">
+	    				<a class="dropdown-toggle">
+	    					{{ getTabName(contest.detailIndex) }}<b class="caret"></b>
+	    				</a>
+	    				<ul class="dropdown-menu" data-ng-hide="collapseNav">
+			    			<li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0); collapseNav = true;">Contest Summary</li>
+				    		<li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1); collapseNav = true;">Contest Schedule</li>
+				    		<li data-ng-class="{'textActive': contest.detailIndex == 2}" data-ng-click="setDetailIndex(contest, 2); collapseNav = true;" data-ng-show="contest.isRegistered">My Status</li>
+			    		</ul>
+			    	</li>
+	    		</ul>
 		    	<!-- button to 'Register' and 'Enter' a contest -->
 				<a data-ng-click="doAction(contest)" class="btn">{{ getAction(contest) }}</a>
 			</div>
@@ -28,9 +41,11 @@
 				<div data-ng-repeat="phase in contest.phases" 
 				data-ng-init="time0=getPhaseTime(phase, 0); time1=getPhaseTime(phase, 1);">
 					<span class="title textWhite">{{ phase.title }}</span>
-					<span class="startIn">:&nbsp;{{ time0.key }}</span>
+					<br class="visible-xs breakline"/>
+					<span class="startIn"><span class="hidden-xs">:&nbsp;</span>{{ time0.key }}<span data-ng-show="time0.key.length>0"> in</span></span>
 					<span class="startTime">{{ time0.value }}</span>
-					<span class="endIn">{{ time1.key }}</span>
+					<br class="visible-xs breakline"/>
+					<span class="endIn">{{ time1.key }}<span data-ng-show="time1.key.length>0"> in</span></span>
 					<span class="endTime">{{ time1.value }}</span>
 				</div>
 			</div>
@@ -43,11 +58,12 @@
 						<span>:&nbsp;{{ pair.value }}</span>
 					</div>
 				</div>
+				<br class="visible-xs breakline"/>
 				<div class="rightSide">
 					<div data-ng-repeat="phase in contest.myStatus.phases">
 						<span class="title textWhite">{{ phase.title }}</span>
 						<!-- <span>:</span> -->
-						<span>:&nbsp;<span data-ng-show="phase.status == 'Complete'">{{ phase.end }}&nbsp;</span>{{ phase.status }}</span>
+						<span><span class="hidden-xs">:&nbsp;</span><span data-ng-show="phase.status == 'Complete'">{{ phase.end }}&nbsp;</span>{{ phase.status }}</span>
 					</div>
 				</div>
 			</div>
