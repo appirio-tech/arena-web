@@ -17,7 +17,7 @@
     "url": "https://github.com/cloudspokes/arena-web"
   },
   "author": "[topcoder]",
-  "license": "All rights reserved.",
+  "license": "All rights reserved.", 
   "devDependencies": {
   },
   "dependencies": {
