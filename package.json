@@ -10,7 +10,7 @@
   ],
   "main": "index.html",
   "scripts": {
-    "start": "node node_modules/http-server/bin/http-server build -p 80",
+    "start": "node node_modules/http-server/bin/http-server build",
     "postinstall": "node_modules/.bin/bower install"
   },
   "repository": {
