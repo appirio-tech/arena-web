@@ -62,10 +62,11 @@ hr {border-color: #D5D5D5;margin: 10px 0;}
 
 }
 .header .navbar-title {
-    margin-left: 15px;
+    margin-left: 5px;
 }
 /* topcoder logo */
-.anon-header .navbar .navbar-brand {
+.anon-header .navbar .navbar-brand, .navbar-brand {
+    background-image: url(../img/sprite.png);
     background-position: 0 0;
     background-repeat: no-repeat;
     padding: 22px 0 0 172px;
@@ -73,7 +74,7 @@ hr {border-color: #D5D5D5;margin: 10px 0;}
     width: 0;
     overflow: hidden;
     margin-top: 17px;
-    margin-left: 30px;
+    margin-left: 30px !important;
 }
 
 /* after user logged in, show this header */
