@@ -57,8 +57,9 @@ hr {border-color: #D5D5D5;margin: 10px 0;}
     font: 600 21px/60px "Source Code Pro","Helvetica Neue",Helvetica,Arial,sans-serif; /*SourceCodePro Semibold*/
     color: #fff;
     margin: 0;
-    margin-left: 31px;
+    margin-left: 5px;
     display: inline-block;
+
 }
 .header .navbar-title {
     margin-left: 15px;
@@ -71,9 +72,8 @@ hr {border-color: #D5D5D5;margin: 10px 0;}
     height: 0;
     width: 0;
     overflow: hidden;
-    margin-top: 20px;
-    float: right;
-    margin-right: 30px;
+    margin-top: 17px;
+    margin-left: 30px;
 }
 
 /* after user logged in, show this header */
