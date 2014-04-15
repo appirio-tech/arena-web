@@ -11,7 +11,7 @@
   "main": "index.html",
   "scripts": {
     "start": "node node_modules/http-server/bin/http-server build -p 3000",
-    "postinstall": "node_modules/.bin/bower install"
+    "postinstall": "node node_modules/.bin/bower install"
   },
   "repository": {
     "type": "git",
