@@ -1,1 +1,1 @@
-web: sh pwd && ls 
+web: npm start 
