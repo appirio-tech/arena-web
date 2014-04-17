@@ -1,0 +1,26 @@
+	<!-- content start -->
+	<div class="container inner">
+		<div class="row">
+			<div class="row dashboard">
+				
+				<div class="col-lg-3">
+					<div class="list-group">
+				        <a class="list-group-item" ng-class="{ active: $state.includes('user.profile.details') }" ui-sref="user.profile.details">
+				          <h4 class="list-group-item-heading">Profile</h4>
+				          <p class="list-group-item-text">Edit your name, username, email or birthday</p>
+				        </a>
+				        <a class="list-group-item" ng-class="{ active: $state.includes('user.profile.privacy') }" ui-sref="user.profile.privacy">
+				          <h4 class="list-group-item-heading">Email and Privacy Settings</h4>
+				          <p class="list-group-item-text">Choose what emails you wish to receive and what information is private.</p>
+				        </a>
+				        <a class="list-group-item" ng-class="{ active: $state.includes('user.profile.terms') }" ui-sref="user.profile.terms">
+				          <h4 class="list-group-item-heading">Terms &amp; Conditions</h4>
+				          <p class="list-group-item-text">Read the terms &amp; conditions</p>
+				        </a>
+					</div>
+				</div>
+                <div ui-view> </div>
+			</div>
+		</div>
+	</div>
+	<!-- content end -->

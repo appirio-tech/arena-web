@@ -1,0 +1,30 @@
+				<div class="col-lg-9 form">
+					<form>
+						<div class="col-lg-6">
+                            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+							<label>Email</label>
+							<input type="email" name="email" placeholder="Email" ng-model="user.email" floatlabel ng-required>
+							<label>Public Username</label>
+							<input type="text" name="nickname" placeholder="Public Username" ng-model="user.nickname" floatlabel>
+							<label>Full Name</label>
+							<input type="text" name="name" placeholder="Full Name" ng-model="user.name" floatlabel>
+							<label>Gender</label>
+							<div class="radio">
+							  <label>
+							    <input type="radio" name="genderRadio" id="optionsRadios1" value="male" ng-model="user.gender">
+							    Male
+							  </label>
+							  <label>
+							    <input type="radio" name="genderRadio" id="optionsRadios2" value="female" ng-model="user.gender">
+							    Female
+							  </label>
+							</div>
+							<label>Birthday</label>
+							<input type="text" name="birthday" placeholder="Birthday" ng-model="user.birthday"
+                                 datepicker-popup="MM/dd/yyyy" is-open="opened" min="'1900-01-01'" max="'2015-06-22'" 
+                                 date-disabled="false" close-text="Close" floatlabel>
+							<input type="submit" value="Update Your Profile" class="btn btn-primary btn-lg" ng-click="updateProfile();">
+							<div class="clearfix"></div>
+						</div>
+					</form>
+				</div>
