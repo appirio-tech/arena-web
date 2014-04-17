@@ -9,10 +9,73 @@ var factories = {};
 
 factories.appHelper = [function () {
     var helper = {};
+
+    // return an empty array of fixed length
     helper.range = function (num) {
-        // return an empty array of fixed length
         return new [].constructor(num);
     };
+
+    // Checks if a string is not null nor empty.
+    helper.isStringNotNullNorEmpty = function (s) {
+        return s && s.length > 0;
+    };
+
+    // Gets the phase time for display.
+    // Used in contest schedule displaying.
+    // Usually we have start time and end time.
+    // When start time is not available, end time should take its place.
+    helper.getPhaseTime = function (phase, id) {
+        if (id === 0) {
+            if (helper.isStringNotNullNorEmpty(phase.start)) {
+                return {key: 'Start', value: phase.start};
+            }
+            if (helper.isStringNotNullNorEmpty(phase.end)) {
+                return {key: 'End', value: phase.end};
+            }
+        } else if (id === 1) {
+            if (helper.isStringNotNullNorEmpty(phase.start) &&
+                    helper.isStringNotNullNorEmpty(phase.end)) {
+                return {key: 'End', value: phase.end};
+            }
+        }
+        return {};
+    };
+
+    // parse the string formatted as 'Fri Feb 6, 4:02 PM EST' to date object.
+    helper.parseDate = function (s) {
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            arr = s.split(' '),
+            month = (function (monthAbbr) {
+                var i = 0;
+                for (i = 0; i < months.length; i++) {
+                    if (months[i] === monthAbbr) {
+                        return i;
+                    }
+                }
+                return -1;
+            }(arr[1])),
+            day = parseInt(arr[2].substring(0, arr[2].length - 1), 10),
+            timeArr = arr[3].split(':'),
+            hour = parseInt(timeArr[0], 10),
+            minute = parseInt(timeArr[1], 10),
+            seconds = timeArr.length <= 2 ? 0 : parseInt(timeArr[2], 10),
+            ampm = arr[4].toLowerCase();
+
+        if (ampm === 'pm') {
+            hour += 12;
+        }
+        var date =  new Date();
+
+        date.setMonth(month);
+        date.setDate(day);
+        date.setHours(hour);
+        date.setMinutes(minute);
+        date.setSeconds(seconds);
+        date.setMilliseconds(0);
+
+        return date;
+    };
+
     return helper;
 }];
 

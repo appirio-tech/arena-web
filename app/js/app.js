@@ -15,6 +15,7 @@ require('./../../bower_components/codemirror/addon/fold/foldgutter');
 require('./../../bower_components/codemirror/addon/fold/brace-fold');
 require('./../../bower_components/codemirror/addon/fold/comment-fold');
 require('./../../bower_components/codemirror/addon/fold/indent-fold');
+require('./../../bower_components/angular-timer/dist/angular-timer');
 
 var resolvers = require('./resolvers'),
     factories = require('./factories'),
@@ -40,12 +41,17 @@ controllers.leaderboardUsersCtrl = require('./controllers/leaderboardUsersCtrl')
 controllers.activeContestsCtrl = require('./controllers/activeContestsCtrl');
 controllers.userCodingCtrl = require('./controllers/userCodingCtrl');
 controllers.userCodingEditorCtrl = require('./controllers/userCodingEditorCtrl');
+controllers.userContestCtrl = require('./controllers/userContestCtrl');
+controllers.contestCountdownCtrl = require('./controllers/contestCountdownCtrl');
+controllers.contestStatsCtrl = require('./controllers/contestStatsCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
 directives.activecontests = require('./directives/activecontests');
 directives.codingproblem = require('./directives/codingproblem');
 directives.codingeditor = require('./directives/codingeditor');
+directives.contestcountdown = require('./directives/contestcountdown');
+directives.conteststats = require('./directives/conteststats');
 
 /*global $ : false, angular : false */
 /*jslint nomen: true, browser: true */
@@ -57,7 +63,7 @@ directives.codingeditor = require('./directives/codingeditor');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'ui.codemirror']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror']);
 
 ///////////////
 // FACTORIES //
@@ -77,6 +83,9 @@ main.controller('leaderboardUsersCtrl', controllers.leaderboardUsersCtrl);
 main.controller('activeContestsCtrl', controllers.activeContestsCtrl);
 main.controller('userCodingCtrl', controllers.userCodingCtrl);
 main.controller('userCodingEditorCtrl', controllers.userCodingEditorCtrl);
+main.controller('userContestCtrl', controllers.userContestCtrl);
+main.controller('contestCountdownCtrl', controllers.contestCountdownCtrl);
+main.controller('contestStatsCtrl', controllers.contestStatsCtrl);
 
 
 /////////////////
@@ -86,6 +95,8 @@ main.directive('leaderboardusers', directives.leaderboardusers);
 main.directive('activecontests', directives.activecontests);
 main.directive('codingproblem', directives.codingproblem);
 main.directive('codingeditor', directives.codingeditor);
+main.directive('contestcountdown', directives.contestcountdown);
+main.directive('conteststats', directives.conteststats);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
@@ -131,6 +142,15 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
             },
             templateUrl: 'partials/user.coding.html',
             controller: 'userCodingCtrl'
+        })
+        .state('user.contest', {
+            url: '/contests/{contestId}',
+            data: {
+                pageTitle: "Contest",
+                pageMetaKeywords: "contest"
+            },
+            templateUrl: 'partials/user.contest.html',
+            controller: 'userContestCtrl'
         })
         .state('user.profile', {
             url: '/profile',
@@ -209,7 +229,6 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
 main.run(['$rootScope', '$state', 'sessionHelper', function ($rootScope, $state, sessionHelper) {
     //consider exposing states and state params to all templates
     $rootScope.$state = $state;
-    // moved from userDashboardCtrl so that when in other states the notifications can also show in base.html
 
     $rootScope.$on('$stateChangeStart', function (event, toState) {
         //use whitelist approach

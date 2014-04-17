@@ -1,8 +1,7 @@
 	<div class="anon-header" data-ng-hide="loggedIn()">
         <div class="navbar navbar-top" role="navigation">
           <div class="container-fluid">
-            <span class="navbar-title">TOPCODER ARENA</span>
-            <a class="navbar-brand" data-ui-sref="user.dashboard">Topcoder</a>
+            <a class="navbar-brand" href="https://www.topcoder.com">Topcoder</a><span class="navbar-title">ARENA</span>
          </div>
         </div>
     </div>
@@ -15,7 +14,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </a>
-              <h1 class="navbar-title">TOPCODER ARENA</h1>
+              <h1 class="navbar-title"> <a class="navbar-brand" href="https://www.topcoder.com">Topcoder</a><span class="navbar-title">ARENA</span></h1>
 	        </div>
 
 	        <div data-collapse="navCollapsed" class="collapse navbar-collapse">
@@ -23,28 +22,28 @@
                   <li data-ng-class="{ active: $state.includes('user.dashboard') }">
                     <a data-ui-sref="user.dashboard">LOBBY</a>
                   </li>
-                  <li data-ng-class="{ active: $state.includes('user.coding') }">
-                    <a href="#">CONTESTS</a>
+                  <li data-ng-class="{ active: $state.includes('user.contests') || $state.includes('user.contest') || $state.includes('user.coding') }">
+                    <a>CONTESTS</a>
                   </li>
                   <li data-ng-class="">
-                    <a href="#">VIRTUAL CONTEST</a>
+                    <a>VIRTUAL CONTEST</a>
                   </li>
                   <li data-ng-class="">
-                    <a href="#">SETTINGS</a>
+                    <a>SETTINGS</a>
                   </li>
                   <li data-ng-class="">
-                    <a href="#">TOOLS</a>
+                    <a>TOOLS</a>
                   </li>
                   <li data-ng-class="">
-                    <a href="#">HELP</a>
+                    <a>HELP</a>
                   </li>
                   <li data-ng-class="">
-                    <a href="#">PROBLEM TRACKER</a>
+                    <a>PROBLEM TRACKER</a>
                   </li>
                   <li>
                     <div class="userInfo">
                       Welcome
-                      <a href="#" class="username">{{ username() }}</a> <!-- data-ui-sref="user.profile.details" -->
+                      <a class="username">{{ username() }}</a> <!-- data-ui-sref="user.profile.details" -->
                       <label class="notification"><span data-ng-show="notifications.length > 0">{{ notifications.length }}</span></label>
                       <a data-ui-sref="user.logout" class="arrow"></a>
                     </div> 

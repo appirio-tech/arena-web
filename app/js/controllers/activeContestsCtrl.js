@@ -1,10 +1,8 @@
 'use strict';
-
-var activeContestsCtrl = ['$scope', '$http', '$state', function ($scope, $http, $state) {
-    var isStringNotNullNorEmpty = function (s) {
-        return s && s.length > 0;
-    };
-
+/*global module*/
+var activeContestsCtrl = ['$scope', '$state', '$http', 'appHelper', function ($scope, $state, $http, appHelper) {
+    $scope.getPhaseTime = appHelper.getPhaseTime;
+    $scope.range = appHelper.range;
     $scope.contests = [];
     $scope.currentContest = 0;
     // replace with real URL to retrieve active contests data.
@@ -22,22 +20,20 @@ var activeContestsCtrl = ['$scope', '$http', '$state', function ($scope, $http, 
 
     // gets the current action available
     $scope.getAction = function (contest) {
-        if (contest.isRegistered) {
-            return 'Enter';
-        }
-        return 'Register';
+        return contest.isRegistered ? 'Enter' : 'Register';
     };
 
     // action for 'Register' or 'Enter'
     $scope.doAction = function (contest) {
         // in the real app, we should perform real actions.
         if (contest.isRegistered) {
-            // TODO: temporarily used for testing coding arena page.
-            $state.go('user.coding', {problemId : 1001});
-            return;
+            // the button is 'Enter'
+            $state.go('user.contest', {contestId: contest.id});
+        } else {
+            // the button is 'Register'
+            contest.isRegistered = true;
+            $scope.setDetailIndex(contest, 2);
         }
-        contest.isRegistered = true;
-        $scope.setDetailIndex(contest, 2);
     };
 
     // sets the tab index to view contest details
@@ -58,34 +54,15 @@ var activeContestsCtrl = ['$scope', '$http', '$state', function ($scope, $http, 
         contest.detailIndex = index;
     };
 
-    // Gets the phase time for display.
-    // Usually we have start time and end time.
-    // When start time is not available, end time should take its place.
-    $scope.getPhaseTime = function (phase, id) {
-        if (id === 0) {
-            if (isStringNotNullNorEmpty(phase.start)) {
-                return {key: 'Start in', value: phase.start};
-            }
-            if (isStringNotNullNorEmpty(phase.end)) {
-                return {key: 'End in', value: phase.end};
-            }
-        } else if (id === 1) {
-            if (isStringNotNullNorEmpty(phase.start) &&
-                    isStringNotNullNorEmpty(phase.end)) {
-                return {key: 'End in', value: phase.end};
-            }
-        }
-        return {key: '', value: ''};
-    };
-
     // Checks if it is counting down
     $scope.isCountingDown = function (contest) {
-        return isStringNotNullNorEmpty(contest.countdown);
+        return appHelper.isStringNotNullNorEmpty(contest.countdown);
     };
 
-    // return an empty array of fixed length
-    $scope.range = function (num) {
-        return new [].constructor(num);
+    // show the active tab name when active contest widget is narrow
+    var tabNames = ['Contest Summary', 'Contest Schedule', 'My Status'];
+    $scope.getTabName = function (index) {
+        return index >= 0 && index < tabNames.length ? tabNames[index] : 'Click to show tabs';
     };
 }];
 

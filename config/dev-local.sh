@@ -9,3 +9,5 @@ export NODE_ENV=development
 # Set this value if the API you are calling is hosted in a different
 # domain from where the front end app is served. Be sure the API allows CORS.
 export API_DOMAIN=
+
+export PORT=3000
