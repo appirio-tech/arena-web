@@ -1,4 +1,4 @@
-<div class="panel panel-custom" data-ng-click="collapseNav = true;">
+<div class="panel panel-custom">
 	<div class="panel-heading">
 		Active Contests
 	</div>
@@ -23,10 +23,10 @@
 	    				<a class="dropdown-toggle">
 	    					{{ getTabName(contest.detailIndex) }}<b class="caret"></b>
 	    				</a>
-	    				<ul class="dropdown-menu" data-ng-hide="collapseNav">
-			    			<li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0); collapseNav = true;">Contest Summary</li>
-				    		<li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1); collapseNav = true;">Contest Schedule</li>
-				    		<li data-ng-class="{'textActive': contest.detailIndex == 2}" data-ng-click="setDetailIndex(contest, 2); collapseNav = true;" data-ng-show="contest.isRegistered">My Status</li>
+	    				<ul class="dropdown-menu">
+			    			<li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0);">Contest Summary</li>
+				    		<li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1);">Contest Schedule</li>
+				    		<li data-ng-class="{'textActive': contest.detailIndex == 2}" data-ng-click="setDetailIndex(contest, 2);" data-ng-show="contest.isRegistered">My Status</li>
 			    		</ul>
 			    	</li>
 	    		</ul>

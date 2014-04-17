@@ -1,0 +1,34 @@
+/*
+
+    Name:       TopCoder
+    Author:     topcoder
+
+    CodeMirror template by topcoder
+    Original 3024 day scheme by Jan T. Sott (https://github.com/idleberg/base16-codemirror)
+
+*/
+
+.cm-s-topcoder.CodeMirror {background: #151718; color: #fff;}
+.cm-s-topcoder div.CodeMirror-selected {background: #d6d5d4 !important;}
+.cm-s-topcoder .CodeMirror-gutters {background: #232628; border-right: 0px;}
+.cm-s-topcoder .CodeMirror-linenumber {color: #0bbbe7;}
+.cm-s-topcoder .CodeMirror-cursor {border-left: 1px solid #5c5855 !important;}
+
+.cm-s-topcoder span.cm-comment {color: #cdab53;}
+.cm-s-topcoder span.cm-atom {color: #a16a94;}
+.cm-s-topcoder span.cm-number {color: #a16a94;}
+
+.cm-s-topcoder span.cm-property, .cm-s-topcoder span.cm-attribute {color: #01a252;}
+.cm-s-topcoder span.cm-keyword {color: #a162ef;}
+.cm-s-topcoder span.cm-string {color: #fded02;}
+
+.cm-s-topcoder span.cm-variable {color: #48b4f6;}
+.cm-s-topcoder span.cm-variable-2 {color: #01a0e4;}
+.cm-s-topcoder span.cm-def {color: #e8bbd0;}
+.cm-s-topcoder span.cm-bracket {color: #3a3432;}
+.cm-s-topcoder span.cm-tag {color: #db2d20;}
+.cm-s-topcoder span.cm-link {color: #a16a94;}
+.cm-s-topcoder span.cm-error {background: #db2d20; color: #5c5855;}
+
+.cm-s-topcoder .CodeMirror-activeline-background {background: #e8f2ff !important;}
+.cm-s-topcoder .CodeMirror-matchingbracket { text-decoration: underline; color: white !important;}

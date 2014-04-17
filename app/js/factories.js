@@ -8,7 +8,6 @@ var config = require('./config');
 var factories = {};
 
 factories.appHelper = [function () {
-
     var helper = {};
 
     // return an empty array of fixed length

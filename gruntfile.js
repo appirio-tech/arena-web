@@ -1,4 +1,5 @@
 'use strict';
+/*global module, process*/
 module.exports = function (grunt) {
     grunt.initConfig({
         clean : {
@@ -29,7 +30,14 @@ module.exports = function (grunt) {
         },
         cssmin: {
             build: {
-                src: ['app/css/bootstrap.min.css', 'app/css/app.css', 'app/css/local.css'],
+                src: [
+                    'app/css/bootstrap.min.css',
+                    'app/css/app.css',
+                    'app/css/local.css',
+                    'app/css/topcoder.css',
+                    'bower_components/codemirror/lib/codemirror.css',
+                    'bower_components/codemirror/addon/fold/foldgutter.css'
+                ],
                 // Compile to a single file to add a script tag for in your HTML
                 dest: 'build/css/bundle.css',
             },
@@ -78,5 +86,4 @@ module.exports = function (grunt) {
     grunt.registerTask('build', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'copy:build']);
     //release tasks work out of build directory - build must be run first!
     grunt.registerTask('release', ['clean:release', 'uglify:release', 'copy:release']);
-    grunt.registerTask('heroku', ['build']);
 };

@@ -1,11 +1,10 @@
 'use strict';
-
+/*global module*/
 var activeContestsCtrl = ['$scope', '$state', '$http', 'appHelper', function ($scope, $state, $http, appHelper) {
     $scope.getPhaseTime = appHelper.getPhaseTime;
     $scope.range = appHelper.range;
     $scope.contests = [];
     $scope.currentContest = 0;
-    $scope.collapseNav = true;
     // replace with real URL to retrieve active contests data.
     $http.get('data/active-contests.json').success(function (data) {
         data.forEach(function (contest) {
