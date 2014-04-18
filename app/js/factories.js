@@ -112,10 +112,10 @@ factories.API = [function () {
     return api;
 }];
 
-factories.sessionHelper = ['$window', '$cookies', function ($window, $cookies) {
+factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
     var helper = {};
     helper.isLoggedIn = function () {
-        return $cookies[config.ssoKey] !== undefined;
+        return cookies.get(config.ssoKey);
     };
     helper.clear = function () {
         delete $window.localStorage.userId;
@@ -138,10 +138,10 @@ factories.sessionHelper = ['$window', '$cookies', function ($window, $cookies) {
         return angular.fromJson($window.localStorage.remember);
     };
     helper.getTcsso = function () {
-        return $cookies[config.ssoKey];
+        return cookies.get(config.ssoKey);
     };
     helper.removeTcsso = function () {
-        delete $cookies[config.ssoKey];
+        cookies.remove(config.ssoKey);
     };
     return helper;
 }];
@@ -177,6 +177,21 @@ factories.socket = ['$rootScope', function ($rootScope) {
             });
         }
     };
+}];
+
+factories.cookies = ['$document', function ($document) {
+    var cookies = {};
+    cookies.set = function (key, value, expires) {
+        $document[0].cookie = key + '=' + value + '; domain=topcoder.com; path=/'
+            + (expires === -1 ? '; expires=Tue, 19 Jan 2038 03:14:07 GMT' : '');
+    };
+    cookies.remove = function (key) {
+        $document[0].cookie = key + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=topcoder.com; path=/';
+    };
+    cookies.get = function (key) {
+        return $document[0].cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + key.replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || null;
+    };
+    return cookies;
 }];
 
 module.exports = factories;

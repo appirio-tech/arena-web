@@ -6,18 +6,14 @@ var config = require('./config');
 //Here we put resolver logic into a container object so that the state declaration code section stays readable
 var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
-resolvers.finishLogin = ['$q', '$state', '$document', 'sessionHelper', 'socket', function ($q, $state, $document, sessionHelper, socket) {
+resolvers.finishLogin = ['$q', '$state', 'cookies', 'sessionHelper', 'socket', function ($q, $state, cookies, sessionHelper, socket) {
     'use strict';
     var date, deferred, sso = sessionHelper.getTcsso();
 
     socket.on('login', function (data) {
 
         if (sessionHelper.getRemember()) {
-            date = new Date();
-            date.setFullYear(date.getFullYear() + 100);
-            // set the cookie expiry
-            $document[0].cookie = config.ssoKey + '=' + sso +
-                '; Expires=' + date.toUTCString() + '; Domain=topcoder.com; Path=/';
+            cookies.set(config.ssoKey, sso, -1);
         }
         sessionHelper.clear();
         sessionHelper.persist({username: data.username});

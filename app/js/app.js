@@ -42,10 +42,6 @@ directives.activecontests = require('./directives/activecontests');
 directives.contestcountdown = require('./directives/contestcountdown');
 directives.conteststats = require('./directives/conteststats');
 
-/*global $ : false, angular : false */
-/*jslint nomen: true, browser: true */
-
-
 $(document).ready(function () {
     var fromTop = $(window).scrollTop();
     $(".hero .header").toggleClass("clean", (fromTop < 60));
@@ -65,7 +61,7 @@ $(document).ready(function () {
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ngCookies']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer']);
 
 ///////////////
 // FACTORIES //
@@ -74,6 +70,7 @@ main.factory('API', factories.API);
 main.factory('sessionHelper', factories.sessionHelper);
 main.factory('auth0', factories.auth0);
 main.factory('socket', factories.socket);
+main.factory('cookies', factories.cookies);
 main.factory('dashboardHelper', factories.dashboardHelper);
 main.factory('appHelper', factories.appHelper);
 
