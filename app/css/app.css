@@ -23,8 +23,8 @@ body a {cursor: pointer;}
 
 .anon-header,
 .header,
-.anon-header .navbar .navbar-brand,
-.header,.btn-facebook:after,.btn-twitter:after,.btn-google:after,
+.anon-header .navbar .navbar-brand, .header .navbar-brand,
+.btn-facebook:after,.btn-twitter:after,.btn-google:after,
 .btn-linkedIn:after,
 .dashboard .titleBar .brand,
 .panel-custom .summaryPanel:after,
@@ -88,7 +88,6 @@ body a {cursor: pointer;}
 }
 /* topcoder logo */
 .anon-header .navbar .navbar-brand, .navbar-brand {
-    background-image: url(../img/sprite.png);
     background-position: 0 0;
     background-repeat: no-repeat;
     padding: 22px 0 0 172px;
@@ -557,12 +556,6 @@ body a {cursor: pointer;}
     font: 300 26px/35px 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;/*Light*/  
     margin: 0; 
 }
-/*<<<<<<< HEAD
-.dashboard .breadcrumb,
-.dashboard .titleBar .title {
-    padding-left: 15px;
-}*/
-
 .dashboard .connection span {
     color: #fff;
 }
@@ -727,9 +720,6 @@ footer .right .sponsorLogo {
     overflow: hidden;
     padding-top: 23px;
     padding-right: 188px;
-/*<<<<<<< HEAD
-    background: url(../img/company_logo_small.png) 0 0 no-repeat;
-=======*/
     background: url(../img/company_logo_small.png) 100% 100% no-repeat;
     padding-left: 20px;
 }
@@ -866,9 +856,6 @@ footer .right>span:nth-child(2) {
 .panel-custom .schedulePanel .endTime {width: 130px;}
 .panel-custom .statusPanel .leftSide,
 .panel-custom .statusPanel .rightSide {
-/*<<<<<<< HEAD
-    float: left;
-=======*/
     display: inline-block;
     vertical-align: top;
 }
@@ -1620,7 +1607,10 @@ footer .right>span:nth-child(2) {
 .panelContestStat .textBold {font-weight: 700; /* Bold */ }
 
 /* bootstrap large size devices tablets is 1200px, 
-*but when screen is smaller than 1216, there will be some display problems */ 
+*but when screen is smaller than 1240, there will be some display problems */ 
+@media only screen and (max-width: 1240px) {
+   .header .navbar-brand { padding-left:60px;}
+}
 @media only screen and (max-width: 1230px) {
     .inner { padding: 0;}
     .dashboard .titleBar .brand,
@@ -1645,7 +1635,6 @@ footer .right>span:nth-child(2) {
 /* when device or screen is middle size, force hide navbar-collapse*/
 @media only screen and (max-width: 1199px) {
     .header {height: auto;}
-    .header .navbar-title {padding-left: 15px; }
     .header .navbar-collapse{max-height: 90%; background-color:#122d48; }
     .header .navbar-collapse:before {display: none; }
     .header .navbar-nav{
@@ -1740,12 +1729,6 @@ footer .right>span:nth-child(2) {
 
     .codeArea .titleBar {height: 85px;}
     .codeArea .titleBar>div:first-child {padding-right: 105px;}
-    .dashboard .connection {
-        float: left;
-        text-align: left;
-        padding-left: 30px;
-    }
-    .codeArea .connection {padding-left: 15px; }
     .panelCodeEditor .panel-heading ul {padding-left: 30px;}
     .panelCodeEditor .panel-heading>ul>li+li {margin-left: 20px;}
 }
