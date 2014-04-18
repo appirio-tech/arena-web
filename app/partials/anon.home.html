@@ -16,7 +16,7 @@
                             <input type="password" name="password" required data-ng-model="password" data-ng-pattern="/^.+$/" />
                           </p>
                           <p>
-                            <input type="checkbox" name="remember" id="remember" class="rememberCheckbox"/>
+                            <input type="checkbox" name="remember" id="remember" data-ng-model="remember" class="rememberCheckbox"/>
                             <label for="remember" class="rememberCheckboxLabel"></label>
                             <label for="remember" class="rememberLbl">Remember me</label>
                           </p>
@@ -32,10 +32,10 @@
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 social">
                         <header>Login with your social media account</header>
                         <div>
-                            <p><a data-ng-click="socialLogin();" class="btn btn-primary btn-lg btn-facebook">Facebook</a></p>
-                            <p><a data-ng-click="socialLogin();" class="btn btn-primary btn-lg btn-twitter">Twitter</a></p>
-                            <p><a data-ng-click="socialLogin();" class="btn btn-primary btn-lg btn-google">Google+</a></p>
-                            <p><a data-ng-click="socialLogin();" class="btn btn-primary btn-lg btn-linkedIn">LinkedIn</a></p>
+                            <p><a data-ng-click="socialLogin('facebook');" class="btn btn-primary btn-lg btn-facebook">Facebook</a></p>
+                            <p><a data-ng-click="socialLogin('twitter');" class="btn btn-primary btn-lg btn-twitter">Twitter</a></p>
+                            <p><a data-ng-click="socialLogin('google-oauth2');" class="btn btn-primary btn-lg btn-google">Google+</a></p>
+                            <p><a data-ng-click="socialLogin('linkedin');" class="btn btn-primary btn-lg btn-linkedIn">LinkedIn</a></p>
                         </div>
                     </div>
                     <!-- /.social -->

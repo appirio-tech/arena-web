@@ -11,7 +11,9 @@ module.exports = function (grunt) {
                     patterns: [
                         { match : 'AUTH0_CLIENT_ID', replacement: process.env.AUTH0_CLIENT_ID },
                         { match : 'CALLBACK_URL', replacement: process.env.CALLBACK_URL },
+                        { match : 'WEB_SOCKET_URL', replacement: process.env.WEB_SOCKET_URL },
                         { match : 'API_DOMAIN', replacement: process.env.API_DOMAIN },
+                        { match : 'SSO_KEY', replacement: process.env.SSO_KEY }
                     ]
                 },
                 files : [
@@ -24,21 +26,21 @@ module.exports = function (grunt) {
                 // A single entry point for our app
                 src: 'app/js/app.js',
                 // Compile to a single file to add a script tag for in your HTML
-                dest: 'build/js/bundle.js',
-            },
+                dest: 'build/js/bundle.js'
+            }
         },
         cssmin: {
             build: {
                 src: ['app/css/bootstrap.min.css', 'app/css/app.css', 'app/css/local.css'],
                 // Compile to a single file to add a script tag for in your HTML
-                dest: 'build/css/bundle.css',
-            },
+                dest: 'build/css/bundle.css'
+            }
         },
         uglify: {
             release: {
                 src: 'build/js/bundle.js',
-                dest: 'release/js/bundle.js',
-            },
+                dest: 'release/js/bundle.js'
+            }
         },
         copy: {
             build: {
@@ -46,22 +48,22 @@ module.exports = function (grunt) {
                 expand: true,
                 cwd: 'app/',
                 src: ['**/*.html', 'img/**', 'fonts/**', 'data/**', 'robots.txt'],
-                dest: 'build/',
+                dest: 'build/'
             },
             release: {
                 // This copies all the html, css and images into the release/ folder. js was done already.
                 expand: true,
                 cwd: 'build/',
                 src: ['**/*.html', 'img/**', 'css/**', 'fonts/**', 'data/**', 'robots.txt'],
-                dest: 'release/',
-            },
+                dest: 'release/'
+            }
         },
         watch: {
             dev: {
                 files: ['app/**', '!app/js/config.js'],
                 tasks: ['build']
             }
-        },
+        }
     });
 
     // Load the npm installed tasks

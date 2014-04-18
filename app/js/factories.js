@@ -1,6 +1,8 @@
 'use strict';
 var config = require('./config');
-/*global $ : false, Auth0 : false, angular : false */
+var Auth0 = require('auth0-js');
+var socket = require('socket.io-client').connect(config.webSocketURL);
+/*global $ : false, angular : false */
 
 ///////////////
 // FACTORIES //
@@ -48,7 +50,7 @@ factories.appHelper = [function () {
             arr = s.split(' '),
             month = (function (monthAbbr) {
                 var i = 0;
-                for (i = 0; i < months.length; i++) {
+                for (i = 0; i < months.length; i += 1) {
                     if (months[i] === monthAbbr) {
                         return i;
                     }
@@ -60,12 +62,12 @@ factories.appHelper = [function () {
             hour = parseInt(timeArr[0], 10),
             minute = parseInt(timeArr[1], 10),
             seconds = timeArr.length <= 2 ? 0 : parseInt(timeArr[2], 10),
-            ampm = arr[4].toLowerCase();
+            ampm = arr[4].toLowerCase(),
+            date = new Date();
 
         if (ampm === 'pm') {
             hour += 12;
         }
-        var date =  new Date();
 
         date.setMonth(month);
         date.setDate(day);
@@ -110,31 +112,21 @@ factories.API = [function () {
     return api;
 }];
 
-factories.sessionHelper = ['$window', function ($window) {
+factories.sessionHelper = ['$window', '$cookies', function ($window, $cookies) {
     var helper = {};
     helper.isLoggedIn = function () {
-        if (!$window.localStorage.profile) { return false; }
-        var now = new Date(),
-            exp = new Date(0);
-        exp.setUTCSeconds((angular.fromJson($window.localStorage.profile)).exp);
-        return (exp > now);
+        return $cookies[config.ssoKey] !== undefined;
     };
     helper.clear = function () {
-        delete $window.localStorage.jwt;
-        delete $window.localStorage.profile;
+        delete $window.localStorage.userId;
+        delete $window.localStorage.username;
+        delete $window.localStorage.remember;
     };
     helper.persist = function (sess) {
         //set the storage
-        if (sess.jwt) { $window.localStorage.jwt = sess.jwt; }
-        if (sess.profile) { $window.localStorage.profile = angular.toJson(sess.profile); }
         if (sess.userId) { $window.localStorage.userId = sess.userId; }
         if (sess.username) { $window.localStorage.username = sess.username; }
-    };
-    helper.getJwt = function () {
-        return $window.localStorage.jwt;
-    };
-    helper.getProfile = function () {
-        return angular.fromJson($window.localStorage.profile);
+        if (sess.remember) { $window.localStorage.remember = angular.toJson(sess.remember); }
     };
     helper.getUserId = function () {
         return $window.localStorage.userId;
@@ -142,19 +134,49 @@ factories.sessionHelper = ['$window', function ($window) {
     helper.getUsername = function () {
         return $window.localStorage.username;
     };
+    helper.getRemember = function () {
+        return angular.fromJson($window.localStorage.remember);
+    };
+    helper.getTcsso = function () {
+        return $cookies[config.ssoKey];
+    };
+    helper.removeTcsso = function () {
+        delete $cookies[config.ssoKey];
+    };
     return helper;
 }];
 
-/* //wrap auth0 in an angular factory
+//wrap auth0 in an angular factory
 factories.auth0 = function () {
     var auth0 = new Auth0({
-        domain:       config.auth0Domain,
-        clientID:     config.auth0ClientId,
-        callbackURL:  config.auth0CallbackURL,
-        callbackOnLocationHash: true
+        domain:       config.apiDomain,
+        clientID:     config.auth0clientID,
+        callbackURL:  config.callbackURL
     });
     return auth0;
 };
-*/
+
+factories.socket = ['$rootScope', function ($rootScope) {
+    return {
+        on: function (eventName, callback) {
+            socket.on(eventName, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    callback.apply(socket, args);
+                });
+            });
+        },
+        emit: function (eventName, data, callback) {
+            socket.emit(eventName, data, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    if (callback) {
+                        callback.apply(socket, args);
+                    }
+                });
+            });
+        }
+    };
+}];
 
 module.exports = factories;

@@ -1,38 +1,44 @@
 'use strict';
 
-var anonHomeCtrl = ['$scope', '$state', 'sessionHelper', function ($scope, $state, sessionHelper) {
+var anonHomeCtrl = ['$scope', '$state', 'sessionHelper', 'auth0', function ($scope, $state, sessionHelper, auth0) {
     // whether the login has error
     $scope.hasError = false;
     $scope.username = '';
     $scope.password = '';
 
     $scope.accountLogin = function () {
-        //creds below would be a parameter for this function
-        //auth0.login(mapCreds(creds), errCb);
         $scope.hasError = false;
         var $usernameError = $scope.accountLoginForm.username.$error,
             $passwordError = $scope.accountLoginForm.password.$error;
         if ($usernameError.required || $usernameError.pattern) {
             $scope.username = '';
             $scope.hasError = true;
+            return;
         }
         if ($passwordError.required || $passwordError.pattern) {
             $scope.password = '';
             $scope.hasError = true;
+            return;
         }
+        sessionHelper.clear();
+        sessionHelper.persist({remember: $scope.remember});
 
-        if (!$scope.hasError) {
-            sessionHelper.username = $scope.username;
-            $state.go('loggingin');
-        }
+        auth0.signin({
+            connection: 'vm-ldap-connection',
+            username: $scope.username,
+            password: $scope.password,
+            state: 'http://arena.cloud.topcoder.com'
+        }, function () {
+            $scope.hasError = true;
+            $scope.$apply();
+        });
     };
 
-    $scope.socialLogin = function () {
-        //In real app you would do something like:
-        //auth0.login({connection: connection});
-        //where connection is the parameter for this function
-        sessionHelper.username = 'long_username_5555';
-        $state.go('loggingin');
+    $scope.socialLogin = function (connection) {
+        auth0.signin({
+            connection: connection,
+            state: 'http://arena.cloud.topcoder.com'
+        });
     };
 
     $scope.accountSignup = function () {

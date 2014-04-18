@@ -1,8 +1,11 @@
+/*global $ : false, angular : false */
+/*jslint nomen: true, browser: true */
 'use strict';
 require('./../../thirdparty/jquery/jquery');
 require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
 require('./../../bower_components/angular-sanitize/angular-sanitize');
+require('./../../bower_components/angular-cookies/angular-cookies');
 require('./../../bower_components/angular-ui-router/release/angular-ui-router');
 require('./../../bower_components/angular-timer/dist/angular-timer');
 require('./../../bower_components/angular-ui-bootstrap/ui-bootstrap-tpls-0.9.0');
@@ -62,18 +65,22 @@ $(document).ready(function () {
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ngCookies']);
 
 ///////////////
 // FACTORIES //
 
 main.factory('API', factories.API);
 main.factory('sessionHelper', factories.sessionHelper);
+main.factory('auth0', factories.auth0);
+main.factory('socket', factories.socket);
 main.factory('dashboardHelper', factories.dashboardHelper);
 main.factory('appHelper', factories.appHelper);
 
+
 /////////////////
 // CONTROLLERS //
+
 main.controller('anonHomeCtrl', controllers.anonHomeCtrl);
 main.controller('errorCtrl', controllers.errorCtrl);
 main.controller('userProfileCtrl', controllers.userProfileCtrl);
@@ -92,7 +99,6 @@ main.directive('leaderboardusers', directives.leaderboardusers);
 main.directive('activecontests', directives.activecontests);
 main.directive('contestcountdown', directives.contestcountdown);
 main.directive('conteststats', directives.conteststats);
-
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
@@ -207,8 +213,7 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
             url: '/loggingin',
             template: 'Completing login... One moment please...',
             resolve: {
-                finishLogin: resolvers.finishLogin,
-                alreadyLoggedIn : resolvers.alreadyLoggedIn
+                finishLogin: resolvers.finishLogin
             }
         });
 }]);
