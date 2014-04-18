@@ -1,0 +1,49 @@
+.floating-label{
+  padding-top:5px;
+  padding-bottom:15px;
+  font-size:12px;
+  line-height:18px;
+}
+
+.subscribe_modal .modal-dialog{
+    margin: 30px auto;
+    width: 860px;
+}
+
+@media (max-width: 767px) {
+    .subscribe_modal .modal-dialog{
+        width: 100%;
+    }
+}
+
+/* Smaller than standard 960 (devices and browsers) */
+@media only screen and (max-width: 959px) {
+    .subscribe_modal .modal-dialog{
+        width: 760px;
+    }
+}
+
+/* Tablet Portrait size to standard 960 (devices and browsers) */
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+    .subscribe_modal .modal-dialog{
+        width: 100%;
+    }
+}
+
+/* All Mobile Sizes (devices and browser) */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    .subscribe_modal .modal-dialog{
+        width: 100%;
+    }
+}
+
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+@media only screen and (max-width: 479px) {
+    .subscribe_modal .modal-dialog{
+        width: 100%;
+    }
+}
+.canvasjs300{
+    height: 300px; 
+    width: 100%;
+}

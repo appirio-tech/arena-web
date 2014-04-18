@@ -1,0 +1,9 @@
+*.log
+*.zip
+*.DS_Store
+app/js/config.js
+node_modules
+bower_components
+build
+release
+log

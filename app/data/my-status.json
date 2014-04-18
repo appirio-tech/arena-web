@@ -1,0 +1,45 @@
+{
+    "info":
+    [
+        {
+            "key": "Division",
+            "value": "Division 1"
+        },
+        {
+            "key": "Rooms",
+            "value": "Room 41"
+        },
+        {
+            "key": "Language",
+            "value": "Python"
+        }
+    ],
+    "phases":
+    [
+        {
+            "title": "Registration Phase",
+            "end": "Fri Feb 7, 5:45 PM EST",
+            "status": "Complete"
+        },
+        {
+            "title": "Coding Phase",
+            "end": "Fri Feb 7, 5:45 PM EST",
+            "status": "Complete"
+        },
+        {
+            "title": "Intermission Phase",
+            "end": "Fri Feb 7, 5:45 PM EST",
+            "status": "Complete"
+        },
+        {
+            "title": "Challenge Phase",
+            "end": "Fri Feb 7, 5:45 PM EST",
+            "status": "Complete"
+        },
+        {
+            "title": "System Testing Phase",
+            "end": "",
+            "status": "Ongoing"
+        }
+    ]
+}
