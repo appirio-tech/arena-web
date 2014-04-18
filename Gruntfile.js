@@ -86,4 +86,5 @@ module.exports = function (grunt) {
     grunt.registerTask('build', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'copy:build']);
     //release tasks work out of build directory - build must be run first!
     grunt.registerTask('release', ['clean:release', 'uglify:release', 'copy:release']);
+    grunt.registerTask('heroku', ['build']);
 };
