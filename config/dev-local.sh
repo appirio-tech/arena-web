@@ -18,6 +18,5 @@ export WEB_SOCKET_URL=https://tc.cloud.topcoder.com:5037
 # the cookie key of sso token
 export SSO_KEY=tcsso_vm
 
-# To make sure the auth0 works fine, the arena web should listen on 80 port
-# you may need the root privilege to do that.
-export PORT=80
+# the HTTP server port
+export PORT=3000

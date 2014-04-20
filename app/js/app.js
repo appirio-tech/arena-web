@@ -5,7 +5,6 @@ require('./../../thirdparty/jquery/jquery');
 require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
 require('./../../bower_components/angular-sanitize/angular-sanitize');
-require('./../../bower_components/angular-cookies/angular-cookies');
 require('./../../bower_components/angular-ui-router/release/angular-ui-router');
 require('./../../bower_components/angular-timer/dist/angular-timer');
 require('./../../bower_components/angular-ui-bootstrap/ui-bootstrap-tpls-0.9.0');

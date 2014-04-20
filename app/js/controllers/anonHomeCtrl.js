@@ -1,6 +1,6 @@
 'use strict';
 
-var anonHomeCtrl = ['$scope', '$state', 'sessionHelper', 'auth0', function ($scope, $state, sessionHelper, auth0) {
+var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', function ($scope, $state, $window, sessionHelper, auth0) {
     // whether the login has error
     $scope.hasError = false;
     $scope.username = '';
@@ -27,7 +27,7 @@ var anonHomeCtrl = ['$scope', '$state', 'sessionHelper', 'auth0', function ($sco
             connection: 'vm-ldap-connection',
             username: $scope.username,
             password: $scope.password,
-            state: 'http://arena.cloud.topcoder.com'
+            state: $window.location.href
         }, function () {
             $scope.hasError = true;
             $scope.$apply();
@@ -37,7 +37,7 @@ var anonHomeCtrl = ['$scope', '$state', 'sessionHelper', 'auth0', function ($sco
     $scope.socialLogin = function (connection) {
         auth0.signin({
             connection: connection,
-            state: 'http://arena.cloud.topcoder.com'
+            state: $window.location.href
         });
     };
 
