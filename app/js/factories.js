@@ -10,7 +10,6 @@ var socket = require('socket.io-client').connect(config.webSocketURL);
 var factories = {};
 
 factories.appHelper = [function () {
-
     var helper = {};
 
     // return an empty array of fixed length

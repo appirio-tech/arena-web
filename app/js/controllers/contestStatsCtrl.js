@@ -1,6 +1,6 @@
 'use strict';
 
-var contestStatsCtrl = ['$scope', 'appHelper', function ($scope, appHelper) {
+var contestStatsCtrl = ['$scope', 'appHelper', '$state', function ($scope, appHelper, $state) {
     var status = [
         'Registration Unopened', // 0 - before registration
         'Registration', // 1 - registration
@@ -37,6 +37,9 @@ var contestStatsCtrl = ['$scope', 'appHelper', function ($scope, appHelper) {
             return '';
         }
         return status[phase.id];
+    };
+    $scope.openProblem = function () {
+        $state.go('user.coding', {problemId : 1001});
     };
 }];
 

@@ -1,4 +1,5 @@
 'use strict';
+/*global module, process*/
 module.exports = function (grunt) {
     grunt.initConfig({
         clean : {
@@ -31,7 +32,14 @@ module.exports = function (grunt) {
         },
         cssmin: {
             build: {
-                src: ['app/css/bootstrap.min.css', 'app/css/app.css', 'app/css/local.css'],
+                src: [
+                    'app/css/bootstrap.min.css',
+                    'app/css/app.css',
+                    'app/css/local.css',
+                    'app/css/topcoder.css',
+                    'bower_components/codemirror/lib/codemirror.css',
+                    'bower_components/codemirror/addon/fold/foldgutter.css'
+                ],
                 // Compile to a single file to add a script tag for in your HTML
                 dest: 'build/css/bundle.css'
             }
