@@ -70,6 +70,9 @@ var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstra
 
 main.factory('API', factories.API);
 main.factory('sessionHelper', factories.sessionHelper);
+main.factory('auth0', factories.auth0);
+main.factory('socket', factories.socket);
+main.factory('cookies', factories.cookies);
 main.factory('dashboardHelper', factories.dashboardHelper);
 main.factory('appHelper', factories.appHelper);
 
@@ -97,6 +100,7 @@ main.directive('codingproblem', directives.codingproblem);
 main.directive('codingeditor', directives.codingeditor);
 main.directive('contestcountdown', directives.contestcountdown);
 main.directive('conteststats', directives.conteststats);
+
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
@@ -220,8 +224,7 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
             url: '/loggingin',
             template: 'Completing login... One moment please...',
             resolve: {
-                finishLogin: resolvers.finishLogin,
-                alreadyLoggedIn : resolvers.alreadyLoggedIn
+                finishLogin: resolvers.finishLogin
             }
         });
 }]);
