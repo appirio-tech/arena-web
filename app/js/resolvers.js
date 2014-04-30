@@ -8,33 +8,32 @@ var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
 resolvers.finishLogin = ['$q', '$state', 'cookies', 'sessionHelper', 'socket', function ($q, $state, cookies, sessionHelper, socket) {
     'use strict';
-    var date, deferred, sso = sessionHelper.getTcsso();
+    var deferred, sso = sessionHelper.getTcsso();
 
-    socket.on('login', function (data) {
+    socket.on('LoginResponse', function (data) {
+        deferred = $q.defer();
+        if (data.success) {
+            if (sessionHelper.getRemember()) {
+                cookies.set(config.ssoKey, sso, -1);
+                sessionHelper.clearRemember();
+            }
 
-        if (sessionHelper.getRemember()) {
-            cookies.set(config.ssoKey, sso, -1);
+            deferred.promise.then(function () {
+                $state.go('user.dashboard');
+            });
+        } else {
+            deferred.promise.then(function () {
+                sessionHelper.removeTcsso();
+                $state.go('user.dashboard');
+            });
         }
-        sessionHelper.clear();
-        sessionHelper.persist({username: data.username});
-
-        deferred = $q.defer();
-        deferred.promise.then(function () {
-            $state.go('user.dashboard');
-        });
         deferred.resolve();
         return deferred.promise;
     });
-    socket.on('loginFailed', function () {
-        deferred = $q.defer();
-        deferred.promise.then(function () {
-            sessionHelper.removeTcsso();
-            $state.go('user.dashboard');
-        });
-        deferred.resolve();
-        return deferred.promise;
+    socket.on('UserInfoResponse', function (data) {
+        sessionHelper.persist({userInfo: data.userInfo});
     });
-    socket.emit('ssoLogin', {sso: sso});
+    socket.emit('SSOLoginRequest', {sso: sso});
 }];
 
 //This function checks if there is already a sso cookie
@@ -56,7 +55,7 @@ resolvers.logout = ['$q', '$state', 'sessionHelper', 'socket', function ($q, $st
 
     sessionHelper.clear();
     sessionHelper.removeTcsso();
-    socket.emit('logout', {});
+    socket.emit('LogoutRequest', {});
 
     // defer the logout promise
     var deferred = $q.defer();
