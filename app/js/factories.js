@@ -117,21 +117,20 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
         return cookies.get(config.ssoKey);
     };
     helper.clear = function () {
-        delete $window.localStorage.userId;
-        delete $window.localStorage.username;
+        delete $window.localStorage.userInfo;
+        delete $window.localStorage.remember;
+    };
+    helper.clearRemember = function () {
         delete $window.localStorage.remember;
     };
     helper.persist = function (sess) {
         //set the storage
-        if (sess.userId) { $window.localStorage.userId = sess.userId; }
-        if (sess.username) { $window.localStorage.username = sess.username; }
+        if (sess.userInfo) { $window.localStorage.userInfo = angular.toJson(sess.userInfo); }
         if (sess.remember) { $window.localStorage.remember = angular.toJson(sess.remember); }
     };
-    helper.getUserId = function () {
-        return $window.localStorage.userId;
-    };
     helper.getUsername = function () {
-        return $window.localStorage.username;
+        var userInfo = angular.fromJson($window.localStorage.userInfo);
+        return userInfo ? userInfo.handle : null;
     };
     helper.getRemember = function () {
         return angular.fromJson($window.localStorage.remember);
