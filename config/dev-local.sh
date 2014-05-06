@@ -11,3 +11,7 @@ export NODE_ENV=development
 export API_DOMAIN=
 
 export PORT=3000
+
+export AWS_ACCESS_KEY_ID=
+export AWS_ACCESS_KEY=
+export AWS_BUCKET=
