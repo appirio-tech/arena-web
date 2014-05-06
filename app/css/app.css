@@ -748,7 +748,7 @@ footer .right>span:nth-child(2) {
 .panel-custom {
     background: #151718;
     width: 759px;
-    border-width: 0;
+    border: 1px solid #234760;
     height: 315px;
     border-radius: 0;
     -webkit-border-radius: 0;
@@ -770,7 +770,7 @@ footer .right>span:nth-child(2) {
     height: 40px;
 }
 .panel-custom .panel-body {
-    border: 1px solid #234760;
+    border-width: 0;
     padding: 14px 0 0;
     margin: 0;
     color: #636d70;
@@ -852,8 +852,8 @@ footer .right>span:nth-child(2) {
 .panel-custom .schedulePanel .title {width:180px;}
 .panel-custom .schedulePanel .startIn,.panel-custom .schedulePanel .endIn {width: 72px;}
 .panel-custom .schedulePanel .startIn>span,.panel-custom .schedulePanel .endIn>span{display: inline;}
-.panel-custom .schedulePanel .startTime {width: 215px;}
-.panel-custom .schedulePanel .endTime {width: 130px;}
+.panel-custom .schedulePanel .startTime {width: 200px;}
+.panel-custom .schedulePanel .endTime {width: 160px;}
 .panel-custom .statusPanel .leftSide,
 .panel-custom .statusPanel .rightSide {
     display: inline-block;
