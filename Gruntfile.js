@@ -2,6 +2,21 @@
 /*global module, process*/
 module.exports = function (grunt) {
     grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        s3: {
+            options: {
+                accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.AWS_ACCESS_KEY,
+                bucket: process.env.AWS_BUCKET,
+                access: 'public-read',
+                gzip: false
+            },
+            deploy: {
+                cwd: 'build/',
+                src: '**',
+                dest: 'arena/web-v<%= pkg.version %>/'
+            }
+        },
         clean : {
             build: ['build/'],
             release: ['release/']
@@ -19,6 +34,16 @@ module.exports = function (grunt) {
                 },
                 files : [
                     { src: 'app/js/config.def.js', dest: 'app/js/config.js' }
+                ]
+            },
+            cdn: {
+                options: {
+                    patterns: [
+                        { match : 'CDN_BASE_PATH', replacement: 'http://tc-content.s3.amazonaws.com/arena/web-v<%= pkg.version %>' }
+                    ]
+                },
+                files: [
+                    { expand: true, cwd:'app/', src: '**/*.html', dest: 'build/' }
                 ]
             }
         },
@@ -82,11 +107,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-replace');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-aws');
 
     // The default tasks to run when you type: grunt
-    grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'copy:build']);
-    grunt.registerTask('build', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'copy:build']);
+    grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('build', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'copy:build', 'replace:cdn']);
     //release tasks work out of build directory - build must be run first!
     grunt.registerTask('release', ['clean:release', 'uglify:release', 'copy:release']);
     grunt.registerTask('heroku', ['build']);
+
+    grunt.registerTask('deploy-cdn', ['s3:deploy']);
 };
