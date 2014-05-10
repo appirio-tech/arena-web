@@ -970,6 +970,74 @@ footer .right>span:nth-child(2) {
 .dashboard .mainContent .placeholder {
     padding-bottom: 20px;
 }
+/********************* modal */
+.modal .modal-dialog {
+    padding-top: 15%;
+}
+.modal .modal-content {
+    background: #151718;
+    border: 1px solid #234760;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+}
+.modal .modal-content .modal-header {
+    font-size: 16px;
+    line-height: 25px;
+    padding: 8px 31px;
+    background: #234760;
+    border-radius: 0;
+    border-width: 0;
+    -webkit-border-radius:0;
+    -moz-border-radius: 0;
+    height: 40px;
+}
+.modal .modal-content .modal-header .cancel-x {
+    float: right;
+    cursor: pointer;
+}
+.modal .modal-content .modal-body {
+    border-width: 0;
+    padding: 14px 0 0;
+    margin: 0;
+    color: #636d70;
+    height: 200px;
+    overflow-y: auto;
+}
+.modal .modal-content .modal-body p {
+    margin: auto 20px;
+}
+.modal .modal-content .btn {
+     height: 36px;
+     width: 94px;
+     background: #0999d1;
+     color: #fff;
+     border-radius: 2px;
+     -webkit-border-radius:2px;
+     -moz-border-radius:2px;
+     line-height: 27px;
+     text-align: center;
+     border: 0;
+ }
+.modal .modal-content .btn.right-btn {
+    float: right;
+}
+.modal .modal-content .btn.left-btn {
+    float: left;
+}
+.modal .modal-content .btn:hover {background: #3aadda;}
+.modal .modal-content .modal-footer {
+    border-width: 0;
+    margin: 0;
+    clear:both;
+    line-height: 15px;
+    color: #687376;
+    padding: 10px 30px 14px;
+}
+.modal-backdrop.in {
+    opacity: .8;
+    filter: alpha(opacity=80);
+}
 /********************* active contests part */
 .panel-custom {
     background: #151718;

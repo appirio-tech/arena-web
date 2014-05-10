@@ -348,6 +348,9 @@ factories.socket = ['$rootScope', function ($rootScope) {
                     }
                 });
             });
+        },
+        getSocket: function () {
+            return socket;
         }
     };
 }];

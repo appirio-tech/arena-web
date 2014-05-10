@@ -15,7 +15,14 @@ module.exports = {
         EndSyncResponse: 'EndSyncResponse',
         CreateProblemsResponse: 'CreateProblemsResponse',
         UpdateRoundListResponse: 'UpdateRoundListResponse',
-        EnableRoundResponse: 'EnableRoundResponse'
+        EnableRoundResponse: 'EnableRoundResponse',
+        RegisterInfoRequest: 'RegisterInfoRequest',
+        PopUpGenericResponse: 'PopUpGenericResponse',
+        RegisterRequest: 'RegisterRequest',
+        EnterRoundRequest: 'EnterRoundRequest',
+        RoomInfoResponse: 'RoomInfoResponse',
+        EnterRequest: 'EnterRequest',
+        MoveRequest: 'MoveRequest'
     },
 
     // Represents the phase names.
