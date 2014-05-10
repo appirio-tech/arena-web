@@ -322,11 +322,14 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
 
 //wrap auth0 in an angular factory
 factories.auth0 = function () {
-    return new Auth0({
-        domain:       config.apiDomain,
+    var result = new Auth0({
+        domain:       config.auth0domain,
         clientID:     config.auth0clientID,
         callbackURL:  config.callbackURL
     });
+
+    result.auth0connection = config.auth0connection;
+    return result;
 };
 
 factories.socket = ['$rootScope', function ($rootScope) {
