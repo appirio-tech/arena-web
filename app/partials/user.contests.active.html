@@ -70,7 +70,7 @@
             <!-- /.statusPanel -->
         </div>
         <!-- /.mainContent -->
-        <div class="paginator">
+        <div class="paginator" data-ng-show="roundData.length > 1">
             <span data-ng-repeat="n in range(roundData.length) track by $index" data-ng-class="{'textActive': $index == currentContest}" data-ng-click="setCurrentContest($index)">{{$index+1}}</span>
         </div>
         <!-- /.paginator -->
