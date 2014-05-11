@@ -135,7 +135,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
             socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
 
             socket.on(helper.EVENT_NAME.RoomInfoResponse, function (data) {
-                socket.getSocket().removeAllListeners(helper.EVENT_NAME.RoomInfoResponse);
+                socket.remove(helper.EVENT_NAME.RoomInfoResponse);
                 roomID = data.roomID;
                 $scope.okDisabled = false;
 
@@ -154,17 +154,17 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
                 }
             });
 
-            socket.getSocket().removeAllListeners(helper.EVENT_NAME.EndSyncResponse);
+            socket.remove(helper.EVENT_NAME.EndSyncResponse);
         } else {
             socket.emit(helper.EVENT_NAME.RegisterInfoRequest, {roundID: roundID});
 
             // show the popup
-            socket.getSocket().removeAllListeners(helper.EVENT_NAME.PopUpGenericResponse);
+            socket.remove(helper.EVENT_NAME.PopUpGenericResponse);
             socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
                 var modalInstance = openModal(data, function () {
 
                     socket.emit(helper.EVENT_NAME.RegisterRequest, {roundID: roundID});
-                    socket.getSocket().removeAllListeners(helper.EVENT_NAME.PopUpGenericResponse);
+                    socket.remove(helper.EVENT_NAME.PopUpGenericResponse);
                     socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
                         var innerModalInstance = openModal(data, null);
                         innerModalInstance.result.then(null, null);

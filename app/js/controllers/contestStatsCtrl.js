@@ -132,7 +132,11 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', function ($sc
      * @param problem the problem
      */
     $scope.openProblem = function (problem) {
-        $state.go('user.coding', { problemId: problem.problemID });
+        $state.go('user.coding', {
+            problemId: problem.problemID,
+            roundId: $scope.roundID,
+            divisionId: $scope.divisionID
+        });
     };
 
     // handle register response

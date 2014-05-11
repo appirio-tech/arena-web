@@ -7,8 +7,11 @@
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Contest Phase Movement):
  * - Added PhaseDataResponse, SystestProgressResponse, RegisterUsersRequest and RegisteredUsersResponse to events.
  *
- * @author TCSASSEMBLER
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI - Coding IDE Part 1):
+ * - Added enter round, open, test, compile related events.
+ *
+ * @author tangzx
+ * @version 1.2
  */
 
 module.exports = {
@@ -40,7 +43,15 @@ module.exports = {
         PhaseDataResponse: 'PhaseDataResponse',
         SystestProgressResponse: 'SystestProgressResponse',
         RegisterUsersRequest: 'RegisterUsersRequest',
-        RegisteredUsersResponse: 'RegisteredUsersResponse'
+        RegisteredUsersResponse: 'RegisteredUsersResponse',
+        OpenComponentForCodingRequest: 'OpenComponentForCodingRequest',
+        GetProblemResponse: 'GetProblemResponse',
+        OpenComponentResponse: 'OpenComponentResponse',
+        CloseProblemRequest: 'CloseProblemRequest',
+        CompileRequest: 'CompileRequest',
+        TestInfoRequest: 'TestInfoRequest',
+        TestInfoResponse: 'TestInfoResponse',
+        TestRequest: 'TestRequest'
     },
 
     // Represents the phase names.
@@ -75,5 +86,14 @@ module.exports = {
         VotingPhase: 10,
         TieBreakingVotingPhase: 11,
         ModeratedChattingPhase: 12
+    },
+
+    // the timeout of request
+    REQUEST_TIME_OUT: 10 * 1000,
+
+    POP_UP_TITLES: {
+        Error: 'Error.',
+        CompileResult: 'Compile Result',
+        TestResults: 'Test Results'
     }
 };

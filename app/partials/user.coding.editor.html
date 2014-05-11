@@ -40,7 +40,8 @@
             <div class="middlePart">
                 <ul class="actionIcons"><!-- avoid unnecessary blank
                 --><li class="link saveLink">Save</li><!--  avoid unnecessary blank
-                --><li class="link clearLink">Clear</li><!--  avoid unnecessary blank
+                --><li class="link clearLink" ng-click="clearEditor()">Clear</li><!--  avoid unnecessary blank
+                --><li class="link compileLink" ng-click="compileSolution()">Compile</li><!--
                 --><li class="link submitLink">Submit</li>
                 </ul><!--  avoid unnecessary blank
                 --><div class="findInput"><input type="text" name="find" placeholder="Find"/><a data-ng-click="" class="searchIcon"></a></div><!--  avoid unnecessary blank
@@ -52,17 +53,17 @@
                 --><div data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">Test Panel</a>
                     <div class="testPanel" data-ng-show="testOpen">
                         <div>
-                            <div class='testCase' data-ng-repeat="testCase in tests track by $index" data-ng-init="caseNum=$index; toggle=true">
+                            <div class='testCase' data-ng-repeat="testCase in userData.tests track by $index" data-ng-init="caseNum=$index; toggle=true">
                                 <header><!-- avoid unnecessary blank
-                                 --><input type="checkbox" id="testCase-{{caseNum}}" name="testCase-{{caseNum}}" class="caseCheck" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" /><!-- avoid unnecessary blank
+                                 --><input type="checkbox" id="testCase-{{caseNum}}" name="testCase-{{caseNum}}" class="caseCheck" ng-disabled="isTesting" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" /><!-- avoid unnecessary blank
                                  --><a data-ng-click="toggle=!toggle" data-ng-class="{open:toggle,collapsed:!toggle}"></a><!-- avoid unnecessary blank
-                                 --><label for="testCase-{{caseNum}}" class="caseLbl">{{testCase.name}}</label><!-- avoid unnecessary blank
-                                 --><span data-ng-show="testCompleted" data-ng-class="{green: testCase.passed, red: !testCase.passed}"></span>
+                                 --><label for="testCase-{{caseNum}}" class="caseLbl">Example {{caseNum + 1}}</label><!--
+                                 --><span data-ng-show="testCompleted && testCase.havingResult" data-ng-class="{green: testCase.passed, red: !testCase.passed}"></span>
                                 </header>
                                 <div class="content" data-ng-show="toggle">
                                     <div class="testParam" data-ng-repeat="param in testCase.params track by $index" data-ng-init="paramNum=$index; editting=false">
-                                        <div data-ng-hide="editting"><label for="param-{{caseNum}}-{{paramNum}}">{{param.type}} {{param.name}}</label>
-                                        <input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-value="param.value" data-ng-show="!param.complexType" /></div>
+                                        <div data-ng-hide="editting"><label for="param-{{caseNum}}-{{paramNum}}">{{problem.allArgTypes[paramNum].typeMapping[lang(langIdx).id]}} {{problem.paramNames[paramNum]}}</label>
+                                        <input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType" /></div>
                                         <a data-ng-show="!!param.complexType && param.complexType.length > 0" data-ng-click="editting=true; editParam($caseNum, $paramNum)" class="btn">
                                             <span data-ng-show="!param.created">Create</span>
                                             <span data-ng-show="param.created">Modify</span>
@@ -77,7 +78,7 @@
                                 </div>
                             </div> 
                             <div class="bottom">
-                                <input type="checkbox" id="testCase-all" class="caseCheck" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()" /><label for="testCase-all" class="caseLbl">Check All</label>
+                                <input type="checkbox" id="testCase-all" class="caseCheck" ng-disabled="true" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()" /><label for="testCase-all" class="caseLbl">Check All</label>
                                 <label data-ng-show="testCompleted && !isTesting" class="message">Test is completed.</label>
                                 <a data-ng-click="runTests()" data-ng-show="!isTesting" class="btn">{{ testCompleted ? "Re-Run" : "Run Test" }}</a>
                                 <img data-ng-show="isTesting" alt="busy..." src="img/loadinfo.net.gif"/>
@@ -97,3 +98,17 @@
         </div><!-- /.errorBar -->
     </div>
 </div> <!-- content end -->
+<script type="text/ng-template" id="popupModal.html">
+    <div class="modal-header">
+        {{ title }}
+        <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
+    </div>
+    <div class="modal-body">
+        <p ng-bind-html="message"></p>
+    </div>
+    <div class="modal-footer" ng-if="enableClose">
+        <button class="btn right-btn" data-ng-click="ok()" data-ng-show="buttons.length == 2">{{ buttons[0] }}</button>
+        <button class="btn left-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 2">{{ buttons[1] }}</button>
+        <button class="btn right-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 1">{{ buttons[0] }}</button>
+    </div>
+</script>

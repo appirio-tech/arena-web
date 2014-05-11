@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This file provide some global services.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 1):
+ * - Added getUserPreferences method.
+ * - Added remove listener function to socket.
+ *
+ * @author tangzx
+ * @version 1.1
+ */
 'use strict';
 var config = require('./config');
 var Auth0 = require('auth0-js');
@@ -316,6 +329,17 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
         var userInfo = angular.fromJson($window.localStorage.userInfo);
         return userInfo ? userInfo.handle : null;
     };
+
+    /**
+     * Get user preferences.
+     *
+     * @returns {*} user preferences or null if not exist
+     */
+    helper.getUserPreferences = function () {
+        var userInfo = angular.fromJson($window.localStorage.userInfo);
+        return userInfo ? userInfo.preferences : null;
+    };
+
     helper.getRemember = function () {
         return angular.fromJson($window.localStorage.remember);
     };
@@ -360,8 +384,8 @@ factories.socket = ['$rootScope', function ($rootScope) {
                 });
             });
         },
-        getSocket: function () {
-            return socket;
+        remove: function (eventName) {
+            socket.removeAllListeners(eventName);
         }
     };
 }];

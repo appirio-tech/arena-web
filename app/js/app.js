@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This file provide the main app configurations.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 1):
+ * - Added userPreferences to root scope.
+ * - Updated coding page state parameters.
+ *
+ * @author tangzx
+ * @version 1.1
+ */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -183,7 +196,7 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
             templateUrl: 'partials/user.dashboard.html'
         })
         .state('user.coding', {
-            url: '/coding/{problemId}',
+            url: '/coding/{roundId}/{problemId}/{divisionId}',
             data: {
                 pageTitle: "Coding Arena",
                 pageMetaKeywords: "coding,arena"
@@ -305,6 +318,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', function ($rootScop
             return $rootScope.isLoggedIn;
         };
         $rootScope.username = sessionHelper.getUsername;
+        $rootScope.userPreferences = sessionHelper.getUserPreferences;
         $rootScope.timezone = res ? res[1] : "";
 
         socket.on('connect', function () {

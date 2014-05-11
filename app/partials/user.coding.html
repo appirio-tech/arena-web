@@ -5,12 +5,23 @@
                 <div class="definition"><!-- avoid unnecessary whitespace
                     --><span class="item">Class Name&nbsp;&nbsp;:&nbsp;<span class="textWhite">{{problem.className}}</span></span><!--
                     --><span class="item">Method Name&nbsp;:&nbsp;<span class="textWhite">{{problem.methodName}}</span></span><br class="visible-xs"/><!--
-                    --><span class="item">Return Type&nbsp;:&nbsp;<span class="textWhite">{{problem.returnType}}</span></span><!--
-                    --><span class="item">Arg Types&nbsp;:&nbsp;<span class="textWhite">{{problem.argTypes}}</span></span><!--
+                    --><span class="item">Return Type&nbsp;:&nbsp;<span class="textWhite">{{problem.allReturnType.typeMapping[lang(langIdx).id]}}</span></span><!--
+                    --><span class="item">Arg Types&nbsp;:&nbsp;<span class="textWhite" ng-if="problemLoaded">({{problem.argTypeText}})</span></span><!--
                 --></div>
             </div>
             <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 connection">
-                <div><label>Coding&nbsp;</label><span class="textGreen">00:00:00</span></div><div data-connectionstatus></div>
+                <div>
+                    <label>Coding&nbsp;</label>
+                    <span class="textGreen" data-timer data-autostart="false" data-interval="1000" data-countdown="1" ng-if="!notInCodingPhase">
+                        <span ng-show="days > 1">{{days}} days,&nbsp;</span>
+                        <span ng-show="days === 1">{{days}} day,&nbsp;</span>
+                        {{hhours}}:{{mminutes}}:{{sseconds}}
+                    </span>
+                    <span class="textGreen" ng-if="notInCodingPhase">
+                        00:00:00
+                    </span>
+                </div>
+                <div data-connectionstatus></div>
                 <div class="rate">Rate<a class="voteUp textGreen vote">+1</a><a class="voteDown textRed vote">-1</a></div>
             </div> 
             <div class="shareLink">

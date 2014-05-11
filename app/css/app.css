@@ -1284,6 +1284,8 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .actionIcons .saveLink:before {background-position: 0 -125px;}
 .panelCodeEditor .actionIcons .clearLink:before {background-position: -25px -125px;}
 .panelCodeEditor .actionIcons .submitLink:before {background-position: -51px -125px;}
+/* the img for compile link need to be updated */
+.panelCodeEditor .panel-heading .compileLink:before {background-position: -51px -125px;}
 .panelCodeEditor .panel-heading .rightPart {float:right; margin-top: -1px;}
 .panelCodeEditor .toolBar .middlePart input[type="text"] {
     height: 30px;
@@ -1620,7 +1622,6 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .testPanel input[type="checkbox"] {display: none;}
 .panelCodeEditor .testPanel .content {
     padding: 6px 0 20px 36px;
-    height: 153px;
     position: relative;
 }
 .panelCodeEditor .testPanel .content label {
@@ -3516,4 +3517,18 @@ footer .right>span:nth-child(2) {
     .messageArena:after {
         left: 179px;
     }
+}
+
+.problemStatementRow {
+    width: 100%;
+    height: 22px;
+}
+
+.statementName {
+    width: 150px;
+    float: left;
+}
+
+.problemStatementRow .textWhite {
+    float: left;
 }
