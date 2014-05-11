@@ -229,25 +229,33 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
         });
 }]);
 
-main.run(['$rootScope', '$state', 'sessionHelper', function ($rootScope, $state, sessionHelper) {
+main.run(['$rootScope', '$state', 'sessionHelper', 'socket', function ($rootScope, $state, sessionHelper, socket) {
     //consider exposing states and state params to all templates
     $rootScope.$state = $state;
 
     $rootScope.$on('$stateChangeStart', function (event, toState) {
         //use whitelist approach
         var allowedStates = ['anon', 'anon.home', 'loggingin', 'user.logout'],
-            publicState = false;
+            publicState = false,
+            res = /\(([A-Z]{3})\)/.exec(new Date().toString());
 
         angular.forEach(allowedStates, function (allowedState) {
             publicState = publicState || (toState.name === allowedState);
         });
 
-        if (!publicState && !sessionHelper.isLoggedIn()) {
+        if (!publicState && !$rootScope.isLoggedIn) {
             event.preventDefault();
             $state.go('anon.home');
         }
         //expose this for the base.html template
-        $rootScope.loggedIn = sessionHelper.isLoggedIn;
+        $rootScope.loggedIn = function () {
+            return $rootScope.isLoggedIn;
+        };
         $rootScope.username = sessionHelper.getUsername;
+        $rootScope.timezone = res ? res[1] : "";
+
+        socket.on('connect', function () {
+            $rootScope.connected = true;
+        });
     });
 }]);

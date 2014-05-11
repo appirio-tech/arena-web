@@ -146,12 +146,11 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
 
 //wrap auth0 in an angular factory
 factories.auth0 = function () {
-    var auth0 = new Auth0({
+    return new Auth0({
         domain:       config.apiDomain,
         clientID:     config.auth0clientID,
         callbackURL:  config.callbackURL
     });
-    return auth0;
 };
 
 factories.socket = ['$rootScope', function ($rootScope) {
