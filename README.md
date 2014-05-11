@@ -8,6 +8,9 @@ Arena Web
 ## Getting Setup ##
 
 To develop arena-web you'll need npm (installed as part of [node](http://nodejs.org)). Then globally install [bower](http://bower.io) and the [grunt-cli](http://gruntjs.com/getting-started):
+
+Please execute following under root account or use `sudo`
+
 ```
 npm install -g bower
 npm install -g grunt-cli
@@ -31,6 +34,11 @@ Do all development in the `app` directory. Within that directory:
 Even though this is a client-side app, we still try to follow [12factor](http://12factor.net/config). As such as configuration variables are expected to be set as environment variables. The values will be substituted into the `app/js/config.js` file on build.
 
 ## Build and Release ##
+
+Source the environment variables:
+```
+source config/dev-local.sh
+```
 
 To build the client side app run:
 ```
