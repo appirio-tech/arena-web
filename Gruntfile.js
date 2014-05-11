@@ -39,11 +39,11 @@ module.exports = function (grunt) {
             cdn: {
                 options: {
                     patterns: [
-                        { match : 'CDN_BASE_PATH', replacement: 'http://tc-content.s3.amazonaws.com/arena/web-v<%= pkg.version %>' }
+                        { match : 'CDN_BASE_PATH', replacement: process.env.STATIC_FILE_HOST }
                     ]
                 },
                 files: [
-                    { expand: true, cwd:'app/', src: '**/*.html', dest: 'build/' }
+                    { expand: true, cwd: 'app/', src: '**/*.html', dest: 'build/' }
                 ]
             }
         },
