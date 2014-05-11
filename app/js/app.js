@@ -229,7 +229,7 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
         });
 }]);
 
-main.run(['$rootScope', '$state', 'sessionHelper', function ($rootScope, $state, sessionHelper) {
+main.run(['$rootScope', '$state', 'sessionHelper', 'socket', function ($rootScope, $state, sessionHelper, socket) {
     //consider exposing states and state params to all templates
     $rootScope.$state = $state;
 
@@ -253,5 +253,9 @@ main.run(['$rootScope', '$state', 'sessionHelper', function ($rootScope, $state,
         };
         $rootScope.username = sessionHelper.getUsername;
         $rootScope.timezone = res ? res[1] : "";
+
+        socket.on('connect', function () {
+            $rootScope.connected = true;
+        });
     });
 }]);
