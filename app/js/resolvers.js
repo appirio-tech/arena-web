@@ -1,5 +1,7 @@
 ///////////////
 // RESOLVERS //
+'use strict';
+/*global module, angular*/
 
 var config = require('./config');
 var helper = require('./helper');
@@ -11,15 +13,20 @@ var helper = require('./helper');
  */
 var connectionTimeout = 25000;
 
+/**
+ * Represents the date format for TC TIME
+ *
+ * @type {string}
+ */
+var DATE_FORMAT = 'EEE MMM d, h:mm a';
+
 //Here we put resolver logic into a container object so that the state declaration code section stays readable
 var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
-resolvers.finishLogin = ['$rootScope', '$q', '$state', 'cookies', 'sessionHelper', 'socket', function ($rootScope, $q, $state, cookies, sessionHelper, socket) {
-    'use strict';
-    var deferred, sso = sessionHelper.getTcsso(), requestId;
-
-    setTimeout(function () {
-        if (!$rootScope.connected) {
+resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper',
+    'socket', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket) {
+    var deferred, sso = sessionHelper.getTcsso(), requestId,
+        forceLogout = function () {
             $rootScope.isLoggedIn = false;
             sessionHelper.clear();
             sessionHelper.removeTcsso();
@@ -31,6 +38,12 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', 'cookies', 'sessionHelper
             });
             deferred.resolve();
             return deferred.promise;
+        };
+
+    // if the listener is not ready, redirect
+    setTimeout(function () {
+        if (!$rootScope.connected) {
+            return forceLogout();
         }
     }, connectionTimeout);
 
@@ -64,17 +77,37 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', 'cookies', 'sessionHelper
     // handle the create round list response
     socket.on(helper.EVENT_NAME.CreateRoundListResponse, function (data) {
         if (data.type === 2) { // only cares about active contests
-            $rootScope.roundData = data.roundData;
+            if (!$rootScope.roundData) {
+                $rootScope.roundData = {};
+            }
+            angular.forEach(data.roundData, function (contest) {
+                $rootScope.roundData[contest.roundID] = contest;
+            });
         }
     });
 
     // handle the round schedule response
     socket.on(helper.EVENT_NAME.RoundScheduleResponse, function (data) {
         // restore values
-        if (!$rootScope.roundSchedule) {
-            $rootScope.roundSchedule = {};
-        }
-        $rootScope.roundSchedule[data.roundID] = data.schedule;
+        $rootScope.roundData[data.roundID].phases = [];
+        angular.forEach(data.schedule, function (phase) {
+            var format = function (time) {
+                return $filter('date')(new Date(time), DATE_FORMAT) + ' ' + $rootScope.timezone;
+            };
+            phase.start = format(phase.startTime);
+            phase.end = format(phase.endTime);
+            phase.title = helper.PHASE_NAME[phase.phaseType];
+            if (phase.phaseType === helper.PHASE_TYPE_ID.SystemTestingPhase) {
+                // System Testing Phase
+                phase.start = "";
+            }
+            $rootScope.roundData[data.roundID].phases.push(phase);
+        });
+    });
+
+    // handle the create problems response
+    socket.on(helper.EVENT_NAME.CreateProblemsResponse, function (data) {
+        $rootScope.problems = data;
     });
 
     // handle the keep alive initialization data response
@@ -96,7 +129,10 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', 'cookies', 'sessionHelper
     });
 
     // handle the end sync response
-    socket.on(helper.EVENT_NAME.EndSyncResponse, function () {
+    socket.on(helper.EVENT_NAME.EndSyncResponse, function (data) {
+        if (data.requestId !== requestId) {
+            return forceLogout();
+        }
         // go to dashboard page
         deferred = $q.defer();
         deferred.promise.then(function () {
@@ -105,13 +141,13 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', 'cookies', 'sessionHelper
         deferred.resolve();
         return deferred.promise;
     });
+
+    // request login
     socket.emit(helper.EVENT_NAME.SSOLoginRequest, {sso: sso});
 }];
 
 //This function checks if there is already a sso cookie
 resolvers.alreadyLoggedIn = ['$q', '$state', 'sessionHelper', function ($q, $state, sessionHelper) {
-    'use strict';
-
     var deferred = $q.defer();
     deferred.promise.then(function () {
         if (sessionHelper.isLoggedIn()) {
@@ -123,8 +159,6 @@ resolvers.alreadyLoggedIn = ['$q', '$state', 'sessionHelper', function ($q, $sta
 }];
 
 resolvers.logout = ['$rootScope', '$q', '$state', 'sessionHelper', 'socket', function ($rootScope, $q, $state, sessionHelper, socket) {
-    'use strict';
-
     $rootScope.isLoggedIn = false;
     sessionHelper.clear();
     sessionHelper.removeTcsso();

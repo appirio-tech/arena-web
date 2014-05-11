@@ -2,8 +2,8 @@
     <div class="panel-heading">
         Active Contests
     </div>
-    <div class="panel-body" data-ng-show="roundData.length > 0">
-        <div data-ng-repeat="contest in roundData track by $index" data-ng-show="$index == currentContest" class="mainContent">
+    <div class="panel-body" data-ng-show="getContests().length > 0">
+        <div data-ng-repeat="contest in getContests() track by $index" data-ng-show="$index == currentContest" class="mainContent">
             <p class="infoRow">
                 <span >Single Round Match</span>
                 <span class="textWhite">{{ contest.contestName }}</span>
@@ -54,7 +54,6 @@
                 <div class="leftSide">
                     <div data-ng-repeat="pair in contest.myStatus.info">
                         <span class="title textWhite">{{ pair.key }}</span>
-                        <!-- <span>:</span> -->
                         <span>:&nbsp;{{ pair.value }}</span>
                     </div>
                 </div>
@@ -62,7 +61,6 @@
                 <div class="rightSide">
                     <div data-ng-repeat="phase in contest.myStatus.phases">
                         <span class="title textWhite">{{ phase.title }}</span>
-                        <!-- <span>:</span> -->
                         <span><span class="hidden-xs">:&nbsp;</span><span data-ng-show="phase.status == 'Complete'">{{ phase.end }}&nbsp;</span>{{ phase.status }}</span>
                     </div>
                 </div>
@@ -70,8 +68,8 @@
             <!-- /.statusPanel -->
         </div>
         <!-- /.mainContent -->
-        <div class="paginator" data-ng-show="roundData.length > 1">
-            <span data-ng-repeat="n in range(roundData.length) track by $index" data-ng-class="{'textActive': $index == currentContest}" data-ng-click="setCurrentContest($index)">{{$index+1}}</span>
+        <div class="paginator" data-ng-show="getContests().length > 1">
+            <span data-ng-repeat="n in range(getContests().length) track by $index" data-ng-class="{'textActive': $index == currentContest}" data-ng-click="setCurrentContest($index)">{{$index+1}}</span>
         </div>
         <!-- /.paginator -->
     </div>

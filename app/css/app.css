@@ -813,7 +813,7 @@ footer .right>span:nth-child(2) {
 .panel-custom .summaries {
     height: 115px;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .panel-custom .summaryPanel,
 .panel-custom .schedulePanel,
