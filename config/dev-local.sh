@@ -26,3 +26,5 @@ export STATIC_FILE_HOST=http://arena.cloud.topcoder.com:$PORT
 export AWS_ACCESS_KEY_ID=
 export AWS_ACCESS_KEY=
 export AWS_BUCKET=
+#export CDN_BASE_PATH='https://tc-content.s3.amazonaws.com/arena/web-v<%= pkg.version %>'
+export CDN_BASE_PATH='http://localhost:3000'
