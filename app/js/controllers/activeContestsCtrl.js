@@ -1,17 +1,77 @@
 'use strict';
-/*global module*/
-var activeContestsCtrl = ['$scope', '$state', '$http', 'appHelper', function ($scope, $state, $http, appHelper) {
+/*global module, angular*/
+
+var helper = require('../helper');
+
+var activeContestsCtrl = ['$scope', '$rootScope',  '$http', 'socket', 'appHelper', function ($scope, $rootScope, $http, socket, appHelper) {
+    var getPhase = function (contest, phaseTypeId) {
+        var i;
+        if (!contest.phases) {
+            return null;
+        }
+        for (i = 0; i < contest.phases.length; i += 1) {
+            if (contest.phases[i].phaseType === phaseTypeId) {
+                return contest.phases[i];
+            }
+        }
+        return null;
+    },
+        updateContest = function (contest) {
+            contest.detailIndex = 1;
+            contest.action = 'Register';
+        },
+        // show the active tab name when active contest widget is narrow
+        tabNames = ['Contest Summary', 'Contest Schedule', 'My Status'];
+
     $scope.getPhaseTime = appHelper.getPhaseTime;
     $scope.range = appHelper.range;
-    $scope.contests = [];
     $scope.currentContest = 0;
-    // replace with real URL to retrieve active contests data.
-    $http.get('data/active-contests.json').success(function (data) {
-        data.forEach(function (contest) {
-            contest.detailIndex = 1;
-            $scope.contests.push(contest);
+
+    // Renders the TC TIME
+    setInterval(function () {
+        $rootScope.$apply(function () {
+            $rootScope.now = new Date();
         });
+    }, 1000);
+
+    angular.forEach($rootScope.roundData, function (contest) {
+        updateContest(contest);
     });
+
+    // handle update round list response
+    socket.on(helper.EVENT_NAME.UpdateRoundListResponse, function (data) {
+        if (data.action === 1) {
+            $rootScope.roundData[data.roundData.roundID] = data.roundData;
+            updateContest($rootScope.roundData[data.roundData.roundID]);
+        } else if (data.action === 2) {
+            delete $rootScope.roundData[data.roundData.roundID];
+        }
+    });
+
+    // handle round enable response
+    socket.on(helper.EVENT_NAME.EnableRoundResponse, function (data) {
+        $rootScope.roundData[data.roundID].action = 'Enter';
+    });
+
+    $scope.getContests = function () {
+        var result = [];
+        angular.forEach($rootScope.roundData, function (contest) {
+            result.push(contest);
+        });
+        return result;
+    };
+
+    // Test whether registration phase is open
+    $scope.isRegistrationOpen = function (contest) {
+        if (!contest) {
+            return false;
+        }
+        var phase = getPhase(contest, helper.PHASE_TYPE_ID.RegistrationPhase);
+        if (!phase) {
+            return false;
+        }
+        return phase.startTime <= $rootScope.now && $rootScope.now <= phase.endTime;
+    };
 
     // sets the current contest for viewing
     $scope.setCurrentContest = function (newContest) {
@@ -20,27 +80,20 @@ var activeContestsCtrl = ['$scope', '$state', '$http', 'appHelper', function ($s
 
     // gets the current action available
     $scope.getAction = function (contest) {
-        return contest.isRegistered ? 'Enter' : 'Register';
+        return contest.action;
     };
 
     // action for 'Register' or 'Enter'
     $scope.doAction = function (contest) {
-        // in the real app, we should perform real actions.
-        if (contest.isRegistered) {
-            // the button is 'Enter'
-            $state.go('user.contest', {contestId: contest.id});
-        } else {
-            // the button is 'Register'
-            contest.isRegistered = true;
-            $scope.setDetailIndex(contest, 2);
-        }
+        // integrate with real service
+        return contest;
     };
 
     // sets the tab index to view contest details
     $scope.setDetailIndex = function (contest, index) {
         if (index < 0 ||
-                (!contest.isRegistered && index >= 2) ||
-                (contest.isRegistered && index >= 3)) {
+                ($scope.isRegistrationOpen(contest) && index >= 2) ||
+                (!$scope.isRegistrationOpen(contest) && index >= 3)) {
             // invalid index for detail tabs
             return;
         }
@@ -56,11 +109,34 @@ var activeContestsCtrl = ['$scope', '$state', '$http', 'appHelper', function ($s
 
     // Checks if it is counting down
     $scope.isCountingDown = function (contest) {
-        return appHelper.isStringNotNullNorEmpty(contest.countdown);
+        return $scope.isRegistrationOpen(contest);
     };
 
-    // show the active tab name when active contest widget is narrow
-    var tabNames = ['Contest Summary', 'Contest Schedule', 'My Status'];
+    // Render the contest count down
+    $scope.displayCountDown = function (contest) {
+        if (!contest) {
+            return '';
+        }
+        var phase, left, hours, minutes,
+            displayHour = function (hours) {
+                if (hours === 0) {
+                    return '';
+                }
+                return hours + ' ' + (hours > 1 ? 'hours' : 'hour');
+            },
+            displayMinute = function (minutes) {
+                return minutes + ' ' + (minutes > 1 ? 'minutes' : 'minute');
+            };
+        phase = getPhase(contest, helper.PHASE_TYPE_ID.CodingPhase);
+        if (!phase) {
+            return '';
+        }
+        left = contest.phases[1].startTime - $rootScope.now;
+        hours = Math.floor(left / 3600000);
+        minutes = Math.floor(left % 3600000 / 60000);
+        return displayHour(hours) + ' ' + displayMinute(minutes);
+    };
+
     $scope.getTabName = function (index) {
         return index >= 0 && index < tabNames.length ? tabNames[index] : 'Click to show tabs';
     };

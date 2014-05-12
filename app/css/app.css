@@ -21,8 +21,6 @@ label{font-weight: normal;}
 hr {border-color: #D5D5D5;margin: 10px 0;}
 body a {cursor: pointer;}
 
-/*.anon-header,
-.header,*/ /*update, using black header now*/
 .btn-facebook:after,
 .btn-twitter:after,
 .btn-google:after,
@@ -79,8 +77,6 @@ body a {cursor: pointer;}
 .anon-header,
 .header {
     height: 62px;
-    /*background-position:  0 -62px;*/
-    /*background-color:  #00394B;*//*update*/
     background-position: 0 0;
     background-color: transparent;
     position:relative;
@@ -222,7 +218,7 @@ body a {cursor: pointer;}
 .navbar-collapse {
     margin-right: 30px;
 }
-.header .nav > li:hover .icon,
+ .header .nav > li:hover .icon,
 .header .userInfo > li > a:hover {opacity: 0.7;}
 .header .nav > li > .icon:hover,
 .header .nav > li > .tip:hover,
@@ -289,7 +285,6 @@ body a {cursor: pointer;}
     position: relative;
     padding:9px 10px;
 }
-
 .header .navbar-toggle .icon-bar{
     border-bottom:3px solid #FFF;
 }
@@ -666,7 +661,6 @@ body a {cursor: pointer;}
     color: #0bbbe7;
 }
 .codeArea .titleBar {
-    /*padding: 20px 0 21px 0;*/
     height: 55px;
     line-height: 1;
     position: relative;
@@ -721,7 +715,7 @@ body a {cursor: pointer;}
 .contest .connection {
     padding-right: 83px;
 }
-.dashboard .connection>div {
+.dashboard .connection > div {
     display: inline-block;
     padding-left: 34px;
 }
@@ -953,7 +947,8 @@ footer .right>span:nth-child(2) {
 .panel-custom {
     background: #151718;
     width: 759px;
-    border-width: 0;
+    /*border-width: 0;*/
+    border: 1px solid #234760;
     height: 315px;
     border-radius: 0;
     -webkit-border-radius: 0;
@@ -966,7 +961,6 @@ footer .right>span:nth-child(2) {
 .panel-custom .panel-heading {
     font-size: 16px;
     line-height: 25px;
-    /*font-weight: 300; Light*/
     padding: 8px 31px;
     background: #234760;
     border-radius: 0;
@@ -975,11 +969,11 @@ footer .right>span:nth-child(2) {
     height: 40px;
 }
 .panel-custom .panel-body {
-    border: 1px solid #234760;
+   /* border: 1px solid #234760;*/
+    border-width: 0; 
     padding: 14px 0 0;
     margin: 0;
     color: #636d70;
-    /*font-weight: 300;*//*Light*/
 }
 .panel-custom .panel-body .mainContent {
     padding: 0 30px;
@@ -992,7 +986,6 @@ footer .right>span:nth-child(2) {
     border-radius: 2px;
     -webkit-border-radius:2px;
     -moz-border-radius:2px;
-    /*font-weight: 300;*/
     line-height: 27px;
     float: right;
     text-align: center;
@@ -1018,7 +1011,8 @@ footer .right>span:nth-child(2) {
 .panel-custom .summaries {
     height: 115px;
     overflow-x: hidden;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
+    overflow-y: auto;
 }
 .panel-custom .summaryPanel,
 .panel-custom .schedulePanel,
@@ -1057,8 +1051,10 @@ footer .right>span:nth-child(2) {
 .panel-custom .schedulePanel .title {width:180px;}
 .panel-custom .schedulePanel .startIn,.panel-custom .schedulePanel .endIn {width: 72px;}
 .panel-custom .schedulePanel .startIn>span,.panel-custom .schedulePanel .endIn>span{display: inline;}
-.panel-custom .schedulePanel .startTime {width: 215px;}
-.panel-custom .schedulePanel .endTime {width: 130px;}
+/*.panel-custom .schedulePanel .startTime {width: 215px;}
+.panel-custom .schedulePanel .endTime {width: 130px;}*/
+.panel-custom .schedulePanel .startTime {width: 200px;}
+.panel-custom .schedulePanel .endTime {width: 160px;}
 .panel-custom .statusPanel .leftSide,
 .panel-custom .statusPanel .rightSide {
     display: inline-block;
@@ -1881,7 +1877,6 @@ footer .right>span:nth-child(2) {
     height: 103px;
     padding-left: 98px;
     position: relative;
-    /*padding-top: 14px;*/
 }
 .panelOverview .overviewAndMessage .profile img {
     position: absolute;
@@ -1910,12 +1905,7 @@ footer .right>span:nth-child(2) {
     font-size: 16px;
     margin-bottom: 7px;
 }
-/*.panelOverview .overviewAndMessage .messagesBox {
-    padding: 0 29px 0 30px;
-}*/
 .panelOverview .overviewAndMessage .messagesBox .table {
-    /*table-layout: fixed;
-    word-wrap: break-word;*/
     margin-bottom: 0;
     letter-spacing: -0.020em;
 }
@@ -1925,7 +1915,6 @@ footer .right>span:nth-child(2) {
     padding-bottom: 7px;
     color: #fff;
     border-color: #1f444e;
-    /*font-weight: 300;*/ /*added*/
 }
 .panelOverview .overviewAndMessage .messagesBox .date {
     width: 99px;
@@ -1950,7 +1939,7 @@ footer .right>span:nth-child(2) {
     .contest .mainContent .rightBox {margin-left: 0; left: 778px; }
     .contest .mainContent .leftBox {right: 407px; }
     .codeArea .mainContent {width: auto; padding: 0 15px; }
-    .dashboard .mainContent .rightBox {margin-left: 20px; /*margin-bottom: 20px; */}
+    .dashboard .mainContent .rightBox {margin-left: 20px;}
 }
 
 /* when device or screen is middle size, force hide navbar-collapse*/
@@ -2008,9 +1997,7 @@ footer .right>span:nth-child(2) {
         width: 100%;
         padding-left: 15px;
         border:1px solid #2d2f30;
-        /*border-radius:4px;*/
         margin:0 0 15px;
-        /*padding:5px 7px;*/
         background-image: url(../img/black-header.png);
         background-position: 0 0;
         background-repeat: repeat-x;
@@ -2059,7 +2046,6 @@ footer .right>span:nth-child(2) {
         padding: 10px;
         display: inline-block;
     }
-    
     .dashboard .titleBar {height: 115px; }
     .dashboard .connection {
         float: left;
@@ -2273,7 +2259,6 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .testPanel .editParam {padding-left: 118px;}
     .panelCodeEditor .testPanel .editParam label {left: 16px;}
     .panelCodeEditor .testPanel .bottom label {width: 82px;}
-
     .panelOverview .overviewAndMessage .profile {padding-left: 88px;}
     .panelOverview .overviewAndMessage .profile img {left: 6px;}
     .panelOverview .overviewAndMessage .messagesBox {padding: 0 4px 0 5px;}
@@ -2285,9 +2270,6 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .toolBar .rightPart>div:first-child {width: 106px; letter-spacing: -0.025em;}
     .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 77px; letter-spacing: -0.025em;}
     .panelOverview .overviewAndMessage .panel-heading {height: 66px;}
-    /*.panelOverview {height: 419px;}
-    .panelOverview .panel-body .contentWrapper,
-    .panelOverview section:last-child .panel-body*/
     .panelOverview .overviewAndMessage .profile {height: 137px;}
 }
 @media only screen and (max-width: 331px) {

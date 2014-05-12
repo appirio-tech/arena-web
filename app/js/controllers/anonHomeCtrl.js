@@ -23,9 +23,6 @@ var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', fun
         sessionHelper.clear();
         sessionHelper.persist({remember: $scope.remember});
 
-        //debug
-        sessionHelper.persist({userInfo: {handle: $scope.username}});
-
         auth0.signin({
             connection: 'vm-ldap-connection',
             username: $scope.username,

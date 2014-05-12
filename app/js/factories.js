@@ -101,6 +101,7 @@ factories.tcTimeService = ['$http', 'appHelper', function ($http, appHelper) {
     service.timeObj = {};
     service.getTimeObj = function () {
         if (!service.timePromise) {
+            // Load tc time here
             service.timePromise = $http.get('data/tc-time.json');
             service.timePromise.success(function (data) {
                 service.setTime(data.timeEST);
@@ -207,10 +208,7 @@ factories.API = [function () {
 factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
     var helper = {};
     helper.isLoggedIn = function () {
-        // return cookies.get(config.ssoKey); //debug
-
-        //debug
-        return cookies.get(config.ssoKey) && helper.getUsername();
+        return cookies.get(config.ssoKey);
     };
     helper.clear = function () {
         delete $window.localStorage.userInfo;
@@ -242,12 +240,11 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
 
 //wrap auth0 in an angular factory
 factories.auth0 = function () {
-    var auth0 = new Auth0({
+    return new Auth0({
         domain:       config.apiDomain,
         clientID:     config.auth0clientID,
         callbackURL:  config.callbackURL
     });
-    return auth0;
 };
 
 factories.socket = ['$rootScope', function ($rootScope) {

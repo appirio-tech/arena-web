@@ -20,3 +20,9 @@ export SSO_KEY=tcsso_vm
 
 # the HTTP server port
 export PORT=3000
+
+export STATIC_FILE_HOST=http://arena.cloud.topcoder.com:$PORT
+
+export AWS_ACCESS_KEY_ID=
+export AWS_ACCESS_KEY=
+export AWS_BUCKET=
