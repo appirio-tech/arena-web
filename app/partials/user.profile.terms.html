@@ -1,0 +1,18 @@
+	<div class="col-md-9">
+        <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+		<div class="panel panel-default">
+	  		<div class="panel-heading">
+	    		<h3 class="panel-title">Terms & Conditions</h3>
+	  		</div>
+	  		<div class="panel-body-terms">
+	  			<p>Legal stuff would go here!
+	  		</div>
+	  	</div>
+	  	<div class="right">
+            <div class=" auto-inline">
+                Signed on {{user.signedTerms | date:'MMMM dd, yyyy HH:mm '}}
+            </div>
+            <div class="auto-inline auto-inline-separator">&nbsp;</div>
+            <button type="button" ng-model="user.signedTerms" ng-disabled="user.signedTerms" class="btn btn-success pull-right  auto-inline" ng-click="signTerms()">Agree and Continue</button>
+        </div>
+	</div>

@@ -1,0 +1,15 @@
+				<div class="panel panel-default">
+				  <div class="panel-heading">User Leaderboard</div>
+				  <div class="panel-body">
+				  	<table class="table table-striped">
+				  		<tr>
+				  			<th>Name</th>
+				  			<th>Rating</th>
+				  		</tr>
+                        <tr data-ng-repeat="user in users">
+                            <td><a data-ui-sref="anon.user({id:'{{user.id}}' })">{{user.handle}}</a></td>
+                            <td>{{user.rating}}</td>
+                        </tr>
+				  	</table>
+				  </div>
+				</div>	

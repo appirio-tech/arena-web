@@ -1,0 +1,21 @@
+{
+    "currentKey": "dark-vader-dark",
+    "themes": [
+         {
+            "name": "Default Theme",
+            "key": "default"
+         },{
+            "name": "Dark Vader Dark Theme",
+            "key": "dark-vader-dark"
+         },{
+            "name": "Light Saber Light Theme",
+            "key": "light-saber-light"
+         },{
+            "name": "Green Lantern Theme",
+            "key": "green-lantern"
+         },{
+            "name": "Ocean Theme",
+            "key": "ocean"
+         }
+    ]
+}

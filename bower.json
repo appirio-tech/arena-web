@@ -1,0 +1,27 @@
+{
+  "name": "starter-ui",
+  "version": "0.0.1",
+  "authors": [
+    "David Hessing <delemach@gmail.com>"
+  ],
+  "description": "An angular starter skeleton.",
+  "main": "index.html",
+  "license": "All rights reserved",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.5",
+    "angular-resource": "~1.2.5",
+    "angular-sanitize": "~1.2.5",
+    "angular-ui-router": "https://github.com/angular-ui/ui-router.git#master",
+    "angular-ui-bootstrap": "https://github.com/angular-ui/bootstrap/archive/gh-pages.zip",
+    "angular-timer": "https://github.com/siddii/angular-timer/archive/master.zip",
+    "angular-ui-codemirror": "https://github.com/angular-ui/ui-codemirror.git#bower"
+  }
+}

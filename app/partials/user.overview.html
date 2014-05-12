@@ -1,0 +1,62 @@
+<div class="panel panel-custom panelOverview"><!-- content start -->
+    <section class="overviewAndMessage">
+        <div class="panel-heading" data-ng-class="{active:showSection==='overview',inactive:showSection!=='overview'}">
+            <input type="radio" data-ng-model="showSection" value="overview" id="radioOverview" class="showSectionRadio"/><label for="radioOverview" class="showSectionLbl">Profile Overview & Important Messages</label>
+        </div>
+        <div class="panel-body">
+            <div class="contentWrapper" data-ng-show="showSection==='overview'">
+                <div class="profile">
+                    <img data-ng-src="{{userProfile.avatar}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="{{userProfile.username}}"/>
+                    <p class="userNameRow"><span class="{{getUserColor()}}">{{userProfile.username}}</span></p>
+                    <p class="ratingRow">
+                        <label>Rating</label>:&nbsp;<span class="{{getRatingColor()}}">{{userProfile.rating}}</span>
+                    </p>
+                    <p class="competeRow">
+                        <label>Competed in</label>:&nbsp;<span>{{userProfile.competedIn}} event<span data-ng-hide="userProfile.competedIn===1">s</span></span>
+                    </p>
+                    <p class="lastLoginRow">
+                        <label>Last Login</label>:&nbsp;<span>{{userProfile.lastLogin}}</span>
+                    </p>
+                </div><!--/.profile-->
+                <div class="messagesBox">
+                    <table class="table">
+                        <tbody>
+                            <tr data-ng-repeat="message in userProfile.messages">
+                                <td class="date">{{message.date}}</td>
+                                <td class="message">{{message.content}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!--/.contentWrapper-->
+        </div><!--/.panel-body-->
+    </section><!--/.overviewAndMessage-->
+    <section class="trainingArea">
+        <div class="panel-heading" data-ng-class="{active:showSection==='training',inactive:showSection!=='training'}">
+            <input type="radio" data-ng-model="showSection" value="training" id="radioTraining" class="showSectionRadio"/><label for="radioTraining" class="showSectionLbl">Problem Based Training Area</label>
+        </div>
+        <div class="panel-body">
+            <div class="contentWrapper" data-ng-show="showSection==='training'">
+                <p>Coming Soon</p>
+            </div><!--/.contentWrapper-->
+        </div><!--/.panel-body-->
+    </section><!--/.trainingArea-->
+    <section class="leaderboard">
+        <div class="panel-heading" data-ng-class="{active:showSection==='leaderboard',inactive:showSection!=='leaderboard'}">
+            <input type="radio" data-ng-model="showSection" value="leaderboard" id="radioLeaderboard" class="showSectionRadio"/><label for="radioLeaderboard" class="showSectionLbl">Leaderboard</label>
+        </div>
+        <div class="panel-body">
+            <div class="contentWrapper" data-ng-show="showSection==='leaderboard'">
+                <p>Coming Soon</p>
+            </div><!--/.contentWrapper-->
+        </div><!--/.panel-body-->
+    </section><!--/.leaderboard-->
+    <section class="activeUsers">
+        <div class="panel-heading" data-ng-class="{active:showSection==='users',inactive:showSection!=='users'}">
+            <input type="radio" data-ng-model="showSection" value="users" id="radioUsers" class="showSectionRadio"/><label for="radioUsers" class="showSectionLbl">Active Users (99)</label>
+        </div>
+        <div class="panel-body" data-ng-show="showSection==='users'">
+                <p>Coming Soon</p>
+        </div><!--/.panel-body-->
+    </section><!--/.activeUsers-->
+</div> <!-- content end -->

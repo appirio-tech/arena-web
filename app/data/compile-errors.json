@@ -1,0 +1,14 @@
+[
+    {
+        "line": 3,
+        "message": "Undefined variable 'xxx'"
+    },
+    {
+        "line": 4,
+        "message": "Undefined variable 'xxx'"
+    },
+    {
+        "line": 10,
+        "message": "Undefined variable 'yyy'"
+    }
+]
