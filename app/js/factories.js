@@ -140,7 +140,6 @@ factories.connectionService = ['$http', '$timeout', function ($http, $timeout) {
     // demoXXX are used for demo only.
     service.demoStatus = true;
     service.demoCounter = 0;
-
     // central way to set the connection status
     // 'stable' or 'lost'
     service.setConnectionStatus = function (status) {
@@ -181,7 +180,8 @@ factories.connectionService = ['$http', '$timeout', function ($http, $timeout) {
 
     // for starting the demo
     $timeout(function () {
-        service.demoCounter = 5;
+        // set to a positive integer to demo
+        service.demoCounter = 0;
     }, 3000);
 
     return service;

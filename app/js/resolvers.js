@@ -24,7 +24,7 @@ var DATE_FORMAT = 'EEE MMM d, h:mm a';
 var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
 resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper',
-    'socket', '$timeout', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, $timeout) {
+    'socket', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket) {
     var deferred, sso = sessionHelper.getTcsso(), requestId,
         forceLogout = function () {
             $rootScope.isLoggedIn = false;
