@@ -78,7 +78,47 @@ factories.appHelper = [function () {
         return date;
     };
 
+    helper.clickOnTarget = function (clicked, id, stepLimit) {
+        if (!clicked) {
+            return false;
+        }
+        var j = 0;
+        while (clicked && stepLimit > 0) {
+            --stepLimit;
+            if (clicked.id === id) {
+                return true;
+            }
+            clicked = clicked.parentNode;
+        }
+        return false;
+    };
+
     return helper;
+}];
+
+factories.tcTimeService = ['$http', 'appHelper', function ($http, appHelper) {
+    var service = {};
+    service.timeObj = {};
+    service.getTimeObj = function () {
+        if (!service.timePromise) {
+            // Load tc time here
+            service.timePromise = $http.get('data/tc-time.json');
+            service.timePromise.success(function (data) {
+                service.setTime(data.timeEST);
+            });
+        }
+        return service.timeObj;
+    };
+    service.getTime = function () {
+        var timeObj = service.getTimeObj();
+        return timeObj.startServerTime + (+(new Date) - timeObj.startClientTime);
+    };
+    // the central way to set time here
+    service.setTime = function (timeEST) {
+        service.timeObj.startServerTime = appHelper.parseDate(timeEST).getTime();
+        service.timeObj.startClientTime = +(new Date);
+    };
+    return service;
 }];
 
 factories.dashboardHelper = [function () {
@@ -91,6 +131,60 @@ factories.dashboardHelper = [function () {
             notifications = newNotifications;
         }
     };
+}];
+
+// this service repeatedly updates the connection status
+factories.connectionService = ['$http', '$timeout', function ($http, $timeout) {
+    var service = {cStatus: {}};
+
+    // demoXXX are used for demo only.
+    service.demoStatus = true;
+    service.demoCounter = 0;
+    // central way to set the connection status
+    // 'stable' or 'lost'
+    service.setConnectionStatus = function (status) {
+        service.cStatus.status = status;
+    };
+
+    service.repeatUpdateStatus = function () {
+        var url = 'data/connection-status.json';
+        if (service.demoCounter > 0 && !service.demoStatus) {
+            url = 'data/connection-status-fail';
+        }
+        $http({
+            method: 'GET',
+            url: url,
+            timeout: 3000   // wait for 3 seconds for response
+        }).success(function(data, status, headers, config) {
+            // connection is stable
+            if (service.cStatus.status !== 'stable') {
+                service.setConnectionStatus('stable');
+            }
+            if (service.demoCounter > 0) {
+                service.demoStatus = !service.demoStatus;
+            }
+            $timeout(service.repeatUpdateStatus, 3000);
+        }).error(function(data, status, headers, config) {
+            // connection is lost
+            if (service.cStatus.status === 'stable') {
+                service.setConnectionStatus('lost');
+            }
+            if (service.demoCounter > 0) {
+                service.demoStatus = !service.demoStatus;
+                service.demoCounter -= 1;
+            }
+            $timeout(service.repeatUpdateStatus, 3000);
+        });
+    };
+    service.repeatUpdateStatus();
+
+    // for starting the demo
+    $timeout(function () {
+        // set to a positive integer to demo
+        service.demoCounter = 0;
+    }, 3000);
+
+    return service;
 }];
 
 factories.API = [function () {

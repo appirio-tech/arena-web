@@ -1,38 +1,32 @@
-    <!-- content start -->
-    <div class="container-fluid inner">
-        <div class="row-fluid dashboard">
-            <div class="col-lg-12 text-left titleBar">
-                <div class="col-lg-6 col-md-6">
-                    <ol class="breadcrumb">
-                        <li>Dashboard</li>
-                    </ol>
-                    <h1 class="title">Competition Arena: Dashboard</h1>
-                </div>
-                <div class="col-lg-6 col-md-6 connection">
-                    <div><label>TC TIME</label><span> {{ now | date:'hh:mm:ss a' }} </span></div>
-                    <div><label>Connection</label><span class="green"></span><span class="brown"></span></div>
-                </div>
-            </div>
-            <div class="container row mainContent">
-                <div class="col-lg-8 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 leftBox">
-                    <div data-activecontests></div>
-                </div>
-                <div class="col-lg-4 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 rightBox placeholder">
-                    <div>
-                        <img src="img/contest-plan.png" alt="content plan"/>
-                    </div>
-                </div>
-                <div class="col-lg-8 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 leftBox placeholder">
-                    <div>
-                        <img src="img/chatting.png" alt="chatting room"/>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 rightBox placeholder">
-                    <div>
-                        <img src="img/profile-overview.png" alt="profile overview"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- content end -->
+<!-- content start -->
+<div class="container-fluid inner">
+	<div class="row-fluid dashboard">
+		<div class="col-lg-12 text-left titleBar">
+			<div class="col-lg-6 col-md-6">
+				<h1 class="title">Competition Arena: Dashboard</h1>
+			</div>
+			<div class="col-lg-6 col-md-6 connection">
+				<div data-topcodertime></div><div data-connectionstatus></div>
+			</div><!--/.connection-->
+		</div><!--/.titleBar-->
+		<div class="container row mainContent">
+			<div class="col-lg-8 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 leftBox">
+				<div data-activecontests></div>
+			</div>
+			<div class="col-lg-4 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 rightBox placeholder">
+				<div>
+					<img src="img/contest-plan.png" alt="content plan"/>
+				</div>
+			</div>
+			<div class="col-lg-8 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 leftBox placeholder">
+				<div>
+					<img src="img/chatting2.png" alt="chatting room"/>
+				</div>
+			</div>
+			<div class="col-lg-4 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 rightBox placeholder">
+				<div data-overview></div>
+			</div>
+		</div><!--/.mainContent-->
+	</div><!--/.dashboard -->
+</div>
+<!-- content end -->

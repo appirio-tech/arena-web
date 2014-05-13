@@ -142,6 +142,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         return deferred.promise;
     });
 
+
     // request login
     socket.emit(helper.EVENT_NAME.SSOLoginRequest, {sso: sso});
 }];

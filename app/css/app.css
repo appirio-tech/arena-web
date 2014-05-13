@@ -21,10 +21,9 @@ label{font-weight: normal;}
 hr {border-color: #D5D5D5;margin: 10px 0;}
 body a {cursor: pointer;}
 
-.anon-header,
-.header,
-.anon-header .navbar .navbar-brand, .header .navbar-brand,
-.btn-facebook:after,.btn-twitter:after,.btn-google:after,
+.btn-facebook:after,
+.btn-twitter:after,
+.btn-google:after,
 .btn-linkedIn:after,
 .dashboard .titleBar .brand,
 .panel-custom .summaryPanel:after,
@@ -32,8 +31,6 @@ body a {cursor: pointer;}
 .panel-custom .statusPanel:after {
     background-image: url(../img/sprite.png);
 }
-.nav .userInfo .notification,
-.nav .userInfo .arrow,
 .dashboard .breadcrumb li:after,
 .contest .titleBar .shareLink a,
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
@@ -53,173 +50,357 @@ body a {cursor: pointer;}
 .panelCodeEditor .panel-body .settingsPanel .closeIcon,
 .panelCodeEditor .testPanel header>a,
 .panelCodeEditor .testPanel .caseLbl:before,
-.panelCodeEditor .testPanel .bottom label:before {
+.panelCodeEditor .testPanel .bottom label:before,
+.panelOverview .panel-heading .showSectionLbl:before  {
     background-image: url(../img/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
-.panelCodeEditor .panel-body .settingsPanel
-/*.panelCodeEditor .toolBar .testPanel*/{
+.panelCodeEditor .panel-body .settingsPanel {
     background-image: url(../img/popup-bg.png);
 }
-
+.anon-header .navbar .navbar-brand, 
+.header .navbar-brand,
+.header .navIcons>li>.icon:before,
+.userInfo .notification,
+.userInfo .arrow,
+.header .navIcons .themePanel .closeBtn,
+.header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl:before {
+    background-image: url(../img/sprite-new-header.png);
+    background-repeat: no-repeat;
+}
+.anon-header,
+.header {
+    background-image: url(../img/black-header.png);
+    background-repeat: repeat-x;
+}
 /***************header style*/
 .anon-header,
 .header {
     height: 62px;
-    background-repeat: repeat-x;
-    background-position:  0 -62px;
-    background-color:  #00394B;
+    background-position: 0 0;
+    background-color: transparent;
     position:relative;
     width:100%;
     z-index:100;
 }
 /* 'topcoder arena' */
+.anon-header .navbar .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
 .anon-header .navbar-title,
 .header .navbar-title {
-    font: 600 21px/60px "Source Code Pro","Helvetica Neue",Helvetica,Arial,sans-serif; /*SourceCodePro Semibold*/
+    font: 400 20px/22px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif; /*SourceCodePro Semibold*/
     color: #fff;
     margin: 0;
-    margin-left: 5px;
     display: inline-block;
-
+    letter-spacing: -0.010em;
+    margin-left: 30px!important;
+    padding-top: 18px;
 }
-.header .navbar-title {
-    margin-left: 5px;
+.anon-header .navbar-title-text,
+.header .navbar-title-text {
+    margin-left: 5px;/*update, hide temporarily*/
+    display: inline-block;
+    padding-top: 1px;
 }
 /* topcoder logo */
-.anon-header .navbar .navbar-brand, .navbar-brand {
-    background-position: 0 0;
+.anon-header .navbar .navbar-brand, 
+.navbar-brand {
+    background-position: -21px -25px;/*update*/
     background-repeat: no-repeat;
-    padding: 22px 0 0 172px;
+    padding: 22px 0 0 176px;
     height: 0;
     width: 0;
     overflow: hidden;
-    margin-top: 17px;
-    margin-left: 30px !important;
+    display: inline-block;
+    margin: 0;
 }
 
 /* after user logged in, show this header */
-.header{
-    background-position: 0 -124px;
-    background-repeat: repeat-x;
-    background-color: #00394B;
-}
 .header .navbar{
     margin-bottom:5px;
 }
-.header .navbar-nav{
-    float:right;
-    margin:20px 0 0;
+.header .navIcons {
+    margin: 0;
+    margin-left: 65px;
+    height: 60px;
 }
-.header .navbar a{
-    color:#FFF;
+.header .navIcons > li{ /*update*/
+    width: 60px;
+    height: 60px;
+    border-left: 1px solid #2d2f30;
+    position: relative;
+}
+.navIcons > li:last-child {
+    width: 61px;
+    border-right: 1px solid #2d2f30;
 }
 
-.nav>li a:hover {
-    color: #000;
-}
-.nav .active a{
-    color: #1d1f20;
-    font-weight: 700;
-    text-shadow: 0 1px 1px rgba(253,253,253,.19);
-}
-
-.header .navbar-nav > li > a{
+.header .navIcons > li > .icon{ /*update*/
     padding:0;
+    width: 0;
+    height: 0;
+    padding-left: 60px;
+    padding-top: 60px;
+    overflow: hidden;
 }
-.header .nav > li{
-    margin-left:30px;
-    z-index: 1000;
+.header .navIcons > li > .tip {/*tooltip*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 60px;
+    width: 60px;
+    cursor: pointer;
+}
+.navIcons > li > .icon:before {
+    content: '';
+    display: block;
+    height: 20px;
+    width: 23px;
+    position: absolute;
+    top: 21px;
+    left: 18px;
+    bottom: 19px;
+}
+.navIcons .iconContests:before{
+    background-position: -25px 0;
+}
+.navIcons .iconVC:before{
+    background-position: -50px 0;
+}
+.navIcons .iconSettings:before{
+    background-position: -75px 0;
+}
+.navIcons .iconTools:before{
+    background-position: -100px 0;
+}
+.navIcons .iconHelp:before{
+    background-position: -125px 0;
+}
+.navIcons .iconPT:before{
+    background-position: -150px 0;
+}
+.navIcons .iconTS:before{
+    background-position: -175px 0;
+}
+.navIcons .active .icon:after { /*update*/
+    content: '';
+    display: block;
+    height: 5px;
+    width: 60px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #f7933f;
+}
+.navIcons .active .iconContests:after {
+    background: #28abdc;
+}
+.navIcons .active .iconVC:after {
+    background: #8cc558;
+}
+.navIcons .active .iconSettings:after {
+    background: #687376;
+}
+.navIcons .active .iconTools:after {
+    background: #0e74b5;
+}
+.navIcons .active .iconHelp:after {
+    background: #d8e054;
+}
+.navIcons .active .iconPT:after {
+    background: #ff0000;
+}
+.navIcons .active .iconTS:after {
+    background: #bb70d1;
 }
 .navbar-collapse {
     margin-right: 30px;
 }
-.header .nav > li > a:hover,
-.nav > li > a:focus{
+ .header .nav > li:hover .icon,
+.header .userInfo > li > a:hover {opacity: 0.7;}
+.header .nav > li > .icon:hover,
+.header .nav > li > .tip:hover,
+.nav > li > a:focus,
+.header .userInfo > li > a {
     background-color:transparent;
     text-decoration:none;
 }
-.nav > li:first-child {
-    margin-left: 0;
+
+.header .navbar-right.userInfo { /*update*/
+    color: #fff;
+    margin-right: 0;
 }
-.nav .userInfo {
-    height: 33px;
-    width: 263px;
-    padding: 0 0 0 12px;
-    line-height: 31px;
-    background: #fff;
-    color: #8f8f8f;
-    margin-top: -5px;
-    border-bottom: 2px solid #97bed9;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    position: relative;
+.userInfo > li {
+    padding: 17px 0 0;
 }
-.nav .userInfo a {
-    display: inline;
+.userInfo .username {
     color: #0f9abd;
-}
-.nav .userInfo .username {
-    position: absolute;
-    top: 0;
-    left: 71px;
     display: inline-block;
-    width: 125px;
-    overflow: hidden;
-    text-overflow:clip;
+    padding: 0;
 }
-.nav .userInfo .notification {
-    margin-left: 15px;
-    height: 31px;
-    width: 18px;
-    position: absolute;
-    top: 0;
-    right: 36px;
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    cursor: pointer;
+.userInfo .notification {
+    margin-left: 24px;
+    display: inline-block;
+    height: 21px;
+    width: 21px;
+    background-position: -200px 0;
+    position: relative;
+    padding: 0;
 }
-.nav .userInfo .notification>span {
+.userInfo .notification>span {
     display: block;
-    position: absolute;
-    right: -7px;
-    top: 2px;
-    background: #f40000;
     height: 15px;
     width: 15px;
+    font-size: 12px;
     line-height: 14px;
+    position: absolute;
+    right: -4px;
+    top: -1px;
+    background: #f40000;
     text-align: center;
     color: #fff;
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
 }
-.nav .userInfo .arrow {
-    display: block;
-    position: absolute;
-    right: 4px;
-    top: 14px;
-    width: 18px;
-    height: 5px;
-    background-position: 0 -31px;
-    background-repeat: no-repeat;
+.userInfo .arrow {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    background-position: -225px 0;
+    margin-left: 25px;
+    padding: 0;
 }
 .header .navbar-toggle{
-    background-color:transparent;
-    background-image:none;border:
-    1px solid #015F7E;
-    border-radius:4px;
+    background-color: transparent;
+    background-image: none;
+    border:1px solid #323435;/*update*/
+    border-radius: 4px;
     float:right;
-    margin-bottom:8px;
-    margin-right:15px;
-    margin-top:8px;
-    position:relative;
+    margin-bottom: 8px;
+    margin-right: 15px;
+    margin-top: 11px;/*update*/
+    position: relative;
     padding:9px 10px;
 }
-
 .header .navbar-toggle .icon-bar{
     border-bottom:3px solid #FFF;
+}
+.header .navIcons .themePanel {
+    width: 328px;
+    height: 338px;
+    border: 1px solid #fff;
+    border-color: rgba(255,255,255,0.1);
+    background: #151718;
+    background: rgba(21,23,24,0.98);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    position: absolute;
+    top: 52px;
+    right: -25px;
+    z-index: 2;
+    padding: 0 19px;
+}
+.header .navIcons .themePanel:before {
+    content: '';
+    display: block;
+    border-bottom: 12px solid;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    color: #fff;
+    color: rgba(255,255,255,0.1);
+    position: absolute;
+    top: -11px;
+    right: 42px;
+}
+.header .navIcons .themePanel:after {
+    content: '';
+    display: block;
+    border-bottom: 11px solid;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    color: #151718;
+    /*color: rgba(21,23,24,0.98);*/
+    position: absolute;
+    top: -10px;
+    right: 43px;
+}
+.header .navIcons .themePanel h4,
+.header .navIcons .themePanel .themeItem {
+    /*font-weight: 300;*//*added*/
+    font-size: 14px;
+    height: 52px;
+    border-bottom: 1px solid #1f444e;
+    padding: 19px 0 19px;
+    margin: 0;
+    line-height: 12px;
+}
+.header .navIcons .themePanel .closeBtn {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    padding-top: 8px;
+    padding-left: 9px;
+    position: absolute;
+    top: 23px;
+    right: 19px;
+    background-position: 0 -25px;
+}
+.header .navIcons .themePanel .themesBox {
+    padding: 0 1px;
+    height: 208px;
+    overflow: auto;
+}
+.header .navIcons .themePanel .themeItem {
+    padding-left: 21px;
+    position: relative;
+}
+.header .navIcons .themePanel .themeItem .themeLbl {
+    margin: 0;
+    cursor: pointer;
+    /*font-weight: 300;*//*added*/
+}
+.header .navIcons .themePanel .themeItem .themeLbl:hover {
+    text-decoration: underline;
+}
+.header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl {
+    color: #0999d1;
+    cursor: text;
+}
+.header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl:hover {
+    text-decoration: none;
+}
+.header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl:before {
+    content: '';
+    display: block;
+    height: 10px;
+    width: 14px;
+    position: absolute;
+    top: 21px;
+    left: 0;
+    background-position: 0 -40px;
+}
+.header .navIcons .themePanel .themeItem .themeRadio {display: none;}
+.header .navIcons .themePanel .btn {
+    color: #fff;
+    font-size: 16px;
+    /*font-weight: 300;*/ /*added*/
+    background: #0f9abd;
+    display: block;
+    height: 36px;
+    width: 150px;
+    text-align: center;
+    margin: 20px auto;
+    padding-top: 5px;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+.header .navIcons .themePanel .btn:hover {
+    opacity: 0.9;
 }
 .signup,.signin{
     margin-top:66px;
@@ -459,9 +640,13 @@ body a {cursor: pointer;}
     min-height:760px;
 }
 .dashboard .titleBar {
-    padding: 16px 15px 18px 0;
-    height: 93px;
+    padding: 15px 15px 19px 0;
+    height: 78px;/*update*/
     position: relative;
+}
+.contest .titleBar {
+    height: 77px;
+    padding-bottom: 18px;
 }
 .dashboard .titleBar a {
     cursor: pointer;
@@ -475,25 +660,15 @@ body a {cursor: pointer;}
     text-decoration: none;
     color: #0bbbe7;
 }
-/*.inner{
-    /*padding-top:62px;
-    min-height:760px;
-    padding-bottom: 60px;
-    overflow: scroll;
-}
-.dashboard .titleBar {
-    padding: 16px 0 18px 0;
-    height: 93px;
-    position: relative;
-}*/
 .codeArea .titleBar {
-    padding: 20px 0 21px 0;
     height: 55px;
-    /*line-height: 14px;*/
     line-height: 1;
     position: relative;
 }
-.codeArea .titleBar > div:first-child {padding-right: 0;}
+.codeArea .titleBar > div:first-child {
+    padding-top: 5px;
+    padding-right: 0;
+}
 .dashboard .breadcrumb,
 .dashboard .connection,
 .codeArea .definition {
@@ -523,7 +698,6 @@ body a {cursor: pointer;}
     top: 7px;
     height: 7px;
     width: 4px;
-   /* background: url(../img/arrow.png) 0 0 no-repeat;*/
     background-position: -7px -45px;
     background-repeat: no-repeat;
 }
@@ -534,53 +708,78 @@ body a {cursor: pointer;}
     font-size: 14px;
     float: right;
     text-align: right;
-    /*padding-right: 230px;*/
 }
 .codeArea .connection {
-    padding-right: 105px;
+    padding-right: 92px;
 }
 .contest .connection {
-    padding-right: 99px;
+    padding-right: 83px;
 }
 .dashboard .connection > div {
     display: inline-block;
-    width: 141px;
+    padding-left: 34px;
 }
-
-.codeArea .connection > div {width: auto;}
-.codeArea .connection > div:nth-child(2) {width: 151px;}
+.codeArea .connection>div {
+    padding-left: 0;
+}
+.tcTime {
+    display: block;
+    width: 114px;
+    font-size: 14px;
+    text-align: left;
+    color: #687376;
+    line-height: 22px;
+    letter-spacing: -0.030em;
+}
+.tcTime>span {
+    color: #fff;
+}
+.connectionStatus {
+    display: block;
+    width: 107px;
+    font-size: 14px;
+    color: #687376;
+    line-height: 22px;
+    /*padding-left: 34px;*/
+    text-align: left;
+}
+.connectionStatus>label {
+    letter-spacing: -0.025em;
+}
+.connectionStatus>span {
+    display: inline-block;
+    height: 11px;
+    width: 11px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+.connectionStatus .green {
+    background: #5fb806;
+    margin-left: 12px
+}
+.connectionStatus .red {
+    background: #f40000;
+    margin-left: 7px
+}
+.connectionStatus .active {
+    opacity: 1;
+}
+.connectionStatus .inactive {
+    opacity: 0.23;
+}
+/*.codeArea .connection > div {width: auto;}*/
+.codeArea .connection > div:nth-child(2) {padding-left: 44px;}
 .codeArea .connection .rate {width: 115px;}
 .codeArea .titleBar .textGreen {color: #5fb806;}
 .codeArea .titleBar .textRed {color: #f40000;}
 .dashboard .titleBar .title {
     font: 300 26px/35px 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;/*Light*/  
     margin: 0; 
+    margin-top: 7px;
 }
-.dashboard .connection span {
-    color: #fff;
-}
-.dashboard .connection .green {
-    display: inline-block;
-    height: 11px;
-    width: 11px;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    background: #5fb806;
-    margin-left: 13px
-}
-
+.contest .titleBar .title {margin-top: 6px;}
 .codeArea .connection .green {margin-left: 12px;}
-.dashboard .connection .brown {
-    display: inline-block;
-    height: 11px;
-    width: 11px;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    background: #4c1516;
-    margin-left: 7px
-}
 .dashboard .titleBar .brand {
     position: absolute;
     height: 0;
@@ -659,8 +858,8 @@ body a {cursor: pointer;}
 .codeArea .shareLink .dropdown-menu > li > a {color: #fff;}
 .contest .titleBar .shareLink {
     position: absolute;
-    top: 15px;
-    right: 0;
+    top: 14px;
+    right: 5px;
     padding-right: 31px;
 }
 .contest .titleBar .shareLink a {
@@ -748,6 +947,7 @@ footer .right>span:nth-child(2) {
 .panel-custom {
     background: #151718;
     width: 759px;
+    /*border-width: 0;*/
     border: 1px solid #234760;
     height: 315px;
     border-radius: 0;
@@ -761,7 +961,6 @@ footer .right>span:nth-child(2) {
 .panel-custom .panel-heading {
     font-size: 16px;
     line-height: 25px;
-    /*font-weight: 300; Light*/
     padding: 8px 31px;
     background: #234760;
     border-radius: 0;
@@ -770,11 +969,11 @@ footer .right>span:nth-child(2) {
     height: 40px;
 }
 .panel-custom .panel-body {
-    border-width: 0;
+   /* border: 1px solid #234760;*/
+    border-width: 0; 
     padding: 14px 0 0;
     margin: 0;
     color: #636d70;
-    /*font-weight: 300;*//*Light*/
 }
 .panel-custom .panel-body .mainContent {
     padding: 0 30px;
@@ -787,7 +986,6 @@ footer .right>span:nth-child(2) {
     border-radius: 2px;
     -webkit-border-radius:2px;
     -moz-border-radius:2px;
-    /*font-weight: 300;*/
     line-height: 27px;
     float: right;
     text-align: center;
@@ -813,6 +1011,7 @@ footer .right>span:nth-child(2) {
 .panel-custom .summaries {
     height: 115px;
     overflow-x: hidden;
+    /*overflow-y: scroll;*/
     overflow-y: auto;
 }
 .panel-custom .summaryPanel,
@@ -852,6 +1051,8 @@ footer .right>span:nth-child(2) {
 .panel-custom .schedulePanel .title {width:180px;}
 .panel-custom .schedulePanel .startIn,.panel-custom .schedulePanel .endIn {width: 72px;}
 .panel-custom .schedulePanel .startIn>span,.panel-custom .schedulePanel .endIn>span{display: inline;}
+/*.panel-custom .schedulePanel .startTime {width: 215px;}
+.panel-custom .schedulePanel .endTime {width: 130px;}*/
 .panel-custom .schedulePanel .startTime {width: 200px;}
 .panel-custom .schedulePanel .endTime {width: 160px;}
 .panel-custom .statusPanel .leftSide,
@@ -1606,10 +1807,119 @@ footer .right>span:nth-child(2) {
 .panelContestStat .textGreen {color: #5fb806; }
 .panelContestStat .textBold {font-weight: 700; /* Bold */ }
 
-/* bootstrap large size devices tablets is 1200px, 
-*but when screen is smaller than 1240, there will be some display problems */ 
-@media only screen and (max-width: 1240px) {
-   .header .navbar-brand { padding-left:60px;}
+/* profile overview and important messages widget */
+.panelOverview {
+    width: 407px;
+    height: 393px;
+}
+.panelOverview .panel-heading {
+    background: #1f444e;
+    height: 40px;
+    position: relative;
+    padding-top: 7px;
+    padding-right: 0;
+}
+.panelOverview .panel-heading.active {
+    height: 41px;
+}
+.panelOverview .panel-heading .showSectionRadio {
+    display: none;
+}
+.panelOverview .panel-heading .showSectionLbl {
+    cursor: pointer;
+    display: block;
+}
+.panelOverview .panel-heading .showSectionLbl:hover {
+    opacity: 0.7;
+}
+.panelOverview .panel-heading .showSectionLbl:before {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    left: 7px;
+    top: 13px;
+    background-position: -75px 0;
+}
+.panelOverview .panel-heading .showSectionRadio:checked ~ .showSectionLbl {
+    cursor: text;
+}
+.panelOverview .panel-heading .showSectionRadio:checked ~ .showSectionLbl:hover {
+    opacity: 1;
+}
+.panelOverview .panel-heading .showSectionRadio:checked ~ .showSectionLbl:before {
+    background-position: -50px 0;
+}
+.panelOverview .panel-body {
+    padding: 1px 0 0;
+    border-color: #1f444e;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+.panelOverview section:last-child .panel-body {
+    border-bottom-width: 1px;
+    height: 229px;
+    overflow: auto;
+    padding: 14px 29px 5px 30px;
+}
+.panelOverview .panel-body .contentWrapper {
+    height: 229px;
+    overflow: auto;
+    padding: 14px 29px 5px 30px;
+}
+.panelOverview .panel-body .contentWrapper>p,
+.panelOverview section:last-child .panel-body>p { /*placeholder*/
+    padding-top: 20px;
+    text-align: center;
+}
+.panelOverview .overviewAndMessage .profile {
+    height: 103px;
+    padding-left: 98px;
+    position: relative;
+}
+.panelOverview .overviewAndMessage .profile img {
+    position: absolute;
+    top: 5px;
+    left: 1px;
+}
+.panelOverview .overviewAndMessage .profile p {
+    color: #fff;
+    margin-bottom: 0;
+    line-height: 20px;
+}
+.panelOverview .overviewAndMessage .profile p label {
+    color: #687376;
+    display: inline-block;
+    width: 94px;
+    margin-bottom: 0;
+}
+.panelOverview .overviewAndMessage .profile .orange {color: #ff6600;}
+.panelOverview .overviewAndMessage .profile .white {color: #fff;}
+.panelOverview .overviewAndMessage .profile .gray {color: #999;}
+.panelOverview .overviewAndMessage .profile .green {color: #009900;}
+.panelOverview .overviewAndMessage .profile .purple {color: #6633cc;}
+.panelOverview .overviewAndMessage .profile .yellow {color: #dfd842;}
+.panelOverview .overviewAndMessage .profile .red {color: #ff0000;}
+.panelOverview .overviewAndMessage .profile .userNameRow {
+    font-size: 16px;
+    margin-bottom: 7px;
+}
+.panelOverview .overviewAndMessage .messagesBox .table {
+    margin-bottom: 0;
+    letter-spacing: -0.020em;
+}
+.panelOverview .overviewAndMessage .messagesBox td {
+    padding-left: 0;
+    padding-top: 6px;
+    padding-bottom: 7px;
+    color: #fff;
+    border-color: #1f444e;
+}
+.panelOverview .overviewAndMessage .messagesBox .date {
+    width: 99px;
+    padding-left: 2px;
+    color: #687376;
 }
 @media only screen and (max-width: 1230px) {
     .inner { padding: 0;}
@@ -1629,43 +1939,11 @@ footer .right>span:nth-child(2) {
     .contest .mainContent .rightBox {margin-left: 0; left: 778px; }
     .contest .mainContent .leftBox {right: 407px; }
     .codeArea .mainContent {width: auto; padding: 0 15px; }
-    .dashboard .mainContent .rightBox {margin-left: 20px; margin-bottom: 20px; }
+    .dashboard .mainContent .rightBox {margin-left: 20px;}
 }
 
 /* when device or screen is middle size, force hide navbar-collapse*/
 @media only screen and (max-width: 1199px) {
-    .header {height: auto;}
-    .header .navbar-collapse{max-height: 90%; background-color:#122d48; }
-    .header .navbar-collapse:before {display: none; }
-    .header .navbar-nav{
-        background-color:#122d48;
-        text-align:center;
-        width: 100%;
-        float: right;
-        margin-top: 0;
-        padding: 20px 0; 
-    }
-    .header .nav > li{
-        border:1px solid #015F7E;
-        border-radius:4px;
-        margin:0 0 15px;
-        padding:5px 7px;
-        background-image: url(../img/sprite.png);
-        background-position: 0 -124px;
-        background-repeat: repeat-x;
-    }
-    .header .nav > li:last-child {
-        padding: 0;
-        margin: 0;
-        text-align: left;
-        background: transparent;
-        border: 0;
-    }
-      .header .nav .userInfo {width: auto; min-width: 226px;
-        /* the smallest size of header can display normally, otherwise it will overflow. */
-    }
-    .header .nav .userInfo .username {left: 50%; margin-left: -63px; }
-    .header .navbar .navbar-brand{margin-left:15px;}
     .dashboard .mainContent {width: 789px; margin: 0 auto; }
     .dashboard .mainContent .rightBox {width: 759px; }
     .dashboard .mainContent .rightBox img {display: block; margin: 0 auto; }
@@ -1690,9 +1968,84 @@ footer .right>span:nth-child(2) {
     .codeArea .titleBar {height: 85px;}
     .panelCodeProblem,.panelCodeProblem .panel-body,
     .panelCodeProblem .panel-body .statement {height: auto; overflow: hidden;}
+    .panelOverview {width: 759px;}
+} 
+@media only screen and (max-width: 1082px) {
+   .header .navbar-brand { padding-left:60px;}
 }
 /*bootstrap small devices tablets*/
 @media only screen and (max-width: 991px) {
+    .header,
+    .header .navIcons {
+        height: auto;
+    }
+    .header .navbar .navbar-brand {
+        padding-left: 176px;
+        margin-left: 0;
+    }
+    .header .navbar-collapse{
+        max-height: 90%; 
+        background-color:#1b1d1e; 
+        padding-bottom: 20px;
+    }
+    .header .navbar-collapse:before {display: none; }
+    .header .navIcons {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+    .header .navIcons > li {
+        width: 100%;
+        padding-left: 15px;
+        border:1px solid #2d2f30;
+        margin:0 0 15px;
+        background-image: url(../img/black-header.png);
+        background-position: 0 0;
+        background-repeat: repeat-x;
+    }
+    .header .navIcons > li > .icon {
+        padding-top: 19px;
+        padding-left: 75px;
+        height: 60px;
+        width: auto;
+        color: #fff;
+    }
+    .header .navIcons .themePanel {
+        position: relative;
+        width: 100%;
+        height: auto;
+        top: auto;
+        right: auto;
+    }
+    .header .navIcons .themePanel:before {
+        right: auto;
+        left: 32px;
+    }
+    .header .navIcons .themePanel:after {
+        right: auto;
+        left: 33px;
+    }
+    .header .navIcons .themeSwitcher {
+        height: auto;
+        padding-left: 0;
+    }
+    .header .navIcons .themeSwitcher a {
+        padding-left: 90px;
+    }
+    .header .navIcons .themeSwitcher a:before {
+        left: 33px;
+    }
+    .header .navbar-right.userInfo {
+        margin: 0;
+        border:1px solid #2d2f30;
+        background-image: url(../img/black-header.png);
+        background-position: 0 0;
+        background-repeat: repeat-x;
+        padding-left: 15px;
+    }
+    .header .userInfo > li {
+        padding: 10px;
+        display: inline-block;
+    }
     .dashboard .titleBar {height: 115px; }
     .dashboard .connection {
         float: left;
@@ -1705,7 +2058,8 @@ footer .right>span:nth-child(2) {
     .panel-custom .statusPanel {width: 550px; }
     .dashboard .leftBox,
     .dashboard .panel-custom,
-    .dashboard .mainContent .rightBox {width: 610px; }
+    .dashboard .mainContent .rightBox,
+    .panelOverview {width: 610px; }
     .dashboard .mainContent {width: 640px; }
     .codeArea .panel-custom, .codeArea .mainContent {width: auto;}
     .dashboard .mainContent .placeholder {overflow: hidden; }
@@ -1713,7 +2067,7 @@ footer .right>span:nth-child(2) {
     .panel-custom .summaries,
     .panel-custom .summaryPanel,
     .panel-custom .schedulePanel,
-    .panel-custom .statusPanel{height: auto; overflow: hidden; }
+    .panel-custom .statusPanel {height: auto; overflow: hidden; }
     .panel-custom .schedulePanel .title {width:150px;}
     .panel-custom .schedulePanel .startIn {width: 62px;}
     .panel-custom .schedulePanel .endIn {width: 52px;}
@@ -1880,11 +2234,18 @@ footer .right>span:nth-child(2) {
     .panelContestStat .compStatus > .column:first-child,
     .panelContestStat .compStatus > .column:nth-child(2) {width: auto; min-width: 122px; }
 }
+/* fix some issues in overview widget */
+@media only screen and (max-width: 410px) {
+    .panelOverview .overviewAndMessage .profile {padding-left: 98px;}
+    .panelOverview .overviewAndMessage .profile img {left: 11px;}
+    .panelOverview .overviewAndMessage .messagesBox {padding: 0 9px 0 10px;}
+}
 @media only screen and (max-width: 394px) {
     .panelCodeEditor .toolBar .rightPart>div:first-child {width: 116px;}
     .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 87px;}
 }
 @media only screen and (max-width: 360px) {
+    .header .navbar .navbar-brand {padding-left: 66px;}
     .panelCodeEditor .panel-heading .rightPart .findInput {width: 120px;}
     .panelCodeEditor .panel-heading ul {padding-left: 12px;}
     .panelCodeEditor .panel-heading>ul>li+li {margin-left: 5px;}
@@ -1898,12 +2259,18 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .testPanel .editParam {padding-left: 118px;}
     .panelCodeEditor .testPanel .editParam label {left: 16px;}
     .panelCodeEditor .testPanel .bottom label {width: 82px;}
+    .panelOverview .overviewAndMessage .profile {padding-left: 88px;}
+    .panelOverview .overviewAndMessage .profile img {left: 6px;}
+    .panelOverview .overviewAndMessage .messagesBox {padding: 0 4px 0 5px;}
+    .panelOverview .overviewAndMessage .profile p label {width: 80px;}
 }
 @media only screen and (max-width: 348px) {
     .codeArea .titleBar {height: 145px;}
     .panelCodeEditor .toolBar .editorCheckLbl {padding-left: 20px;}
     .panelCodeEditor .toolBar .rightPart>div:first-child {width: 106px; letter-spacing: -0.025em;}
     .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 77px; letter-spacing: -0.025em;}
+    .panelOverview .overviewAndMessage .panel-heading {height: 66px;}
+    .panelOverview .overviewAndMessage .profile {height: 137px;}
 }
 @media only screen and (max-width: 331px) {
     .codeArea .titleBar {height: 165px;}

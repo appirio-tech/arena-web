@@ -44,6 +44,10 @@ controllers.userCodingEditorCtrl = require('./controllers/userCodingEditorCtrl')
 controllers.userContestCtrl = require('./controllers/userContestCtrl');
 controllers.contestCountdownCtrl = require('./controllers/contestCountdownCtrl');
 controllers.contestStatsCtrl = require('./controllers/contestStatsCtrl');
+controllers.connectionStatusCtrl = require('./controllers/connectionStatusCtrl');
+controllers.tcTimeCtrl = require('./controllers/tcTimeCtrl');
+controllers.overviewCtrl = require('./controllers/overviewCtrl');
+controllers.baseCtrl = require('./controllers/baseCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -52,6 +56,9 @@ directives.codingproblem = require('./directives/codingproblem');
 directives.codingeditor = require('./directives/codingeditor');
 directives.contestcountdown = require('./directives/contestcountdown');
 directives.conteststats = require('./directives/conteststats');
+directives.connectionstatus = require('./directives/connectionstatus');
+directives.topcodertime = require('./directives/topcodertime');
+directives.overview = require('./directives/overview');
 
 /*global $ : false, angular : false */
 /*jslint nomen: true, browser: true */
@@ -75,6 +82,8 @@ main.factory('socket', factories.socket);
 main.factory('cookies', factories.cookies);
 main.factory('dashboardHelper', factories.dashboardHelper);
 main.factory('appHelper', factories.appHelper);
+main.factory('connectionService', factories.connectionService);
+main.factory('tcTimeService', factories.tcTimeService);
 
 /////////////////
 // CONTROLLERS //
@@ -89,7 +98,10 @@ main.controller('userCodingEditorCtrl', controllers.userCodingEditorCtrl);
 main.controller('userContestCtrl', controllers.userContestCtrl);
 main.controller('contestCountdownCtrl', controllers.contestCountdownCtrl);
 main.controller('contestStatsCtrl', controllers.contestStatsCtrl);
-
+main.controller('connectionStatusCtrl', controllers.connectionStatusCtrl);
+main.controller('tcTimeCtrl', controllers.tcTimeCtrl);
+main.controller('overviewCtrl', controllers.overviewCtrl);
+main.controller('baseCtrl', controllers.baseCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -100,7 +112,9 @@ main.directive('codingproblem', directives.codingproblem);
 main.directive('codingeditor', directives.codingeditor);
 main.directive('contestcountdown', directives.contestcountdown);
 main.directive('conteststats', directives.conteststats);
-
+main.directive('connectionstatus', directives.connectionstatus);
+main.directive('topcodertime', directives.topcodertime);
+main.directive('overview', directives.overview);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
@@ -127,7 +141,8 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
         .state('user', {
             abstract : true,
             url : '/u',
-            templateUrl: 'partials/base.html'
+            templateUrl: 'partials/base.html',
+            controller: 'baseCtrl'
         })
         .state('user.dashboard', {
             url: '/dashboard',

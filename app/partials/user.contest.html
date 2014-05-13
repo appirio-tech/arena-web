@@ -3,15 +3,10 @@
     <div class="row-fluid dashboard contest">
         <div class="col-lg-12 text-left titleBar">
             <div class="col-lg-6 col-md-7">
-                <ol class="breadcrumb">
-                    <li><a>Contests</a></li>
-                    <li>{{ contest.name }}</li>
-                </ol>
                 <h1 class="title">Competition Arena: {{ contest.name }}</h1>
             </div>
             <div class="col-lg-6 col-md-5 connection">
-                <div><label>TC TIME</label><span> 00:00:00 AM</span></div>
-                <div><label>Connection</label><span class="green"></span><span class="brown"></span></div>
+                <div data-topcodertime></div><div data-connectionstatus></div>
             </div>
             <span class="shareLink">Share<a></a></span>
         </div>
