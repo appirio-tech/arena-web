@@ -16,8 +16,12 @@
  * Changes in version 1.4 (Module Assembly - Web Arena UI - Challenge Phase):
  * - Fixed the angular-timer usage to avoid error messages in console.
  *
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Updated phase messages for System Test.
+ * - Removed redundant assignment of $scope.countdown.
+ *
  * @author amethystlei, dexy
- * @version 1.4
+ * @version 1.5
  */
 'use strict';
 /*global module, angular*/
@@ -49,15 +53,13 @@ var contestCountdownCtrl = ['$scope', '$timeout', 'tcTimeService', function ($sc
         'Coding Phase will end in:',
         'Challenge Phase will start in:',
         'Challenge Phase will end in:',
-        'Waiting for system test to start.',
-        'System test is in process: ',
+        'Waiting for System Test Phase to start.',
+        'System Test Phase is in process: ',
         'Contest is complete.',
         'Voting Phase is started.',
         'Tie Breaking Voting Phase is started.',
         'Moderated Chatting Phase is started.'
     ];
-    // bind the property countdown to the template.
-    $scope.countdown = 1;
 
     /**
      * Get phase message.

@@ -6,9 +6,10 @@
              --></p>
             <p class="textRed" data-ng-show="showTimer(contest)"><!--avoid unnecessary blank
              --><span data-timer data-autostart="false" data-interval="1000" data-countdown="countdown"><!-- use angular-timer. HACK here: we have to set the attribute 'countdown' with a positive value to indicate we are ticking down!
-                 --><span data-ng-show="days > 0">{{days}} days </span><!--avoid unnecessary blank
-                 --><span data-ng-show="days > 0 || hours > 0">{{hours}} hours </span><!--avoid unnecessary blank
-                 --><span>{{minutes}} minutes {{seconds}} seconds</span>
+                 --><span data-ng-show="days > 0">{{days}} day{{daysS}} </span><!--avoid unnecessary blank
+                 --><span data-ng-show="days > 0 || hours > 0">{{hours}} hour{{hoursS}} </span><!--avoid unnecessary blank
+                 --><span data-ng-show="days > 0 || hours > 0 || minutes > 0">{{minutes}} minute{{minutesS}} </span><!--avoid unnecessary blank
+                 --><span>{{seconds}} second{{secondsS}} </span>
                 </span><!--avoid unnecessary blank
             --></p>
         </div>

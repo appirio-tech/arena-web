@@ -8,7 +8,7 @@
 <!--                <span >Single Round Match</span> -->
                 <span class="textWhite">{{ contest.contestName }}</span>
                 <span class="textRed" data-ng-show="contest.roundType == 2">{{ contest.roundName }}</span>
-                <span data-ng-show="isCountingDown(contest)">will start in</span>
+                <span>{{ countdownPrefix(contest) }}</span>
                 <span class="textRed" data-ng-show="isCountingDown(contest)">{{ displayCountDown(contest) }}</span>
             </p>
             <!-- /.infoRow -->
@@ -40,13 +40,13 @@
             <!-- /.summaryPanel -->
             <div data-ng-show="contest.detailIndex == 1" class="schedulePanel">
                 <div data-ng-repeat="phase in contest.phases"
-                data-ng-init="time0=getPhaseTime(phase, 0); time1=getPhaseTime(phase, 1);">
+                data-ng-init="time0=getPhaseTime(phase, 0, contest.phaseData); time1=getPhaseTime(phase, 1, contest.phaseData);">
                     <span class="title textWhite">{{ phase.title }}</span>
                     <br class="visible-xs breakline"/>
-                    <span class="startIn"><span class="hidden-xs">:&nbsp;</span>{{ time0.key }}<span data-ng-show="time0.key.length>0"> in</span></span>
+                    <span class="startIn"><span class="hidden-xs">:&nbsp;</span>{{ time0.key }}<span data-ng-show="time0.key.length>0"> at</span></span>
                     <span class="startTime">{{ time0.value }}</span>
                     <br class="visible-xs breakline"/>
-                    <span class="endIn">{{ time1.key }}<span data-ng-show="time1.key.length>0"> in</span></span>
+                    <span class="endIn">{{ time1.key }}<span data-ng-show="time1.key.length>0"> at</span></span>
                     <span class="endTime">{{ time1.value }}</span>
                 </div>
             </div>
@@ -76,17 +76,3 @@
     </div>
     <!-- /.panel-body -->
 </div>
-<script type="text/ng-template" id="popupModal.html">
-    <div class="modal-header">
-        {{ title }}
-        <span class="cancel-x" data-ng-click="cancel()">X</span>
-    </div>
-    <div class="modal-body">
-        <p ng-bind-html="message"></p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn right-btn" data-ng-click="ok()" data-ng-show="buttons.length == 2">{{ buttons[0] }}</button>
-        <button class="btn left-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 2">{{ buttons[1] }}</button>
-        <button class="btn right-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 1">{{ buttons[0] }}</button>
-    </div>
-</script>

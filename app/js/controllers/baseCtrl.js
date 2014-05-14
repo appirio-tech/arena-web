@@ -13,8 +13,13 @@
  * - Added handler for PopUpGenericResponse to partially handle the Phase Change messages.
  * - Added handler for SingleBroadcastResponse.
  *
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Defined global popup modals for global usage.
+ * - Fixed the issue of showing duplicate modals.
+ * - Moved the function for calculating rating colors from chat widget to enable global usage.
+ *
  * @author dexy, amethystlei
- * @version 1.2
+ * @version 1.3
  */
 'use strict';
 /*jshint -W097*/
@@ -33,7 +38,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connectionService', '$modal', '$state', 'themer', '$cookies', '$filter', function ($scope, $http, appHelper, notificationService, connectionService, $modal, $state, themer, $cookies, $filter) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', 'connectionService', '$modal', '$state', 'themer', '$cookies', '$filter', function ($rootScope, $scope, $http, appHelper, notificationService, connectionService, $modal, $state, themer, $cookies, $filter) {
     var /**
          * The modal controller.
          *
@@ -74,6 +79,9 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
         },
         selTheme;
 
+    // modal defined in the root scope can be used by other scopes.
+    $rootScope.currentModal = null;
+
     /**
      * Open modal function.
      *
@@ -82,12 +90,12 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
      * @param finish the finish function
      */
     $scope.openModal = function (data, handle, finish) {
-        if ($scope.currentModal) {
-            $scope.currentModal.close();
-            $scope.currentModal = undefined;
+        if ($rootScope.currentModal) {
+            $rootScope.currentModal.dismiss('cancel');
+            $rootScope.currentModal = undefined;
         }
 
-        $scope.currentModal = $modal.open({
+        $rootScope.currentModal = $modal.open({
             templateUrl: 'popupModalBase.html',
             controller: popupModalCtrl,
             backdrop: 'static',
@@ -96,15 +104,19 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
                     return data;
                 },
                 ok: function () {
-                    return handle;
+                    return function () {
+                        if (angular.isFunction(handle)) {
+                            handle();
+                        }
+                        $rootScope.currentModal = undefined;
+                    };
                 },
                 cancel: function () {
                     return function () {
                         if (angular.isFunction(finish)) {
                             finish();
                         }
-
-                        $scope.currentModal = undefined;
+                        $rootScope.currentModal = undefined;
                     };
                 }
             }
@@ -138,8 +150,8 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
     $scope.$on(helper.EVENT_NAME.Connected, function (event, data) {
         if (isDisconnecting) {
             isDisconnecting = false;
-            if ($scope.currentModal !== undefined) {
-                $scope.currentModal.dismiss('cancel');
+            if ($rootScope.currentModal !== undefined) {
+                $rootScope.currentModal.dismiss('cancel');
             }
             $state.go(helper.STATE_NAME.AnonymousHome);
         }
@@ -147,8 +159,9 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
     $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
         // handle phase change messages
         if (data.title === helper.POP_UP_TITLES.PhaseChange) {
+            // handle Phase Change confirmation messages for now.
+            // Entering room messages will be handled in the future.
             if (!data.buttons) {
-                // handle confirmation for System Test Phase Change for now.
                 $scope.openModal({
                     title: helper.POP_UP_TITLES.PhaseChange,
                     message: data.message,
@@ -272,6 +285,37 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
     $scope.onClickMessageArena = function () {
         notificationService.clearUnRead();
         checkPosition();
+    };
+
+    /**
+     * This function returns the css class of rating value.
+     *
+     * @param {number} rating the rating
+     * @returns {string} the CSS class to show different colors
+     */
+    $scope.getRatingClass = function (rating) {
+        if (rating >= 2200) {
+            return "rating-red";
+        }
+        if (rating >= 1500) {
+            return "rating-yellow";
+        }
+        if (rating >= 1200) {
+            return "rating-purple";
+        }
+        if (rating >= 900) {
+            return "rating-green";
+        }
+        if (rating >= 1) {
+            return "rating-grey";
+        }
+        if (rating === 0) {
+            return "rating-none";
+        }
+        if (rating === -1) {
+            return "rating-admin";
+        }
+        return "";
     };
 }];
 

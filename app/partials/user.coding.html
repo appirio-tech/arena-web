@@ -13,13 +13,13 @@
                 <div>
                     <label data-ng-show="currentStateName()=='user.coding'">Coding&nbsp;</label>
                     <label data-ng-show="currentStateName()=='user.viewCode' && isChallengePhase()">Challenge&nbsp;</label>
-                    <span class="textGreen" data-timer data-autostart="false" data-interval="1000" data-countdown="countdown" ng-if="!noCountdown">
+                    <span class="textGreen" data-ng-show="noCountdown">
+                        00:00:00
+                    </span>
+                    <span class="textGreen" data-timer data-autostart="false" data-interval="1000" data-countdown="countdown" data-ng-show="!noCountdown">
                         <span data-ng-show="days > 1">{{days}} days,&nbsp;</span>
                         <span data-ng-show="days === 1">{{days}} day,&nbsp;</span>
                         {{hhours}}:{{mminutes}}:{{sseconds}}
-                    </span>
-                    <span class="textGreen" data-ng-if="noCountdown">
-                        00:00:00
                     </span>
                 </div>
                 <div data-connectionstatus></div>

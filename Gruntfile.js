@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This module defines the grunt tasks used for packaging the application.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Updated the logics for CSS bundles for different themes.
+ *   app/css/app.css contains the layout styles.
+ *   app/css/darkTheme.css and app/css/topcoder.css contain the dark theme colors.
+ *   app/css/light/lightTheme.css and app/css/topcoder.css contain the light theme colors.
+ *   bundle.css wraps app/css/app.css and dark theme related files.
+ *   bundle-light.css wraps app/css/app.css and light theme related files.
+ * - Fixed JSLint issues.
+ *
+ * @author amethystlei
+ * @version 1.1
+ */
 'use strict';
 /*global module, process*/
 module.exports = function (grunt) {
@@ -59,36 +77,38 @@ module.exports = function (grunt) {
             }
         },
         cssmin: {
-            build: {                
-				src: [
+            build: {
+                src: [
                     'app/css/bootstrap.min.css',
-                    'app/css/app.css',
-                    'app/css/local.css',
-                    'app/css/topcoder.css',
                     'bower_components/codemirror/lib/codemirror.css',
                     'bower_components/codemirror/addon/fold/foldgutter.css',
                     'bower_components/fullcalendar/fullcalendar.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
-                    'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css'					
+                    'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
+                    'app/css/app.css',
+                    'app/css/local.css',
+                    'app/css/topcoder.css',
+                    'app/css/darkTheme.css'
                 ],
-                // Compile to a single file to add a script tag for in your HTML				
+                // Compile to a single file to add a script tag for in your HTML
                 dest: 'build/css/bundle.css'
-			},
-			combine: {
-				files: {
-					'build/css/bundle-light.css': [
-													'app/css/bootstrap.min.css',
-													'app/css/light/app.css',
-													'app/css/local.css',
-													'app/css/light/topcoder.css',
-													'bower_components/codemirror/lib/codemirror.css',
-													'bower_components/codemirror/addon/fold/foldgutter.css',
-													'bower_components/fullcalendar/fullcalendar.css',
-													'thirdparty/jquery.qtip/jquery.qtip.min.css',
-													'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css'
-												]
-				}
-			}
+            },
+            combine: {
+                files: {
+                    'build/css/bundle-light.css': [
+                        'app/css/bootstrap.min.css',
+                        'bower_components/codemirror/lib/codemirror.css',
+                        'bower_components/codemirror/addon/fold/foldgutter.css',
+                        'bower_components/fullcalendar/fullcalendar.css',
+                        'thirdparty/jquery.qtip/jquery.qtip.min.css',
+                        'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
+                        'app/css/app.css',
+                        'app/css/local.css',
+                        'app/css/light/topcoder.css',
+                        'app/css/light/lightTheme.css'
+                    ]
+                }
+            }
         },
         uglify: {
             release: {

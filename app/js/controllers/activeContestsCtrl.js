@@ -14,8 +14,12 @@
  * - Updated the contest entering logic, moved handlers to resolvers.
  * - Updated to use scope broadcasting to handle registration responses.
  *
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Updated to use the global popup modal in baseCtrl.js.
+ * - Updated the countdown message formats in Active Contest Widget.
+ *
  * @author amethystlei, dexy
- * @version 1.3
+ * @version 1.4
  */
 'use strict';
 /*global module, angular*/
@@ -32,7 +36,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', 'socket', 'appHelper', function ($scope, $rootScope, $state, $http, $modal, socket, appHelper) {
+var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', 'socket', 'appHelper', function ($scope, $rootScope, $state, $http, socket, appHelper) {
     var getPhase = function (contest, phaseTypeId) {
         var i;
         if (!contest.phases) {
@@ -48,36 +52,10 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
         updateContest = function (contest) {
             contest.detailIndex = 1;
             contest.action = (contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.AlmostContestPhase
-                            && contest.coderRooms.length > 0) ? 'Enter' : '';
+                            && contest.coderRooms && contest.coderRooms.length > 0) ? 'Enter' : '';
         },
         // show the active tab name when active contest widget is narrow
-        tabNames = ['Contest Summary', 'Contest Schedule', 'My Status'],
-        popupModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', function ($scope, $modalInstance, data, ok) {
-            $scope.title = data.title;
-            $scope.message = data.message.replace(/(\r\n|\n|\r)/gm, "<br/>");
-            $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
-            $scope.ok = function () {
-                ok();
-                $modalInstance.close();
-            };
-            $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
-            };
-        }],
-        openModal = function (data, handle) {
-            return $modal.open({
-                templateUrl: 'popupModal.html',
-                controller: popupModalCtrl,
-                resolve: {
-                    data: function () {
-                        return data;
-                    },
-                    ok: function () {
-                        return handle;
-                    }
-                }
-            });
-        };
+        tabNames = ['Contest Summary', 'Contest Schedule', 'My Status'];
 
     $scope.getPhaseTime = appHelper.getPhaseTime;
     $scope.range = appHelper.range;
@@ -174,21 +152,20 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
             $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
                 // remove the listener
                 $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
-                var modalInstance = openModal(data, function () {
+                angular.extend(data, {enableClose: true});
+                $scope.openModal(data, function () {
                     /*jslint unparam: true*/
                     // Agreed to register, listen to registration results.
                     $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
                         // Remove the listener.
                         $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
-                        var innerModalInstance = openModal(data, null);
-                        innerModalInstance.result.then(null, null);
+                        angular.extend(data, {enableClose: true});
+                        $scope.openModal(data);
+                        contest.isRegistered = true;
+                        $scope.setDetailIndex(contest, 2);
                     });
                     /*jslint unparam: false*/
                     socket.emit(helper.EVENT_NAME.RegisterRequest, {roundID: roundID});
-                });
-                modalInstance.result.then(function () {
-                    contest.isRegistered = true;
-                    $scope.setDetailIndex(contest, 2);
                 }, function () {
                     contest.isRegistered = false;
                 });
@@ -217,26 +194,65 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
         contest.detailIndex = index;
     };
 
-    // Checks if it is counting down
+    /**
+     * Check if the contest is counting down.
+     *
+     * @param  {Object}  contest the contest object
+     * @return {boolean}         it is counting down or not
+     */
     $scope.isCountingDown = function (contest) {
-        return $scope.isRegistrationOpen(contest);
+        if (!contest || !contest.phaseData) {
+            return false;
+        }
+        return contest.phaseData.phaseType < helper.PHASE_TYPE_ID.CodingPhase;
     };
 
-    // Render the contest count down
+    /**
+     * Get the prefix of the countdown message based on different phases.
+     *
+     * @param  {Object} contest the contest object
+     * @return {string}         the prefix the countdown message
+     */
+    $scope.countdownPrefix = function (contest) {
+        if (!contest || !contest.phaseData) {
+            return '';
+        }
+        if (contest.phaseData.phaseType < helper.PHASE_TYPE_ID.CodingPhase) {
+            return 'will start in';
+        }
+        if (contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.ContestCompletePhase) {
+            return 'is completed.';
+        }
+        return 'is live!';
+    };
+
+    /**
+     * Render the contest countdown message.
+     *
+     * @param  {Object} contest the contest object
+     * @return {string}         the countdown message
+     */
     $scope.displayCountDown = function (contest) {
         if (!contest) {
             return '';
         }
-        var phase, left, hours, minutes,
+        var phase, left, hours, minutes, seconds, result = '', LAST_MINUTES = 5,
             displayHour = function (hours) {
                 if (hours === 0) {
                     return '';
                 }
-                return hours + ' ' + (hours > 1 ? 'hours' : 'hour');
+                // single: 1 hour, plural: 0 hours, 2 hours...
+                return hours + ' ' + (hours === 1 ? 'hour' : 'hours');
             },
             displayMinute = function (minutes) {
-                return minutes + ' ' + (minutes > 1 ? 'minutes' : 'minute');
+                return minutes + ' ' + (minutes === 1 ? 'minute' : 'minutes');
+            },
+            displaySecond = function (seconds) {
+                return seconds + ' ' + (seconds === 1 ? 'second' : 'seconds');
             };
+        if (!contest.phaseData) {
+            return '';
+        }
         phase = getPhase(contest, helper.PHASE_TYPE_ID.CodingPhase);
         if (!phase) {
             return '';
@@ -244,7 +260,22 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
         left = contest.phases[1].startTime - $rootScope.now;
         hours = Math.floor(left / 3600000);
         minutes = Math.floor(left % 3600000 / 60000);
-        return displayHour(hours) + ' ' + displayMinute(minutes);
+        seconds = Math.floor(left % 60000 / 1000);
+        if (hours > 0) {
+            result += displayHour(hours) + ' ';
+        }
+        if (hours > 0 || minutes > 0) {
+            result += displayMinute(minutes);
+        }
+        if (hours === 0) {
+            if (minutes < LAST_MINUTES && minutes > 0) {
+                result += ' and ';
+            }
+            if (minutes < LAST_MINUTES) {
+                result += displaySecond(seconds);
+            }
+        }
+        return result;
     };
 
     // show the active tab name when active contest widget is narrow
