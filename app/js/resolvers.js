@@ -44,7 +44,7 @@ var helper = require('./helper');
  *
  * @type {number}
  */
-var connectionTimeout = 25000;
+var connectionTimeout = config.connectionTimeout || 25000;
 
 /**
  * Represents the date format for TC TIME
@@ -86,8 +86,15 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 });
             });
         };
+    $rootScope.loginTimeout = false;
     // if the listener is not ready, redirect
     setTimeout(function () {
+        if (angular.isUndefined($rootScope.isLoggedIn)) {
+            $rootScope.$apply(function(){
+                $rootScope.loginTimeout = true;
+            });
+            return forceLogout();
+        }
         if (!$rootScope.connected) {
             return forceLogout();
         }

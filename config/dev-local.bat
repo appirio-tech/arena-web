@@ -27,3 +27,6 @@ set AWS_ACCESS_KEY_ID=
 set AWS_ACCESS_KEY=
 set AWS_BUCKET=
 set AWS_FOLDER=arena\md\web-v0.0.2\
+
+:: the connection timeout to web socket
+set CONNECTION_TIMEOUT=30000

@@ -31,7 +31,8 @@ module.exports = function (grunt) {
                         { match : 'CALLBACK_URL', replacement: process.env.CALLBACK_URL },
                         { match : 'WEB_SOCKET_URL', replacement: process.env.WEB_SOCKET_URL },
                         { match : 'API_DOMAIN', replacement: process.env.API_DOMAIN },
-                        { match : 'SSO_KEY', replacement: process.env.SSO_KEY }
+                        { match : 'SSO_KEY', replacement: process.env.SSO_KEY },
+                        { match : 'CONNECTION_TIMEOUT', replacement: process.env.CONNECTION_TIMEOUT }
                     ]
                 },
                 files : [

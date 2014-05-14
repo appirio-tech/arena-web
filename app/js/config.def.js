@@ -6,5 +6,6 @@ module.exports = {
     auth0connection: '@@AUTH0_CONNECTION',
     callbackURL: '@@CALLBACK_URL',
     webSocketURL: '@@WEB_SOCKET_URL',
-    ssoKey: '@@SSO_KEY'
+    ssoKey: '@@SSO_KEY',
+    connectionTimeout: @@CONNECTION_TIMEOUT
 };
