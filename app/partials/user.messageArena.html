@@ -1,0 +1,34 @@
+<!-- message arena goes here -->
+<div class="panelHeader">
+    <h3>Message ({{notificationService.notifications.length}})</h3>
+    <a data-ng-click="closeQtip()" class="btnClose"></a>
+    <p class="legends">
+        <label class="iGeneral">General</label>
+        <label class="iProblem">Problem</label>
+        <label class="iRound">Round</label>
+    </p>
+</div><!--/.panelHeader -->
+<div class="messageBox visible-lg visible-md" data-ng-scrollbar data-rebuild-on="rebuild:messages">
+    <div class="messageWrapper">
+        <div data-ng-repeat="item in notificationService.notifications track by $index " class="mItem {{item.type}}">
+            <p class="topRow">
+                {{item.date}}    |    Status {{item.status}}
+            </p>
+            <p class="bottomRow">{{item.message}}<br/>
+                <span class="actionPart" data-ng-show="item.action">{{item.action.question}}, <a data-ng-href="{{item.action.target}}" data-ng-click="closeQtip()">yes</a> or <a data-ng-click="closeQtip()">no</a>?</span>
+            </p>
+        </div>
+    </div>
+</div><!--/.messageBox-->
+<div class="messageBox default visible-sm visible-xs">
+    <div class="messageWrapper">
+        <div data-ng-repeat="item in notificationService.notifications track by $index " class="mItem {{item.type}}">
+            <p class="topRow">
+                {{item.date}}    |    Status {{item.status}}
+            </p>
+            <p class="bottomRow">{{item.message}}<br/>
+                <span class="actionPart" data-ng-show="item.action">{{item.action.question}}, <a data-ng-href="{{item.action.target}}" data-ng-click="closeQtip()">yes</a> or <a data-ng-click="closeQtip()">no</a>?</span>
+            </p>
+        </div>
+    </div>
+</div><!--/.messageBox-->

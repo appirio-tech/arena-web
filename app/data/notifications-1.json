@@ -1,0 +1,16 @@
+[
+    {
+        "read": false,
+        "type": "general",
+        "date": "02/15/14 08:30 AM",
+        "status": "[...]",
+        "message": "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet."
+    },
+    {
+        "read": false,
+        "type": "problem",
+        "date": "02/15/14 08:00 AM",
+        "status": "[...]",
+        "message": "This is a problem. Lorem ipsum dolor sit amet."
+    }
+]    
