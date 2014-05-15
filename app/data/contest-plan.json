@@ -1,0 +1,53 @@
+{
+    "today": {
+        "year": 2014,
+        "month": 1,
+        "day": 15
+    },
+    "contests": [
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-02-16T08:02Z"
+        },
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-02-18T08:02Z"
+        },
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-02-20T08:02Z"
+        },
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-02-22T08:02Z"
+        },
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-02-24T08:02Z"
+        },
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-02-26T08:02Z"
+        },
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-02-26T11:22Z"
+        },
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-02-28T08:02Z"
+        },
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-03-01T10:22Z"
+        },
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-03-03T10:22Z"
+        },
+        {
+            "title": "Lorem Ipsum dolor sit amet",
+            "start": "2014-03-10T10:22Z"
+        }
+    ]
+}

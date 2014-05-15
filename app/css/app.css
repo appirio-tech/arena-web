@@ -51,7 +51,10 @@ body a {cursor: pointer;}
 .panelCodeEditor .testPanel header>a,
 .panelCodeEditor .testPanel .caseLbl:before,
 .panelCodeEditor .testPanel .bottom label:before,
-.panelOverview .panel-heading .showSectionLbl:before  {
+.panelOverview .panel-heading .showSectionLbl:before,
+.messageArena .panelHeader .btnClose:before,
+.messageArena .panelHeader .legends label:before,
+.messageArena .messageBox .mItem:before   {
     background-image: url(../img/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
@@ -72,6 +75,12 @@ body a {cursor: pointer;}
 .header {
     background-image: url(../img/black-header.png);
     background-repeat: repeat-x;
+}
+.panelContestPlan .iconsWrapper .viewLbl,
+.calendar .fc-button-prev .fc-text-arrow,
+.calendar .fc-button-next .fc-text-arrow,
+.listView .listHeader .btnCtrl {
+    background-image: url(../img/sprite-contestPlan.png);
 }
 /***************header style*/
 .anon-header,
@@ -218,7 +227,7 @@ body a {cursor: pointer;}
 .navbar-collapse {
     margin-right: 30px;
 }
- .header .nav > li:hover .icon,
+.header .nav > li:hover .icon,
 .header .userInfo > li > a:hover {opacity: 0.7;}
 .header .nav > li > .icon:hover,
 .header .nav > li > .tip:hover,
@@ -249,7 +258,7 @@ body a {cursor: pointer;}
     position: relative;
     padding: 0;
 }
-.userInfo .notification>span {
+.userInfo .notification>#notiIndicator {
     display: block;
     height: 15px;
     width: 15px;
@@ -264,6 +273,24 @@ body a {cursor: pointer;}
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
+}
+/*add animation when new message comes*/
+#notiIndicator.animationaAlert {
+    animation: alert 0.8s ease-in-out;
+    -webkit-animation: alert 0.8s ease-in-out;
+    -moz-animation: alert 0.8s ease-in-out;
+}
+@keyframes alert {
+    0%,30%,60%,100%  {background: #f40000;}
+    15%,45%,75% {background: #fff;}
+}
+@-webkit-keyframes alert {
+    0%,30%,60%,100%  {background: #f40000;}
+    15%,45%,75% {background: #fff;}
+}
+@-moz-keyframes alert {
+    0%,30%,60%,100%  {background: #f40000;}
+    15%,45%,75% {background: #fff;}
 }
 .userInfo .arrow {
     display: inline-block;
@@ -1921,6 +1948,395 @@ footer .right>span:nth-child(2) {
     padding-left: 2px;
     color: #687376;
 }
+/* contest plan widget */
+.panelContestPlan {
+    height: 315px;
+    width: 407px;
+    border-color: #1f444e;
+    background: #151718;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+}
+.panelContestPlan .panel-heading {
+    padding: 6px 29px 10px 28px;
+    height: 40px;
+    font-size: 16px;
+    line-height: 25px;
+}
+.panelContestPlan .iconsWrapper {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 29px;
+    top: 14px;
+}
+.panelContestPlan .iconsWrapper li {display: inline-block;}
+.panelContestPlan .iconsWrapper li + li {margin-left: 10px;}
+.panelContestPlan .iconsWrapper .viewRadio {display: none;}
+.panelContestPlan .iconsWrapper .viewLbl {
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    padding-top: 13px;
+    padding-left: 19px;
+    background-position: 0 -15px;
+    cursor: pointer;
+}
+.panelContestPlan .iconsWrapper .viewLbl:hover {
+    opacity: 0.5;
+}
+.panelContestPlan .iconsWrapper .calendarItem .viewLbl {
+    background-position: 0 -28px;
+}
+.panelContestPlan .iconsWrapper .viewRadio:checked ~ .listLbl {
+    background-position: -19px -15px; 
+}
+.panelContestPlan .iconsWrapper .viewRadio:checked ~ .calendarLbl {
+    background-position: -19px -28px;
+} 
+.panelContestPlan .iconsWrapper .viewRadio:checked ~ .viewLbl:hover {
+    opacity: 1;
+}
+.panelContestPlan .panel-body {
+    padding-top: 19px;
+    padding-left: 29px;
+    /*padding-right: 28px;*/
+    padding-right: 12px;
+}
+.panelContestPlan .calendarView {
+    padding-right: 16px;
+}
+/*for calendar and list view*/
+.calendar .fc-header .fc-button-month.fc-state-active,
+.calendar .fc-view-month .fc-event-container .fc-event,
+.calendar .fc-view-month .fc-border-separate .fc-week .fc-day-content>div {display: none;}
+.calendar .fc-today {background: transparent;}
+.calendar .fc-view-month .fc-day {position: relative;}
+.calendar .fc-day .fc-day-number {
+    float: left;
+    padding-left: 15px;
+    padding-top: 2px;
+}
+.calendar .fc-day.fc-first .fc-day-number {
+    padding-left: 13px;
+}
+.calendar .fc-day .numOfEvents {
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+    font-size: 10px;
+    display: none; /*waiting from thread*/
+}
+.calendar .fc-week .eventColor .fc-day-number {
+    color: #ff6600; 
+    cursor: pointer;
+}
+.calendar .fc-header-title h2,
+.listView .listHeader h2 {
+    font-size: 16px;
+    color: #687376;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.calendar .fc-header-title h2{
+    margin-bottom: 11px;
+}
+.calendar .fc-border-separate td.fc-last, 
+.calendar .fc-border-separate th.fc-last,
+.calendar .fc-border-separate tr.fc-last td,
+.calendar .fc-widget-content {border-width: 0;}
+.calendar .fc-border-separate tr.fc-last th {
+    border: 1px solid #1f444e;
+    border-left-width: 0;
+    border-right-width: 0;
+    width: 48px;
+}
+.calendar .fc-border-separate thead .fc-day-header {
+    font-weight: 400;
+    color: #687376;
+    text-align: left;
+    padding-left: 15px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+.calendar .fc-border-separate thead .fc-day-header.fc-first {
+    padding-left: 13px;
+}
+.calendar .fc-header-right .fc-button-prev, 
+.calendar .fc-header-right .fc-button-next {
+    margin-bottom: 2px;
+    padding: 0;
+    border-width: 0;
+    display: inline-block;
+    width: 18px;
+    height: 26px;
+    position: relative;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    background: transparent;
+    text-shadow: none;
+    -webkit-text-shadow: none;
+    -moz-text-shadow: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+/*remove button defalut style*/
+.listView .listHeader .btnCtrl {
+    background-color: transparent;
+    border-width: 0;
+    padding: 0;
+}
+.listView .listHeader .btnCtrl:focus {
+    outline: none;
+}
+.calendar .fc-button-prev .fc-text-arrow,
+.calendar .fc-button-next .fc-text-arrow,
+.listView .listHeader .btnCtrl  {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 1px;
+    right: 0;
+    padding-top: 15px;
+    padding-left: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+.listView .listHeader .nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 26px;
+    margin-bottom: 2px;
+    vertical-align: top;
+}
+.listView .listHeader .btnPrev {
+    right: 30px;
+}
+.calendar .fc-button-prev .fc-text-arrow,
+.listView .listHeader .btnPrev {background-position: 100% 0;}
+.calendar .fc-button-next .fc-text-arrow,
+.listView .listHeader .btnNext {background-position: 0 0;}
+.calendar .fc-header-right .fc-header-space {padding-left: 12px;}
+.calendar .fc-header .fc-button-month {
+    color: #0bbbe7;
+    font-size: 16px;
+    line-height: 17px;
+    height: 17px;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border-width: 0;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    background: transparent;
+    text-shadow: none;
+    -webkit-text-shadow: none;
+    -moz-text-shadow: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+.calendar .fc-header-right .fc-button-month:hover {
+    text-decoration: underline;
+}
+.calendar .fc-view-basicDay .fc-event-container .fc-event {
+    border-width: 0;
+    background-color: transparent;
+    font-size: 14px;
+}
+.calendar .fc-view-basicDay thead .fc-day-header {
+    text-align: center;
+}
+.calendar .fc-view-basicDay .fc-event-inner .fc-event-time {
+    display: inline-block;
+    width: 50px;
+}
+.listView .listHeader {
+    height: 29px;
+    position: relative;
+    border-bottom: 1px solid #1f444e;
+    margin-right: 16px;
+}
+.listView .eventsContent {
+    /*height: 219px;
+    overflow: auto;
+    position: relative;*/
+    max-height: 219px;
+}
+.listView .eventsContent .tableDiv {
+    padding-right: 16px;
+}
+.listView .eventsContent .table {
+    margin-bottom: 0;
+}
+.listView .eventsContent .table>tbody>tr>td {
+    border-color: #1f444e;
+    padding-top: 11px;
+    padding-bottom: 12px;
+}
+.listView .eventsContent .table>tbody>tr:first-child>td{
+    border-top-width: 0;
+}
+.listView .eventsContent .table>tbody>tr>td:first-child {
+    padding-left: 0;
+    text-align: left;
+}
+.listView .eventsContent .table>tbody>tr>td:last-child {
+    padding-right: 0;
+    text-align: right;
+    color: #687376;
+}
+/* style of message arena */
+.body .messageArena {
+    max-width: 328px;
+    background-color: rgba(21,23,24,0.98); 
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+}
+.messageArena:before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    color: rgba(255,255,255,0.1);
+    border-bottom: 12px solid;
+    border-right: 12px solid transparent;
+    border-left: 12px solid transparent;
+    position: absolute;
+    top: -12px;
+    right: 42px;
+}
+.messageArena:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    color: rgba(21,23,24,0.98);
+    border-bottom: 10px solid;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    position: absolute;
+    top: -10px;
+    right: 44px;
+}
+.messageArena .qtip-content {
+    font-size: 14px;
+    padding-left: 20px;
+    padding-bottom: 14px;
+    padding-right: 0;
+    color: #fff;
+    min-height: 298px;
+    min-width: 326px;
+}
+.messageArena .panelHeader {
+    position: relative;
+    margin-right: 20px;
+    border-bottom: 1px solid #1f444e;
+}
+.messageArena .panelHeader h3 {
+    padding: 13px 0;
+    margin: 0;
+    font-size: 14px;
+}
+.messageArena .panelHeader .btnClose {
+    display: block;
+    width: 27px;
+    height: 24px;
+    position: absolute;
+    right: -10px;
+    top: 9px;
+}
+.messageArena .panelHeader .btnClose:before {
+    content: '';
+    display: block;
+    width:  9px;
+    height: 8px;
+    background-position: -25px -75px;
+    position: absolute;
+    top: 9px;
+    right: 9px;
+}
+.messageArena .panelHeader .legends {
+    padding-top: 4px;
+    color: #636d70;
+    margin-bottom: 4px;
+}
+.messageArena .panelHeader .legends label {
+    padding-left: 22px;
+    margin-right: 20px;
+    position: relative;
+}
+.messageArena .panelHeader .legends label:before,
+.messageArena .messageBox .mItem:before {
+    content: '';
+    display: block;
+    height: 8px;
+    width: 12px;
+    position: absolute;
+    left: 0;
+    top: 3px;
+}
+.messageArena .panelHeader .legends .iGeneral:before,
+.messageArena .messageBox .general:before {background-position: -50px -50px;}
+.messageArena .panelHeader .legends .iProblem:before,
+.messageArena .messageBox .problem:before {background-position: -75px -50px;}
+.messageArena .panelHeader .legends .iRound:before,
+.messageArena .messageBox .round:before {background-position: -100px -50px;}
+.messageArena .messageBox {
+   /* height: 212px;
+    padding-right: 20px;
+    overflow: auto;
+    position: relative;*/
+    padding-right: 4px;
+    max-height: 212px;
+}
+.messageArena .messageBox .mItem {
+    padding: 9px 0 10px 22px;
+    margin-right: 16px;
+    width: 286px;
+    border-bottom: 1px solid #1f444e;
+    position: relative;
+}
+.messageArena .messageBox .mItem:last-child {
+    border-bottom-width: 0;
+}
+.messageArena .messageBox .mItem:before {
+    top: 14px;
+}
+.messageArena .messageBox .mItem p {
+    margin-bottom: 0; 
+    line-height: 17px;
+}
+.messageArena .messageBox .mItem .bottomRow {
+    color: #636d70;
+}
+.messageArena .messageBox .mItem .bottomRow a {
+    text-decoration: underline;
+}
+/*style of ng-scrollbar*/
+.body .ngsb-wrap .ngsb-scrollbar .ngsb-track {
+    background: transparent;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
+    width: 7px;
+    background: #2a2b2c;
+}
+
+ .messageArena .default .messageWrapper {height: 212px; overflow-x: hidden; overflow-y: scroll;}
+ .listView .default .tableDiv {height: 219px; overflow-x: hidden; overflow-y: scroll;}*/
 @media only screen and (max-width: 1230px) {
     .inner { padding: 0;}
     .dashboard .titleBar .brand,
@@ -1962,7 +2378,8 @@ footer .right>span:nth-child(2) {
         width: 59%;
         min-width: 182px;
     }
-    .codeArea .mainContent {width: auto;}
+    .codeArea .mainContent,
+    .panelContestPlan {width: auto;}
     .codeArea .connection {text-align: left;padding-left: 15px;padding-top: 15px}
     .codeArea .connection>div:first-child {width: 151px;}
     .codeArea .titleBar {height: 85px;}
@@ -2068,6 +2485,10 @@ footer .right>span:nth-child(2) {
     .panel-custom .summaryPanel,
     .panel-custom .schedulePanel,
     .panel-custom .statusPanel {height: auto; overflow: hidden; }
+    /*.messageArena .messageBox {height: auto; max-height: 1000px;}
+    .listView .eventsContent { height: auto; max-height: 1000px;}
+    .messageArena .messageWrapper {height: 212px; overflow-x: hidden; overflow-y: scroll;}
+    .listView .tableDiv {height: 219px; overflow-x: hidden; overflow-y: scroll;}*/
     .panel-custom .schedulePanel .title {width:150px;}
     .panel-custom .schedulePanel .startIn {width: 62px;}
     .panel-custom .schedulePanel .endIn {width: 52px;}
@@ -2085,6 +2506,14 @@ footer .right>span:nth-child(2) {
     .codeArea .titleBar>div:first-child {padding-right: 105px;}
     .panelCodeEditor .panel-heading ul {padding-left: 30px;}
     .panelCodeEditor .panel-heading>ul>li+li {margin-left: 20px;}
+    .messageArena:before {
+        right: auto;
+        left: 149px; 
+    }
+    .messageArena:after {
+        right: auto;
+        left: 151px;
+    } 
 }
 /* boostrap extra small devices */
 @media only screen and (max-width: 767px) {
@@ -2243,6 +2672,11 @@ footer .right>span:nth-child(2) {
 @media only screen and (max-width: 394px) {
     .panelCodeEditor .toolBar .rightPart>div:first-child {width: 116px;}
     .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 87px;}
+    .calendar .fc-border-separate thead .fc-day-header.fc-first,
+    .calendar .fc-day.fc-first .fc-day-number {padding-left: 5px}
+    .calendar .fc-border-separate thead .fc-day-header,
+    .calendar .fc-day .fc-day-number {padding-left: 5px;}
+    .calendar .fc-day .numOfEvents {left: 22px;}
 }
 @media only screen and (max-width: 360px) {
     .header .navbar .navbar-brand {padding-left: 66px;}
@@ -2263,13 +2697,19 @@ footer .right>span:nth-child(2) {
     .panelOverview .overviewAndMessage .profile img {left: 6px;}
     .panelOverview .overviewAndMessage .messagesBox {padding: 0 4px 0 5px;}
     .panelOverview .overviewAndMessage .profile p label {width: 80px;}
+    .calendar .fc-day .numOfEvents {right: 1px;}
+    .messageArena:before {
+        left: 172px; 
+    }
+    .messageArena:after {
+        left: 174px;
+    } 
 }
 @media only screen and (max-width: 348px) {
     .codeArea .titleBar {height: 145px;}
     .panelCodeEditor .toolBar .editorCheckLbl {padding-left: 20px;}
     .panelCodeEditor .toolBar .rightPart>div:first-child {width: 106px; letter-spacing: -0.025em;}
     .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 77px; letter-spacing: -0.025em;}
-    .panelOverview .overviewAndMessage .panel-heading {height: 66px;}
     .panelOverview .overviewAndMessage .profile {height: 137px;}
 }
 @media only screen and (max-width: 331px) {
@@ -2278,4 +2718,14 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .toolBar .active .testToggle {padding-left: 20px;}
     .panelCodeEditor .toolBar .testToggle:before {left: 2px;}
     .panelCodeEditor .panel-body .toolBar .rightPart {padding-right: 85px;}
+    .body .messageArena {max-width: 310px; }
+    .messageArena .panelHeader .legends label {margin-right: 15px;}
+    .messageArena .panelHeader,
+    .messageArena .messageBox .mItem {width: 268px;}
+    .messageArena:before {
+        left: 177px; 
+    }
+    .messageArena:after {
+        left: 179px;
+    } 
 }

@@ -2,14 +2,6 @@
 
 var userContestCtrl = ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'appHelper',
     function ($scope, $http, $rootScope, $stateParams, $state, appHelper) {
-        // copied from userDashboardCtrl
-        $scope.notifications = [];
-        $rootScope.notifications = [];
-        $http.get('data/notifications.json').success(function (data) {
-            $scope.notifications = data;
-            $rootScope.notifications = data;
-        });
-
         // load contest data with contest id
         $scope.contest = {};
         $http.get('data/contest-' + $stateParams.contestId + '.json').

@@ -58,7 +58,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right userInfo">
                         <li>Welcome&nbsp;<a class="username">{{ username() }}</a></li> <!-- data-ui-sref="user.profile.details" -->
-                        <li><a class="notification"><span data-ng-show="notifications.length > 0">{{ notifications.length }}</span></a></li>
+                        <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
                         <li><a data-ui-sref="user.logout" class="arrow"></a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
