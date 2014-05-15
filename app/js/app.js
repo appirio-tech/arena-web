@@ -16,9 +16,15 @@ require('./../../bower_components/codemirror/addon/fold/brace-fold');
 require('./../../bower_components/codemirror/addon/fold/comment-fold');
 require('./../../bower_components/codemirror/addon/fold/indent-fold');
 require('./../../bower_components/angular-timer/dist/angular-timer');
+require('./../../bower_components/jquery-ui/ui/jquery-ui.js');
+require('./../../bower_components/angular-ui-calendar/src/calendar.js');
+require('./../../bower_components/fullcalendar/fullcalendar.js');
+require('./../../thirdparty/jquery.qtip/jquery.qtip.min.js');
+require('./../../thirdparty/ng-scrollbar/dist/ng-scrollbar.js');
 
 var resolvers = require('./resolvers'),
     factories = require('./factories'),
+    filters = require('./filters'),
     controllers = {},
     directives = {},
     // from directives.js originally, keep it for future use?
@@ -36,7 +42,6 @@ var resolvers = require('./resolvers'),
 controllers.anonHomeCtrl = require('./controllers/anonHomeCtrl');
 controllers.errorCtrl = require('./controllers/errorCtrl');
 controllers.userProfileCtrl = require('./controllers/userProfileCtrl');
-controllers.userDashboardCtrl = require('./controllers/userDashboardCtrl');
 controllers.leaderboardUsersCtrl = require('./controllers/leaderboardUsersCtrl');
 controllers.activeContestsCtrl = require('./controllers/activeContestsCtrl');
 controllers.userCodingCtrl = require('./controllers/userCodingCtrl');
@@ -48,6 +53,8 @@ controllers.connectionStatusCtrl = require('./controllers/connectionStatusCtrl')
 controllers.tcTimeCtrl = require('./controllers/tcTimeCtrl');
 controllers.overviewCtrl = require('./controllers/overviewCtrl');
 controllers.baseCtrl = require('./controllers/baseCtrl');
+controllers.contestPlanCtrl = require('./controllers/contestPlanCtrl');
+controllers.messageArenaCtrl = require('./controllers/messageArenaCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -59,6 +66,8 @@ directives.conteststats = require('./directives/conteststats');
 directives.connectionstatus = require('./directives/connectionstatus');
 directives.topcodertime = require('./directives/topcodertime');
 directives.overview = require('./directives/overview');
+directives.contestPlan = require('./directives/contestPlan');
+directives.messageArena = require('./directives/messageArena');
 
 /*global $ : false, angular : false */
 /*jslint nomen: true, browser: true */
@@ -70,7 +79,7 @@ directives.overview = require('./directives/overview');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar']);
 
 ///////////////
 // FACTORIES //
@@ -80,17 +89,20 @@ main.factory('sessionHelper', factories.sessionHelper);
 main.factory('auth0', factories.auth0);
 main.factory('socket', factories.socket);
 main.factory('cookies', factories.cookies);
-main.factory('dashboardHelper', factories.dashboardHelper);
 main.factory('appHelper', factories.appHelper);
 main.factory('connectionService', factories.connectionService);
 main.factory('tcTimeService', factories.tcTimeService);
+main.factory('notificationService', factories.notificationService);
+
+/////////////
+// FILTERS //
+main.filter('showByMonth', filters.showByMonth);
 
 /////////////////
 // CONTROLLERS //
 main.controller('anonHomeCtrl', controllers.anonHomeCtrl);
 main.controller('errorCtrl', controllers.errorCtrl);
 main.controller('userProfileCtrl', controllers.userProfileCtrl);
-main.controller('userDashboardCtrl', controllers.userDashboardCtrl);
 main.controller('leaderboardUsersCtrl', controllers.leaderboardUsersCtrl);
 main.controller('activeContestsCtrl', controllers.activeContestsCtrl);
 main.controller('userCodingCtrl', controllers.userCodingCtrl);
@@ -101,7 +113,9 @@ main.controller('contestStatsCtrl', controllers.contestStatsCtrl);
 main.controller('connectionStatusCtrl', controllers.connectionStatusCtrl);
 main.controller('tcTimeCtrl', controllers.tcTimeCtrl);
 main.controller('overviewCtrl', controllers.overviewCtrl);
+main.controller('contestPlanCtrl', controllers.contestPlanCtrl);
 main.controller('baseCtrl', controllers.baseCtrl);
+main.controller('messageArenaCtrl', controllers.messageArenaCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -115,6 +129,8 @@ main.directive('conteststats', directives.conteststats);
 main.directive('connectionstatus', directives.connectionstatus);
 main.directive('topcodertime', directives.topcodertime);
 main.directive('overview', directives.overview);
+main.directive('contestPlan', directives.contestPlan);
+main.directive('messageArena', directives.messageArena);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
@@ -150,8 +166,7 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
                 pageTitle: "Application Dashboard",
                 pageMetaKeywords: "dashboard"
             },
-            templateUrl: 'partials/user.dashboard.html',
-            controller: 'userDashboardCtrl'
+            templateUrl: 'partials/user.dashboard.html'
         })
         .state('user.coding', {
             url: '/coding/{problemId}',

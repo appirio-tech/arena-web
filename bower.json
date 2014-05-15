@@ -22,6 +22,10 @@
     "angular-ui-router": "https://github.com/angular-ui/ui-router.git#master",
     "angular-ui-bootstrap": "https://github.com/angular-ui/bootstrap/archive/gh-pages.zip",
     "angular-timer": "https://github.com/siddii/angular-timer/archive/master.zip",
-    "angular-ui-codemirror": "https://github.com/angular-ui/ui-codemirror.git#bower"
+    "angular-ui-codemirror": "https://github.com/angular-ui/ui-codemirror.git#bower",
+    "angular-ui-calendar": "~0.8.1"
+  },
+  "resolutions": {
+    "jquery": "~2.x"
   }
 }

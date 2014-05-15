@@ -63,7 +63,10 @@ module.exports = function (grunt) {
                     'app/css/local.css',
                     'app/css/topcoder.css',
                     'bower_components/codemirror/lib/codemirror.css',
-                    'bower_components/codemirror/addon/fold/foldgutter.css'
+                    'bower_components/codemirror/addon/fold/foldgutter.css',
+                    'bower_components/fullcalendar/fullcalendar.css',
+                    'thirdparty/jquery.qtip/jquery.qtip.min.css',
+                    'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css'
                 ],
                 // Compile to a single file to add a script tag for in your HTML
                 dest: 'build/css/bundle.css'

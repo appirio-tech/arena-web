@@ -2,12 +2,107 @@
 var config = require('./config');
 var Auth0 = require('auth0-js');
 var socket = require('socket.io-client').connect(config.webSocketURL);
-/*global $ : false, angular : false */
+/*jshint -W097*/
+/*global $ : false, angular : false, require, module*/
 
 ///////////////
 // FACTORIES //
 
 var factories = {};
+
+factories.notificationService = ['$timeout', '$http', 'sessionHelper', function ($timeout, $http, sessionHelper) {
+    var service = {
+        notifications: [],
+        unRead: 0
+    },
+    repeatTimer = null;
+    service.getUnRead = function () {
+        return service.unRead;
+    };
+    service.clearUnRead = function () {
+        service.notifications.forEach(function (message) {
+            message.read = true;
+        });
+        service.unRead = 0;
+    };
+    service.clearNotifications = function () {
+        service.clearUnRead();
+        service.notifications.length = 0;
+        if (repeatTimer) {
+            $timeout.cancel(repeatTimer);
+        }
+    };
+
+    // the central way to add message
+    service.addMessages = function (messages) {
+        // messages: array of message
+        // message: {
+        //   read: boolean - indicate the message is read or not
+        //   type: string - 'general'|'problem'|'round'
+        //   date: mm/dd/yy hh:mm AM|PM
+        //   status: string
+        //   message: string - message content
+        //   action: { 
+        //     question: string - the action question
+        //     target: string - target href (url)
+        //   }
+        // }
+        var i, unreadDelta = 0;
+        for (i = messages.length - 1; i >= 0; i--) {
+            service.notifications.unshift(messages[i]);
+            if (!messages[i].read) {
+                unreadDelta += 1;
+            }
+        }
+        // the change of service.unRead is watched in messageArenaCtrl.js
+        service.unRead += unreadDelta;
+    };
+
+    // demo starts in messageArenaCtrl.js
+    service.startLoadMessages = function () {
+        function loadMessages(url) {
+            $http.get(url).success(function (data) {
+                service.addMessages(data);
+            });
+        }
+        // periodically load messages
+        function repeatLoadMessages() {
+            // demo only
+            if (service.repeatLoading) {
+                if (service.demoing) {
+                    if (service.demoId > service.demoCount) {
+                        service.demoing = false;
+                    } else if (sessionHelper.isLoggedIn()) {
+                        loadMessages('data/notifications-' + service.demoId + '.json');
+                        service.demoId += 1;
+                    }
+                }
+                // request for messages after 4 seconds
+                repeatTimer = $timeout(repeatLoadMessages, 4000);
+            }
+        }
+        service.clearNotifications();
+        service.repeatLoading = true;
+        repeatLoadMessages();
+        // demo only
+        $timeout(function () {
+            service.demoing = true;
+            service.demoId = 0;
+            service.demoCount = 3;
+        }, 1500);
+    };
+    service.resetLoadMessages = function () {
+        service.demoId = 0;
+        service.demoCount = 0;
+        service.demoing = false,
+        service.repeatLoading = false;
+        service.clearNotifications();
+    };
+    service.resetLoadMessages();
+    //demo end
+
+    return service;
+}];
 
 factories.appHelper = [function () {
     var helper = {};
@@ -74,7 +169,6 @@ factories.appHelper = [function () {
         date.setMinutes(minute);
         date.setSeconds(seconds);
         date.setMilliseconds(0);
-
         return date;
     };
 
@@ -119,18 +213,6 @@ factories.tcTimeService = ['$http', 'appHelper', function ($http, appHelper) {
         service.timeObj.startClientTime = +(new Date);
     };
     return service;
-}];
-
-factories.dashboardHelper = [function () {
-    var notifications = [];
-    return {
-        notifications: function () {
-            return notifications;
-        },
-        setNotifications: function (newNotifications) {
-            notifications = newNotifications;
-        }
-    };
 }];
 
 // this service repeatedly updates the connection status
