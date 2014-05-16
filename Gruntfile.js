@@ -99,6 +99,17 @@ module.exports = function (grunt) {
                 files: ['app/**', '!app/js/config.js'],
                 tasks: ['build']
             }
+        },
+        compress: {
+            deploy: {
+                options: {
+                    archive: './build.zip',
+                    mode: 'zip'
+                },
+                files: [
+                    { src: './build/**' }
+                ]
+            }
         }
     });
 
@@ -111,6 +122,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-replace');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-aws');
+    grunt.loadNpmTasks('grunt-contrib-compress');
 
     // The default tasks to run when you type: grunt
     grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'copy:build', 'replace:cdn']);
@@ -120,4 +132,6 @@ module.exports = function (grunt) {
     grunt.registerTask('heroku', ['build']);
 
     grunt.registerTask('deploy-cdn', ['s3:deploy']);
+
+    grunt.registerTask('deploy-compress', ['compress:deploy']);
 };
