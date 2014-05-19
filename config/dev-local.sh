@@ -12,6 +12,7 @@ export NODE_ENV=development
 # API is on different domain than where the client was served...
 # export API_DOMAIN=www.example.com/api
 
+export AUTH0_CONNECTION=LDAP
 export AUTH0_DOMAIN=sma.auth0.com
 export AUTH0_CLIENT_ID=CMaBuwSnY0Vu68PLrWatvvu3iIiGPh7t
 export CALLBACK_URL=https://tc.cloud.topcoder.com/reg2/callback.action
@@ -25,10 +26,10 @@ export SSO_KEY=tcsso_vm
 # the HTTP server port
 export PORT=3000
 
-export STATIC_FILE_HOST=http://arena.cloud.topcoder.com:$PORT
+export STATIC_FILE_HOST="http://localhost:$PORT"
 
 export AWS_ACCESS_KEY_ID=
 export AWS_ACCESS_KEY=
 export AWS_BUCKET=
-#export CDN_BASE_PATH='https://tc-content.s3.amazonaws.com/arena/web-v<%= pkg.version %>'
-export CDN_BASE_PATH='http://localhost:3000'
+export AWS_FOLDER='arena/md/web-v<%= pkg.version %>/'
+
