@@ -26,6 +26,7 @@ module.exports = function (grunt) {
                 options: {
                     patterns: [
                         { match : 'AUTH0_CLIENT_ID', replacement: process.env.AUTH0_CLIENT_ID },
+                        { match : 'AUTH0_DOMAIN', replacement: process.env.AUTH0_DOMAIN },
                         { match : 'CALLBACK_URL', replacement: process.env.CALLBACK_URL },
                         { match : 'WEB_SOCKET_URL', replacement: process.env.WEB_SOCKET_URL },
                         { match : 'API_DOMAIN', replacement: process.env.API_DOMAIN },
