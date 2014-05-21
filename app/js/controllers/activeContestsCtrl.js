@@ -56,7 +56,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
     // Renders the TC TIME
     setInterval(function () {
         $rootScope.$apply(function () {
-            $rootScope.now = new Date();
+            $rootScope.now = $rootScope.getCurrentTCTime();
         });
     }, 1000);
 
@@ -132,18 +132,29 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
         if (contest.action === 'Enter') {
             // the button is 'Enter'
             socket.emit(helper.EVENT_NAME.EnterRoundRequest, {roundID: roundID});
+            socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
+
             socket.on(helper.EVENT_NAME.RoomInfoResponse, function (data) {
                 socket.getSocket().removeAllListeners(helper.EVENT_NAME.RoomInfoResponse);
                 roomID = data.roomID;
                 $scope.okDisabled = false;
+
+                var divisionID = null;
+                angular.forEach(contest.coderRooms, function (room) {
+                    if (room.roomID === data.roomID) {
+                        divisionID = room.divisionID;
+                    }
+                });
+
+                if (divisionID) {
+                    $state.go('user.contest', {
+                        contestId: contest.roundID,
+                        divisionId: divisionID
+                    });
+                }
             });
 
             socket.getSocket().removeAllListeners(helper.EVENT_NAME.EndSyncResponse);
-            socket.on(helper.EVENT_NAME.EndSyncResponse, function () {
-                socket.emit(helper.EVENT_NAME.MoveRequest, {moveType: 4, roomID: roomID});
-                socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
-                $state.go('user.contest', {contestId: contest.id});
-            });
         } else {
             socket.emit(helper.EVENT_NAME.RegisterInfoRequest, {roundID: roundID});
 
