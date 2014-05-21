@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This is the resolver.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Contest Phase Movement):
+ * - Updated CreateProblemsResponse handler to move problems into rounds.
+ * - Added getCurrentTCTime to get TC time.
+ *
+ * @author TCSASSEMBLER
+ * @version 1.1
+ */
 ///////////////
 // RESOLVERS //
 'use strict';
@@ -25,7 +38,7 @@ var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
 resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper',
     'socket', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket) {
-    var deferred, sso = sessionHelper.getTcsso(), requestId,
+    var deferred, sso = sessionHelper.getTcsso(), requestId, timeDiff = 0,
         forceLogout = function () {
             $rootScope.isLoggedIn = false;
             sessionHelper.clear();
@@ -107,7 +120,13 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
     // handle the create problems response
     socket.on(helper.EVENT_NAME.CreateProblemsResponse, function (data) {
-        $rootScope.problems = data;
+        // move it to $rootScope.roundData as problems are associated with round
+        if (angular.isDefined($rootScope.roundData[data.roundID])) {
+            if (angular.isUndefined($rootScope.roundData[data.roundID].problems)) {
+                $rootScope.roundData[data.roundID].problems = {};
+            }
+            $rootScope.roundData[data.roundID].problems[data.divisionID] = data.problems;
+        }
     });
 
     // handle the keep alive initialization data response
@@ -126,6 +145,27 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     // handle the sync time response
     socket.on(helper.EVENT_NAME.SynchTimeResponse, function (data) {
         $rootScope.now = data.time;
+        timeDiff = new Date().getTime() - data.time;
+    });
+
+    /**
+     * Get current TC time.
+     * it's a temp fix for server time, we will use tcTimeService once it's implemented.
+     *
+     * @returns {number} the time.
+     */
+    $rootScope.getCurrentTCTime = function () {
+        return new Date().getTime() - timeDiff;
+    };
+
+    // handle create room list response
+    socket.on(helper.EVENT_NAME.CreateRoomListResponse, function (data) {
+        if ($rootScope.roundData[data.roundID]) {
+            if (data.adminRoom) {
+                $rootScope.roundData[data.roundID].adminRoom = data.adminRoom;
+            }
+            $rootScope.roundData[data.roundID].coderRooms = data.coderRooms;
+        }
     });
 
     // handle the end sync response
@@ -141,7 +181,6 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         deferred.resolve();
         return deferred.promise;
     });
-
 
     // request login
     socket.emit(helper.EVENT_NAME.SSOLoginRequest, {sso: sso});
