@@ -14,7 +14,7 @@ module.exports = function (grunt) {
             deploy: {
                 cwd: 'build/',
                 src: '**',
-                dest: 'arena/web-v<%= pkg.version %>/'
+                dest: process.env.AWS_FOLDER
             }
         },
         clean : {
@@ -26,6 +26,8 @@ module.exports = function (grunt) {
                 options: {
                     patterns: [
                         { match : 'AUTH0_CLIENT_ID', replacement: process.env.AUTH0_CLIENT_ID },
+                        { match : 'AUTH0_DOMAIN', replacement: process.env.AUTH0_DOMAIN },
+                        { match : 'AUTH0_CONNECTION', replacement: process.env.AUTH0_CONNECTION },
                         { match : 'CALLBACK_URL', replacement: process.env.CALLBACK_URL },
                         { match : 'WEB_SOCKET_URL', replacement: process.env.WEB_SOCKET_URL },
                         { match : 'API_DOMAIN', replacement: process.env.API_DOMAIN },
@@ -99,6 +101,17 @@ module.exports = function (grunt) {
                 files: ['app/**', '!app/js/config.js'],
                 tasks: ['build']
             }
+        },
+        compress: {
+            deploy: {
+                options: {
+                    archive: './build.zip',
+                    mode: 'zip'
+                },
+                files: [
+                    { src: './build/**' }
+                ]
+            }
         }
     });
 
@@ -111,6 +124,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-replace');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-aws');
+    grunt.loadNpmTasks('grunt-contrib-compress');
 
     // The default tasks to run when you type: grunt
     grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'copy:build', 'replace:cdn']);
@@ -120,4 +134,6 @@ module.exports = function (grunt) {
     grunt.registerTask('heroku', ['build']);
 
     grunt.registerTask('deploy-cdn', ['s3:deploy']);
+
+    grunt.registerTask('deploy-compress', ['compress:deploy']);
 };

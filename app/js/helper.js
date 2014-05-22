@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This module contains constants.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Contest Phase Movement):
+ * - Added PhaseDataResponse, SystestProgressResponse, RegisterUsersRequest and RegisteredUsersResponse to events.
+ *
+ * @author TCSASSEMBLER
+ * @version 1.1
+ */
+
 module.exports = {
     // Represents the event names
     EVENT_NAME: {
@@ -15,7 +28,19 @@ module.exports = {
         EndSyncResponse: 'EndSyncResponse',
         CreateProblemsResponse: 'CreateProblemsResponse',
         UpdateRoundListResponse: 'UpdateRoundListResponse',
-        EnableRoundResponse: 'EnableRoundResponse'
+        EnableRoundResponse: 'EnableRoundResponse',
+        RegisterInfoRequest: 'RegisterInfoRequest',
+        PopUpGenericResponse: 'PopUpGenericResponse',
+        RegisterRequest: 'RegisterRequest',
+        EnterRoundRequest: 'EnterRoundRequest',
+        RoomInfoResponse: 'RoomInfoResponse',
+        EnterRequest: 'EnterRequest',
+        MoveRequest: 'MoveRequest',
+        CreateRoomListResponse: 'CreateRoomListResponse',
+        PhaseDataResponse: 'PhaseDataResponse',
+        SystestProgressResponse: 'SystestProgressResponse',
+        RegisterUsersRequest: 'RegisterUsersRequest',
+        RegisteredUsersResponse: 'RegisteredUsersResponse'
     },
 
     // Represents the phase names.

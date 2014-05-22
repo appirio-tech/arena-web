@@ -178,7 +178,7 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
             controller: 'userCodingCtrl'
         })
         .state('user.contest', {
-            url: '/contests/{contestId}',
+            url: '/contests/{contestId}/{divisionId}',
             data: {
                 pageTitle: "Contest",
                 pageMetaKeywords: "contest"

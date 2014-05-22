@@ -1,20 +1,78 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This controller handles user contest page.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Contest Phase Movement):
+ * - Updated to use real data.
+ *
+ * @author TCSASSEMBLER
+ * @version 1.1
+ */
 'use strict';
+/*global module, angular*/
 
-var userContestCtrl = ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'appHelper',
-    function ($scope, $http, $rootScope, $stateParams, $state, appHelper) {
+/**
+ * The helper.
+ *
+ * @type {exports}
+ */
+var helper = require('../helper');
+
+/**
+ * The main controller.
+ *
+ * @type {*[]}
+ */
+var userContestCtrl = ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'socket',
+    function ($scope, $http, $rootScope, $stateParams, $state, socket) {
+        // copied from userDashboardCtrl
+        $scope.notifications = [];
+        $rootScope.notifications = [];
+
+        $http.get('data/notifications.json').success(function (data) {
+            $scope.notifications = data;
+            $rootScope.notifications = data;
+        });
+
         // load contest data with contest id
-        $scope.contest = {};
-        $http.get('data/contest-' + $stateParams.contestId + '.json').
-            success(function (data) {
-                // set contest data
-                $scope.contest = data;
-                $scope.contest.tcCurrentTime = appHelper.parseDate(data.tcCurrentTime);
-                // set page title
-                $state.current.data.pageTitle = $scope.contest.name;
-                $state.current.data.pageMetaKeywords = $scope.contest.name + ",contest";
-                // broadcast contest-loaded message to child states.
-                $scope.$broadcast('contest-loaded');
-            });
+        $scope.roundID = $stateParams.contestId;
+        $scope.divisionID = $stateParams.divisionId;
+        $scope.contest = $rootScope.roundData[$scope.roundID];
+
+        /**
+         * Init with contest.
+         *
+         * @param contest
+         */
+        var initWithContest = function (contest) {
+            // set page title
+            $state.current.data.pageTitle = contest.contestName;
+            $state.current.data.pageMetaKeywords = contest.contestName + ",contest";
+        };
+
+        // handle update round list response
+        socket.on(helper.EVENT_NAME.UpdateRoundListResponse, function (data) {
+            if (data.action === 1) {
+                $rootScope.roundData[data.roundData.roundID] = data.roundData;
+
+                if (String($scope.roundID) === String(data.roundData.roundID)) {
+                    $scope.contest = $rootScope.roundData[$scope.roundID];
+                    initWithContest($scope.contest);
+                }
+            } else if (data.action === 2) {
+                delete $rootScope.roundData[data.roundData.roundID];
+
+                if (String($scope.roundID) === String(data.roundData.roundID)) {
+                    $scope.contest = null;
+                }
+            }
+        });
+
+        if ($scope.contest) {
+            initWithContest($scope.contest);
+        }
     }];
 
 module.exports = userContestCtrl;
