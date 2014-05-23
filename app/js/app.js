@@ -1,4 +1,7 @@
 'use strict';
+/*jshint -W097*/
+/*jshint strict:false*/
+/*global require*/
 require('./../../thirdparty/jquery/jquery');
 require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
@@ -55,6 +58,8 @@ controllers.overviewCtrl = require('./controllers/overviewCtrl');
 controllers.baseCtrl = require('./controllers/baseCtrl');
 controllers.contestPlanCtrl = require('./controllers/contestPlanCtrl');
 controllers.messageArenaCtrl = require('./controllers/messageArenaCtrl');
+controllers.contestSummaryCtrl = require('./controllers/contestSummaryCtrl');
+controllers.userContestDetailCtrl = require('./controllers/userContestDetailCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -68,6 +73,7 @@ directives.topcodertime = require('./directives/topcodertime');
 directives.overview = require('./directives/overview');
 directives.contestPlan = require('./directives/contestPlan');
 directives.messageArena = require('./directives/messageArena');
+directives.contestSummary = require('./directives/contestSummary');
 
 /*global $ : false, angular : false */
 /*jslint nomen: true, browser: true */
@@ -116,6 +122,9 @@ main.controller('overviewCtrl', controllers.overviewCtrl);
 main.controller('contestPlanCtrl', controllers.contestPlanCtrl);
 main.controller('baseCtrl', controllers.baseCtrl);
 main.controller('messageArenaCtrl', controllers.messageArenaCtrl);
+main.controller('baseCtrl', controllers.baseCtrl);
+main.controller('contestSummaryCtrl', controllers.contestSummaryCtrl);
+main.controller('userContestDetailCtrl', controllers.userContestDetailCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -131,6 +140,7 @@ main.directive('topcodertime', directives.topcodertime);
 main.directive('overview', directives.overview);
 main.directive('contestPlan', directives.contestPlan);
 main.directive('messageArena', directives.messageArena);
+main.directive('contestSummary', directives.contestSummary);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
@@ -185,6 +195,15 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
             },
             templateUrl: 'partials/user.contest.html',
             controller: 'userContestCtrl'
+        })
+        .state('user.contestSummary', {
+            url: '/contests/{contestId}/{divisionId}/summary/{viewOn}',
+            data: {
+                pageTitle: "Contest",
+                pageMetaKeywords: "contest"
+            },
+            templateUrl: 'partials/user.contest.detail.html',
+            controller: 'userContestDetailCtrl'
         })
         .state('user.profile', {
             url: '/profile',
