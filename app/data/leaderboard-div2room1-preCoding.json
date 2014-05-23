@@ -1,0 +1,132 @@
+{
+    "leaderboard": [
+        {
+            "roomId": 1,
+            "handle": "lunarkid.div2",
+            "rating": 5432,
+            "results": [
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                }
+            ]
+        },
+        {
+            "roomId": 1,
+            "handle": "gh3ablo.div2",
+            "rating": 3456,
+            "results": [
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                }
+            ]
+        },
+        {
+            "roomId": 1,
+            "handle": "iamtong.div2",
+            "rating": 2345,
+            "results": [
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                }
+            ]
+        },
+        {
+            "roomId": 1,
+            "handle": "oninxronda.div2",
+            "rating": 1345,
+            "results": [
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                }
+            ]
+        },
+        {
+            "roomId": 1,
+            "handle": "user.handle_4.div2",
+            "rating": 500,
+            "results": [
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                }
+            ]
+        },
+        {
+            "roomId": 1,
+            "handle": "user.handle_5.div2",
+            "rating": 500,
+            "results": [
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                }
+            ]
+        },
+        {
+            "roomId": 1,
+            "handle": "user.handle_6.div2",
+            "rating": 500,
+            "results": [
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                }
+            ]
+        },
+        {
+            "roomId": 1,
+            "handle": "twight",
+            "rating": 500,
+            "results": [
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                },
+                {
+                    "status": "Unopened"
+                }
+            ]
+        }
+    ]
+}

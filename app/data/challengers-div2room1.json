@@ -1,0 +1,52 @@
+{
+    "challengers": [
+        {
+            "roomId": 1,
+            "handle": "lunarkid.div2",
+            "rating": 5432,
+            "points": 1000,
+            "success": 7,
+            "total": 7
+        },
+        {
+            "roomId": 1,
+            "handle": "gh3ablo.div2",
+            "rating": 3456,
+            "points": 900,
+            "success": 3,
+            "total": 4
+        },
+        {
+            "roomId": 1,
+            "handle": "iamtong.div2",
+            "rating": 2345,
+            "points": 800,
+            "success": 5,
+            "total": 10
+        },
+        {
+            "roomId": 1,
+            "handle": "oninxronda.div2",
+            "rating": 1345,
+            "points": 700,
+            "success": 2,
+            "total": 12
+        },
+        {
+            "roomId": 1,
+            "handle": "twight.div2",
+            "rating": 500,
+            "points": 600,
+            "success": 1,
+            "total": 12
+        },
+        {
+            "roomId": 1,
+            "handle": "user.handle_4.div2",
+            "rating": 500,
+            "points": 0,
+            "success": 0,
+            "total": 12
+        }
+    ]
+}
