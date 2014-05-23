@@ -32,4 +32,3 @@ export AWS_ACCESS_KEY_ID=
 export AWS_ACCESS_KEY=
 export AWS_BUCKET=
 export AWS_FOLDER='arena/md/web-v<%= pkg.version %>/'
-

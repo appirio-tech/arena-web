@@ -27,15 +27,6 @@ var helper = require('../helper');
  */
 var userContestCtrl = ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'socket',
     function ($scope, $http, $rootScope, $stateParams, $state, socket) {
-        // copied from userDashboardCtrl
-        $scope.notifications = [];
-        $rootScope.notifications = [];
-
-        $http.get('data/notifications.json').success(function (data) {
-            $scope.notifications = data;
-            $rootScope.notifications = data;
-        });
-
         // load contest data with contest id
         $scope.roundID = $stateParams.contestId;
         $scope.divisionID = $stateParams.divisionId;

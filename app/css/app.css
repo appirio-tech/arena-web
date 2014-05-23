@@ -28,7 +28,8 @@ body a {cursor: pointer;}
 .dashboard .titleBar .brand,
 .panel-custom .summaryPanel:after,
 .panel-custom .schedulePanel:after,
-.panel-custom .statusPanel:after {
+.panel-custom .statusPanel:after,
+.panelSummary .summaryWrapper div:before{
     background-image: url(../img/sprite.png);
 }
 .dashboard .breadcrumb li:after,
@@ -54,7 +55,9 @@ body a {cursor: pointer;}
 .panelOverview .panel-heading .showSectionLbl:before,
 .messageArena .panelHeader .btnClose:before,
 .messageArena .panelHeader .legends label:before,
-.messageArena .messageBox .mItem:before   {
+.messageArena .messageBox .mItem:before,
+.detailPage section .heading .filterArea a:before,
+.filterPanel .closeLink:before  {
     background-image: url(../img/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
@@ -81,6 +84,28 @@ body a {cursor: pointer;}
 .calendar .fc-button-next .fc-text-arrow,
 .listView .listHeader .btnCtrl {
     background-image: url(../img/sprite-contestPlan.png);
+}
+.detailPage section .heading .expandIcon,
+.detailPage .table>tbody>tr>td .icon,
+.detailPage .table>thead>tr>th .sort,
+.detailPage .leaderboardWrapper .heading .viewFilter .showLBLbl:before,
+.filterPanel .contentWrapper .dropdown .arrow,
+.detailPage section .table>thead>tr>th .arrow {
+    background-image: url(../img/sprite-room-summary.png);
+    background-repeat: no-repeat;
+}
+/*common button style*/
+.btn {
+    height: 36px;
+    min-width: 36px;
+    text-align: center;
+    color: #fff;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.btn:hover {
+    color: #fff;
 }
 /***************header style*/
 .anon-header,
@@ -109,14 +134,14 @@ body a {cursor: pointer;}
 }
 .anon-header .navbar-title-text,
 .header .navbar-title-text {
-    margin-left: 5px;/*update, hide temporarily*/
+    margin-left: 5px;
     display: inline-block;
     padding-top: 1px;
 }
 /* topcoder logo */
 .anon-header .navbar .navbar-brand, 
 .navbar-brand {
-    background-position: -21px -25px;/*update*/
+    background-position: -21px -25px;
     background-repeat: no-repeat;
     padding: 22px 0 0 176px;
     height: 0;
@@ -135,7 +160,7 @@ body a {cursor: pointer;}
     margin-left: 65px;
     height: 60px;
 }
-.header .navIcons > li{ /*update*/
+.header .navIcons > li{ 
     width: 60px;
     height: 60px;
     border-left: 1px solid #2d2f30;
@@ -145,8 +170,7 @@ body a {cursor: pointer;}
     width: 61px;
     border-right: 1px solid #2d2f30;
 }
-
-.header .navIcons > li > .icon{ /*update*/
+.header .navIcons > li > .icon{ 
     padding:0;
     width: 0;
     height: 0;
@@ -154,7 +178,8 @@ body a {cursor: pointer;}
     padding-top: 60px;
     overflow: hidden;
 }
-.header .navIcons > li > .tip {/*tooltip*/
+/*tooltip*/
+.header .navIcons > li > .tip {
     position: absolute;
     top: 0;
     left: 0;
@@ -193,7 +218,7 @@ body a {cursor: pointer;}
 .navIcons .iconTS:before{
     background-position: -175px 0;
 }
-.navIcons .active .icon:after { /*update*/
+.navIcons .active .icon:after { 
     content: '';
     display: block;
     height: 5px;
@@ -227,8 +252,10 @@ body a {cursor: pointer;}
 .navbar-collapse {
     margin-right: 30px;
 }
-.header .nav > li:hover .icon,
-.header .userInfo > li > a:hover {opacity: 0.7;}
+ .header .nav > li:hover .icon,
+.header .userInfo > li > a:hover {
+    opacity: 0.7;
+}
 .header .nav > li > .icon:hover,
 .header .nav > li > .tip:hover,
 .nav > li > a:focus,
@@ -237,7 +264,7 @@ body a {cursor: pointer;}
     text-decoration:none;
 }
 
-.header .navbar-right.userInfo { /*update*/
+.header .navbar-right.userInfo { 
     color: #fff;
     margin-right: 0;
 }
@@ -270,9 +297,9 @@ body a {cursor: pointer;}
     background: #f40000;
     text-align: center;
     color: #fff;
-    border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
+    border-radius: 50%;
 }
 /*add animation when new message comes*/
 #notiIndicator.animationaAlert {
@@ -303,12 +330,12 @@ body a {cursor: pointer;}
 .header .navbar-toggle{
     background-color: transparent;
     background-image: none;
-    border:1px solid #323435;/*update*/
+    border:1px solid #323435;
     border-radius: 4px;
     float:right;
     margin-bottom: 8px;
     margin-right: 15px;
-    margin-top: 11px;/*update*/
+    margin-top: 11px;
     position: relative;
     padding:9px 10px;
 }
@@ -322,9 +349,9 @@ body a {cursor: pointer;}
     border-color: rgba(255,255,255,0.1);
     background: #151718;
     background: rgba(21,23,24,0.98);
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
     -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
     -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
     position: absolute;
     top: 52px;
     right: -25px;
@@ -350,14 +377,12 @@ body a {cursor: pointer;}
     border-left: 11px solid transparent;
     border-right: 11px solid transparent;
     color: #151718;
-    /*color: rgba(21,23,24,0.98);*/
     position: absolute;
     top: -10px;
     right: 43px;
 }
 .header .navIcons .themePanel h4,
 .header .navIcons .themePanel .themeItem {
-    /*font-weight: 300;*//*added*/
     font-size: 14px;
     height: 52px;
     border-bottom: 1px solid #1f444e;
@@ -388,7 +413,6 @@ body a {cursor: pointer;}
 .header .navIcons .themePanel .themeItem .themeLbl {
     margin: 0;
     cursor: pointer;
-    /*font-weight: 300;*//*added*/
 }
 .header .navIcons .themePanel .themeItem .themeLbl:hover {
     text-decoration: underline;
@@ -412,19 +436,12 @@ body a {cursor: pointer;}
 }
 .header .navIcons .themePanel .themeItem .themeRadio {display: none;}
 .header .navIcons .themePanel .btn {
-    color: #fff;
     font-size: 16px;
-    /*font-weight: 300;*/ /*added*/
     background: #0f9abd;
     display: block;
-    height: 36px;
     width: 150px;
-    text-align: center;
     margin: 20px auto;
     padding-top: 5px;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
 }
 .header .navIcons .themePanel .btn:hover {
     opacity: 0.9;
@@ -438,9 +455,9 @@ body a {cursor: pointer;}
 .hero .form input,.form a,.codeArea .socialLinks a{
     width:168px;
     height: 36px;
-    border-radius:2px;
-    -moz-border-radius:2px;
     -webkit-border-radius:2px;
+    -moz-border-radius:2px;
+    border-radius:2px;
     padding:10px;
 }
 /* topcoder account login part */
@@ -457,8 +474,8 @@ body a {cursor: pointer;}
     outline-width: 0; 
 }
 .hero .form .tcAccountBox .btn-lg,
-
-.hero .form .social .btn-lg, .codeArea .socialLinks .btn-lg {
+.hero .form .social .btn-lg, 
+.codeArea .socialLinks .btn-lg {
     background: #0ea7cd;
     border: 0;
     margin-left: 111px;
@@ -553,8 +570,6 @@ body a {cursor: pointer;}
 
 .hero{
     min-height:500px;
-    /*padding-bottom:40px;
-    padding-top:62px;*/
 }
 .hero .signup .separator{
     height: 177px;
@@ -767,7 +782,6 @@ body a {cursor: pointer;}
     font-size: 14px;
     color: #687376;
     line-height: 22px;
-    /*padding-left: 34px;*/
     text-align: left;
 }
 .connectionStatus>label {
@@ -777,9 +791,9 @@ body a {cursor: pointer;}
     display: inline-block;
     height: 11px;
     width: 11px;
-    border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
+    border-radius: 50%;
 }
 .connectionStatus .green {
     background: #5fb806;
@@ -836,15 +850,13 @@ body a {cursor: pointer;}
 .codeArea .voteDown:before {left: 1px; background-position: -25px -25px;}
 .codeArea .shareLink{
     height: 205px;
-    width: 186px;/*
-    padding: 32px 10px 5px 8px;*/
+    width: 186px;
     position: absolute;
     top: 8px;
     right: 10px;
     text-align: right;
     z-index: 2;
 }
-/*.codeArea .shareLink > .active {background-position: -354px -293px;}*/
 .codeArea .shareLink > ul {list-style: none; padding-left: 0;position: relative;}
 .codeArea .shareLink > ul > li > a {
     position: absolute; 
@@ -853,7 +865,6 @@ body a {cursor: pointer;}
     z-index: 1001; 
     color: #687376;
     padding-right: 22px;
-    /*font-weight: 300;*/
 }
 .codeArea .shareLink > ul > li > a:hover {text-decoration: none; color: #fff;}
 .codeArea .shareLink > ul > li > a:after {
@@ -872,7 +883,6 @@ body a {cursor: pointer;}
     background-position: -354px -293px;
     border: 0;
     margin: 0;
-    /*padding: 0;*/
     background-color: transparent;
     width: 186px;
     height: 205px;
@@ -890,7 +900,6 @@ body a {cursor: pointer;}
     padding-right: 31px;
 }
 .contest .titleBar .shareLink a {
-    /*content: "";*/
     display: block;
     height: 12px;
     width: 12px;
@@ -900,16 +909,8 @@ body a {cursor: pointer;}
     top: 6px;
     right: 9px;
 }
+
 /*********** footer style */
-/*footer{
-    bottom: 0;
-    background-color:#000;
-    color:#FFF;
-    margin-top:20px;
-    padding:10px 0;
-    position: fixed;
-    width: 100%;
-    z-index: 100;*/
 footer{
     background-color:#000;
     color:#FFF;
@@ -1042,12 +1043,11 @@ footer .right>span:nth-child(2) {
 .panel-custom {
     background: #151718;
     width: 759px;
-    /*border-width: 0;*/
     border: 1px solid #234760;
     height: 315px;
-    border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
+    border-radius: 0;
 }
 .panelContestStat {
     width: 407px;
@@ -1058,13 +1058,12 @@ footer .right>span:nth-child(2) {
     line-height: 25px;
     padding: 8px 31px;
     background: #234760;
-    border-radius: 0;
     -webkit-border-radius:0;
     -moz-border-radius: 0;
+    border-radius: 0;
     height: 40px;
 }
 .panel-custom .panel-body {
-   /* border: 1px solid #234760;*/
     border-width: 0; 
     padding: 14px 0 0;
     margin: 0;
@@ -1074,16 +1073,10 @@ footer .right>span:nth-child(2) {
     padding: 0 30px;
 }
 .panel-custom .mainContent .btn {
-    height: 36px;
     width: 94px;
     background: #0999d1;
-    color: #fff;
-    border-radius: 2px;
-    -webkit-border-radius:2px;
-    -moz-border-radius:2px;
     line-height: 27px;
     float: right;
-    text-align: center;
     border: 0;
 }
 .panel-custom .mainContent .btn:hover {background: #3aadda;}
@@ -1106,7 +1099,6 @@ footer .right>span:nth-child(2) {
 .panel-custom .summaries {
     height: 115px;
     overflow-x: hidden;
-    /*overflow-y: scroll;*/
     overflow-y: auto;
 }
 .panel-custom .summaryPanel,
@@ -1146,8 +1138,6 @@ footer .right>span:nth-child(2) {
 .panel-custom .schedulePanel .title {width:180px;}
 .panel-custom .schedulePanel .startIn,.panel-custom .schedulePanel .endIn {width: 72px;}
 .panel-custom .schedulePanel .startIn>span,.panel-custom .schedulePanel .endIn>span{display: inline;}
-/*.panel-custom .schedulePanel .startTime {width: 215px;}
-.panel-custom .schedulePanel .endTime {width: 130px;}*/
 .panel-custom .schedulePanel .startTime {width: 200px;}
 .panel-custom .schedulePanel .endTime {width: 160px;}
 .panel-custom .statusPanel .leftSide,
@@ -1179,7 +1169,6 @@ footer .right>span:nth-child(2) {
     clear:both;
     border-top: 1px solid #234760;
     line-height: 15px;
-    /*font-weight: 300;*//*Light*/
     color: #687376;
     padding: 10px 30px 14px;
 }
@@ -1207,9 +1196,9 @@ footer .right>span:nth-child(2) {
     width: auto;
     height: auto;
     margin-bottom: 0;
-    border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
+    border-radius: 0;
 }
 .panelCodeProblem .panel-heading,.panelCodeEditor .panel-heading {padding-top: 6px;}
 .panelCodeProblem .panel-heading > a,.panelCodeEditor .panel-heading > a {
@@ -1219,9 +1208,6 @@ footer .right>span:nth-child(2) {
 .panelCodeProblem .panel-heading {
     background: #1f444e; 
     height: 41px; 
-    /*border-bottom-color: #151718;
-    border-left: 1px solid #1f444e;
-    border-right: 1px solid #1f444e;*/
 }
 .panelCodeEditor .panel-heading {background: #1f444e;height: 41px;}
 .panelCodeProblem .panel-heading > a:before,
@@ -1240,11 +1226,9 @@ footer .right>span:nth-child(2) {
 .panelCodeProblem .panel-heading > a,.panelCodeEditor .panel-heading > a{color: #fff;}
 .panelCodeProblem .panel-heading > a:hover,.panelCodeEditor .panel-heading > a:hover {text-decoration: none;}
 .panelCodeProblem .panel-body {
-    /*padding: 14px 31px 14px;*/
     border-top: 0;
     border-color: #1f444e;
     padding: 1px 0 0;
-    /*height: 170px;*/
 }
 .panelCodeEditor .panel-body {
     border-color:#1f444e;
@@ -1254,19 +1238,17 @@ footer .right>span:nth-child(2) {
     padding: 14px 31px 14px;
     line-height: 20px;
     height: 169px;
-    /*height: 143px;*/
     overflow-x: hidden;
     overflow-y: scroll; 
 }
 /* code editor widget */
 .panelCodeEditor {
     width: auto;
-    /*height: 559px;*/
     height: auto;
     margin-bottom: 30px;
-    border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
+    border-radius: 0;
 }
 .panelCodeEditor .panel-heading {
     padding-bottom: 6px;
@@ -1278,7 +1260,6 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .panel-heading ul {
     padding-left: 48px; 
     font-size: 13px;
-    /*font-weight:300; Light*/
     color: #0bbbe7;
 }
 .panelCodeEditor .panel-heading > ul > li {padding-left: 21px; position: relative;padding-top: 2px;}
@@ -1302,22 +1283,18 @@ footer .right>span:nth-child(2) {
     height: 30px;
     background: transparent;
     width: 136px;
-    /*border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;*/
     font-size: 13px;
     font-weight: 300;/*Light*/
     border-width: 0;
 }
-/*.panelCodeEditor .panel-heading .rightPart input:focus {outline: none;}*/
 .panelCodeEditor .panel-heading .rightPart div {display: inline-block;}
 
 .panelCodeEditor .panel-heading .rightPart .findInput {
     height: 30px;
     background: #162f36;
-    border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
+    border-radius: 2px;
     width: 168px;
     padding-left: 10px;
     position: relative;
@@ -1337,9 +1314,9 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .panel-heading .rightPart .gotoInput input {
     width: 68px;
     background: #162f36;
-    border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
+    border-radius: 2px;
     margin-left: 8px;
     margin-right: 30px;
     padding-left: 10px;
@@ -1351,9 +1328,9 @@ footer .right>span:nth-child(2) {
     position: absolute;
     right: 0;
     padding: 15px 14px;
-    border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
+    border-radius: 2px;
     background: #162f36;
 }
 .panelCodeEditor .panel-heading .rightPart .gotoInput .arrow:hover {background: #0c191d; }
@@ -1375,7 +1352,6 @@ footer .right>span:nth-child(2) {
     border-bottom: 0;
     position: relative;
 }
-/*.panelCodeEditor .toolBar ul {padding-left: 0;}*/
 .panelCodeEditor .toolBar .settingsToggle {
     position: absolute;
     left: 0;
@@ -1447,9 +1423,9 @@ footer .right>span:nth-child(2) {
     background-color: rgba(21, 23, 24, 0.98);
     border: 1px solid #fff;
     border-color: rgba(255, 255, 255, 0.16);
-    border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
+    border-radius: 2px;
     color: #fff;
     padding: 4px 0 0 10px;
 }
@@ -1481,9 +1457,9 @@ footer .right>span:nth-child(2) {
     width: 20px;
     border:1px solid #fff;
     border-color: rgba(255, 255, 255, 0.16);
-    border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
+    border-radius: 50%;
     background: transparent;
     position: absolute;
     left: 0;
@@ -1496,13 +1472,7 @@ footer .right>span:nth-child(2) {
     font-size: 16px;
     display: block;
     width: 150px;
-    height: 36px;
-    text-align: center;
-    color:#fff;
     background: #0f9abd;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
     margin-top: 19px;
 }
 .panelCodeEditor .panel-body .toolBar .active .settingsPanel {z-index: 20;}
@@ -1538,13 +1508,11 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 107px;text-align: left;}
 .panelCodeEditor .toolBar .testToggle {
     display: inline-block;
-    /*text-align: right;*/
     width: 102px;
     height: 35px;
     padding-top: 4px; 
     padding-left: 26px;
     text-align: left;
-    /*font-weight: 300;*/
     color: #fea700;
     position: absolute;
     right: 0;
@@ -1582,7 +1550,6 @@ footer .right>span:nth-child(2) {
     width: 348px;
     padding-right: 18px;
     overflow: hidden;
-    /*padding: 37px 5px 5px 3px;*/
     z-index: -1;
     background: #151718;
     background: rgba(21,23,24,0.98);
@@ -1624,9 +1591,9 @@ footer .right>span:nth-child(2) {
     display: block;
     height: 15px;
     width: 15px;
-    border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
+    border-radius: 50%;
     background: transparent;
 }
 .panelCodeEditor .testPanel header .green {background: #5fb806;}
@@ -1661,14 +1628,9 @@ footer .right>span:nth-child(2) {
     margin-bottom: 10px;
 }
 .panelCodeEditor .testPanel .btn{
-    color: #fff;
     background: #0f9abd;
     font-size: 16px;
     font-weight: 300;
-    text-align: center;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
 }
 .panelCodeEditor .testPanel .content .btnAlt {
     width: 80px;
@@ -1677,9 +1639,9 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .testPanel .content .btnAlt + .btnAlt {margin-left: 16px; }
 .panelCodeEditor .testPanel .content input[type="text"] {
     background: #151718;
-    border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
+    border-radius: 2px;
     border-color: #fff;
     border-color: rgba(255,255,255,0.16);
     padding-left: 10px;
@@ -1757,22 +1719,20 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeEditor .CodeMirror {
     height: 475px;
-    /*padding-right: 15px;*/
     margin-right: 15px;
     font-size: 13px;
     line-height: 22px;
     font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
     letter-spacing: 0.05em;
-    /*padding-top: 7px;*/
 }
 .panelCodeEditor .CodeMirror-linenumbers {width: 25px;}
 .panelCodeEditor .CodeMirror-linenumber {text-align: left;padding-left: 7px;}
 .panelCodeEditor .panel-body .errorBar {
     position: absolute;
     right: 1px;
-    top: 41px;/*76px;*/
+    top: 41px;
     width: 14px;
-    height: 474px;/*480px;*/
+    height: 474px;
     background: #232628;
 }
 .errorBar>div {
@@ -1786,9 +1746,9 @@ footer .right>span:nth-child(2) {
 
 /******************* count down widget */
 .panelCountDown {
-    border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
+    border-radius: 0;
     background: #1b2920;
     border: 1px solid #5fb806;
     height: 92px;
@@ -1798,7 +1758,6 @@ footer .right>span:nth-child(2) {
 .panelCountDown .panel-body {padding: 21px 15px; }
 .panelCountDown .textRed {color: #f40000; }
 .panelCountDown  p {
-    /*font-weight: 300; /* Light */
     font-size: 16px;
     line-height: 24px;
     margin: 0;
@@ -1855,9 +1814,8 @@ footer .right>span:nth-child(2) {
 .panelContestStat .breadcrumbHead .breadcrumb {
     font-size: 14px;
     color: #19687c;
-    /*line-height: 23px;*/
     padding: 0;
-    font-weight: 400; /*for more clear*/
+    font-weight: 400;
 }
 .panelContestStat .breadcrumbHead .breadcrumb li:after {display: none; }
 .panelContestStat .breadcrumbHead .breadcrumb .active {color: #0bbbe7; }
@@ -2016,6 +1974,7 @@ footer .right>span:nth-child(2) {
     padding-left: 2px;
     color: #687376;
 }
+
 /* contest plan widget */
 .panelContestPlan {
     height: 315px;
@@ -2234,9 +2193,6 @@ footer .right>span:nth-child(2) {
     margin-right: 16px;
 }
 .listView .eventsContent {
-    /*height: 219px;
-    overflow: auto;
-    position: relative;*/
     max-height: 219px;
 }
 .listView .eventsContent .tableDiv {
@@ -2361,10 +2317,6 @@ footer .right>span:nth-child(2) {
 .messageArena .panelHeader .legends .iRound:before,
 .messageArena .messageBox .round:before {background-position: -100px -50px;}
 .messageArena .messageBox {
-   /* height: 212px;
-    padding-right: 20px;
-    overflow: auto;
-    position: relative;*/
     padding-right: 4px;
     max-height: 212px;
 }
@@ -2391,20 +2343,607 @@ footer .right>span:nth-child(2) {
 .messageArena .messageBox .mItem .bottomRow a {
     text-decoration: underline;
 }
-/*style of ng-scrollbar*/
+
+/*room summary widget in contest page*/
+.panelSummary {
+    height: 275px;
+    border-color: #1f444e;
+}
+.panelSummary .panel-heading {
+    background: #1f444e;
+    padding-top: 6px;
+    padding-bottom: 10px;
+}
+.panelSummary .panel-body {
+    padding: 7px 14px 20px 30px;
+}
+.panelSummary .panel-body .mainContent {
+    padding: 0;
+    width: auto;
+}
+.panelSummary .mainContent .tabs {
+    margin-bottom: 1px;
+}
+.panelSummary .mainContent .tabs .nav-tabs li,
+.panelSummary .mainContent .dropdown-toggle {
+    width: auto;
+    padding: 0 28px 0 24px;
+    letter-spacing: -0.028em;
+}
+.panelSummary .panel-body .summaryWrapper {
+    border-top: 1px solid #0bbbe7;
+    height: 94px;
+    line-height: 20px;
+    margin-bottom: 17px;
+    position: relative;
+    margin-right: 16px;
+}
+.panelSummary .summaryWrapper .sumDiv {  
+    height: 94px;
+    padding-top: 13px;
+    margin-right: -16px;
+}
+.panelSummary .summaryWrapper .sumDiv .innerWrapper{  
+    padding-right: 16px;
+}
+.panelSummary .summaryWrapper .sumDiv .scroll {
+    max-height: 81px;
+}
+.panelSummary .summaryWrapper .sumDiv .default {
+    height: 81px;
+    overflow-y: auto; 
+}
+.panelSummary .summaryWrapper .sumDiv:before {
+    content: '';
+    position: absolute;
+    height: 12px;
+    width: 21px;
+    background-position: -136px -32px;
+    background-repeat: no-repeat;
+    top: -11px;
+}
+.panelSummary .summaryWrapper .roomDiv:before {
+    left: 33px;
+}
+.panelSummary .summaryWrapper .divOneDiv:before {
+    left: 122px;
+}
+.panelSummary .summaryWrapper .divTwoDiv:before {
+    left: 230px;
+}
+.panelSummary .mainContent .detailLink {
+    color: #0bbbe7;
+}
+/* contest summary page --> uesr.contest.detail.html*/
+.detailPage .titleBar {
+    height: 93px;
+}
+.detailPage .connection { /*this page does not have share link*/
+    padding-right: 0;
+}
+.detailPage .titleBar .btnBack { 
+    float: right;
+    color: #fff;
+    background: #0999d1;
+    margin-top: 5px;
+}
+.detailPage .titleBar .btnBack:hover {
+    color: #fff;
+    opacity: 0.8;
+}
+.detailPage .panelSummary {
+    width: auto;
+    height: auto;
+}
+.detailPage .panelSummary .panel-body {
+    padding: 0;
+}
+.detailPage .panelSummary .panel-body .leftSec {
+    padding: 7px 11px 25px 29px; /*left reduce 16*/
+    height: 654px;
+    border-right: 1px solid #1f444e;
+}
+.detailPage .panelSummary .panel-body .rightSec,
+.detailPage .panel-body .leaderboardWrapper {
+    height: 654px;
+} 
+.detailPage .panelSummary .panel-body .rightSec {
+    padding: 13px 13px 22px 29px;
+}
+.detailPage .panelSummary .summaryWrapper {
+    height: 74px;
+}
+.detailPage .panelSummary .summaryWrapper .sumDiv {
+    height: 74px;
+    padding-top: 10px;
+}
+.detailPage .panelSummary .summaryWrapper .sumDiv .scroll {
+    max-height: 64px;
+}
+.detailPage .panelSummary .summaryWrapper .sumDiv .default {
+    height: 64px;
+}
+/* challengers section */
+.detailPage section .heading {
+    position: relative;
+    margin-top: 16px;
+    margin-bottom: 5px;
+}
+.detailPage section h3 {
+    font-size: 16px;
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    display: inline-block;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.detailPage .challengeWrapper .heading {
+    margin-top: 23px;
+}
+.detailPage .leaderboardWrapper .heading {
+    margin-top: 0;
+    margin-bottom: 9px;
+    padding-right: 16px;
+}
+.detailPage section h3 .space {
+    display: inline-block;
+    height: 17px;
+    width: 24px;
+    position: relative;
+}
+.detailPage .challengeWrapper h3 .space {
+    width: 21px;
+}
+.detailPage section h3 .space:before {
+    content: '';
+    display: block;
+    height: 17px;
+    width: 1px;
+    position: absolute;
+    left: 15px;
+    top: 4px;
+    border-left: 1px solid #182b37;
+}
+.detailPage .challengeWrapper h3 .space:before {
+    left: 13px;
+}
+.detailPage section .heading .filterArea {
+    display: inline-block;
+    padding-left: 25px;
+    position: relative;
+}
+.detailPage .challengeWrapper .heading .filterArea {
+    padding-left: 24px;
+}
+.detailPage .leaderboardWrapper .heading .filterArea {
+    padding-top: 18px;
+    padding-left: 34px;
+}
+.detailPage section .heading .filterArea>a {
+    color: #fea700;
+    font-size: 14px;
+}
+.detailPage section .heading .filterArea>a:hover,
+.filterPanel .closeLink:hover,
+.filterPanel .dropdown-toggle:hover {
+    opacity: 0.8;
+    text-decoration: none;
+}
+.detailPage section .heading .filterArea>a:before,
+.filterPanel .closeLink:before {
+    content: '';
+    display: block;
+    height: 15px;
+    width: 15px;
+    position: absolute;
+    left: 3px;
+    top: 5px;
+    background-position: -75px 0;
+}
+.filterPanel .closeLink:before {
+    background-position: -50px 0;
+    left: 10px;
+    top: 3px;
+}
+.detailPage .challengeWrapper .heading .filterArea>a:before {
+    left: 2px;
+}
+.detailPage .leaderboardWrapper .heading .filterArea>a:before {
+    top: 23px;
+    left: 12px;
+}
+.detailPage .filterToggle+div {
+    display: none;
+}
+.filterPanel.qtip-default {
+    background: url(../img/filter-bg.png) 0 0 no-repeat;
+    background-color: transparent;
+    border-width: 0;
+    height: 162px;
+    width: 250px;
+    padding-top: 5px;
+    font-size: 14px;
+}
+.filterPanel.largeSize.qtip-default {
+    background: url(../img/filter-bg.png) 0 -162px no-repeat;
+    height: 198px;
+}
+.filterPanel.qtip-default .qtip-content {
+    overflow: visible;
+    height: 156px;
+}
+.filterPanel.largeSize.qtip-default .qtip-content {
+    height: 192px;
+}
+.filterPanel .closeLink {
+    display: block;
+    color: #fff;
+    padding-left: 25px;
+    margin-bottom: 37px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.filterPanel .contentWrapper .contentRow {
+    position: relative;
+    padding-left: 62px;
+    margin-bottom: 9px;
+}
+.filterPanel .contentWrapper label {
+    padding-left: 6px;
+    color: #fff;
+    display: inline-block;
+    position: absolute;
+    top: 12px;
+    left: 0;
+}
+.filterPanel .contentWrapper .dropdown,
+.filterPanel .contentWrapper .filterInput {
+    display: inline-block;
+    height: 36px;
+    width: 160px;
+    background: transparent;
+    border: 1px solid #3d3d3d;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    position: relative;
+}
+.filterPanel .contentWrapper .filterInput {
+    color: #fff;
+    padding: 5px 9px;
+}
+.filterPanel .contentWrapper .filterInput:focus {
+    outline: none;
+    color: #0050a1;
+}
+.filterPanel .contentWrapper .dropdown-toggle {
+    color: #fff;
+    display: block;
+    height: 34px;
+    width: 158px;
+    padding: 2px 9px;
+    border-width: 0;
+    background-color: transparent;
+    font-weight: 300; 
+    text-align: left;
+}
+.filterPanel .contentWrapper .dropdown .arrow {
+    display: block;
+    height: 5px;
+    width: 9px;
+    background-position: -33px -52px;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+.filterPanel .btnWrapper {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    height: 44px;
+    width: 244px;
+    border-top: 1px solid #2d2f30;
+    text-align: right;
+}
+.filterPanel .btnWrapper .btnFilter {
+    height: 30px;
+    width: 88px;
+    background: #0999d1;
+    margin: 6px 13px 6px 0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.detailPage .leaderboardWrapper .heading .viewFilter {
+    display: inline-block;
+    float: right;
+    padding-top: 19px;
+    color: #687376;
+    letter-spacing: -0.028em;
+    font-size: 14px;
+}
+.detailPage .leaderboardWrapper .heading .viewFilter div {
+    display: inline-block;
+    color: #fff;
+    margin-left: 13px;
+}
+.detailPage .leaderboardWrapper .heading .viewFilter div:first-child {
+    margin-left: 18px;
+}
+.detailPage .leaderboardWrapper .heading .viewFilter div .showLBRadio {
+    display: none;
+}
+.detailPage .leaderboardWrapper .heading .viewFilter div .showLBLbl {
+    padding-left: 24px;
+    position: relative;
+}
+.detailPage .leaderboardWrapper .heading .viewFilter div .showLBLbl:before {
+    content: '';
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    left: 0;
+    top: 3px;
+    background-position: 0 -21px;
+}
+.detailPage .leaderboardWrapper .heading .viewFilter div .showLBRadio:checked ~ .showLBLbl:before {
+    background-position: -21px -21px;
+}
+.detailPage section .heading .expandIcon {
+    display: block;
+    height: 21px;
+    width: 21px;
+    position: absolute;
+    top: 1px;
+    right: 15px;
+    background-position: 0 0;
+}
+.detailPage .leaderboardWrapper .heading .expandIcon {
+    top: 0;
+    right: -3px;
+}
+.detailPage .panel-body section.expand .heading .expandIcon {
+    background-position: -21px 0;
+}
+.detailPage .panel-body section .tableDiv.default {
+    overflow: auto;
+}
+.detailPage .challengerWrapper .tableDiv {
+    max-height: 156px;
+}
+.detailPage .challengeWrapper .tableDiv {
+    max-height: 157px;
+}
+.detailPage .leaderboardWrapper .tableDiv {
+    max-height: 495px;
+    width: 100%;
+}
+.detailPage section .tableDiv .innerWrapper,
+.detailPage section .tHeadDiv .innerWrapper {
+    padding-right: 16px;
+}
+.detailPage .panel-body section.expand .tableDiv {
+    height: 495px;
+    max-height: 495px;
+}
+.detailPage .tableWrapper {
+    position: relative;
+}
+/* expand/collapse action */
+.detailPage .panel-body section.expand{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    width: auto;
+    padding: 0 14px 20px 30px;
+    z-index: 10;
+    background: #151718;
+    border-width: 0;
+}
+.detailPage .panel-body .leaderboardWrapper.expand{ 
+    padding-top: 13px;
+}
+#lSec.expand {
+    border: 0;
+}
+#lSec.hidden,
+#rSec.hidden {
+    display: none;
+}
+/*common style of table in detail page */
+.detailPage .tHeadDiv .table,
+.detailPage .tableDiv .table {
+    margin-bottom: 0;
+}
+.detailPage .table>thead>tr>th {
+    font-weight: 400;
+    border-width: 1px;
+    border-color: #1f444e;
+    padding-top: 16px;
+    padding-bottom: 10px;
+    position: relative;
+}
+.detailPage section .table>thead>tr>th .arrow {
+    display: inline-block;
+    height: 7px;
+    width: 9px;
+    background-position: -33px -52px;
+    position: relative;
+    margin-left: 3px;
+}
+.detailPage section .table>thead>tr>th .ascArrow {
+    background-position: -33px -59px;
+}
+.detailPage .table>thead>tr>.sortableHeading {
+    cursor: pointer;
+    /*prevent text be selected*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.detailPage .table>tbody>tr>td {
+    color: #fff;
+    padding: 4px 5px;
+    border-top-width: 0;
+    border-bottom: 1px solid #1f444e;
+    position: relative;
+    vertical-align: middle;
+    height: 31px;
+}
+.detailPage .table>thead>tr>th:last-child,
+.detailPage .table>tbody>tr>td:last-child {
+    text-align: right;
+}
+.detailPage .table>tbody>tr>td>span {
+    color: #636d70;
+}
+.detailPage .leftSec .table .col1 {
+    width: 29px;
+    padding-right: 0;
+}
+.detailPage .leaderboardWrapper .table .col1 {
+    width: 70px;
+}
+.detailPage .leftSec .table .col1 .arrow {
+    margin-left: 0;
+}
+.detailPage .leftSec .table .col2 {
+    padding-left: 0;
+}
+.challengerWrapper .table .col3,
+.challengerWrapper .table .col4,
+.challengerWrapper .table .col5,
+.challengeWrapper .table .col4,
+.challengeWrapper .table .col5,
+.challengeWrapper .table .col6,
+.leaderboardWrapper .table .col1 {
+    text-align: center;
+}
+.challengerWrapper .table .col6 {
+    text-align: right;
+    width: 20%;
+}
+.challengerWrapper .table .col2 {
+    width: 29%;
+}
+.leaderboardWrapper .table .col2 {
+    width: 22%;
+}
+.challengeWrapper .table .col2,
+.challengeWrapper .table .col3 {
+    width: 20%;
+}
+.challengerWrapper .table .col4 {
+    width: 15%;
+}
+.challengerWrapper .table .col3,
+.challengeWrapper .table .col6 {
+    width: 13%;
+}
+.challengerWrapper .table .col5,
+.challengeWrapper .table .col4,
+.challengeWrapper .table .col5,
+.leaderboardWrapper .table .colProblem{
+    width: 12.5%;
+}
+.leaderboardWrapper .table .colProblem {
+    min-width: 76px;
+}
+
+.challengerWrapper .table .col7,
+.challengeWrapper .table .col7 {
+    padding: 1px 8px 1px 0;
+}
+.leaderboardWrapper .table th.col3,
+.leaderboardWrapper .table th.col4,
+.leaderboardWrapper .table th.col5 {
+    font-weight: 700;
+}
+.leaderboardWrapper .table th {
+    padding-top: 15px;
+    padding-bottom: 11px;
+}
+.detailPage section .table td .name{
+    color: #fff;
+    display: inline-block;
+    -ms-word-break:break-all;
+    word-break:break-all;
+}
+.challengeWrapper .table .colVs {
+    color: #d70000;
+    border-bottom-width: 0;
+    width: 31px;
+    text-align: center;
+}
+.detailPage .table .col7>.icon {
+    display: inline-block;
+    height: 23px;
+    width: 15px;
+    background-position: 0 -41px;
+}
+.detailPage .table .col6>.icon {
+    display: inline-block;
+    height: 11px;
+    width: 14px;
+    margin: 0 auto;
+}
+.detailPage .table .col6>.iconSuccess {
+    background-position: -16px -41px;
+    margin-top: 3px;
+}
+.detailPage .table .col6>.iconFail {
+    background-position: -31px -41px;
+    margin-top: 6px;
+}
+.detailPage .leaderboardWrapper .colorPassed, 
+.detailPage .leaderboardWrapper .colorSubmitted {
+    color: #2c8236;
+}
+.detailPage .leaderboardWrapper .colorCompiled {
+    color: #f99800;
+}
+.detailPage .leaderboardWrapper .colorChallenged,
+.detailPage .leaderboardWrapper .colorFailed {
+    color: #ac4141;
+}
+.detailPage .leaderboardWrapper .colorOpened {
+    color: #fff;
+}
+.detailPage .leaderboardWrapper .colorUnopened {
+    color: #5e676a;
+}
 .body .ngsb-wrap .ngsb-scrollbar .ngsb-track {
     background: transparent;
-    box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
+    box-shadow: none;
 }
 .body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
     width: 7px;
     background: #2a2b2c;
 }
 
- .messageArena .default .messageWrapper {height: 212px; overflow-x: hidden; overflow-y: scroll;}
- .listView .default .tableDiv {height: 219px; overflow-x: hidden; overflow-y: scroll;}*/
+.messageArena .default .messageWrapper {height: 212px; overflow-x: hidden; overflow-y: scroll;}
+.listView .default .tableDiv {height: 219px; overflow-x: hidden; overflow-y: scroll;}
+.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos:active {
+    background: transparent;
+}
+.panelSummary .sumDiv .scroll {display: block;}
+.panelSummary .sumDiv .default {display: none;}
+.detailPage section .tableDiv.scroll {display: block;}
+.detailPage section .tableDiv.default {display: none;}
+
 @media only screen and (max-width: 1230px) {
     .inner { padding: 0;}
     .dashboard .titleBar .brand,
@@ -2422,10 +2961,29 @@ footer .right>span:nth-child(2) {
     .dashboard .mainContent .rightBox {margin-left: 20px; }
     .contest .mainContent .rightBox {margin-left: 0; left: 778px; }
     .contest .mainContent .leftBox {right: 407px; }
-    .codeArea .mainContent {width: auto; padding: 0 15px; }
-    .dashboard .mainContent .rightBox {margin-left: 20px;}
+    .codeArea .mainContent,
+    .detailPage .mainContent {
+        width: auto; 
+        padding: 0 15px; 
+    }
 }
-
+@media only screen and (max-width: 1277px) {
+    .detailPage .tableDiv .table-responsive,
+    .detailPage .tHeadDiv .table-responsive {
+        border-width: 0;
+    }
+    .detailPage .moreProblemTbl .table th,
+    .detailPage .moreProblemTbl .table td {
+        padding-right: 0;
+        padding-left: 4px;
+    }
+    .leaderboardWrapper .moreProblemTbl .table .col2 {
+        width: 14%;
+    }
+    .leaderboardWrapper .moreProblemTbl .table .colProblem {
+        min-width: 71px;
+    }
+}
 /* when device or screen is middle size, force hide navbar-collapse*/
 @media only screen and (max-width: 1199px) {
     .dashboard .mainContent {width: 789px; margin: 0 auto; }
@@ -2447,6 +3005,7 @@ footer .right>span:nth-child(2) {
         min-width: 182px;
     }
     .codeArea .mainContent,
+    .detailPage .mainContent,
     .panelContestPlan {width: auto;}
     .codeArea .connection {text-align: left;padding-left: 15px;padding-top: 15px}
     .codeArea .connection>div:first-child {width: 151px;}
@@ -2454,9 +3013,21 @@ footer .right>span:nth-child(2) {
     .panelCodeProblem,.panelCodeProblem .panel-body,
     .panelCodeProblem .panel-body .statement {height: auto; overflow: hidden;}
     .panelOverview {width: 759px;}
+    .detailPage .panelSummary .panel-body .leftSec,
+    .detailPage .panelSummary .panel-body .rightSec {
+        padding-left: 10px;
+        padding-right: 0;
+    }
+    .detailPage .leaderboardWrapper .heading .expandIcon {
+        right: 11px;
+    }
+    .detailPage .table>thead>tr>th,
+    .detailPage .table>tbody>tr>td {
+        padding: 4px;
+    }
 } 
 @media only screen and (max-width: 1082px) {
-   .header .navbar-brand { padding-left:60px;}
+    .header .navbar-brand { padding-left:60px;}
 }
 /*bootstrap small devices tablets*/
 @media only screen and (max-width: 991px) {
@@ -2537,6 +3108,9 @@ footer .right>span:nth-child(2) {
         text-align: left;
         padding-left: 15px;
     }
+    .contest .titleBar .connection>div:first-child {
+        padding-left: 0;
+    }
     .panel-custom .mainContent .tabs,
     .panel-custom .schedulePanel,
     .panel-custom .summaryPanel,
@@ -2546,17 +3120,18 @@ footer .right>span:nth-child(2) {
     .dashboard .mainContent .rightBox,
     .panelOverview {width: 610px; }
     .dashboard .mainContent {width: 640px; }
-    .codeArea .panel-custom, .codeArea .mainContent {width: auto;}
+    .codeArea .panel-custom, 
+    .codeArea .mainContent,
+    .detailPage .mainContent,
+    .detailPage .panel-custom {width: auto;}
     .dashboard .mainContent .placeholder {overflow: hidden; }
     .panel-custom,
     .panel-custom .summaries,
     .panel-custom .summaryPanel,
     .panel-custom .schedulePanel,
-    .panel-custom .statusPanel {height: auto; overflow: hidden; }
-    /*.messageArena .messageBox {height: auto; max-height: 1000px;}
-    .listView .eventsContent { height: auto; max-height: 1000px;}
-    .messageArena .messageWrapper {height: 212px; overflow-x: hidden; overflow-y: scroll;}
-    .listView .tableDiv {height: 219px; overflow-x: hidden; overflow-y: scroll;}*/
+    .panel-custom .statusPanel,
+    .panelSummary .summaryWrapper,
+    .panelSummary .summaryWrapper section {height: auto; overflow: hidden; }
     .panel-custom .schedulePanel .title {width:150px;}
     .panel-custom .schedulePanel .startIn {width: 62px;}
     .panel-custom .schedulePanel .endIn {width: 52px;}
@@ -2582,6 +3157,9 @@ footer .right>span:nth-child(2) {
         right: auto;
         left: 151px;
     } 
+    .detailPage .panelSummary .panel-body .leftSec {
+        border-right-width: 0;
+    }
 }
 /* boostrap extra small devices */
 @media only screen and (max-width: 767px) {
@@ -2614,6 +3192,12 @@ footer .right>span:nth-child(2) {
         padding-right: 15px;
     }
     .codeArea .titleBar {padding-left: 0;padding-right: 0;}
+    .contest .titleBar {
+        padding-right: 80px;
+    }
+    .detailPage .titleBar {
+        padding-right: 15px;
+    }
     .dashboard .connection {padding-right: 0; }
     .hero .form .tcAccountBox .rememberCheckboxLabel,
     .hero .form .tcAccountBox .btn-lg,
@@ -2656,7 +3240,8 @@ footer .right>span:nth-child(2) {
         width: 100%;
         max-width: 640px;
     }
-    .codeArea .mainContent {max-width: 766px;}
+    .codeArea .mainContent,
+    .detailPage .mainContent {max-width: 766px;}
     .dashboard .mainContent .placeholder {overflow: hidden; }
     .panel-custom .schedulePanel:after, 
     .panel-custom .statusPanel:after, 
@@ -2664,15 +3249,17 @@ footer .right>span:nth-child(2) {
     .panel-custom .tabs {height: 46px; }
     .panel-custom .tabs .altNav {display: inline-block!important; }
     .panel-custom .tabs .altNav .dropdown-toggle {   
-        border-radius: 2px;
         -webkit-border-radius: 2px;
         -moz-border-radius: 2px;
+        border-radius: 2px;
         color: #0bbbe7;
     }
     .panel-custom .tabs .altNav .open > .dropdown-menu{display: block!important; }
     .panel-custom .tabs .altNav .open a {background: transparent; }
     .panel-custom .tabs .altNav .open a:hover,
-    .panel-custom .tabs .altNav .dropdown-toggle:hover {background: #0999d1; color: #fff;
+    .panel-custom .tabs .altNav .dropdown-toggle:hover {
+        background: #0999d1; 
+        color: #fff;
     }
     .panel-custom .nav > li > a {padding: 0; }
     .panel-custom .tabs .altNav{position: relative; }
@@ -2702,6 +3289,16 @@ footer .right>span:nth-child(2) {
 @media only screen and (max-width: 668px) {
     .panelCodeEditor .panel-heading {height: 82px;clear: both;}
     .panelCodeEditor .panel-heading .rightPart{float: left;}
+    .detailPage .tableWrapper {
+        overflow-x: auto;    
+    }
+    .detailPage .tableDiv,
+    .detailPage .tHeadDiv {
+        min-width: 540px;
+    }
+    .detailPage .titleBar .btnBack {
+        margin-bottom: 5px;
+    }
 }
 @media only screen and (max-width: 502px) {
     .codeArea .titleBar {height: 105px;}
@@ -2716,6 +3313,12 @@ footer .right>span:nth-child(2) {
     .dashboard .titleBar {padding-left: 5px; padding-right: 5px; }
     .dashboard .titleBar .brand,
     .contest .titleBar .shareLink {right: 0; }
+    .contest .titleBar {
+        padding-right: 70px;
+    }
+    .detailPage .titleBar {
+        padding-right: 5px;
+    }
     .panelContestStat .panel-body .schedule .singleLine {height: 60px; }
     .panelContestStat .panel-body .schedule .details .column:nth-child(2) .startIn,
     .panelContestStat .panel-body .schedule .details .column:nth-child(2) .endIn {width: 45px; }
@@ -2771,10 +3374,14 @@ footer .right>span:nth-child(2) {
     }
     .messageArena:after {
         left: 174px;
-    } 
+    }
 }
 @media only screen and (max-width: 348px) {
     .codeArea .titleBar {height: 145px;}
+    .contest .connection>div {
+        display: block;
+        padding-left: 0;
+    }
     .panelCodeEditor .toolBar .editorCheckLbl {padding-left: 20px;}
     .panelCodeEditor .toolBar .rightPart>div:first-child {width: 106px; letter-spacing: -0.025em;}
     .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 77px; letter-spacing: -0.025em;}

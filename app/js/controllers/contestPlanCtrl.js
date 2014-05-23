@@ -26,7 +26,6 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
     }
     function listRender(events, currentDate) {
         $scope.listEvents.length = 0;
-        $('.ngsb-container').css('top', '0');
         $scope.listEvents = $filter('showByMonth')(events, currentDate);
         $scope.$broadcast('rebuild:list');
     }
