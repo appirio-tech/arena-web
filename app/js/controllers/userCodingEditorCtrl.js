@@ -76,6 +76,18 @@ var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http
         // set the ui-codemirror option
         $scope.lineNumbers = 21;
         $scope.errorMessages = $scope.range($scope.lineNumbers);
+        $scope.errorBar = document.getElementsByClassName('errorBar')[0];
+        $scope.sharedObj.rebuildErrorBar = function () {
+            var errorBarHeight = appHelper.getRenderedHeight($scope.errorBar),
+                messageHeight = 22;
+            if (Math.floor(errorBarHeight / messageHeight) !== $scope.lineNumbers) {
+                $scope.lineNumbers = Math.floor(errorBarHeight / messageHeight);
+                $scope.errorMessages = $scope.range($scope.lineNumbers);
+                $scope.updateErrorMessages(true);
+            }
+            angular.element($scope.errorBar).css('height',
+                (appHelper.getRenderedHeight($scope.cmElem) - 1) + 'px');
+        };
         $scope.clearErrorMessages = function () {
             var i;
             for (i = 0; i < $scope.errorMessages.length; i++) {
@@ -91,7 +103,6 @@ var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http
                 j = 0;
             // render error messages from 'topLine'
             $scope.topLine = Math.floor(editorVisible.scrollTop / 22 + 0.49999) + 1;
-            console.log('topline: ' + $scope.topLine);
             for (i = 0; i < $scope.errorMessages.length; i++) {
                 $scope.errorMessages[i] = '';
                 while (j < $scope.errors.length && $scope.topLine + i >= $scope.errors[j].line) {
@@ -104,7 +115,7 @@ var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http
                 }
             }
             if (refresh) {
-                $scope.$apply();
+                //$scope.$apply();
             }
         };
 
@@ -160,7 +171,6 @@ var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http
             $scope.selectAll = function ($event) {
                 var checkbox = $event.target,
                     action = checkbox.checked;
-                console.log('select all: ' + action);
                 $scope.tests.forEach(function (testCase) {
                     testCase.checked = action;
                 });
@@ -218,7 +228,6 @@ var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http
                 return defaultValue;
             }
             // set preferred language
-            console.log(JSON.stringify($scope.languages));
             $scope.langIdx = setIndex($scope.languages, $scope.userData.langName, $scope.langIdx);
             // set preferred theme
             $scope.themeIdx = setIndex($scope.themes, $scope.userData.themeName, $scope.themeIdx);

@@ -187,6 +187,14 @@ factories.appHelper = [function () {
         return false;
     };
 
+    helper.stripPx = function (str) {
+        return parseInt(str.substring(0, str.length - 2), 10);
+    };
+
+    helper.getRenderedHeight = function (el) {
+        return helper.stripPx(angular.element(el).css('height'));
+    };
+
     return helper;
 }];
 

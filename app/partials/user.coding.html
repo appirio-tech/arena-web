@@ -1,6 +1,6 @@
 <div class="container-fluid inner"><!-- content start -->
     <div class="row-fluid dashboard codeArea">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left titleBar">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left titleBar" id="titleBar">
             <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12">
                 <div class="definition"><!-- avoid unnecessary whitespace
                     --><span class="item">Class Name&nbsp;&nbsp;:&nbsp;<span class="textWhite">{{problem.className}}</span></span><!--
@@ -30,6 +30,7 @@
         <div class="container-fluid row-fluid mainContent">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-codingproblem></div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="resizer" data-resizer data-resizer-height="4" data-resizer-top="#top-content" data-resizer-bottom="#bottom-content" data-resizer-code-mirror="#codeArea" data-resizer-title-bar="#titleBar" data-resizer-max="400"><span></span></div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-codingeditor></div>
             </div>
         </div>
