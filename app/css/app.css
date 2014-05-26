@@ -40,11 +40,9 @@ body a {cursor: pointer;}
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
 .codeArea .socialLinks a:before,
-.panelCodeProblem .panel-heading > a:before,
-.panelCodeEditor .panel-heading >a:before,
-.panelCodeEditor .panel-heading > ul > li:before,
-.panelCodeEditor .panel-heading .rightPart .findInput > a,
-.panelCodeEditor .panel-heading .rightPart .arrow:before,
+.panelCodeEditor .actionIcons > li:before,
+.panelCodeEditor .toolBar .middlePart .findInput > a,
+.panelCodeEditor .toolBar .middlePart .arrow:before,
 .panelCodeEditor .settingsToggle:before,
 .panelCodeEditor .toolBar .editorCheckLbl:before,
 .panelCodeEditor .toolBar .testToggle:before,
@@ -85,6 +83,8 @@ body a {cursor: pointer;}
 .listView .listHeader .btnCtrl {
     background-image: url(../img/sprite-contestPlan.png);
 }
+.panelCodeProblem .panel-heading > .collapseIcon:before,
+.panelCodeEditor .panel-heading > .collapseIcon:before,
 .detailPage section .heading .expandIcon,
 .detailPage .table>tbody>tr>td .icon,
 .detailPage .table>thead>tr>th .sort,
@@ -855,7 +855,6 @@ body a {cursor: pointer;}
     top: 8px;
     right: 10px;
     text-align: right;
-    z-index: 2;
 }
 .codeArea .shareLink > ul {list-style: none; padding-left: 0;position: relative;}
 .codeArea .shareLink > ul > li > a {
@@ -978,19 +977,19 @@ footer .right>span:nth-child(2) {
 .modal .modal-content {
     background: #151718;
     border: 1px solid #234760;
-    border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
+    border-radius: 0;
 }
 .modal .modal-content .modal-header {
     font-size: 16px;
     line-height: 25px;
     padding: 8px 31px;
     background: #234760;
-    border-radius: 0;
     border-width: 0;
     -webkit-border-radius:0;
     -moz-border-radius: 0;
+    border-radius: 0;
     height: 40px;
 }
 .modal .modal-content .modal-header .cancel-x {
@@ -1013,9 +1012,9 @@ footer .right>span:nth-child(2) {
      width: 94px;
      background: #0999d1;
      color: #fff;
-     border-radius: 2px;
      -webkit-border-radius:2px;
      -moz-border-radius:2px;
+     border-radius: 2px;
      line-height: 27px;
      text-align: center;
      border: 0;
@@ -1211,17 +1210,20 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeEditor .panel-heading {background: #1f444e;height: 41px;}
 .panelCodeProblem .panel-heading > a:before,
-.panelCodeEditor .panel-heading > a:before {
+.panelCodeEditor .panel-heading > a:before { /*using new icon with new position*/
     content: '';
     display: block;
-    width: 15px;
-    height: 15px;
+    width: 21px;
+    height: 21px;
     position: absolute;
-    left: 7px;
-    top: 12px;
+    right: 7px;
+    top: 10px;
+    background-position: 0 0;
 }
-.panelCodeProblem .panel-heading .open:before, 
-.panelCodeEditor .panel-heading .open:before{background-position: -50px 0;}
+.panelCodeProblem .panel-heading .expand:before, 
+.panelCodeEditor .panel-heading .expand:before {
+     background-position: -21px 0;
+}
 .panelCodeProblem .panel-heading .collapsed:before, .panelCodeEditor .panel-heading .collapsed:before {background-position: -75px 0;}
 .panelCodeProblem .panel-heading > a,.panelCodeEditor .panel-heading > a{color: #fff;}
 .panelCodeProblem .panel-heading > a:hover,.panelCodeEditor .panel-heading > a:hover {text-decoration: none;}
@@ -1234,12 +1236,19 @@ footer .right>span:nth-child(2) {
     border-color:#1f444e;
     border-top: 0;
 }
+#bottom-content {
+    height: auto;
+    overflow: hidden;
+}
+.panelCodeProblem .panel-body{
+    height: 169px;
+    overflow-x: hidden;
+    overflow-y: scroll;  
+}
 .panelCodeProblem .panel-body .statement {
     padding: 14px 31px 14px;
     line-height: 20px;
-    height: 169px;
-    overflow-x: hidden;
-    overflow-y: scroll; 
+    height: auto;
 }
 /* code editor widget */
 .panelCodeEditor {
@@ -1250,23 +1259,20 @@ footer .right>span:nth-child(2) {
     -moz-border-radius: 0;
     border-radius: 0;
 }
-.panelCodeEditor .panel-heading {
-    padding-bottom: 6px;
-    padding-right: 6px;
-}
-/* .panelCodeEditor .panel-heading > a {padding-top: 3px;}*/
-.panelCodeEditor .panel-heading ul {list-style: none; display: inline-block;}
-.panelCodeEditor .panel-heading li, .panelCodeEditor .panel-body .toolBar div {display: inline-block;}
-.panelCodeEditor .panel-heading ul {
+.panelCodeEditor .actionIcons li, .panelCodeEditor .panel-body .toolBar div {display: inline-block;}
+.panelCodeEditor .toolBar .actionIcons {
+    list-style: none; 
+    display: inline-block;
     padding-left: 48px; 
     font-size: 13px;
     color: #0bbbe7;
+    padding-top: 1px;
 }
-.panelCodeEditor .panel-heading > ul > li {padding-left: 21px; position: relative;padding-top: 2px;}
-.panelCodeEditor .panel-heading > ul > li + li {margin-left: 30px;}
-.panelCodeEditor .panel-heading > ul > .link {cursor: pointer;}
-.panelCodeEditor .panel-heading > ul > .link:hover {color: #fff;}
-.panelCodeEditor .panel-heading > ul > li:before {
+.panelCodeEditor .actionIcons > li {padding-left: 21px; position: relative;padding-top: 2px;}
+.panelCodeEditor .actionIcons > li + li {margin-left: 30px;}
+.panelCodeEditor .actionIcons > .link {cursor: pointer;}
+.panelCodeEditor .actionIcons > .link:hover {color: #fff;}
+.panelCodeEditor .actionIcons > li:before {
     content: '';
     display: block;
     width: 16px;
@@ -1275,11 +1281,11 @@ footer .right>span:nth-child(2) {
     left: 0;
     top: 7px;
 }
-.panelCodeEditor .panel-heading .saveLink:before {background-position: 0 -125px;}
-.panelCodeEditor .panel-heading .clearLink:before {background-position: -25px -125px;}
-.panelCodeEditor .panel-heading .submitLink:before {background-position: -51px -125px;}
+.panelCodeEditor .actionIcons .saveLink:before {background-position: 0 -125px;}
+.panelCodeEditor .actionIcons .clearLink:before {background-position: -25px -125px;}
+.panelCodeEditor .actionIcons .submitLink:before {background-position: -51px -125px;}
 .panelCodeEditor .panel-heading .rightPart {float:right; margin-top: -1px;}
-.panelCodeEditor .panel-heading .rightPart input {
+.panelCodeEditor .toolBar .middlePart input[type="text"] {
     height: 30px;
     background: transparent;
     width: 136px;
@@ -1287,9 +1293,10 @@ footer .right>span:nth-child(2) {
     font-weight: 300;/*Light*/
     border-width: 0;
 }
+.panelCodeEditor .toolBar .middlePart input:focus {outline: none;}
 .panelCodeEditor .panel-heading .rightPart div {display: inline-block;}
 
-.panelCodeEditor .panel-heading .rightPart .findInput {
+.panelCodeEditor .toolBar .middlePart .findInput {
     height: 30px;
     background: #162f36;
     -webkit-border-radius: 2px;
@@ -1299,8 +1306,9 @@ footer .right>span:nth-child(2) {
     padding-left: 10px;
     position: relative;
     margin-right: 39px;
+    margin-left: 30px;
 }
-.panelCodeEditor .panel-heading .rightPart .findInput > a{
+.panelCodeEditor .toolBar .middlePart .findInput > a{
     display: inline-block;
     height: 19px;
     width: 22px;
@@ -1309,9 +1317,9 @@ footer .right>span:nth-child(2) {
     top: 6px;
     background-position: -75px -125px;
 }
-.panelCodeEditor .panel-heading .rightPart .findInput > a:hover {right: 2px;}
-.panelCodeEditor .panel-heading .rightPart .gotoInput > label {font-size: 13px;}
-.panelCodeEditor .panel-heading .rightPart .gotoInput input {
+.panelCodeEditor .toolBar .middlePart .findInput > a:hover {right: 2px;}
+.panelCodeEditor .toolBar .middlePart .gotoInput > label {font-size: 13px;}
+.panelCodeEditor .toolBar .middlePart .gotoInput input {
     width: 68px;
     background: #162f36;
     -webkit-border-radius: 2px;
@@ -1322,8 +1330,8 @@ footer .right>span:nth-child(2) {
     padding-left: 10px;
     padding-right: 10px;
 }
-.panelCodeEditor .panel-heading .rightPart .gotoInput {position: relative;}
-.panelCodeEditor .panel-heading .rightPart .gotoInput .arrow {
+.panelCodeEditor .toolBar .middlePart .gotoInput {position: relative;}
+.panelCodeEditor .toolBar .middlePart .gotoInput .arrow {
     display: inline-block;
     position: absolute;
     right: 0;
@@ -1333,8 +1341,8 @@ footer .right>span:nth-child(2) {
     border-radius: 2px;
     background: #162f36;
 }
-.panelCodeEditor .panel-heading .rightPart .gotoInput .arrow:hover {background: #0c191d; }
-.panelCodeEditor .panel-heading .rightPart .arrow:before {
+.panelCodeEditor .toolBar .middlePart .gotoInput .arrow:hover {background: #0c191d; }
+.panelCodeEditor .toolBar .middlePart .arrow:before {
     content: '';
     display: block;
     height: 5px;
@@ -1480,7 +1488,7 @@ footer .right>span:nth-child(2) {
     float: right;
     font-size: 14px;
     color: #fff;
-    padding-top: 4px;
+    padding-top: 3px;
     padding-right: 102px;
     line-height: 24px;
 }
@@ -1736,14 +1744,39 @@ footer .right>span:nth-child(2) {
     background: #232628;
 }
 .errorBar>div {
-    height: 5px;
-    margin-top: 17px;
+    height: 20px;
+    margin-top: 2px;
     width: 14px;
     background: transparent;
 }
-.errorBar .error {background: #f40000;}
-.errorBar .error a {display: block; width: 14px; height: 7px;}
-
+/*.errorBar .error {: #f40000;}*/
+.errorBar .error a {
+    display: block; 
+    width: 14px; 
+    height: 20px;
+    position: relative;
+}
+.errorBar .error a:before {
+    content: '';
+    display: block;
+    height: 5px;
+    width: 14px;
+    background: #f40000;
+    position: absolute;
+    left: 0;
+    top: 7px;
+}
+/* resizer */
+#resizer {
+    position: relative;
+    background: transparent;
+    height: 4px;
+    cursor: ns-resize;
+}
+/*hover style of resizer*/
+/*#resizer:hover {
+    background: #1f444e;
+}*/
 /******************* count down widget */
 .panelCountDown {
     -webkit-border-radius: 0;
@@ -1850,7 +1883,7 @@ footer .right>span:nth-child(2) {
     padding: 8px 0 8px 10px;
     border-bottom: 1px solid #1f444e;
     line-height: 26px;
-    font-weight: 400;/* in storyboard is  Light*/
+    font-weight: 400;
 }
 .panelContestStat .phaseDetails table th:first-child,
 .panelContestStat .phaseDetails table td:first-child {
@@ -1981,9 +2014,9 @@ footer .right>span:nth-child(2) {
     width: 407px;
     border-color: #1f444e;
     background: #151718;
-    border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
+    border-radius: 0;
 }
 .panelContestPlan .panel-heading {
     padding: 6px 29px 10px 28px;
@@ -2029,7 +2062,6 @@ footer .right>span:nth-child(2) {
 .panelContestPlan .panel-body {
     padding-top: 19px;
     padding-left: 29px;
-    /*padding-right: 28px;*/
     padding-right: 12px;
 }
 .panelContestPlan .calendarView {
@@ -2100,16 +2132,16 @@ footer .right>span:nth-child(2) {
     width: 18px;
     height: 26px;
     position: relative;
-    border-radius: 0;
+    background: transparent;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
-    background: transparent;
-    text-shadow: none;
+    border-radius: 0;
     -webkit-text-shadow: none;
     -moz-text-shadow: none;
-    box-shadow: none;
+    text-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
+    box-shadow: none;
 }
 /*remove button defalut style*/
 .listView .listHeader .btnCtrl {
@@ -2160,16 +2192,15 @@ footer .right>span:nth-child(2) {
     padding: 0;
     background: transparent;
     border-width: 0;
-    border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
-    background: transparent;
-    text-shadow: none;
+    border-radius: 0;
     -webkit-text-shadow: none;
     -moz-text-shadow: none;
-    box-shadow: none;
+    text-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
+    box-shadow: none;
 }
 .calendar .fc-header-right .fc-button-month:hover {
     text-decoration: underline;
@@ -2223,9 +2254,9 @@ footer .right>span:nth-child(2) {
     max-width: 328px;
     background-color: rgba(21,23,24,0.98); 
     border-color: rgba(255,255,255,0.1);
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
     -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
     -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
 }
 .messageArena:before {
     content: '';
@@ -3010,8 +3041,8 @@ footer .right>span:nth-child(2) {
     .codeArea .connection {text-align: left;padding-left: 15px;padding-top: 15px}
     .codeArea .connection>div:first-child {width: 151px;}
     .codeArea .titleBar {height: 85px;}
-    .panelCodeProblem,.panelCodeProblem .panel-body,
-    .panelCodeProblem .panel-body .statement {height: auto; overflow: hidden;}
+    /*.panelCodeProblem,
+    .panelCodeProblem .panel-body {height: auto; overflow: hidden;}*/
     .panelOverview {width: 759px;}
     .detailPage .panelSummary .panel-body .leftSec,
     .detailPage .panelSummary .panel-body .rightSec {
@@ -3028,6 +3059,12 @@ footer .right>span:nth-child(2) {
 } 
 @media only screen and (max-width: 1082px) {
     .header .navbar-brand { padding-left:60px;}
+}
+/*fix some issues of header overflow*/
+@media only screen and (max-width: 1027px) {
+    .panelCodeEditor .panel-body .middlePart ul {padding-left: 40px;}
+    .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 20px;}
+    .panelCodeEditor .panel-body .middlePart .findInput {margin-right: 10px; margin-left: 20px;}
 }
 /*bootstrap small devices tablets*/
 @media only screen and (max-width: 991px) {
@@ -3147,8 +3184,16 @@ footer .right>span:nth-child(2) {
 
     .codeArea .titleBar {height: 85px;}
     .codeArea .titleBar>div:first-child {padding-right: 105px;}
-    .panelCodeEditor .panel-heading ul {padding-left: 30px;}
-    .panelCodeEditor .panel-heading>ul>li+li {margin-left: 20px;}
+    .panelCodeEditor .panel-body .middlePart ul {padding-left: 35px;}
+    .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 15px;}
+    .panelCodeEditor .panel-body .middlePart .findInput {
+        margin-right: 8px; 
+        margin-left: 15px;
+        width: 98px;
+    }
+    .panelCodeEditor .panel-body .middlePart .findInput input {width: 66px;}
+    .panelCodeEditor .toolBar .rightPart>div:first-child {width: 120px;}
+    .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 87px;}
     .messageArena:before {
         right: auto;
         left: 149px; 
@@ -3160,6 +3205,11 @@ footer .right>span:nth-child(2) {
     .detailPage .panelSummary .panel-body .leftSec {
         border-right-width: 0;
     }
+}
+@media only screen and (max-width: 828px) {
+    .panelCodeEditor .panel-body .middlePart .findInput {width: 68px; }
+    .panelCodeEditor .panel-body .middlePart .findInput input {width: 36px;}
+    .panelCodeEditor .panel-body .middlePart .gotoInput input {width: 30px;}
 }
 /* boostrap extra small devices */
 @media only screen and (max-width: 767px) {
@@ -3248,7 +3298,7 @@ footer .right>span:nth-child(2) {
     .panel-custom .summaryPanel:after {display: none; }
     .panel-custom .tabs {height: 46px; }
     .panel-custom .tabs .altNav {display: inline-block!important; }
-    .panel-custom .tabs .altNav .dropdown-toggle {   
+    .panel-custom .tabs .altNav .dropdown-toggle { 
         -webkit-border-radius: 2px;
         -moz-border-radius: 2px;
         border-radius: 2px;
@@ -3283,12 +3333,31 @@ footer .right>span:nth-child(2) {
     .codeArea .mainContent {padding: 0;}
     .codeArea .titleBar>div:first-child,.codeArea .connection {padding-left: 0;padding-right: 65px;}
     .codeArea .shareLink>ul>li>a {right: 5px;}
-    .panelCodeEditor .panel-heading .rightPart .findInput {margin-right: 5px;}
 } 
 /* special sizes which widget will overflow */
+@media only screen and (max-width: 741px) {
+    .panelCodeEditor .panel-body .toolBar {
+        height: 64px;
+        padding-top: 30px;
+    }
+    .panelCodeEditor .panel-body .errorBar {top: 71px;}
+    .panelCodeEditor .toolBar .rightPart {
+        margin-top: -30px;
+    }
+    .panelCodeEditor .toolBar .middlePart {
+        position: absolute;
+        right: 15px;
+    }
+    .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 20px;}
+    .panelCodeEditor .panel-body .middlePart .findInput {
+        margin-right: 10px; 
+        margin-left: 20px;
+        width: 168px;
+    }
+    .panelCodeEditor .panel-body .middlePart .findInput input {width: 136px;}
+    .panelCodeEditor .panel-body .middlePart .gotoInput input {width: 68px;}
+}
 @media only screen and (max-width: 668px) {
-    .panelCodeEditor .panel-heading {height: 82px;clear: both;}
-    .panelCodeEditor .panel-heading .rightPart{float: left;}
     .detailPage .tableWrapper {
         overflow-x: auto;    
     }
@@ -3300,11 +3369,44 @@ footer .right>span:nth-child(2) {
         margin-bottom: 5px;
     }
 }
+@media only screen and (max-width: 598px) {
+    .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 15px;}
+    .panelCodeEditor .panel-body .middlePart .findInput {
+        margin-right: 8px; 
+        margin-left: 15px;
+        width: 98px;
+    }
+    .panelCodeEditor .panel-body .middlePart .findInput input {width: 66px;}
+    .panelCodeEditor .panel-body .middlePart .gotoInput input {width: 58px;}
+}
 @media only screen and (max-width: 502px) {
     .codeArea .titleBar {height: 105px;}
     .codeArea .titleBar > div:first-child,
     .codeArea .titleBar>div:nth-child(2) {padding-right: 70px;}
     .codeArea .titleBar .shareLink {right: 5px;} 
+    .panelCodeEditor .panel-body .toolBar {
+        height: 94px;
+    }
+    .panelCodeEditor .panel-body .errorBar {top: 101px;}
+    .panelCodeEditor .toolBar .middlePart {
+        position: absolute;
+        right: 15px;
+        padding-top: 30px;
+    }
+    .panelCodeEditor .toolBar .middlePart ul {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding-left: 0;
+    }
+    .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 60px;}
+    .panelCodeEditor .panel-body .middlePart .findInput {
+        margin-right: 10px; 
+        margin-left: 20px;
+        width: 148px;
+    }
+    .panelCodeEditor .panel-body .middlePart .findInput input {width: 116px;}
+    .panelCodeEditor .panel-body .middlePart .gotoInput input {width: 68px;}
 }
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) {
@@ -3385,6 +3487,16 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .toolBar .editorCheckLbl {padding-left: 20px;}
     .panelCodeEditor .toolBar .rightPart>div:first-child {width: 106px; letter-spacing: -0.025em;}
     .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 77px; letter-spacing: -0.025em;}
+    .panelCodeEditor .toolBar .middlePart {right: 8px;}
+    .panelCodeEditor .toolBar .middlePart ul {margin-right: 0;}
+    .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 53px;}
+    .panelCodeEditor .panel-body .middlePart .findInput {
+        margin-right: 10px; 
+        margin-left: 0px;
+        width: 116px;
+    }
+    .panelCodeEditor .panel-body .middlePart .findInput input {width: 84px;}
+    .panelCodeEditor .panel-body .middlePart .gotoInput input {width: 68px;}
     .panelOverview .overviewAndMessage .profile {height: 137px;}
 }
 @media only screen and (max-width: 331px) {
@@ -3393,6 +3505,7 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .toolBar .active .testToggle {padding-left: 20px;}
     .panelCodeEditor .toolBar .testToggle:before {left: 2px;}
     .panelCodeEditor .panel-body .toolBar .rightPart {padding-right: 85px;}
+    .panelCodeEditor .toolBar .middlePart {right: 4px;}
     .body .messageArena {max-width: 310px; }
     .messageArena .panelHeader .legends label {margin-right: 15px;}
     .messageArena .panelHeader,
@@ -3402,5 +3515,5 @@ footer .right>span:nth-child(2) {
     }
     .messageArena:after {
         left: 179px;
-    } 
+    }
 }
