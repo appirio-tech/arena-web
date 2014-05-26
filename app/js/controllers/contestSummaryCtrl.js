@@ -1,15 +1,15 @@
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
-/*global module*/
+/*global module, angular*/
 var contestSummaryCtrl = ['$scope', '$state', '$http', function ($scope, $state, $http) {
     $scope.viewOn = 'room';
     // load contest data with contest id
-    $scope.contest = {};
     $http.get('data/contest-' + $scope.roundID + '.json').
         success(function (data) {
             // set contest data
-            $scope.contest = data;
+            angular.extend($scope.contest, data);
+
             // broadcast contest-loaded message to child states.
             $scope.$broadcast('contest-loaded');
         });
