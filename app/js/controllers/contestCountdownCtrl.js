@@ -40,21 +40,13 @@ var contestCountdownCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'tcTim
         'Coding Phase will end in:',
         'Challenge Phase will start in:',
         'Challenge Phase will end in:',
-        'Waiting for system tests to start.',
-        'System tests are in process: ',
+        'Waiting for system test to start.',
+        'System test is in process: ',
         'Contest is complete.',
         'Voting Phase is started.',
         'Tie Breaking Voting Phase is started.',
         'Moderated Chatting Phase is started.'
     ];
-
-    /**
-     * The system test progress.
-     *
-     * @type {string}
-     * @since 1.1
-     */
-    $scope.systestProgress = 'N/A';
 
     /**
      * Get phase message.
@@ -108,17 +100,9 @@ var contestCountdownCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'tcTim
     };
 
     // handle phase data response
-    socket.on(helper.EVENT_NAME.PhaseDataResponse, function (data) {
-        $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
+    $scope.$on(helper.EVENT_NAME.PhaseDataResponse, function (event, data) {
         if (String(data.phaseData.roundID) === String($scope.roundID)) {
             $scope.startTimer();
-        }
-    });
-
-    // handle system test progress response
-    socket.on(helper.EVENT_NAME.SystestProgressResponse, function (data) {
-        if (String(data.roundID) === String($scope.roundID)) {
-            $scope.systestProgress = data.done + '/' + data.total;
         }
     });
 

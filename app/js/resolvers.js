@@ -182,6 +182,17 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         return deferred.promise;
     });
 
+    // handle phase data response
+    socket.on(helper.EVENT_NAME.PhaseDataResponse, function (data) {
+        $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
+        $rootScope.$broadcast(helper.EVENT_NAME.PhaseDataResponse, data);
+    });
+
+    // handle system test progress response
+    socket.on(helper.EVENT_NAME.SystestProgressResponse, function (data) {
+        $rootScope.roundData[data.roundID].systestProgress = data.done + '/' + data.total;
+    });
+
     // request login
     socket.emit(helper.EVENT_NAME.SSOLoginRequest, {sso: sso});
 }];
