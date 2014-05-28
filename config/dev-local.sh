@@ -12,7 +12,7 @@ export NODE_ENV=development
 # API is on different domain than where the client was served...
 # export API_DOMAIN=www.example.com/api
 
-export AUTH0_CONNECTION=LDAP
+export AUTH0_CONNECTION=vm-ldap-connection
 export AUTH0_DOMAIN=sma.auth0.com
 export AUTH0_CLIENT_ID=CMaBuwSnY0Vu68PLrWatvvu3iIiGPh7t
 export CALLBACK_URL=https://tc.cloud.topcoder.com/reg2/callback.action
