@@ -1,0 +1,359 @@
+<div class="container-fluid inner"><!-- content start -->
+    <div class="row-fluid dashboard contest detailPage">
+        <div class="col-lg-12 text-left titleBar">
+            <div class="col-lg-6 col-md-7">
+                <h1 class="title">Competition Arena: {{ contest.name }}</h1>
+            </div>
+            <div class="col-lg-6 col-md-5 connection">
+                <div data-topcodertime></div><div data-connectionstatus></div>
+            </div>
+            <a data-ng-click="goBack(contest)" class="btn btnBack">Back to Contest</a>
+        </div>
+        <div class="container-fluid row-fluid mainContent">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">
+                <div class="panel panel-custom panelSummary">
+                    <div class="panel-heading">
+                        Summary
+                    </div>
+                    <div class="panel-body row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 leftSec" id="lSec">
+                            <div class="mainContent">
+                                <div class="tabs">
+                                    <ul class="nav nav-tabs hidden-xs">
+                                        <li data-ng-class="{'textActive': viewOn=='room'}" data-ng-click="setViewOn('room')">Room</li>
+                                        <li data-ng-class="{'textActive': viewOn=='divOne'}" data-ng-click="setViewOn('divOne')">Division I</li>
+                                        <li data-ng-class="{'textActive': viewOn=='divTwo'}" data-ng-click="setViewOn('divTwo')">Division II</li>
+                                    </ul>
+                                    <!-- button and label will show when window is very narrow -->
+                                    <ul class="nav altNav visible-xs">
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle">
+                                                {{ getViewOnTitle()}}<b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li data-ng-class="{'textActive': viewOn=='room'}" data-ng-click="setViewOn('room')">Room</li>
+                                                <li data-ng-class="{'textActive': viewOn=='divOne'}" data-ng-click="setViewOn('divOne')">Division I</li>
+                                                <li data-ng-class="{'textActive': viewOn=='divTwo'}" data-ng-click="setViewOn('divTwo')">Division II</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div><!--/.tabs-->
+                                <div class="summaryWrapper">
+                                    <div data-ng-show="viewOn=='room'" class="roomDiv sumDiv">
+                                        <div class="scroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.roomSummary}}</div></div>
+                                        <div class="default"><div class="innerWrapper">{{contest.roomSummary}}</div></div>
+                                    </div>
+                                    <div data-ng-show="viewOn=='divOne'" class="divOneDiv sumDiv">
+                                        <div class="scroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
+                                        <div class="default"><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
+                                    </div>
+                                    <div data-ng-show="viewOn=='divTwo'" class="divTwoDiv sumDiv">
+                                        <div class="scroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
+                                        <div class="default"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
+                                    </div>
+                                </div><!-- /.summaryWrapper -->
+                                <section class="challengerWrapper" id="challengersPanel">
+                                    <div class="heading">
+                                        <h3>Challengers<span class="space" data-ng-show="challengeAvailable()"></span></h3><!-- avoid unnecessary white space
+                                        --><div class="filterArea" data-ng-show="challengeAvailable()"><a id="challengerFilter" data-ng-click="checkFilter(viewOn,'challenger')" class="filterToggle">Filter</a>
+                                            <div>
+                                                <a data-ng-click="closeQtip('challenger')" class="closeLink">Filter</a>
+                                                <div class="contentWrapper">
+                                                    <div class="contentRow">
+                                                        <label>Show</label>
+                                                        <div class="dropdown">
+                                                            <button class="dropdown-toggle">{{getFilterKey(viewOn, 'challenger')}}<span class="arrow"></span></button>
+                                                            <ul class="dropdown-menu">
+                                                                <li data-ng-class="{active:getKeys(viewOn).challengerFilterKey=='all',inactive:getKeys(viewOn).challengerFilterKey!='all'}"><a data-ng-click="setFilterKey(viewOn, 'challenger', 'all')">All Handles</a></li>
+                                                                <li data-ng-class="{active:getKeys(viewOn).challengerFilterKey=='specific',inactive:getKeys(viewOn).challengerFilterKey!='specific'}"><a data-ng-click="setFilterKey(viewOn, 'challenger', 'specific')">Specific Handle</a></li>
+                                                            </ul>
+                                                        </div><!--/.dropdown-->
+                                                    </div>
+                                                    <div data-ng-show="getKeys(viewOn).challengerFilterKey=='specific'" class="contentRow">
+                                                        <label>Handle</label>
+                                                        <input type="text" data-ng-model="challengerHandleString" class="filterInput" data-ng-keypress="pressKeyInFilter($event, viewOn, 'challenger')"/>
+                                                    </div>
+                                                </div>
+                                                <div class="btnWrapper">
+                                                    <a class="btn btnFilter" data-ng-click="filterBegin(viewOn, 'challenger')">Filter</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a data-ng-click="toggleExpand('challengersPanel','lSec','rSec')" class="expandIcon"></a>
+                                    </div><!--/.heading-->
+                                    <p data-ng-show="!challengeAvailable()">Challenge phase has not started.</p>
+                                    <div class="tableWrapper" data-ng-show="challengeAvailable()">
+                                        <div class="tHeadDiv">
+                                            <div class="innerWrapper">
+                                                <table class="table table-condensed">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="col1 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenger', 'id')">
+                                                                #<span><span data-ng-show="getKeys(viewOn).challengerKey=='id' || getKeys(viewOn).challengerKey=='-id'" data-ng-class="{ascArrow:getKeys(viewOn).challengerKey=='id',descArrow:getKeys(viewOn).challengerKey=='-id'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col2 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenger', 'rating')">
+                                                                Challenger (Rating)<span><span data-ng-show="getKeys(viewOn).challengerKey=='rating' || getKeys(viewOn).challengerKey=='-rating'" data-ng-class="{ascArrow:getKeys(viewOn).challengerKey=='rating',descArrow:getKeys(viewOn).challengerKey=='-rating'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col3 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenger', 'points')">
+                                                                Points<span><span data-ng-show="getKeys(viewOn).challengerKey=='points' || getKeys(viewOn).challengerKey=='-points'" data-ng-class="{ascArrow:getKeys(viewOn).challengerKey=='points',descArrow:getKeys(viewOn).challengerKey=='-points'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col4 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenger', 'success')">
+                                                                Success<span><span data-ng-show="getKeys(viewOn).challengerKey=='success' || getKeys(viewOn).challengerKey=='-success'" data-ng-class="{ascArrow:getKeys(viewOn).challengerKey=='success',descArrow:getKeys(viewOn).challengerKey=='-success'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col5 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenger', 'total')">
+                                                                Total<span><span data-ng-show="getKeys(viewOn).challengerKey=='total' || getKeys(viewOn).challengerKey=='-total'" data-ng-class="{ascArrow:getKeys(viewOn).challengerKey=='total',descArrow:getKeys(viewOn).challengerKey=='-total'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col6 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenger', '(total === 0 ? 0 : success * 100.0 / total)')">
+                                                                Success %<span><span data-ng-show="getKeys(viewOn).challengerKey=='(total === 0 ? 0 : success * 100.0 / total)'" data-ng-class="{ascArrow:getKeys(viewOn).challengerKey=='(total === 0 ? 0 : success * 100.0 / total)',descArrow:getKeys(viewOn).challengerKey=='-(total === 0 ? 0 : success * 100.0 / total)'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col7">&nbsp;</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tableDiv scroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:challengerTable">
+                                            <div class="innerWrapper">
+                                                <table class="table table-condensed">
+                                                    <tbody>
+                                                        <tr data-ng-repeat="challenger in challengers | filter: getKeys(viewOn).challengerFilter | orderBy: getKeys(viewOn).challengerKey | limitTo: showChallengers">
+                                                            <td class="col1">{{challenger.id}}</td>
+                                                            <td class="col2"><span class="name">{{challenger.handle}}</span> <span>({{challenger.rating}})</span></td>
+                                                            <td class="col3">{{challenger.points}}</td>
+                                                            <td class="col4">{{challenger.success}}</td>
+                                                            <td class="col5">{{challenger.total}}</td>
+                                                            <td class="col6">{{percentage(challenger.success, challenger.total)}}</td>
+                                                            <td class="col7"><a class="icon iconViewDetail"></a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div><!-- /.tableDiv -->
+                                        <div class="tableDiv default">
+                                            <div class="innerWrapper">
+                                                <table class="table table-condensed">
+                                                    <tbody>
+                                                        <tr data-ng-repeat="challenger in challengers | filter: getKeys(viewOn).challengerFilter | orderBy: getKeys(viewOn).challengerKey | limitTo: showChallengers">
+                                                            <td class="col1">{{challenger.id}}</td>
+                                                            <td class="col2"><span class="name">{{challenger.handle}}</span> <span>({{challenger.rating}})</span></td>
+                                                            <td class="col3">{{challenger.points}}</td>
+                                                            <td class="col4">{{challenger.success}}</td>
+                                                            <td class="col5">{{challenger.total}}</td>
+                                                            <td class="col6">{{percentage(challenger.success, challenger.total)}}</td>
+                                                            <td class="col7"><a class="icon iconViewDetail"></a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div><!-- /.tableDiv -->
+                                    </div>
+                                </section><!-- /.challengerWrapper -->
+                                <section class="challengeWrapper" id="challengesPanel">
+                                    <div class="heading">
+                                        <h3>Challenges<span class="space" data-ng-show="challengeAvailable()"></span></h3><!-- avoid unnecessary white space
+                                        --><div class="filterArea" data-ng-show="challengeAvailable()"><a id="challengeFilter" data-ng-click="checkFilter(viewOn,'challenge')" class="filterToggle">Filter</a>
+                                            <div>
+                                                <a data-ng-click="closeQtip('challenge')" class="closeLink">Filter</a>
+                                                <div class="contentWrapper">
+                                                    <div class="contentRow">
+                                                        <label>Show</label>
+                                                        <div class="dropdown">
+                                                            <button class="dropdown-toggle">{{getFilterKey(viewOn, 'challenge')}}<span class="arrow"></span></button>
+                                                            <ul class="dropdown-menu">
+                                                                <li data-ng-class="{active:getKeys(viewOn).challengeFilterKey=='all',inactive:getKeys(viewOn).challengeFilterKey!='all'}"><a data-ng-click="setFilterKey(viewOn, 'challenge', 'all')">All Handles</a></li>
+                                                                <li data-ng-class="{active:getKeys(viewOn).challengeFilterKey=='specific',inactive:getKeys(viewOn).challengeFilterKey!='specific'}"><a data-ng-click="setFilterKey(viewOn, 'challenge', 'specific')">Specific Handle</a></li>
+                                                            </ul>
+                                                        </div><!--/.dropdown-->
+                                                    </div>
+                                                    <div data-ng-show="getKeys(viewOn).challengeFilterKey=='specific'" class="contentRow">
+                                                        <label>Handle</label>
+                                                        <input type="text" data-ng-model="challengeHandleString" class="filterInput" data-ng-keypress="pressKeyInFilter($event, viewOn, 'challenge')"/>
+                                                    </div>
+                                                </div>
+                                                <div class="btnWrapper">
+                                                    <a class="btn btnFilter" data-ng-click="filterBegin(viewOn, 'challenge')">Filter</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a data-ng-click="toggleExpand('challengesPanel','lSec','rSec')" class="expandIcon"></a>
+                                    </div><!--/.heading-->
+                                    <p data-ng-show="!challengeAvailable()">Challenge phase has not started.</p>
+                                    <div class="tableWrapper" data-ng-show="challengeAvailable()">
+                                        <div class="tHeadDiv">
+                                            <div class="innerWrapper">
+                                                <table class="table table-condensed">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="col1 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenge', 'id')">
+                                                                #<span><span data-ng-show="getKeys(viewOn).challengeKey=='id' || getKeys(viewOn).challengeKey=='-id'" data-ng-class="{descArrow:getKeys(viewOn).challengeKey=='-id',ascArrow:getKeys(viewOn).challengeKey=='id'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col2 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenge', 'challenger.rating')">
+                                                                Challenger (Rating)<span><span data-ng-show="getKeys(viewOn).challengeKey=='challenger.rating' || getKeys(viewOn).challengeKey=='-challenger.rating'" data-ng-class="{descArrow:getKeys(viewOn).challengeKey=='-challenger.rating',ascArrow:getKeys(viewOn).challengeKey=='challenger.rating'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="colVs">&nbsp;</th>
+                                                            <th class="col3 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenge', 'defender.rating')">
+                                                                Defender (Rating)<span><span data-ng-show="getKeys(viewOn).challengeKey=='defender.rating' || getKeys(viewOn).challengeKey=='-defender.rating'" data-ng-class="{descArrow:getKeys(viewOn).challengeKey=='-defender.rating',ascArrow:getKeys(viewOn).challengeKey=='defender.rating'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col4 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenge', 'language')">
+                                                                Lang.<span><span data-ng-show="getKeys(viewOn).challengeKey=='language' || getKeys(viewOn).challengeKey=='-language'" data-ng-class="{descArrow:getKeys(viewOn).challengeKey=='-language',ascArrow:getKeys(viewOn).challengeKey=='language'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col5 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenge', 'date')">
+                                                                Date<span><span data-ng-show="getKeys(viewOn).challengeKey=='-date' || getKeys(viewOn).challengeKey=='date'" data-ng-class="{descArrow:getKeys(viewOn).challengeKey=='-date',ascArrow:getKeys(viewOn).challengeKey=='date'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col6 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'challenge', 'success')">
+                                                                Result<span><span data-ng-show="getKeys(viewOn).challengeKey=='success' || getKeys(viewOn).challengeKey=='-success'" data-ng-class="{descArrow:getKeys(viewOn).challengeKey=='-success',ascArrow:getKeys(viewOn).challengeKey=='success'}" class="arrow"></span></span>
+                                                            </th>
+                                                            <th class="col7">&nbsp;</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div><!--/.innerWrapper-->
+                                        </div><!-- /.tHeadDiv-->
+                                        <div class="tableDiv scroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:challengeTable">
+                                            <div class="innerWrapper">    
+                                                <table class="table table-condensed">
+                                                    <tbody>
+                                                        <tr data-ng-repeat="challenge in challenges | filter: getKeys(viewOn).challengeFilter | orderBy: getKeys(viewOn).challengeKey | limitTo: showChallenges">
+                                                            <td class="col1">{{challenge.id}}</td>
+                                                            <td class="col2"><span class="name">{{challenge.challenger.handle}}</span> <span>({{challenge.challenger.rating}})</span></td>
+                                                            <td class="colVs">vs</td>
+                                                            <td class="col3"><span class="name">{{challenge.defender.handle}}</span> <span>({{challenge.defender.rating}})</span></td>
+                                                            <td class="col4">{{challenge.language}}</td>
+                                                            <td class="col5">{{challenge.date | date: 'dd-MM-yyyy'}}</td>
+                                                            <td class="col6"><i class="icon" data-ng-class="{iconSuccess: challenge.success, iconFail: !challenge.success}"></i></td>
+                                                            <td class="col7"><a class="icon iconViewDetail"></a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div><!--/.innerWrapper-->
+                                        </div><!-- /.tableDiv -->
+                                        <div class="tableDiv default">
+                                            <div class="innerWrapper">
+                                                <table class="table table-condensed">
+                                                    <tbody>
+                                                        <tr data-ng-repeat="challenge in challenges | filter: getKeys(viewOn).challengeFilter | orderBy: getKeys(viewOn).challengeKey | limitTo: showChallenges">
+                                                            <td class="col1">{{challenge.id}}</td>
+                                                            <td class="col2"><span class="name">{{challenge.challenger.handle}}</span> <span>({{challenge.challenger.rating}})</span></td>
+                                                            <td class="colVs">vs</td>
+                                                            <td class="col3"><span class="name">{{challenge.defender.handle}}</span> <span>({{challenge.defender.rating}})</span></td>
+                                                            <td class="col4">{{challenge.language}}</td>
+                                                            <td class="col5">{{challenge.date | date: 'dd-mm-yyyy'}}</td>
+                                                            <td class="col6"><i class="icon" data-ng-class="{iconSuccess: challenge.success, iconFail: !challenge.success}"></i></td>
+                                                            <td class="col7"><a class="icon iconViewDetail"></a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div><!--/.innerWrapper-->
+                                        </div><!-- /.tableDiv -->
+                                    </div>
+                                </section><!-- /.challengesWrapper -->
+                            </div><!-- /.mainContent -->
+                        </div><!-- /.leftSec -->
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 rightSec" id="rSec">
+                            <section class="leaderboardWrapper" id="leaderboardPanel">
+                                <div class="heading">
+                                    <h3><span data-ng-show="viewOn=='room'">Room</span><span data-ng-hide="viewOn=='room'">Division</span> Leaderboard</h3><br/>
+                                    <div class="filterArea" data-ng-show="registrationFinished()">
+                                        <a id="leaderboardFilter" data-ng-click="checkFilter(viewOn, 'leaderboard')" class="filterToggle">Filter</a>
+                                        <div>
+                                            <a data-ng-click="closeQtip('leaderboard')" class="closeLink">Filter</a>
+                                            <div class="contentWrapper">
+                                                <div class="contentRow">
+                                                    <label>Show</label>
+                                                    <div class="dropdown">
+                                                        <button class="dropdown-toggle">{{getFilterKey(viewOn, 'leaderboard')}}<span class="arrow"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li data-ng-class="{active:getKeys(viewOn).lbFilterKey=='all',inactive:getKeys(viewOn).lbFilterKey!='all'}"><a data-ng-click="setFilterKey(viewOn, 'leaderboard', 'all')">All Handles</a></li>
+                                                            <li data-ng-class="{active:getKeys(viewOn).lbFilterKey=='specific',inactive:getKeys(viewOn).lbFilterKey!='specific'}"><a data-ng-click="setFilterKey(viewOn, 'leaderboard', 'specific')">Specific Handle</a></li>
+                                                        </ul>
+                                                    </div><!--/.dropdown-->
+                                                </div>
+                                                <div data-ng-show="getKeys(viewOn).lbFilterKey=='specific'" class="contentRow">
+                                                    <label>Handle</label>
+                                                    <input type="text" data-ng-model="lbHandleString" class="filterInput" data-ng-keypress="pressKeyInFilter($event, viewOn, 'leaderboard')"/>
+                                                </div>
+                                            </div>
+                                            <div class="btnWrapper">
+                                                <a class="btn btnFilter" data-ng-click="filterBegin(viewOn, 'leaderboard')">Filter</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="viewFilter" data-ng-show="registrationFinished()">
+                                        <label>View</label><!-- avoid unnecessary white space
+                                        --><div><input type="radio" data-ng-model="showBy" value="status" class="showLBRadio" id="showByStatus"/><label for="showByStatus" class="showLBLbl">Status</label></div><!-- avoid unnecessary white space
+                                        --><div><input type="radio" data-ng-model="showBy" value="points" class="showLBRadio" id="showByPoints"/><label for="showByPoints" class="showLBLbl">Points</label></div>
+                                    </div>
+                                    <a data-ng-click="toggleExpand('leaderboardPanel', 'rSec', 'lSec')" class="expandIcon"></a>
+                                </div><!--/.heading-->
+                                <p data-ng-show="!registrationFinished()">The leaderboard is not ready.</p>
+                                <div class="tableWrapper" data-ng-show="registrationFinished()">
+                                    <div class="tHeadDiv" data-ng-class="{moreProblemTbl:contest.problems.length>3,normal:contest.problems.length<=3}">
+                                        <div class="innerWrapper">
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col1 sortableHeading" data-ng-hide="viewOn=='room'" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'roomId')">
+                                                            Room #<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='roomId' || getKeys(viewOn).leaderboardKey=='-roomId'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-roomId',ascArrow:getKeys(viewOn).leaderboardKey=='roomId'}" class="arrow"></span></span>
+                                                        </th>
+                                                        <th class="col1 sortableHeading" data-ng-show="viewOn=='room'" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'roomPlace')">
+                                                            Place<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='roomPlace' || getKeys(viewOn).leaderboardKey=='-roomPlace'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-roomPlace',ascArrow:getKeys(viewOn).leaderboardKey=='roomPlace'}" class="arrow"></span></span>
+                                                        </th>
+                                                        <th class="col2 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'handle')">
+                                                            Handle<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='handle' || getKeys(viewOn).leaderboardKey=='-handle'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-handle',ascArrow:getKeys(viewOn).leaderboardKey=='handle'}" class="arrow"></span></span>
+                                                        </th>
+                                                        <th data-ng-repeat="problem in contest.problems track by $index" class="colProblem sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'results['+$index+'].score')">
+                                                            {{problem.points}}<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='results['+$index+'].score' || getKeys(viewOn).leaderboardKey=='-results['+$index+'].score'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-results['+$index+'].score',ascArrow:getKeys(viewOn).leaderboardKey=='results['+$index+'].score'}" class="arrow"></span></span>
+                                                        </th>
+                                                        <th class="col6 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'score')">
+                                                            Score<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='score' || getKeys(viewOn).leaderboardKey=='-score'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-score',ascArrow:getKeys(viewOn).leaderboardKey=='score'}" class="arrow"></span></span>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div><!--/.innerWrapper-->
+                                    </div><!--/.tHeadDiv-->
+                                    <div class="tableDiv scroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:leaderboardTable" data-ng-class="{moreProblemTbl:contest.problems.length>3,normal:contest.problems.length<=3}">
+                                        <div class="innerWrapper">
+                                            <table class="table table-condensed">
+                                                <tbody>
+                                                    <tr data-ng-repeat="user in leaderboard | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey ">
+                                                        <td class="col1">{{viewOn=='room' ? user.roomPlace : user.roomId}}</td>
+                                                        <td class="col2"><span class="name">{{user.handle}}</span> <span>({{user.rating}})</span></td>
+                                                        <td data-ng-repeat="result in user.results track by $index" class="colProblem">
+                                                            <a data-ng-show="isViewable(result)" data-ng-click=""><span class="{{'color' + result.status}}">{{showResult(result, $parent.showBy)}}</span></a>
+                                                            <span data-ng-hide="isViewable(result)" class="{{'color' + result.status}}">{{showResult(result, $parent.showBy)}}</span>
+                                                        </td>
+                                                        <td class="col6">{{formatScore(user.score)}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div><!-- /.tableDiv -->
+                                    <div class="tableDiv default" data-ng-class="{moreProblemTbl:contest.problems.length>3,normal:contest.problems.length<=3}">
+                                        <div class="innerWrapper">
+                                            <table class="table table-condensed">
+                                                <tbody>
+                                                    <tr data-ng-repeat="user in leaderboard | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey ">
+                                                        <td class="col1">{{viewOn=='room' ? user.roomPlace : user.roomId}}</td>
+                                                        <td class="col2"><span class="name">{{user.handle}}</span> <span>({{user.rating}})</span></td>
+                                                        <td data-ng-repeat="result in user.results track by $index" class="colProblem">
+                                                            <a data-ng-show="isViewable(result)" data-ng-click=""><span class="{{'color' + result.status}}">{{showResult(result, $parent.showBy)}}</span></a>
+                                                            <span data-ng-hide="isViewable(result)" class="{{'color' + result.status}}">{{showResult(result, $parent.showBy)}}</span>
+                                                        </td>
+                                                        <td class="col6">{{formatScore(user.score)}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div><!-- /.tableDiv -->
+                                </div>
+                            </section><!--/.leaderboardWrapper-->
+                        </div><!--/.rightSec -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- content end -->

@@ -6,6 +6,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
   function ($parse, $window, $timeout) {
     return {
       restrict: 'A',
+      scope: true,
       template: '<div>' + '<div class="ngsb-wrap">' + '<div class="ngsb-container" ng-transclude></div>' + '<div class="ngsb-scrollbar" style="position: absolute; display: block;" ng-show="showYScrollbar">' + '<div class="ngsb-thumb-container">' + '<div class="ngsb-thumb-pos" oncontextmenu="return false;">' + '<div class="ngsb-thumb" ></div>' + '</div>' + '<div class="ngsb-track"></div>' + '</div>' + '</div>' + '</div>' + '</div>',
       replace: true,
       transclude: true,
@@ -110,6 +111,11 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           } else {
             dragger.height = page.height;
             scope.showYScrollbar = false;
+            if (attrs.hasOwnProperty('scrollTop')) {
+              transculdedContainer.css({
+                top: 0
+              });
+            }
           }
         };
         var rebuildTimer;
@@ -120,6 +126,10 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           var rollToBottom = !!data && !!data.rollToBottom;
           rebuildTimer = setTimeout(function () {
             page.height = null;
+            if (attrs.hasOwnProperty('scrollTop')) {
+              page.top = 0;
+              dragger.top = 0;
+            }
             buildScrollbar(rollToBottom);
             if (!scope.$$phase) {
               scope.$digest();

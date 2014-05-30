@@ -1,0 +1,88 @@
+{
+    "challenges": [
+        {
+            "roomId": 1,
+            "challenger": {
+                "handle": "lunarkid",
+                "rating": 5432
+            },
+            "defender": {
+                "handle": "gh3ablo",
+                "rating": 3456
+            },
+            "language": "C#",
+            "date": "2014-04-24T08:02Z",
+            "success": true
+        },
+        {
+            "roomId": 1,
+            "challenger": {
+                "handle": "gh3ablo",
+                "rating": 3456
+            },
+            "defender": {
+                "handle": "iamtong",
+                "rating": 2345
+            },
+            "language": "Java",
+            "date": "2014-04-23T08:02Z",
+            "success": false
+        },
+        {
+            "roomId": 1,
+            "challenger": {
+                "handle": "iamtong",
+                "rating": 2345
+            },
+            "defender": {
+                "handle": "oninxronda",
+                "rating": 1345
+            },
+            "language": "VB",
+            "date": "2014-04-22T08:02Z",
+            "success": true
+        },
+        {
+            "roomId": 1,
+            "challenger": {
+                "handle": "oninxronda",
+                "rating": 1345
+            },
+            "defender": {
+                "handle": "quesks",
+                "rating": 2345
+            },
+            "language": "C++",
+            "date": "2014-04-21T08:02Z",
+            "success": true
+        },
+        {
+            "roomId": 1,
+            "challenger": {
+                "handle": "oninxronda",
+                "rating": 1345
+            },
+            "defender": {
+                "handle": "gh3ablo",
+                "rating": 3456
+            },
+            "language": "C++",
+            "date": "2014-04-21T08:01Z",
+            "success": false
+        },
+        {
+            "roomId": 1,
+            "challenger": {
+                "handle": "heffan",
+                "rating": 500
+            },
+            "defender": {
+                "handle": "user.handle_4",
+                "rating": 500
+            },
+            "language": "C++",
+            "date": "2014-04-21T08:00Z",
+            "success": false
+        }
+    ]
+}

@@ -1,11 +1,11 @@
 <div class="panel panelCountDown">
     <div class="panel-body">
-        <div data-ng-show="contest.phase">
-            <p data-ng-class="{singleLine: contest.phase.id > 5}"><!--avoid unnecessary blank
-             --><span>{{ getPhaseMessage(contest) }}<span data-ng-show="contest.phase.id === 7" class="textRed"> {{ contest.phase.percentage | number:2 }}%</span></span><!--avoid unnecessary blank
+        <div data-ng-show="contest.phaseData">
+            <p data-ng-class="{singleLine: !showTimer(contest)}"><!--avoid unnecessary blank
+             --><span>{{ getPhaseMessage(contest) }}<span data-ng-show="contest.phaseData.phaseType === 8" class="textRed" ng-bind="contest.systestProgress ? contest.systestProgress : 'N/A'"></span></span><!--avoid unnecessary blank
              --></p>
-            <p class="textRed" data-ng-show="contest.phase.id <= 5"><!--avoid unnecessary blank
-             --><span data-timer data-autostart="false" data-interval="1000" data-countdown="1"><!-- use angular-timer. HACK here: we have to set the attribute 'countdown' with a positive value to indicate we are ticking down! 
+            <p class="textRed" data-ng-show="showTimer(contest)"><!--avoid unnecessary blank
+             --><span data-timer data-autostart="false" data-interval="1000" data-countdown="1"><!-- use angular-timer. HACK here: we have to set the attribute 'countdown' with a positive value to indicate we are ticking down!
                  --><span data-ng-show="days > 0">{{days}} days </span><!--avoid unnecessary blank
                  --><span data-ng-show="days > 0 || hours > 0">{{hours}} hours </span><!--avoid unnecessary blank
                  --><span>{{minutes}} minutes {{seconds}} seconds</span>

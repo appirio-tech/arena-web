@@ -1,4 +1,20 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This file provide the main app configurations.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 1):
+ * - Added userPreferences to root scope.
+ * - Updated coding page state parameters.
+ *
+ * @author tangzx
+ * @version 1.1
+ */
 'use strict';
+/*jshint -W097*/
+/*jshint strict:false*/
+/*global require*/
 require('./../../thirdparty/jquery/jquery');
 require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
@@ -50,12 +66,15 @@ controllers.userCodingEditorCtrl = require('./controllers/userCodingEditorCtrl')
 controllers.userContestCtrl = require('./controllers/userContestCtrl');
 controllers.contestCountdownCtrl = require('./controllers/contestCountdownCtrl');
 controllers.contestStatsCtrl = require('./controllers/contestStatsCtrl');
+controllers.resizerCtrl = require('./controllers/resizerCtrl');
 controllers.connectionStatusCtrl = require('./controllers/connectionStatusCtrl');
 controllers.tcTimeCtrl = require('./controllers/tcTimeCtrl');
 controllers.overviewCtrl = require('./controllers/overviewCtrl');
 controllers.baseCtrl = require('./controllers/baseCtrl');
 controllers.contestPlanCtrl = require('./controllers/contestPlanCtrl');
 controllers.messageArenaCtrl = require('./controllers/messageArenaCtrl');
+controllers.contestSummaryCtrl = require('./controllers/contestSummaryCtrl');
+controllers.userContestDetailCtrl = require('./controllers/userContestDetailCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -65,11 +84,13 @@ directives.codingproblem = require('./directives/codingproblem');
 directives.codingeditor = require('./directives/codingeditor');
 directives.contestcountdown = require('./directives/contestcountdown');
 directives.conteststats = require('./directives/conteststats');
+directives.resizer = require('./directives/resizer');
 directives.connectionstatus = require('./directives/connectionstatus');
 directives.topcodertime = require('./directives/topcodertime');
 directives.overview = require('./directives/overview');
 directives.contestPlan = require('./directives/contestPlan');
 directives.messageArena = require('./directives/messageArena');
+directives.contestSummary = require('./directives/contestSummary');
 
 /*global $ : false, angular : false */
 /*jslint nomen: true, browser: true */
@@ -113,12 +134,16 @@ main.controller('userCodingEditorCtrl', controllers.userCodingEditorCtrl);
 main.controller('userContestCtrl', controllers.userContestCtrl);
 main.controller('contestCountdownCtrl', controllers.contestCountdownCtrl);
 main.controller('contestStatsCtrl', controllers.contestStatsCtrl);
+main.controller('resizerCtrl', controllers.resizerCtrl);
 main.controller('connectionStatusCtrl', controllers.connectionStatusCtrl);
 main.controller('tcTimeCtrl', controllers.tcTimeCtrl);
 main.controller('overviewCtrl', controllers.overviewCtrl);
 main.controller('contestPlanCtrl', controllers.contestPlanCtrl);
 main.controller('baseCtrl', controllers.baseCtrl);
 main.controller('messageArenaCtrl', controllers.messageArenaCtrl);
+main.controller('baseCtrl', controllers.baseCtrl);
+main.controller('contestSummaryCtrl', controllers.contestSummaryCtrl);
+main.controller('userContestDetailCtrl', controllers.userContestDetailCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -130,11 +155,13 @@ main.directive('codingproblem', directives.codingproblem);
 main.directive('codingeditor', directives.codingeditor);
 main.directive('contestcountdown', directives.contestcountdown);
 main.directive('conteststats', directives.conteststats);
+main.directive('resizer', directives.resizer);
 main.directive('connectionstatus', directives.connectionstatus);
 main.directive('topcodertime', directives.topcodertime);
 main.directive('overview', directives.overview);
 main.directive('contestPlan', directives.contestPlan);
 main.directive('messageArena', directives.messageArena);
+main.directive('contestSummary', directives.contestSummary);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
@@ -173,7 +200,7 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
             templateUrl: 'partials/user.dashboard.html'
         })
         .state('user.coding', {
-            url: '/coding/{problemId}',
+            url: '/coding/{roundId}/{problemId}/{divisionId}',
             data: {
                 pageTitle: "Coding Arena",
                 pageMetaKeywords: "coding,arena"
@@ -182,13 +209,22 @@ main.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function (
             controller: 'userCodingCtrl'
         })
         .state('user.contest', {
-            url: '/contests/{contestId}',
+            url: '/contests/{contestId}/{divisionId}',
             data: {
                 pageTitle: "Contest",
                 pageMetaKeywords: "contest"
             },
             templateUrl: 'partials/user.contest.html',
             controller: 'userContestCtrl'
+        })
+        .state('user.contestSummary', {
+            url: '/contests/{contestId}/{divisionId}/summary/{viewOn}',
+            data: {
+                pageTitle: "Contest",
+                pageMetaKeywords: "contest"
+            },
+            templateUrl: 'partials/user.contest.detail.html',
+            controller: 'userContestDetailCtrl'
         })
         .state('user.profile', {
             url: '/profile',
@@ -286,6 +322,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', function ($rootScop
             return $rootScope.isLoggedIn;
         };
         $rootScope.username = sessionHelper.getUsername;
+        $rootScope.userPreferences = sessionHelper.getUserPreferences;
         $rootScope.timezone = res ? res[1] : "";
 
         socket.on('connect', function () {

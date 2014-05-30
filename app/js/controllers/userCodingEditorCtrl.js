@@ -1,27 +1,215 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This controller handles coding editor related logic.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 1):
+ * - Updated to use real data.
+ *
+ * @author TCSASSEMBLER
+ * @version 1.1
+ */
 'use strict';
-/*global CodeMirror, module */
+/*global module, CodeMirror, angular, $ */
 
-var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http',
-    function ($scope, $window, $timeout, appHelper, $http) {
+/**
+ * The helper.
+ *
+ * @type {exports}
+ */
+var helper = require('../helper');
+
+/**
+ * The main controller for coding editor.
+ *
+ * @type {*[]}
+ */
+var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket', '$timeout',
+    function ($scope, $window, appHelper, $modal, socket, $timeout) {
         var indentRangeFinder = {
                 rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.indent, CodeMirror.fold.comment)
             },
             braceRangeFinder = {
                 rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.brace, CodeMirror.fold.comment)
             },
+            /**
+             * The language configs.
+             *
+             * @type {{name: string, id: number, langKey: string, langGutter: {rangeFinder: exports.combine}}[]}
+             */
             cmLangConfigs = [
-                {name: 'Java', langKey: 'text/x-java', langGutter: braceRangeFinder},
-                {name: 'C++', langKey: 'text/x-c++src', langGutter: braceRangeFinder},
-                {name: 'C#', langKey: 'text/x-csharp', langGutter: braceRangeFinder},
-                {name: 'VB.NET', langKey: 'text/x-vb', langGutter: indentRangeFinder},
-                {name: 'Python', langKey: 'text/x-python', langGutter: indentRangeFinder}
-            ];
+                {
+                    name: 'Java',
+                    id: 1,
+                    langKey: 'text/x-java',
+                    langGutter: braceRangeFinder
+                },
+                {
+                    name: 'C++',
+                    id: 3,
+                    langKey: 'text/x-c++src',
+                    langGutter: braceRangeFinder
+                },
+                {
+                    name: 'C#',
+                    id: 4,
+                    langKey: 'text/x-csharp',
+                    langGutter: braceRangeFinder
+                },
+                {
+                    name: 'VB.NET',
+                    id: 5,
+                    langKey: 'text/x-vb',
+                    langGutter: indentRangeFinder
+                },
+                {
+                    name: 'Python',
+                    id : 6,
+                    langKey: 'text/x-python',
+                    langGutter: indentRangeFinder
+                }
+            ],
+            userInputDisabled = false,
+            modalTimeoutPromise = null,
+            /**
+             * The modal controller.
+             *
+             * @type {*[]}
+             */
+            popupModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', 'cancel', function ($scope, $modalInstance, data, ok, cancel) {
+                $scope.title = data.title;
+                $scope.message = data.message.replace(/(\r\n|\n|\r)/gm, "<br/>");
+                $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
+                $scope.enableClose = data.enableClose;
+
+                /**
+                 * OK handler.
+                 */
+                $scope.ok = function () {
+                    ok();
+                    $modalInstance.close();
+                };
+
+                /**
+                 * Cancel handler.
+                 */
+                $scope.cancel = function () {
+                    cancel();
+                    $modalInstance.dismiss('cancel');
+                };
+            }],
+            /**
+             * Open modal function.
+             *
+             * @param data the data
+             * @param handle the handler
+             * @param finish the finish function
+             */
+            openModal = function (data, handle, finish) {
+                if ($scope.currentModal) {
+                    $scope.currentModal.close();
+                    $scope.currentModal = undefined;
+                }
+
+                $scope.currentModal = $modal.open({
+                    templateUrl: 'popupModal.html',
+                    controller: popupModalCtrl,
+                    backdrop: 'static',
+                    resolve: {
+                        data: function () {
+                            return data;
+                        },
+                        ok: function () {
+                            return handle;
+                        },
+                        cancel: function () {
+                            return function () {
+                                if (angular.isFunction(finish)) {
+                                    finish();
+                                }
+
+                                $scope.currentModal = undefined;
+                            };
+                        }
+                    }
+                });
+            };
+
+        /**
+         * Enable editor.
+         *
+         * @param enable whether enable
+         */
+        function enableEditor(enable) {
+            if ($scope.cm) {
+                $scope.cm.setOption('readOnly', enable === false);
+            }
+        }
+
+        /**
+         * Disable user inputs.
+         */
+        function disableUserInput() {
+            userInputDisabled = true;
+            enableEditor(false);
+        }
+
+        /**
+         * Enable user inputs.
+         */
+        function enableUserInput() {
+            userInputDisabled = false;
+            enableEditor();
+        }
+
+        /**
+         * Replace all.
+         *
+         * @param find the find str
+         * @param replace to replace str
+         * @param str the source
+         * @returns {*}
+         */
+        function replaceAll(find, replace, str) {
+            return str.replace(new RegExp(find, 'g'), replace);
+        }
+
+        /**
+         * Update arg type and method.
+         *
+         * @param id the language id.
+         */
+        function updateArgTypeAndMethod(id) {
+            if (id) {
+                $scope.problem.argTypeText = $scope.getArgType(id);
+                $scope.problem.methodSignature = $scope.getMethodSignature(id);
+            }
+        }
+
+        /**
+         * Set timeout modal.
+         */
+        function setTimeoutModal() {
+            openModal({
+                title: 'Timeout',
+                message: 'Sorry, the request is timeout.',
+                enableClose: true
+            });
+            modalTimeoutPromise = null;
+            enableUserInput();
+        }
 
         $scope.$window = $window;
         $scope.range = appHelper.range;
+
         // hide/show settings panel
         $scope.settingsBackup = {};
         $scope.settingsOpen = false;
+
+        /**
+         * Toggle settings.
+         */
         $scope.toggleSettings = function () {
             $scope.settingsOpen = !$scope.settingsOpen;
             if ($scope.settingsOpen) {
@@ -34,83 +222,129 @@ var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http
                 $scope.langIdx = $scope.settingsBackup.langIdx;
                 $scope.themeIdx = $scope.settingsBackup.themeIdx;
                 $scope.showLineNumber = $scope.settingsBackup.showLineNumber;
+
+                updateArgTypeAndMethod($scope.lang($scope.langIdx).id);
             }
         };
+
         // hide/show test panel
         $scope.testOpen = false;
+
+        /**
+         * Toggle test panel.
+         */
         $scope.toggleTest = function () {
-            $scope.testOpen = !$scope.testOpen;
+            if ($scope.testOpen === false) {
+                openModal({
+                    title: 'Retrieving Test Info',
+                    message: 'Please wait for test info.',
+                    enableClose: false
+                });
+
+                // get test info before open it
+                socket.emit(helper.EVENT_NAME.TestInfoRequest, {
+                    componentID: $scope.componentID
+                });
+            } else {
+                $scope.testOpen = false;
+            }
         };
+
         // init theme settings
         $scope.themes = [
             {name: 'Standard', themeKey: 'topcoder'}
         ];
         $scope.themeIdx = 0;
+
+        /**
+         * Get theme.
+         *
+         * @param themeIdx the index
+         * @returns {*}
+         */
         $scope.theme = function (themeIdx) {
             return $scope.themes[themeIdx];
         };
+
+        /**
+         * Get the theme name.
+         *
+         * @param themeIdx the index
+         * @returns {Window.name|*}
+         */
         $scope.getThemeName = function (themeIdx) {
             return $scope.theme(themeIdx).name;
         };
+
+        /**
+         * Set the theme index.
+         *
+         * @param themeIdx the index
+         */
         $scope.setThemeIdx = function (themeIdx) {
             $scope.themeIdx = themeIdx;
         };
 
         // init language settings
-        $scope.languages = [{name: 'Language'}];
+        $scope.languages = angular.copy(cmLangConfigs);
         $scope.langIdx = 0;
+
+        /**
+         * Get language.
+         *
+         * @param langIdx the index.
+         * @returns {*}
+         */
         $scope.lang = function (langIdx) {
             return $scope.languages[langIdx];
         };
+
+        /**
+         * Get language name.
+         *
+         * @param langIdx
+         * @returns {Window.name|*}
+         */
         $scope.getLangName = function (langIdx) {
             return $scope.lang(langIdx).name;
         };
+
+        /**
+         * Set language index.
+         *
+         * @param langIdx
+         */
         $scope.setLangIdx = function (langIdx) {
             $scope.langIdx = langIdx;
+
+            updateArgTypeAndMethod($scope.lang($scope.langIdx).id);
         };
 
         // init show/hide line number settings
         $scope.showLineNumber = true;
-        // init code content
+        // init code content & other code related fields
         $scope.code = '';
-        // set the ui-codemirror option
-        $scope.lineNumbers = 21;
-        $scope.errorMessages = $scope.range($scope.lineNumbers);
-        $scope.clearErrorMessages = function () {
-            var i;
-            for (i = 0; i < $scope.errorMessages.length; i++) {
-                $scope.errorMessages[i] = '';
-            }
-        };
-        $scope.getErrorMessage = function (index) {
-            return $scope.errorMessages[index];
-        };
-        $scope.updateErrorMessages = function (refresh) {
-            var editorVisible = $scope.$window.document.getElementsByClassName('CodeMirror-scroll')[0],
-                i,
-                j = 0;
-            // render error messages from 'topLine'
-            $scope.topLine = Math.floor(editorVisible.scrollTop / 22 + 0.49999) + 1;
-            console.log('topline: ' + $scope.topLine);
-            for (i = 0; i < $scope.errorMessages.length; i++) {
-                $scope.errorMessages[i] = '';
-                while (j < $scope.errors.length && $scope.topLine + i >= $scope.errors[j].line) {
-                    if ($scope.topLine + i === $scope.errors[j].line &&
-                            $scope.errors[j].line <= $scope.cm.lineCount()) {
-                        // set message if it is the correct line
-                        $scope.errorMessages[i] = $scope.errors[j].message;
-                    }
-                    ++j;
-                }
-            }
-            if (refresh) {
-                $scope.$apply();
-            }
-        };
 
-        $scope.clearErrorMessages();
-        $scope.errors = [];
+        // test fields
+        $scope.testCompleted = false;
+        $scope.isTesting = false;
+        $scope.caseIndex = null;
 
+        /**
+         * The code mirror config.
+         *
+         * @type {{
+         *          theme: string,
+         *          lineNumbers: boolean,
+         *          lineWrapping: boolean,
+         *          mode: (string|cmLangConfigs.langKey),
+         *          foldGutter: (braceRangeFinder|*|indentRangeFinder|cmLangConfigs.langGutter),
+         *          gutters: string[],
+         *          indentUnit: number,
+         *          readOnly: boolean,
+         *          onLoad: onLoad
+         *          }}
+         */
         $scope.cmOption = {
             theme: 'topcoder',
             lineNumbers: true,
@@ -118,6 +352,8 @@ var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http
             mode: $scope.lang($scope.langIdx).langKey,
             foldGutter: $scope.lang($scope.langIdx).langGutter,
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+            indentUnit: 4,
+            readOnly: true,
             onLoad : function (_cm) {
                 $scope.cm = _cm;
                 $scope.settingChanged = function () {
@@ -136,20 +372,118 @@ var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http
                 _cm.on('change', function () {
                     $scope.contentDirty = true;
                 });
+                // comment out error handle related logic for now
+                /*
                 _cm.on('scroll', function () {
                     $scope.updateErrorMessages(true);
                 });
+                */
                 // tell the parent controller that the editor is loaded
                 $scope.$emit('editor-loaded');
             }
         };
 
+        /**
+         * Clear the editor.
+         */
+        $scope.clearEditor = function () {
+            if (userInputDisabled) {
+                return;
+            }
+            disableUserInput();
+
+            $scope.code = '';
+            $scope.cm.setValue('');
+
+            enableUserInput();
+        };
+
+        /**
+         * Compile solution.
+         */
+        $scope.compileSolution = function () {
+            if (userInputDisabled || !$scope.problemLoaded) {
+                return;
+            }
+            disableUserInput();
+
+            openModal({
+                title: 'Compiling',
+                message: 'Please wait for compiling results.',
+                enableClose: false
+            });
+
+            socket.emit(helper.EVENT_NAME.CompileRequest, {
+                componentID: $scope.componentID,
+                language: $scope.lang($scope.langIdx).id,
+                code: $scope.cm.getValue()
+            });
+            $scope.testOpen = false;
+            if (modalTimeoutPromise) {
+                $timeout.cancel(modalTimeoutPromise);
+            }
+            modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
+        };
+
+        /**
+         * Handle pop up generic response.
+         */
+        socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
+            if (modalTimeoutPromise) {
+                $timeout.cancel(modalTimeoutPromise);
+            }
+
+            var i;
+            enableUserInput();
+
+            if (data.title !== helper.POP_UP_TITLES.Error && data.title !== helper.POP_UP_TITLES.CompileResult && data.title !== helper.POP_UP_TITLES.TestResults) {
+                // only handle these responses for now
+                return;
+            }
+
+            data.message = replaceAll('<', '&lt;', data.message);
+            data.message = replaceAll('>', '&gt;', data.message);
+            openModal({
+                title: data.title,
+                message: data.message,
+                enableClose: true
+            });
+
+            // clean test status once get any pop up response
+            // as may get error response
+            for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                $scope.userData.tests[i].havingResult = false;
+            }
+            $scope.isTesting = false;
+
+            if (data.title === helper.POP_UP_TITLES.TestResults) {
+                $scope.testCompleted = true;
+                if (data.message.indexOf('Correct Return Value') === 0) {
+                    if ($scope.userData.tests[$scope.caseIndex]) {
+                        $scope.userData.tests[$scope.caseIndex].havingResult = true;
+                        $scope.userData.tests[$scope.caseIndex].passed = data.message.indexOf('Correct Return Value: Yes') === 0;
+                    }
+                }
+            }
+        });
+
+        /**
+         * Handle test info response.
+         */
+        socket.on(helper.EVENT_NAME.TestInfoResponse, function (data) {
+            if (data.componentID === $scope.componentID) {
+                if ($scope.currentModal) {
+                    $scope.currentModal.dismiss('cancel');
+                    $scope.currentModal = undefined;
+                }
+                $scope.testOpen = true;
+            }
+        });
+
         // when the problem is loaded in the parent controller userCodingCtrl
         $scope.$on('problem-loaded', function () {
-            // set tests
-            $scope.tests = $scope.userData.tests;
-            // init testcase checkboxes
-            $scope.tests.forEach(function (testCase) {
+            // init test case checkboxes
+            $scope.userData.tests.forEach(function (testCase) {
                 testCase.checked = false;
                 testCase.params.forEach(function (param) {
                     if (param.complexType) {
@@ -157,75 +491,147 @@ var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http
                     }
                 });
             });
+
+            /**
+             * Select all test. Will not happen currently.
+             *
+             * @param $event the event
+             */
             $scope.selectAll = function ($event) {
                 var checkbox = $event.target,
                     action = checkbox.checked;
                 console.log('select all: ' + action);
-                $scope.tests.forEach(function (testCase) {
+                $scope.userData.tests.forEach(function (testCase) {
                     testCase.checked = action;
                 });
             };
+
+            /**
+             * Check whether all test cases are selected.
+             *
+             * @returns {boolean} whether all test cases are selected
+             */
             $scope.isSelectedAll = function () {
                 var i;
-                for (i = 0; i < $scope.tests.length; i++) {
-                    if (!$scope.tests[i].checked) {
+                for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                    if (!$scope.userData.tests[i].checked) {
                         return false;
                     }
                 }
                 return true;
             };
+
+            /**
+             * Run selected test case, or show error modal.
+             */
             $scope.runTests = function () {
-                $timeout(function () {
-                    $scope.testCompleted = true;
-                    $scope.isTesting = false;
-                    $http.get('data/test-results.json').success(function (data) {
-                        var i;
-                        for (i = 0; i < data.length; i++) {
-                            $scope.tests[i].passed = data[i];
-                        }
+                var count = 0, i, j, params = [], args = [], param;
+                for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                    count += $scope.userData.tests[i].checked ? 1 : 0;
+                }
+
+                if (count !== 1) {
+                    openModal({
+                        title: 'Error',
+                        message: 'You are required to select exactly one test case to run.',
+                        enableClose: true
                     });
-                }, 3000);
-                $scope.isTesting = true;
+                    return;
+                }
+
+                for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                    if ($scope.userData.tests[i].checked) {
+                        $scope.caseIndex = i;
+                        for (j = 0; j < $scope.userData.tests[i].params.length; j += 1) {
+                            param = $.trim($scope.userData.tests[i].params[j].value);
+
+                            if (param.length > 1 && param[0] === '{' && param[param.length - 1] === '}') {
+                                param = '[' + param.substr(1, param.length - 2) + ']';
+                            }
+
+                            try {
+                                param = JSON.parse(param);
+                            } catch (e) {
+                                openModal({
+                                    title: 'Error',
+                                    message: 'The param ' + param + ' is invalid.',
+                                    enableClose: true
+                                });
+                                return;
+                            }
+                            params.push(param);
+                        }
+                    }
+                }
+
+                for (i = 0; i < params.length; i += 1) {
+                    param = angular.copy(params[i]);
+
+                    if (param instanceof Array) {
+                        for (j = 0; j < param.length; j += 1) {
+                            param[j] = String(param[j]);
+                        }
+                        args.push(param);
+                    } else if (param instanceof Object) {
+                        openModal({
+                            title: 'Error',
+                            message: 'The param ' + param + ' is invalid.',
+                            enableClose: true
+                        });
+                    } else {
+                        param = String(param);
+                        args.push(param);
+                    }
+                }
+
+                socket.emit(helper.EVENT_NAME.TestRequest, {
+                    componentID: $scope.componentID,
+                    args: args
+                });
+
                 $scope.testCompleted = false;
+                $scope.isTesting = true;
             };
+
             // set the code written by the user
             $scope.code = $scope.userData.code;
             $scope.contentDirty = true;
 
             // load supported languages from config.
             // $scope.problem.supportedLanguages was set in the parent controller
-            $scope.languages.length = 0;
-            cmLangConfigs.forEach(function (config) {
-                var i;
-                for (i = 0; i < $scope.problem.supportedLanguages.length; i++) {
-                    if (config.name.toLowerCase() === $scope.problem.supportedLanguages[i].toLowerCase()) {
-                        $scope.languages.push(config);
-                        break;
+            if ($scope.problem.supportedLanguages && $scope.problem.supportedLanguages.length > 0) {
+                $scope.languages.length = 0;
+                cmLangConfigs.forEach(function (config) {
+                    var i;
+                    for (i = 0; i < $scope.problem.supportedLanguages.length; i += 1) {
+                        if (config.id === $scope.problem.supportedLanguages[i].id) {
+                            $scope.languages.push(config);
+                            break;
+                        }
                     }
+                });
+            }
+
+            // set preferred language
+            $scope.langIdx = 0;
+            angular.forEach($scope.languages, function (language, i) {
+                if (language.id === $scope.languageID) {
+                    $scope.setLangIdx(i);
                 }
             });
-            if ($scope.languages.length === 0) {
-                $scope.languages.push({name: 'Language'});
-            }
 
-            function setIndex(data, name, defaultValue) {
-                var i;
-                for (i = 0; i < data.length; i++) {
-                    if (data[i].name.toLowerCase() === name.toLowerCase()) {
-                        return i;
-                    }
-                }
-                return defaultValue;
-            }
-            // set preferred language
-            console.log(JSON.stringify($scope.languages));
-            $scope.langIdx = setIndex($scope.languages, $scope.userData.langName, $scope.langIdx);
-            // set preferred theme
-            $scope.themeIdx = setIndex($scope.themes, $scope.userData.themeName, $scope.themeIdx);
+            // set preferred theme, there is no theme data
+            $scope.themeIdx = 0;
 
             // set line number visibility
-            $scope.showLineNumber = $scope.userData.showLineNumber ? true : false;
+            // comment out for now, there is no line number data
+            // $scope.showLineNumber = $scope.userData.showLineNumber ? true : false;
 
+            $scope.settingChanged();
+            enableEditor();
+
+            // comment out auto-compile & auto-save related code for now
+            /*
             // set auto-compile option
             $scope.autoCompile = $scope.userData.autoCompile ? true : false;
             $scope.compile = function () {
@@ -248,10 +654,65 @@ var userCodingEditorCtrl = ['$scope', '$window', '$timeout', 'appHelper', '$http
             // set auto-save option
             $scope.autoSave = $scope.userData.autoSave ? true : false;
             // settingChanged has been defined as editor is loaded before the problems is loaded.
-            $scope.settingChanged();
+            */
         });
-        $scope.testCompleted = false;
-        $scope.isTesting = false;
+
+        // comment out error messages related code for now
+        // set the ui-codemirror option
+        $scope.errorBar = document.getElementsByClassName('errorBar')[0];
+        $scope.sharedObj.rebuildErrorBar = function () {
+            // comment out error part for now
+            /*
+            var errorBarHeight = appHelper.getRenderedHeight($scope.errorBar),
+                messageHeight = 22;
+            if (Math.floor(errorBarHeight / messageHeight) !== $scope.lineNumbers) {
+                $scope.lineNumbers = Math.floor(errorBarHeight / messageHeight);
+                $scope.errorMessages = $scope.range($scope.lineNumbers);
+                $scope.updateErrorMessages(true);
+            }
+            angular.element($scope.errorBar).css('height',
+                    (appHelper.getRenderedHeight($scope.cmElem) - 1) + 'px');
+            */
+        };
+        /*
+        $scope.lineNumbers = 21;
+        $scope.errorMessages = $scope.range($scope.lineNumbers);
+
+        $scope.clearErrorMessages = function () {
+            var i;
+            for (i = 0; i < $scope.errorMessages.length; i += 1) {
+                $scope.errorMessages[i] = '';
+            }
+        };
+        $scope.getErrorMessage = function (index) {
+            return $scope.errorMessages[index];
+        };
+        $scope.updateErrorMessages = function (refresh) {
+            var editorVisible = $scope.$window.document.getElementsByClassName('CodeMirror-scroll')[0],
+                i,
+                j = 0;
+            // render error messages from 'topLine'
+            $scope.topLine = Math.floor(editorVisible.scrollTop / 22 + 0.49999) + 1;
+            console.log('topline: ' + $scope.topLine);
+            for (i = 0; i < $scope.errorMessages.length; i += 1) {
+                $scope.errorMessages[i] = '';
+                while (j < $scope.errors.length && $scope.topLine + i >= $scope.errors[j].line) {
+                    if ($scope.topLine + i === $scope.errors[j].line &&
+                            $scope.errors[j].line <= $scope.cm.lineCount()) {
+                        // set message if it is the correct line
+                        $scope.errorMessages[i] = $scope.errors[j].message;
+                    }
+                    ++j;
+                }
+            }
+            if (refresh) {
+                //$scope.$apply();
+            }
+        };
+
+        $scope.clearErrorMessages();
+        $scope.errors = [];
+        */
     }];
 
 module.exports = userCodingEditorCtrl;

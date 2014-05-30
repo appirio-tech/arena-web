@@ -1,0 +1,157 @@
+{
+    "leaderboard": [
+        {
+            "roomId": 1,
+            "handle": "lunarkid",
+            "rating": 5432,
+            "results": [
+                {
+                    "score": 248.5,
+                    "status": "Submitted"
+                },
+                {
+                    "score": 440.23,
+                    "status": "Submitted"
+                },
+                {
+                    "status": "Opened"
+                }
+            ],
+            "score": 688.73
+        },
+        {
+            "roomId": 1,
+            "handle": "gh3ablo",
+            "rating": 3456,
+            "results": [
+                {
+                    "score": 245.5,
+                    "status": "Submitted"
+                },
+                {
+                    "score": 440.33,
+                    "status": "Submitted"
+                },
+                {
+                    "status": "Opened"
+                }
+            ],
+            "score": 685.83
+        },
+        {
+            "roomId": 1,
+            "handle": "iamtong",
+            "rating": 2345,
+            "results": [
+                {
+                    "score": 244.5,
+                    "status": "Submitted"
+                },
+                {
+                    "score": 420.23,
+                    "status": "Submitted"
+                },
+                {
+                    "status": "Opened"
+                }
+            ],
+            "score": 664.73
+        },
+        {
+            "roomId": 1,
+            "handle": "oninxronda",
+            "rating": 1345,
+            "results": [
+                {
+                    "score": 243.5,
+                    "status": "Submitted"
+                },
+                {
+                    "score": 421.23,
+                    "status": "Submitted"
+                },
+                {
+                    "status": "Unopened"
+                }
+            ],
+            "score": 664.73
+        },
+        {
+            "roomId": 1,
+            "handle": "user.handle_4",
+            "rating": 500,
+            "results": [
+                {
+                    "score": 199.5,
+                    "status": "Submitted"
+                },
+                {
+                    "score": 310.23,
+                    "status": "Submitted"
+                },
+                {
+                    "status": "Opened"
+                }
+            ],
+            "score": 509.73
+        },
+        {
+            "roomId": 1,
+            "handle": "user.handle_5",
+            "rating": 500,
+            "results": [
+                {
+                    "score": 198.5,
+                    "status": "Submitted"
+                },
+                {
+                    "score": 200.23,
+                    "status": "Submitted"
+                },
+                {
+                    "status": "Opened"
+                }
+            ],
+            "score": 398.73
+        },
+        {
+            "roomId": 1,
+            "handle": "user.handle_6",
+            "rating": 500,
+            "results": [
+                {
+                    "score": 150.5,
+                    "status": "Submitted"
+                },
+                {
+                    "score": 199,
+                    "status": "Submitted"
+                },
+                {
+                    "status": "Unopened"
+                }
+            ],
+            "score": 349.5
+        },
+        {
+            "roomId": 1,
+            "handle": "heffan",
+            "rating": 500,
+            "results": [
+                {
+                    "score": 149.5,
+                    "status": "Submitted"
+                },
+                {
+                    "score": 399,
+                    "status": "Submitted"
+                },
+                {
+                    "score": 800,
+                    "status": "Submitted"
+                }
+            ],
+            "score": 1348.6
+        }
+    ]
+}

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This module contains constants.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Contest Phase Movement):
+ * - Added PhaseDataResponse, SystestProgressResponse, RegisterUsersRequest and RegisteredUsersResponse to events.
+ *
+ * Changes in version 1.2 (Module Assembly - Web Arena UI - Coding IDE Part 1):
+ * - Added enter round, open, test, compile related events.
+ *
+ * @author tangzx
+ * @version 1.2
+ */
+
 module.exports = {
     // Represents the event names
     EVENT_NAME: {
@@ -15,7 +31,27 @@ module.exports = {
         EndSyncResponse: 'EndSyncResponse',
         CreateProblemsResponse: 'CreateProblemsResponse',
         UpdateRoundListResponse: 'UpdateRoundListResponse',
-        EnableRoundResponse: 'EnableRoundResponse'
+        EnableRoundResponse: 'EnableRoundResponse',
+        RegisterInfoRequest: 'RegisterInfoRequest',
+        PopUpGenericResponse: 'PopUpGenericResponse',
+        RegisterRequest: 'RegisterRequest',
+        EnterRoundRequest: 'EnterRoundRequest',
+        RoomInfoResponse: 'RoomInfoResponse',
+        EnterRequest: 'EnterRequest',
+        MoveRequest: 'MoveRequest',
+        CreateRoomListResponse: 'CreateRoomListResponse',
+        PhaseDataResponse: 'PhaseDataResponse',
+        SystestProgressResponse: 'SystestProgressResponse',
+        RegisterUsersRequest: 'RegisterUsersRequest',
+        RegisteredUsersResponse: 'RegisteredUsersResponse',
+        OpenComponentForCodingRequest: 'OpenComponentForCodingRequest',
+        GetProblemResponse: 'GetProblemResponse',
+        OpenComponentResponse: 'OpenComponentResponse',
+        CloseProblemRequest: 'CloseProblemRequest',
+        CompileRequest: 'CompileRequest',
+        TestInfoRequest: 'TestInfoRequest',
+        TestInfoResponse: 'TestInfoResponse',
+        TestRequest: 'TestRequest'
     },
 
     // Represents the phase names.
@@ -50,5 +86,14 @@ module.exports = {
         VotingPhase: 10,
         TieBreakingVotingPhase: 11,
         ModeratedChattingPhase: 12
+    },
+
+    // the timeout of request
+    REQUEST_TIME_OUT: 10 * 1000,
+
+    POP_UP_TITLES: {
+        Error: 'Error.',
+        CompileResult: 'Compile Result',
+        TestResults: 'Test Results'
     }
 };

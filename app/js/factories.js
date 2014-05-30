@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This file provide some global services.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 1):
+ * - Added getUserPreferences method.
+ * - Added remove listener function to socket.
+ *
+ * @author tangzx
+ * @version 1.1
+ */
 'use strict';
 var config = require('./config');
 var Auth0 = require('auth0-js');
@@ -187,6 +200,14 @@ factories.appHelper = [function () {
         return false;
     };
 
+    helper.stripPx = function (str) {
+        return parseInt(str.substring(0, str.length - 2), 10);
+    };
+
+    helper.getRenderedHeight = function (el) {
+        return helper.stripPx(angular.element(el).css('height'));
+    };
+
     return helper;
 }];
 
@@ -308,6 +329,17 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
         var userInfo = angular.fromJson($window.localStorage.userInfo);
         return userInfo ? userInfo.handle : null;
     };
+
+    /**
+     * Get user preferences.
+     *
+     * @returns {*} user preferences or null if not exist
+     */
+    helper.getUserPreferences = function () {
+        var userInfo = angular.fromJson($window.localStorage.userInfo);
+        return userInfo ? userInfo.preferences : null;
+    };
+
     helper.getRemember = function () {
         return angular.fromJson($window.localStorage.remember);
     };
@@ -322,11 +354,14 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
 
 //wrap auth0 in an angular factory
 factories.auth0 = function () {
-    return new Auth0({
-        domain:       config.apiDomain,
+    var result = new Auth0({
+        domain:       config.auth0domain,
         clientID:     config.auth0clientID,
         callbackURL:  config.callbackURL
     });
+
+    result.auth0connection = config.auth0connection;
+    return result;
 };
 
 factories.socket = ['$rootScope', function ($rootScope) {
@@ -348,6 +383,9 @@ factories.socket = ['$rootScope', function ($rootScope) {
                     }
                 });
             });
+        },
+        remove: function (eventName) {
+            socket.removeAllListeners(eventName);
         }
     };
 }];

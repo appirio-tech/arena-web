@@ -33,5 +33,27 @@
             "end": ""
         }
     ],
-    "tcCurrentTime": "Fri Feb 7, 4:01 PM EST"
+    "tcCurrentTime": "Fri Feb 7, 4:01 PM EST",
+    "problems": [
+        {
+            "points": 250,
+            "title": "Lorem Ipsum Dolor Sit Amet"
+        },
+        {
+            "points": 450,
+            "title": "Lorem Ipsum Dolor Sit Amet"
+        },
+        {
+            "points": 950,
+            "title": "Lorem Ipsum Dolor Sit Amet"
+        },
+        {
+            "points": 1200,
+            "title": "Lorem Ipsum Dolor Sit Amet"
+        }
+    ],
+    "phaseId": 3,
+    "roomSummary": "Room Summary: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+    "divOneSummary": "Division I Summary: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+    "divTwoSummary": "Division II Summary: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
 }

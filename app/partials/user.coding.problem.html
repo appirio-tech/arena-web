@@ -1,8 +1,81 @@
 <div class="panel panel-custom panelCodeProblem"><!-- content start -->
-    <div class="panel-heading" data-ng-init="isStatementOpen=true">
-    	<a data-ng-click="isStatementOpen = !isStatementOpen" data-ng-class="{open:isStatementOpen, collapsed:!isStatementOpen}">Problem Statement</a>
+    <div class="panel-heading">
+        Problem Statement<a data-ng-click="collapseOther('top-content')" class="collapseIcon" data-ng-class="{expand:getTopStatus()=='expand',normal:getTopStatus()=='normal'}"></a>
     </div>
-    <div class="panel-body row">
-    	<div  data-ng-show="isStatementOpen" data-ng-bind-html="problem.statement" class="statement"></div>
+    <div class="panel-body row" id="top-content">
+        <div class="statement" ng-if="problemLoaded">
+            <h2>Problem Statement</h2>
+            <div ng-bind-html="problem.intro">
+            </div>
+            <h2>Definition</h2>
+            <div class="problemStatementRow">
+                <div class="statementName">Class:</div>
+                <div class="textWhite">{{problem.className}}</div>
+            </div>
+            <div class="problemStatementRow">
+                <div class="statementName">Method:</div>
+                <div class="textWhite">{{problem.methodName}}</div>
+            </div>
+            <div class="problemStatementRow">
+                <div class="statementName">Parameters:</div>
+                <div class="textWhite">{{problem.argTypeText}}</div>
+            </div>
+            <div class="problemStatementRow">
+                <div class="statementName">Returns:</div>
+                <div class="textWhite">{{problem.allReturnType.typeMapping[lang(langIdx).id]}}</div>
+            </div>
+            <div class="problemStatementRow">
+                <div class="statementName">Method signature:</div>
+                <div class="textWhite">{{problem.methodSignature}}</div>
+            </div>
+            <div class="problemStatementRow" ng-if="lang(langIdx).id != 6">(be sure your method is public)</div>
+            <h2>Limits</h2>
+            <div class="problemStatementRow">
+                <div class="statementName">Time limit (s):</div>
+                <div class="textWhite">{{problem.component.problemCustomSettings.executionTimeLimit / 1000 | number : 3}}</div>
+            </div>
+            <div class="problemStatementRow">
+                <div class="statementName">Memory limit (MB):</div>
+                <div class="textWhite">{{problem.component.problemCustomSettings.memLimit}}</div>
+            </div>
+            <div class="problemStatementRow" ng-if="problem.spec">{{problem.spec}}</div>
+            <div ng-if="problem.component.notes && problem.component.notes.length > 0">
+                <h2>Notes</h2>
+                <div class="problemStatementRow" ng-repeat="note in problem.notes">
+                    <div ng-bind-html="'- ' + note"></div>
+                </div>
+            </div>
+            <div ng-if="problem.component.constraints && problem.component.constraints.length > 0">
+                <h2>Constraints</h2>
+                <div class="problemStatementRow" ng-repeat="constraint in problem.constraints">
+                    -&nbsp;
+                    <div ng-bind-html="constraint"></div>
+                </div>
+            </div>
+            <div ng-if="hasExampleTest">
+                <h2>Examples</h2>
+                <div class="" ng-repeat="test in examples track by $index" data-ng-init="testNum=$index">
+                    <span>{{testNum}})</span>
+                    <div class="problemStatementRow" ng-repeat="param in test.params">
+                        <div class="statementName">&nbsp;</div>
+                        <div class="textWhite">{{param.value}}</div>
+                    </div>
+                    <div class="problemStatementRow">
+                        <div class="statementName">&nbsp;</div>
+                        <div class="textWhite">Returns: {{test.output}}</div>
+                    </div>
+                    <div class="problemStatementRow" ng-if="test.annotation.annotationHtml">
+                        <div class="statementName">&nbsp;</div>
+                        <div class="textWhite" ng-bind-html="test.annotationHtml">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited.  (c)2003, TopCoder, Inc.  All rights reserved.
+            </div>
+            <!-- add one line at last -->
+            <div>&nbsp;</div>
+        </div>
     </div>
 </div> <!-- content end -->
