@@ -4,7 +4,7 @@
 .ngsb-wrap .ngsb-container {
   width: auto;
   overflow: hidden;
-  transition: 0.5s all;
+  /*transition: 0.5s all;*/
 }
 .ngsb-wrap:hover .ngsb-scrollbar {
   opacity: 1;

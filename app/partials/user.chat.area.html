@@ -1,0 +1,88 @@
+<div class="panel panel-custom panelChatArea">
+
+    <!--begin of heading-->
+    <div class="panel-heading">
+        Now chatting in: <span>{{getLobbyName(lobbyIdx)}}</span>
+        <ul class="lobbyDropdown">
+            <li class="dropdown">
+                <a class="dropdown-toggle">{{getLobbyName(lobbyIdx)}}</a>
+                <ul class="dropdown-menu">
+                    <li data-ng-repeat="lobby in lobbiesArray"><a data-ng-click="setLobby($index);" data-ng-class="{current: lobbyIdx===$index}">{{lobby}}</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!--end of heading-->
+
+    <!-- begin of left side -->
+    <div class="membersInfo">
+        <div class="infoSection" data-ng-show="showRatingKey">
+            <header><a data-ng-click="collapseRatingKey=!collapseRatingKey; rebuildScrollbar();" data-ng-class="{collapsed: collapseRatingKey}">Rating Key</a></header>
+            <ul data-ng-hide="collapseRatingKey">
+                <li data-ng-repeat="key in ratingKeyArray" data-ng-class="key.class">{{key.name}}</li>
+            </ul>
+        </div>
+        <div class="infoSection" data-ng-show="showRegistrant">
+            <header><a data-ng-click="collapseRegistrant=!collapseRegistrant; collapseMemberHere=true; rebuildScrollbar('registrants');" data-ng-class="{collapsed: collapseRegistrant}">Registrants<span>({{whosHereArray.length}})</span></a></header>
+            <ul class="scrollable" data-ng-hide="collapseRegistrant" data-ng-class="registrantsScrollHeight" data-ng-scrollbar data-rebuild-on="rebuild:registrants" rebuild-on-resize>
+                <li data-ng-repeat="member in whosHereArray" data-ng-class="getRatingClass(member.rating);">{{member.name}}</li>
+            </ul>
+        </div>
+        <div class="infoSection" data-ng-show="showMemberHere">
+            <header><a data-ng-click="collapseMemberHere=!collapseMemberHere; collapseRegistrant=true; rebuildScrollbar('whoshere');" data-ng-class="{collapsed: collapseMemberHere}">Who's here <span>({{whosHereArray.length}})</span></a></header>
+            <ul class="scrollable" data-ng-hide="collapseMemberHere" data-ng-class="whosHereScrollHeight" data-ng-scrollbar data-rebuild-on="rebuild:whosHere" rebuild-on-resize>
+                <li data-ng-repeat="member in whosHereArray"><a data-ng-class="getRatingClass(member.rating);" data-ng-click="showCoderInfo($index);">{{member.name}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- end of left side -->
+
+    <!-- begin of chat area -->
+    <div class="content">
+        <div class="chatBoard" data-ng-chat-area-scrollbar data-rebuild-on="rebuild:chatboard" bottom rebuild-on-resize>
+            <ul>
+                <li data-ng-repeat="chat in chatContent"><span data-ng-class="chat.type">{{chat.text}}</span></li>
+            </ul>
+        </div>
+        <!-- chat control bar -->
+        <div class="panel-heading control-bar" data-ng-show="!findMode">
+            <ul class="methodDropdown">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-ng-click="rebuildScrollbar('methods');">{{getMethodName(methodIdx)}}</a>
+                    <ul class="dropdown-menu" data-ng-dropdown-scrollbar data-rebuild-on="rebuild:methods" rebuild-on-resize>
+                        <li data-ng-repeat="method in methodsArray"><a data-ng-click="setChatMethod($index);" data-ng-class="{current: methodIdx===$index}">{{method}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="memberDropdown">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-ng-show="!disableSelect" data-ng-click="rebuildScrollbar('members');" data-ng-class="getMemberRatingClass(memberIdx)">{{getMemberName(memberIdx)}}</a>
+                    <a class="disableSelect" data-ng-show="disableSelect">{{getMemberName(memberIdx)}}</a>
+                    <ul class="dropdown-menu" data-ng-dropdown-scrollbar data-rebuild-on="rebuild:members" rebuild-on-resize>
+                        <li data-ng-repeat="user in whosHereArray track by $index"><a data-ng-click="talkTo($index);" data-ng-class="{current: memberIdx===$index}" class="{{getRatingClass(user.rating)}}">{{user.name}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form name="chatForm" data-ng-submit="chatSubmit();">
+                <div class="chatInput"><input type="text" name="chat" placeholder="Type chat..." data-ng-model="chatText"></div>
+                <a data-ng-click="findMode=true;" class="searchIcon"></a>
+                <button data-ng-hide="true" type="submit"></button>
+            </form>
+        </div>
+
+        <div class="panel-heading control-bar" data-ng-show="findMode">
+            <form name="findForm" data-ng-submit="">
+                <div class="chatInput"><input type="text" name="find" placeholder="find text..." data-ng-model="findText" /></div>
+                <a data-ng-click="findMode=false;" class="findIcon"></a>
+                <input type="checkbox" name="matchCase" id="matchCase" class="findCheckbox" data-ng-model="matchCheck"/>
+                <label for="matchCase" class="findCheckLbl">Match Case</label>
+                <input type="checkbox" name="highlight" id="highlight" class="findCheckbox" data-ng-model="highlightCheck"/>
+                <label for="highlight" class="findCheckLbl">Highlight</label>
+                <button data-ng-hide="true" type="submit"></button>
+            </form>
+        </div>
+    </div>
+    <!-- end of chat area -->
+
+</div>

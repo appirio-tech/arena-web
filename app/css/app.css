@@ -54,7 +54,11 @@ body a {cursor: pointer;}
 .panelOverview .panel-heading .showSectionLbl:before,
 .messageArena .panelHeader .btnClose:before,
 .messageArena .panelHeader .legends label:before,
-.messageArena .messageBox .mItem:before   {
+.messageArena .messageBox .mItem:before,
+.panelChatArea .control-bar .findCheckLbl:before,
+.panelChatArea .membersInfo .infoSection header a:before,
+.panelChatArea .findIcon,
+.panelChatArea .searchIcon{
     background-image: url(../img/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
@@ -2335,8 +2339,344 @@ footer .right>span:nth-child(2) {
     background: #2a2b2c;
 }
 
- .messageArena .default .messageWrapper {height: 212px; overflow-x: hidden; overflow-y: scroll;}
- .listView .default .tableDiv {height: 219px; overflow-x: hidden; overflow-y: scroll;}*/
+.messageArena .default .messageWrapper {height: 212px; overflow-x: hidden; overflow-y: scroll;}
+.listView .default .tableDiv {height: 219px; overflow-x: hidden; overflow-y: scroll;}
+
+.panelChatArea {
+    height: 393px;
+}
+.panelChatArea .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos:active{
+    background: rgba(255,255,255,0);
+}
+.panelChatArea .panel-heading {
+    background-color: #1f444e;
+    padding: 8px 0 8px 31px;
+}
+.panelChatArea .lobbyDropdown,
+.panelChatArea .methodDropdown,
+.panelChatArea .memberDropdown {
+    float: right;
+    list-style: none;
+    padding-left: 0;
+    font-size: 14px;
+    margin: -3px 4px 0 0;
+}
+.panelChatArea .lobbyDropdown .dropdown-toggle,
+.panelChatArea .methodDropdown .dropdown-toggle{
+    color: #ffffff;
+}
+.panelChatArea .lobbyDropdown .dropdown-toggle,
+.panelChatArea .methodDropdown .dropdown-toggle,
+.panelChatArea .memberDropdown .disableSelect,
+.panelChatArea .memberDropdown .dropdown-toggle {
+    height: 30px;
+    width: 138px;
+    display: block;
+    background-image: url(../img/select.png);
+    background-position: 107% 50%;
+    background-repeat: no-repeat;
+    background-color: #162f36;
+    background-color: rgba(22,47,54,0.99);
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    padding: 2px 0 0 10px;
+}
+.panelChatArea .lobbyDropdown .dropdown-toggle:hover,
+.panelChatArea .methodDropdown .dropdown-toggle:hover,
+.panelChatArea .memberDropdown .dropdown-toggle:hover {
+    text-decoration: none;
+    color: inherit;
+}
+.panelChatArea .lobbyDropdown .dropdown-menu{
+    min-width:138px;
+}
+.panelChatArea .lobbyDropdown .dropdown-menu li .current,
+.panelChatArea .methodDropdown .dropdown-menu li .current,
+.panelChatArea .memberDropdown .dropdown-menu li .current{
+    background: #999;
+    color: #fff;
+}
+.panelChatArea .lobbyDropdown .dropdown-menu li a.current:hover,
+.panelChatArea .methodDropdown .dropdown-menu li a.current:hover,
+.panelChatArea .memberDropdown .dropdown-menu li a.current:hover{
+    background: #999;
+}
+.panelChatArea .lobbyDropdown .dropdown-menu li a,
+.panelChatArea .methodDropdown .dropdown-menu li a{
+    color: #333;
+    padding-left: 9px;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.panelChatArea .memberDropdown .dropdown-menu li a {
+    padding-left: 9px;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.panelChatArea .lobbyDropdown .dropdown-menu li a:hover,
+.panelChatArea .methodDropdown .dropdown-menu li a:hover,
+.panelChatArea .memberDropdown .dropdown-menu li a:hover{
+    text-decoration: none;
+    background: #e7e7e7;
+}
+.panelChatArea .membersInfo{
+    display: inline-block;
+    position: absolute;
+    width:20.5%;
+    height:351px;
+    border-right: 1px solid #1f444e;
+}
+.panelChatArea .membersInfo .infoSection header a{
+    display: block;
+    width: 100%;
+    height: 40px;
+    background-color: #191A1B;
+    padding: 7px 0 6px 31px;
+    text-decoration: none;
+    margin-bottom: 1px;
+    color: #687376;
+}
+.panelChatArea .membersInfo .infoSection ul{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    line-height: 1.3em;
+    list-style: none;
+    padding-left: 31px;
+}
+.panelChatArea .membersInfo .infoSection .scrollable{
+    overflow-y: hidden;
+    list-style: none;
+    padding-left: 31px;
+}
+.panelChatArea .membersInfo .infoSection .scrollable li a{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.panelChatArea .membersInfo .infoSection .scrollable li a:hover{
+    text-decoration: none;
+    color: inherit;
+}
+/** different level of ng-scrollbar height **/
+.panelChatArea .scroll-height-1{
+    height: 224px;
+}
+.panelChatArea .scroll-height-2{
+    height: 265px;
+}
+.panelChatArea .scroll-height-3{
+    height: 89px;
+}
+.panelChatArea .scroll-height-4{
+    height: 122px;
+}
+.panelChatArea .membersInfo .infoSection header a:before{
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    margin-left: -24px;
+    margin-top: 6px;
+    background-position: -50px 0;
+}
+.panelChatArea .membersInfo .infoSection header a.collapsed:before{
+    background-position: -75px 0;
+}
+.panelChatArea .content{
+    display: inline-block;
+    float: right;
+    height: 351px;
+    width: 79.55%;
+}
+.panelChatArea .content .chatBoard{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    height: 297px;
+    width:100%;
+    word-break: break-all;
+}
+.panelChatArea .content .chatBoard .ng-scope{
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.panelChatArea .content .chatBoard ul{
+    padding: 0 10px 10px 10px;
+    list-style: none;
+}
+.panelChatArea .content .chatBoard .system{
+    color: rgb(23,139,5);
+}
+.panelChatArea .content .chatBoard .general{
+    color: #fff;
+}
+.panelChatArea .content .chatBoard .secret{
+    color: #808080;
+    font-style: italic;
+}
+.panelChatArea .content .chatBoard .toMe{
+    background-color: #a90909;
+}
+.panelChatArea .control-bar{
+    padding: 0 0;
+    width: 100%;
+}
+.panelChatArea .methodDropdown,
+.panelChatArea .memberDropdown {
+    float: left;
+    margin: 6px 0 0 4px;
+}
+.panelChatArea .methodDropdown .dropdown-toggle{
+    padding: 2px 0 0 8px;
+    width: 87px;
+}
+.panelChatArea .memberDropdown .disableSelect{
+    cursor: not-allowed;
+    padding: 2px 0 0 8px;
+    width: 107px;
+}
+.panelChatArea .memberDropdown .dropdown-toggle{
+    padding: 2px 0 0 10px;
+    width: 107px;
+}
+.panelChatArea .methodDropdown .dropdown-menu{
+    min-width: 87px;
+    max-height: 100px;
+    height: 100px;
+    background-color: #40474a;
+}
+.panelChatArea .memberDropdown .dropdown-menu{
+    max-height: 100px;
+    height: 100px;
+    min-width: 107px;
+    background-color: #40474a;
+}
+.panelChatArea .methodDropdown .dropdown-menu li a{
+    color: #fff;
+    padding-left: 7px;
+}
+.panelChatArea .methodDropdown .dropdown-menu li a:hover{
+    color: #333;
+}
+.panelChatArea .chatInput {
+    height: 30px;
+    background: #162f36;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    width: 360px;
+    padding-left: 10px;
+    float: left;
+    margin: 6px 0 0 4px;
+}
+.panelChatArea .chatInput input{
+    height: 30px;
+    background: 0 0;
+    width: 340px;
+    font-size: 13px;
+    font-weight: 300;
+    border-width: 0;
+    line-height: 30px;
+}
+.panelChatArea .chatInput input::-webkit-input-placeholder{
+    font-style: italic;
+    color: #687376;
+}
+.panelChatArea .chatInput input:-moz-placeholder{
+    font-style: italic;
+    color: #687376;
+}
+.panelChatArea .chatInput input::-moz-placeholder{
+    font-style: italic;
+    color: #687376;
+}
+.panelChatArea .chatInput input:-ms-input-placeholder{
+    font-style: italic;
+    color: #687376;
+}
+.panelChatArea .chatInput input:focus{
+    outline: 0 none;
+}
+.panelChatArea .findIcon,
+.panelChatArea .searchIcon{
+    display: inline-block;
+    float: right;
+    height: 19px;
+    width: 22px;
+    margin: 10px 4px 0 0;
+    background-position: -75px -125px;
+}
+.panelChatArea .findIcon{
+    float: left;
+    margin: 10px 4px 0 10px;
+}
+.panelChatArea .control-bar .findCheckbox {display: none;}
+.panelChatArea .control-bar .findCheckLbl{
+    font-size: 14px;
+    display: inline-block;
+    padding-left: 25px;
+    padding-top: 7px;
+    margin-right: 7px;
+    position: relative;
+}
+.panelChatArea .control-bar .findCheckLbl:before{
+    content: '';
+    display: block;
+    height: 19px;
+    width: 19px;
+    padding-top: 7px;
+    position: absolute;
+    left: 0;
+    top: 11px;
+    background-position: -50px -150px;
+}
+.panelChatArea .control-bar .findCheckbox:checked ~ .findCheckLbl:before {
+    background-position: -75px -150px;
+}
+/** rating style and role style **/
+.rating-red{
+    color: rgb(251,0,9);
+}
+.rating-yellow{
+    color: rgb(217,212,10);
+}
+.rating-purple{
+    color: rgb(80,15,203);
+}
+.rating-green{
+    color: rgb(23,139,5);
+}
+.rating-grey{
+    color: rgb(129,129,129);
+}
+.rating-none{
+    color: #fff;
+}
+.rating-admin{
+    color: rgb(252,80,10);
+}
+
+/** Modal style **/
+.chatWidget-modal-header,
+.chatWidget-modal-footer{
+    margin-top: 0;
+    margin-bottom: 0;
+    background-color: #1f444e;
+}
+.chatWidget-modal-body{
+    background-color: rgb(21, 23, 24);
+}
+.chatWidget-modal-button{
+    background-color: rgb(9, 153, 209);
+}
+.chatWidget-modal-body p{
+    display: inline-block;
+    width: 100px;
+}
+
 @media only screen and (max-width: 1230px) {
     .inner { padding: 0;}
     .dashboard .titleBar .brand,
@@ -2513,7 +2853,29 @@ footer .right>span:nth-child(2) {
     .messageArena:after {
         right: auto;
         left: 151px;
-    } 
+    }
+    .panelChatArea .methodDropdown .dropdown-menu,
+    .panelChatArea .memberDropdown .dropdown-menu{
+        margin: -134px 0 0;
+    }
+    .panelChatArea .chatInput {
+        width: 245px;
+    }
+    .panelChatArea .chatInput input{
+        width: 225px;
+    }
+    .panelChatArea .scroll-height-1{
+        height: 220px;
+    }
+    .panelChatArea .scroll-height-2{
+        height: 260px;
+    }
+    .panelChatArea .scroll-height-3{
+        height: 78px;
+    }
+    .panelChatArea .scroll-height-4{
+        height: 118px;
+    }
 }
 /* boostrap extra small devices */
 @media only screen and (max-width: 767px) {
@@ -2629,11 +2991,42 @@ footer .right>span:nth-child(2) {
     .codeArea .titleBar>div:first-child,.codeArea .connection {padding-left: 0;padding-right: 65px;}
     .codeArea .shareLink>ul>li>a {right: 5px;}
     .panelCodeEditor .panel-heading .rightPart .findInput {margin-right: 5px;}
-} 
+}
 /* special sizes which widget will overflow */
 @media only screen and (max-width: 668px) {
+    .panelChatArea .membersInfo{
+        border-bottom: 1px solid #1f444e;
+        border-right: 0;
+    }
+    .panelChatArea .membersInfo,
+    .panelChatArea .content{
+        position: relative;
+        height:100%;
+        display: block;
+        width:100%;
+    }
+    .panelChatArea .chatInput{
+        width: 50%;
+    }
+    .panelChatArea .chatInput input{
+        width:95%;
+    }
     .panelCodeEditor .panel-heading {height: 82px;clear: both;}
     .panelCodeEditor .panel-heading .rightPart{float: left;}
+}
+@media only screen and (max-width: 540px) {
+    .panelChatArea .control-bar{
+        height: 78px;
+    }
+    .panelChatArea .chatInput{
+        width: 90%;
+    }
+    .panelChatArea .chatInput input{
+        width: 97%;
+    }
+    .panelChatArea .control-bar .findCheckLbl{
+        margin-left: 10px;
+    }
 }
 @media only screen and (max-width: 502px) {
     .codeArea .titleBar {height: 105px;}
@@ -2703,7 +3096,20 @@ footer .right>span:nth-child(2) {
     }
     .messageArena:after {
         left: 174px;
-    } 
+    }
+    .panelChatArea .panel-heading{
+        height: 70px;
+    }
+    .panelChatArea .lobbyDropdown{
+        float: left;
+        margin-top: 3px;
+    }
+    .panelChatArea .content .control-bar{
+        height: 78px;
+    }
+    .panelChatArea .chatInput{
+        width: 85%;
+    }
 }
 @media only screen and (max-width: 348px) {
     .codeArea .titleBar {height: 145px;}
