@@ -60,6 +60,7 @@ controllers.errorCtrl = require('./controllers/errorCtrl');
 controllers.userProfileCtrl = require('./controllers/userProfileCtrl');
 controllers.leaderboardUsersCtrl = require('./controllers/leaderboardUsersCtrl');
 controllers.activeContestsCtrl = require('./controllers/activeContestsCtrl');
+controllers.chatAreaCtrl = require('./controllers/chatAreaCtrl');
 controllers.userCodingCtrl = require('./controllers/userCodingCtrl');
 controllers.userCodingEditorCtrl = require('./controllers/userCodingEditorCtrl');
 controllers.userContestCtrl = require('./controllers/userContestCtrl');
@@ -78,6 +79,7 @@ controllers.userContestDetailCtrl = require('./controllers/userContestDetailCtrl
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
 directives.activecontests = require('./directives/activecontests');
+directives.chatarea = require('./directives/chatarea');
 directives.codingproblem = require('./directives/codingproblem');
 directives.codingeditor = require('./directives/codingeditor');
 directives.contestcountdown = require('./directives/contestcountdown');
@@ -126,6 +128,7 @@ main.controller('errorCtrl', controllers.errorCtrl);
 main.controller('userProfileCtrl', controllers.userProfileCtrl);
 main.controller('leaderboardUsersCtrl', controllers.leaderboardUsersCtrl);
 main.controller('activeContestsCtrl', controllers.activeContestsCtrl);
+main.controller('chatAreaCtrl', controllers.chatAreaCtrl);
 main.controller('userCodingCtrl', controllers.userCodingCtrl);
 main.controller('userCodingEditorCtrl', controllers.userCodingEditorCtrl);
 main.controller('userContestCtrl', controllers.userContestCtrl);
@@ -147,6 +150,7 @@ main.controller('userContestDetailCtrl', controllers.userContestDetailCtrl);
 
 main.directive('leaderboardusers', directives.leaderboardusers);
 main.directive('activecontests', directives.activecontests);
+main.directive('chatarea', directives.chatarea);
 main.directive('codingproblem', directives.codingproblem);
 main.directive('codingeditor', directives.codingeditor);
 main.directive('contestcountdown', directives.contestcountdown);
