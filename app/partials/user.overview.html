@@ -55,8 +55,10 @@
         <div class="panel-heading" data-ng-class="{active:showSection==='users',inactive:showSection!=='users'}">
             <input type="radio" data-ng-model="showSection" value="users" id="radioUsers" class="showSectionRadio"/><label for="radioUsers" class="showSectionLbl">Active Users (99)</label>
         </div>
-        <div class="panel-body" data-ng-show="showSection==='users'">
+        <div class="panel-body" >
+             <div class="contentWrapper" data-ng-show="showSection==='users'">
                 <p>Coming Soon</p>
+              </div>
         </div><!--/.panel-body-->
     </section><!--/.activeUsers-->
 </div> <!-- content end -->

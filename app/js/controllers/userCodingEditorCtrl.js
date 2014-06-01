@@ -25,8 +25,9 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket', '$timeout',
-    function ($scope, $window, appHelper, $modal, socket, $timeout) {
+var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket', '$timeout', 'themer',
+    function ($scope, $window, appHelper, $modal, socket, $timeout, themer) {
+    
         var indentRangeFinder = {
                 rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.indent, CodeMirror.fold.comment)
             },
@@ -525,6 +526,9 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
              * Run selected test case, or show error modal.
              */
             $scope.runTests = function () {
+
+            	$scope.isLight = themer.getSelected().key==='LIGHT'?'/light':'';
+            	
                 var count = 0, i, j, params = [], args = [], param;
                 for (i = 0; i < $scope.userData.tests.length; i += 1) {
                     count += $scope.userData.tests[i].checked ? 1 : 0;

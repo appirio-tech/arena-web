@@ -1,10 +1,10 @@
 'use strict';
 module.exports = {
-    apiDomain : '@@API_DOMAIN',
-    auth0domain: '@@AUTH0_DOMAIN',
-    auth0clientID: '@@AUTH0_CLIENT_ID',
-    auth0connection: '@@AUTH0_CONNECTION',
-    callbackURL: '@@CALLBACK_URL',
-    webSocketURL: '@@WEB_SOCKET_URL',
-    ssoKey: '@@SSO_KEY'
+    apiDomain : 'sma.auth0.com',
+    auth0domain: 'sma.auth0.com',
+    auth0clientID: 'CMaBuwSnY0Vu68PLrWatvvu3iIiGPh7t',
+    auth0connection: 'vm-ldap-connection',
+    callbackURL: 'https://tc.cloud.topcoder.com/reg2/callback.action',
+    webSocketURL: 'http://tc.cloud.topcoder.com:5037',
+    ssoKey: 'tcsso_vm'
 };

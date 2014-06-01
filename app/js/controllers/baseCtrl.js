@@ -4,15 +4,21 @@
 /*global document, angular:false, $:false, module, window*/
 
 //for header
-var baseCtrl = ['$scope', '$http', 'appHelper', '$timeout', 'notificationService', function ($scope, $http, appHelper, $timeout, notificationService) {
-    // theme selector
+var baseCtrl = ['$scope', '$http', 'appHelper', '$timeout', 'notificationService', 'themer', function ($scope, $http, appHelper, $timeout, notificationService,themer) {
+    // theme selector 
     $scope.themesInfo = [];
-    $scope.themeInUse = $scope.themeBackup = 'default';
+    $scope.themeInUse = $scope.themeBackup = 'DARK';	
+	themer.setSelected($scope.themeInUse);
     $scope.themePanelOpen = false;
     $http.get('data/themes.json').success(function (data) {
         $scope.themesInfo = data;
-        $scope.themeInUse = $scope.themeBackup = data.currentKey;
+        $scope.themeInUse = $scope.themeBackup = data.currentKey;		
+		//themer.styles = data.themes;
+		for(var i=0;i<data.themes.length;i++){
+			themer.styles.push(data.themes[i]);
+		}
     });
+	
     var closeThemeHandler = function (event) {
         // the depth of DOM tree rooted at the element with id 'themePanel'
         var themePanelDOMDepth = 4;
@@ -31,9 +37,11 @@ var baseCtrl = ['$scope', '$http', 'appHelper', '$timeout', 'notificationService
         $scope.themeInUse = $scope.themeBackup;
         $scope.closeThemeSelector();
     };
+	 
     $scope.applyTheme = function () {
         $scope.themeBackup = $scope.themeInUse;
-        $scope.closeThemeSelector();
+        $scope.closeThemeSelector();			
+		themer.setSelected($scope.themeInUse);
     };
     $scope.openThemeSelector = function (event) {
         if ($scope.themePanelOpen) {

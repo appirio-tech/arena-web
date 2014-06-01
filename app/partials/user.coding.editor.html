@@ -81,7 +81,7 @@
                                 <input type="checkbox" id="testCase-all" class="caseCheck" ng-disabled="true" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()" /><label for="testCase-all" class="caseLbl">Check All</label>
                                 <label data-ng-show="testCompleted && !isTesting" class="message">Test is completed.</label>
                                 <a data-ng-click="runTests()" data-ng-show="!isTesting" class="btn">{{ testCompleted ? "Re-Run" : "Run Test" }}</a>
-                                <img data-ng-show="isTesting" alt="busy..." src="img/loadinfo.net.gif"/>
+                                <img data-ng-show="isTesting" alt="busy..." src="img/loadinfo.net.gif" data-ng-src="img{{isLight}}/loadinfo.net.gif"/>
                             </div>
                         </div>
                     </div>
