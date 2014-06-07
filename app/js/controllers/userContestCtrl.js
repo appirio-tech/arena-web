@@ -32,7 +32,6 @@ var userContestCtrl = ['$scope', '$http', '$rootScope', '$stateParams', '$state'
         $scope.divisionID = $stateParams.divisionId;
         $scope.contest = $rootScope.roundData[$scope.roundID];
 
-        
         /**
          * Init with contest.
          *

@@ -4,21 +4,24 @@
 /*global document, angular:false, $:false, module, window*/
 
 //for header
-var baseCtrl = ['$scope', '$http', 'appHelper', '$timeout', 'notificationService', 'themer', function ($scope, $http, appHelper, $timeout, notificationService,themer) {
+var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'themer', '$cookies',  function ($scope, $http, appHelper, notificationService, themer, $cookies) {
     // theme selector 
     $scope.themesInfo = [];
-    $scope.themeInUse = $scope.themeBackup = 'DARK';	
-	themer.setSelected($scope.themeInUse);
+    $cookies.themeInUse = $cookies.themeInUse === null ? 'DARK' : $cookies.themeInUse;
+    $scope.themeInUse = $scope.themeBackup = $cookies.themeInUse;
+    themer.setSelected($scope.themeInUse);
     $scope.themePanelOpen = false;
     $http.get('data/themes.json').success(function (data) {
         $scope.themesInfo = data;
-        $scope.themeInUse = $scope.themeBackup = data.currentKey;		
-		//themer.styles = data.themes;
-		for(var i=0;i<data.themes.length;i++){
-			themer.styles.push(data.themes[i]);
-		}
+        $cookies.themeInUse = $cookies.themeInUse === null ? data.currentKey : $cookies.themeInUse;
+        $scope.themeInUse = $scope.themeBackup = $cookies.themeInUse;
+        themer.styles.pop();
+        var i = 0;
+        for (i = 0; i < data.themes.length; i += 1) {
+            themer.styles.push(data.themes[i]);
+        }
+        themer.setSelected($cookies.themeInUse);
     });
-	
     var closeThemeHandler = function (event) {
         // the depth of DOM tree rooted at the element with id 'themePanel'
         var themePanelDOMDepth = 4;
@@ -37,11 +40,14 @@ var baseCtrl = ['$scope', '$http', 'appHelper', '$timeout', 'notificationService
         $scope.themeInUse = $scope.themeBackup;
         $scope.closeThemeSelector();
     };
-	 
     $scope.applyTheme = function () {
-        $scope.themeBackup = $scope.themeInUse;
-        $scope.closeThemeSelector();			
-		themer.setSelected($scope.themeInUse);
+        var selectedTheme = themer.getSelected();
+        $scope.themeBackup = $cookies.themeInUse = $scope.themeInUse;
+        themer.setSelected($scope.themeInUse);
+        selectedTheme = themer.getSelected();
+        $cookies.themeLabel = selectedTheme.label;
+        $cookies.themeHref = selectedTheme.href;
+        $scope.closeThemeSelector();
     };
     $scope.openThemeSelector = function (event) {
         if ($scope.themePanelOpen) {
@@ -57,7 +63,7 @@ var baseCtrl = ['$scope', '$http', 'appHelper', '$timeout', 'notificationService
     // theme selector ends
 
     // notification starts
-	// indicate whether the notification list is open
+    // indicate whether the notification list is open
     $scope.isReading = false;
     // for child scopes to use notificationService
     $scope.notificationService = notificationService;
@@ -85,7 +91,7 @@ var baseCtrl = ['$scope', '$http', 'appHelper', '$timeout', 'notificationService
                 'position.my': 'top center',
                 'position.at': 'bottom center',
                 'position.adjust.x': -2
-            }); 
+            });
         }
         if (document.body.clientWidth < 361) {
             $scope.qtipNoti.qtip('api').set({
@@ -95,7 +101,7 @@ var baseCtrl = ['$scope', '$http', 'appHelper', '$timeout', 'notificationService
         if (document.body.clientWidth < 332) {
             $scope.qtipNoti.qtip('api').set({
                 'position.adjust.x': -37
-            }); 
+            });
         }
     }
     $scope.onClickMessageArena = function () {

@@ -9,7 +9,7 @@ html{height:100%;}
 body{
     background:url(../img/bg.png) repeat 0 0 #DDE7F2;
     font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;height:100%;
-    color:#316f99;
+    color:#fff;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     text-shadow:rgba(255,255,255,.01) 0 1px 0;
@@ -158,6 +158,7 @@ body a {cursor: pointer;}
 /* after user logged in, show this header */
 .header .navbar{
     margin-bottom:5px;
+    border: none;
 }
 .header .navIcons {
     margin: 0;
@@ -1736,7 +1737,7 @@ footer .right>span:nth-child(2) {
     margin-right: 15px;
     font-size: 13px;
     line-height: 22px;
-    font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family:Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     letter-spacing: 0.05em;
 }
 .panelCodeEditor .CodeMirror-linenumbers {width: 25px;}
@@ -1903,6 +1904,9 @@ footer .right>span:nth-child(2) {
 .panelOverview {
     width: 407px;
     height: 393px;
+    background: transparent;
+    border: none;
+    overflow: hidden;
 }
 .panelOverview .panel-heading {
     background: #1f444e;
@@ -1944,21 +1948,23 @@ footer .right>span:nth-child(2) {
     background-position: -50px 0;
 }
 .panelOverview .panel-body {
-    padding: 1px 0 0;
+    padding: 0;
+    margin-top: 1px;
     border-color: #1f444e;
     border-top-width: 0;
     border-bottom-width: 0;
 }
-.panelOverview section:last-child .panel-body {
-    border-bottom-width: 1px;
-    height: 229px;
-    overflow: auto;
-    padding: 14px 29px 5px 30px;
-}
 .panelOverview .panel-body .contentWrapper {
-    height: 229px;
+    height: 222px;
     overflow: auto;
-    padding: 14px 29px 5px 30px;
+    padding: 14px 22px 5px 30px;
+    background: #151717;    
+    border: 1px solid #234760;
+    margin-top: 4px;
+    margin-bottom: 3px;
+}
+.panelOverview > section:last-child .panel-body .contentWrapper{
+    height: 224px;
 }
 .panelOverview .panel-body .contentWrapper>p,
 .panelOverview section:last-child .panel-body>p { /*placeholder*/

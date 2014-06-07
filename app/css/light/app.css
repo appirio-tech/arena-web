@@ -14,7 +14,8 @@
 html{height:100%;}
 body{
     background:url(../img/light/bg.png) repeat 0 0 #DDE7F2; 
-    font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;height:100%;
+    font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+    height:100%;
     color:#316f99;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
@@ -164,6 +165,7 @@ body a {cursor: pointer;}
 /* after user logged in, show this header */
 .header .navbar{
     margin-bottom:5px;
+    border: none;
 }
 .header .navIcons {
     margin: 0;
@@ -1745,7 +1747,7 @@ footer .right>span:nth-child(2) {
     margin-right: 15px;
     font-size: 13px;
     line-height: 22px;
-    font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family:Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     letter-spacing: 0.05em;
 }
 .panelCodeEditor .CodeMirror-linenumbers {width: 25px;}
@@ -1916,6 +1918,7 @@ footer .right>span:nth-child(2) {
     height: 393px;
     background: transparent;
     border: none;
+    overflow: hidden;
 }
 .panelOverview .panel-heading {
     background: #75a5c8;
@@ -1966,8 +1969,8 @@ footer .right>span:nth-child(2) {
 
 .panelOverview .panel-body .contentWrapper {
     height: 222px;
-    overflow: auto;
-    padding: 14px 29px 5px 30px;
+    overflow: auto; 
+    padding: 14px 22px 5px 30px;
     background: #f5f8fa;    
     border: 1px solid #b7c9d7;
     margin-top: 4px;
@@ -1997,7 +2000,7 @@ footer .right>span:nth-child(2) {
     line-height: 20px;
 }
 .panelOverview .overviewAndMessage .profile p label {
-    color: #687376;
+    color: #316f99;
     display: inline-block;
     width: 94px;
     margin-bottom: 0;
@@ -2027,7 +2030,7 @@ footer .right>span:nth-child(2) {
 .panelOverview .overviewAndMessage .messagesBox .date {
     width: 99px;
     padding-left: 2px;
-    color: #687376;
+    color: #316f99;
 }
 
 /* contest plan widget */
@@ -2616,7 +2619,6 @@ footer .right>span:nth-child(2) {
     min-width: 87px;
     max-height: 100px;
     height: 100px;
-    background-color: #40474a;
 }
 .panelChatArea .memberDropdown .dropdown-menu{
     max-height: 100px;
@@ -2625,11 +2627,7 @@ footer .right>span:nth-child(2) {
     background-color: #40474a;
 }
 .panelChatArea .methodDropdown .dropdown-menu li a{
-    color: #fff;
     padding-left: 7px;
-}
-.panelChatArea .methodDropdown .dropdown-menu li a:hover{
-    color: #333;
 }
 .panelChatArea .chatInput {
     height: 30px;
@@ -2648,7 +2646,7 @@ footer .right>span:nth-child(2) {
     background: 0 0;
     width: 340px;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: 400;
     border-width: 0;
     line-height: 30px;
 }
@@ -3002,7 +3000,7 @@ footer .right>span:nth-child(2) {
     height: 36px;
     width: 160px;
     background: transparent;
-    border: 1px solid #3d3d3d;
+    border: 1px solid #b7c9d7;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -3017,7 +3015,7 @@ footer .right>span:nth-child(2) {
     color: #0050a1;
 }
 .filterPanel .contentWrapper .dropdown-toggle {
-    color: #fff;
+    color: #316f99;
     display: block;
     height: 34px;
     width: 158px;
@@ -3043,7 +3041,7 @@ footer .right>span:nth-child(2) {
     right: 0;
     height: 44px;
     width: 244px;
-    border-top: 1px solid #2d2f30;
+    border-top: 1px solid #b7c9d7;
     text-align: right;
 }
 .filterPanel .btnWrapper .btnFilter {
@@ -3064,7 +3062,7 @@ footer .right>span:nth-child(2) {
 }
 .detailPage .leaderboardWrapper .heading .viewFilter div {
     display: inline-block;
-    color: #fff;
+    color: #316f99;
     margin-left: 13px;
 }
 .detailPage .leaderboardWrapper .heading .viewFilter div:first-child {
@@ -3189,7 +3187,7 @@ footer .right>span:nth-child(2) {
     user-select: none;
 }
 .detailPage .table>tbody>tr>td {
-    color: #fff;
+    color: #316f99;
     padding: 4px 5px;
     border-top-width: 0;
     border-bottom: 1px solid #b7c9d7;
@@ -3202,7 +3200,7 @@ footer .right>span:nth-child(2) {
     text-align: right;
 }
 .detailPage .table>tbody>tr>td>span {
-    color: #636d70;
+    color: #316f99;
 }
 .detailPage .leftSec .table .col1 {
     width: 29px;
@@ -3271,7 +3269,7 @@ footer .right>span:nth-child(2) {
     padding-bottom: 11px;
 }
 .detailPage section .table td .name{
-    color: #fff;
+    color: #316f99;
     display: inline-block;
     -ms-word-break:break-all;
     word-break:break-all;
@@ -3314,7 +3312,7 @@ footer .right>span:nth-child(2) {
     color: #ac4141;
 }
 .detailPage .leaderboardWrapper .colorOpened {
-    color: #fff;
+    color: #316f99;
 }
 .detailPage .leaderboardWrapper .colorUnopened {
     color: #5e676a;
@@ -3968,7 +3966,6 @@ footer .right>span:nth-child(2) {
 
 .problemStatementRow .textWhite {
     float: left;
-}
 }
 /* fullcalendar */
 .calendarView .fc-event{

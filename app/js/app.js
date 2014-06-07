@@ -20,6 +20,7 @@ require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
 require('./../../bower_components/angular-sanitize/angular-sanitize');
 require('./../../bower_components/angular-themer');
+require('./../../bower_components/angular-ui-angular/angular-cookies.min.js');
 require('./../../bower_components/angular-ui-router/release/angular-ui-router');
 require('./../../bower_components/angular-ui-bootstrap/ui-bootstrap-tpls-0.9.0');
 require('./../../bower_components/codemirror/lib/codemirror');
@@ -103,7 +104,7 @@ directives.contestSummary = require('./directives/contestSummary');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'angular-themer']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'angular-themer', 'ngCookies']);
 
 ///////////////
 // FACTORIES //
@@ -167,19 +168,17 @@ main.directive('contestSummary', directives.contestSummary);
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
 
-main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerProvider', function ( $stateProvider, $urlRouterProvider, $httpProvider,themerProvider) {
-    // setting defaut theme before json gets loaded
-   
-    var styles=[
-            { key: 'DARK', label: 'Dark Theme', href: 'css/bundle.css'}
-    ]
+main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, themerProvider) {
+// theme selector starts
+    var styles = [{
+            key : 'DARK',
+            label : 'Dark Theme',
+            href : 'css/bundle.css'
+        }];
+
     themerProvider.setStyles(styles);
     themerProvider.setSelected(styles[0].key);
-    
-     // theme selector starts
-   
-    
-    //add an interceptor to always add authentication to api calls if logged in
+//add an interceptor to always add authentication to api calls if logged in
     $httpProvider.interceptors.push(['sessionHelper', function (sessionHelper) {
         return {
             request: function (config) {
@@ -311,7 +310,13 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
         });
 }]);
 
-main.run(['$rootScope', '$state', 'sessionHelper', 'socket', function ($rootScope, $state, sessionHelper, socket) {
+main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$cookies', 'themer', function ($rootScope, $state, sessionHelper, socket, $cookies, themer) {
+ // setting defaut theme before json gets loaded
+    if ($cookies.themeInUse !== null) {
+        themer.styles[0].key = $cookies.themeInUse;
+        themer.styles[0].label = $cookies.themeLabel;
+        themer.styles[0].href = $cookies.themeHref;
+    }
     //consider exposing states and state params to all templates
     $rootScope.$state = $state;
 

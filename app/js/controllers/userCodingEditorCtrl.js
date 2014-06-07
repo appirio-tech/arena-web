@@ -527,8 +527,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
              */
             $scope.runTests = function () {
 
-            	$scope.isLight = themer.getSelected().key==='LIGHT'?'/light':'';
-            	
+                $scope.isLight = themer.getSelected().key === 'LIGHT' ? '/light' : '';
                 var count = 0, i, j, params = [], args = [], param;
                 for (i = 0; i < $scope.userData.tests.length; i += 1) {
                     count += $scope.userData.tests[i].checked ? 1 : 0;
