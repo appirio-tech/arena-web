@@ -1,18 +1,25 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This controller handles coding editor related logic.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 2):
+ * - Updated to use real data.
+ *
+ * @author amethystlei
+ * @version 1.1
+ */
 'use strict';
-/*jshint -W097*/
-/*jshint strict:false*/
 /*global module, angular*/
-var contestSummaryCtrl = ['$scope', '$state', '$http', function ($scope, $state, $http) {
-    $scope.viewOn = 'room';
-    // load contest data with contest id
-    $http.get('data/contest-' + $scope.roundID + '.json').
-        success(function (data) {
-            // set contest data
-            angular.extend($scope.contest, data);
 
-            // broadcast contest-loaded message to child states.
-            $scope.$broadcast('contest-loaded');
-        });
+/**
+ * The main controller for the contest summary page.
+ *
+ * @type {*[]}
+ */
+var contestSummaryCtrl = ['$scope', '$state', function ($scope, $state) {
+    $scope.viewOn = 'room';
     $scope.setViewOn = function (view) {
         $scope.viewOn = view;
     };
@@ -22,7 +29,7 @@ var contestSummaryCtrl = ['$scope', '$state', '$http', function ($scope, $state,
         if ($scope.viewOn === 'divTwo') {return 'Division II'; }
     };
     $scope.viewDetail = function (contest) {
-        $state.go('user.contestSummary', {contestId : contest.id, divisionId : $scope.divisionID, viewOn : $scope.viewOn});
+        $state.go('user.contestSummary', {contestId : contest.roundID, divisionId : $scope.divisionID, viewOn : $scope.viewOn});
     };
 }];
 

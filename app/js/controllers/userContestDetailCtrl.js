@@ -1,34 +1,41 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This controller handles coding editor related logic.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 2):
+ * - Updated to use real data for room summary.
+ *
+ * @author amethystlei
+ * @version 1.1
+ */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
-/*global module, require, angular, $, document, console*/
-var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$rootScope', '$location', function ($scope, $http, $state, $stateParams, $rootScope, $location) {
-    var helper = require('../helper');
-    // Represents the problem status name
-    helper.PROBLEM_STATUS_NAME = [
-        'Unopened',
-        'Opened',
-        'Compiled',
-        'Submitted',
-        'Challenged',
-        'Passed',
-        'Failed'
-    ];
-    // Represents the problem status id.
-    helper.PROBLEM_STATUS_ID = {
-        Unopened: 0,
-        Opened: 1,
-        Compiled: 2,
-        Submitted: 3,
-        Challenged: 4,
-        Passed: 5,
-        Failed: 6
-    };
-    // is touch screen
+/*global module, require, angular, $, document, window, console*/
+
+/**
+ * The helper.
+ *
+ * @type {exports}
+ */
+var helper = require('../helper');
+
+/**
+ * The main controller for the room summary page.
+ *
+ * @type {*[]}
+ */
+var userContestDetailCtrl = ['$scope', '$state', '$stateParams', '$rootScope', '$location', function ($scope, $state, $stateParams, $rootScope, $location) {
+    /**
+     * Check if the client suppports touch screen.
+     *
+     * @returns {boolean} true if the client supports touch screen.
+     */
     function isTouchSupported() {
-        var msTouchEnabled = window.navigator.msMaxTouchPoints;
-        var generalTouchEnabled = "ontouchstart" in document.createElement("div");
-     
+        var msTouchEnabled = window.navigator.msMaxTouchPoints,
+            generalTouchEnabled = document.createElement('div').hasOwnProperty('ontouchstart');
         if (msTouchEnabled || generalTouchEnabled) {
             return true;
         }
@@ -38,25 +45,6 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
     if (isTouchSupported()) {
         $('.sumDiv .scroll, .tableDiv.scroll').hide();
         $('.sumDiv .default, .tableDiv.default').show();
-    }
-    // Leaderboard
-    function getLeaderboard(viewOn) {
-        if ($scope.boards.length < 2 || (viewOn === 'room' && ($scope.userDivision < 1 || $scope.userRoomId < 1))) {
-            return [];
-        }
-        if (viewOn === 'room') {
-            // return $filter('filter')($scope.boards[$scope.userDivision - 1], {roomId: $scope.userRoomId});
-            return $scope.roomBoard;
-        }
-        return viewOn === 'divOne' ? $scope.boards[0] : $scope.boards[1];
-    }
-    function populateLeaderboard(viewOn) {
-        var data = getLeaderboard(viewOn);
-        $scope.leaderboard.length = 0;
-        data.forEach(function (item) {
-            $scope.leaderboard.push(item);
-        });
-        $scope.$broadcast('rebuild:leaderboardTable');
     }
     // Challengers
     function getChallengers(viewOn) {
@@ -96,23 +84,17 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
         });
         $scope.$broadcast('rebuild:challengeTable');
     }
-    function populateDataByView(view) {
-        populateLeaderboard(view);
-        populateChallengers(view);
-        populateChallenges(view);
+    /**
+     * This function broadcasts the rebuild scrollbar message.
+     */
+    function rebuildScrollbars() {
         $('.ngsb-container').css('top', '0');
+        $scope.$broadcast('rebuild:summary');
         $scope.$broadcast('rebuild:challengerTable');
         $scope.$broadcast('rebuild:challengeTable');
         $scope.$broadcast('rebuild:leaderboardTable');
     }
-    // tentative names/ids for problem status, not defined in helper.js
-    function revParseStatus(status) {
-        return helper.PROBLEM_STATUS_NAME.indexOf(status);
-    }
-    function isFailed(status) {
-        var statusId = revParseStatus(status);
-        return statusId === helper.PROBLEM_STATUS_ID.Failed || statusId === helper.PROBLEM_STATUS_ID.Challenged;
-    }
+
     // toggle key
     function toggleKey(target, key) {
         var val;
@@ -127,7 +109,12 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
         }
         return val;
     }
-    $scope.contest = {};
+
+    $scope.contest = $rootScope.roundData[$stateParams.contestId];
+    $scope.divisionID = $stateParams.divisionId;
+    $scope.roomID = $rootScope.currentRoomInfo.roomID;
+
+    $state.current.data.pageTitle = $scope.contest.roundName;
 
     // room
     $scope.userRoomId = 0;
@@ -148,10 +135,28 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
     $scope.leaderboard = [];
     $scope.showBy = 'points';
 
+    /**
+     * Get the selected leader board.
+     *
+     * @returns {Array} the leader board
+     */
+    $scope.getCurrentLeaderboard = function () {
+        if ($scope.viewOn === 'room') {
+            return $rootScope.roomData[$scope.roomID].coders;
+        }
+        // For now it is set to empty for division summary.
+        if ($scope.viewOn === 'divOne') {
+            return [];
+        }
+        if ($scope.viewOn === 'divTwo') {
+            return [];
+        }
+    };
+
     $scope.roomKeys = {
         challengerKey: '-points',
         challengeKey: '-date',
-        leaderboardKey: '-results[0].score',
+        leaderboardKey: '-components[0].points',
         challengerFilterKey: 'all',
         challengeFilterKey: 'all',
         lbFilterKey: 'all',
@@ -164,7 +169,8 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
             }
         },
         lbFilter : {
-            handle: ''
+            // filter on the field 'userName' of a coder
+            userName: ''
         }
     };
     $scope.divOneKeys = {
@@ -224,11 +230,14 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
         }
     };
 
-    // viewOn ('room', 'divOne', 'divTwo')
+    /**
+     * Set the view on Room, Division I, or Division II tab.
+     *
+     * @param view can be 'room', 'divOne', 'divTwo'
+     */
     $scope.setViewOn = function (view) {
         $scope.viewOn = view;
-        $scope.$broadcast('rebuild:summary');
-        populateDataByView(view);
+        rebuildScrollbars();
     };
     $scope.getViewOnTitle = function () {
         if ($scope.viewOn === 'room') {
@@ -248,149 +257,14 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
         $scope.setViewOn('room');
     }
 
-    // load data
-    $http.get('data/contest-' + $stateParams.contestId + '.json').
-        success(function (data) {
-
-            function getDemoStatus(phaseId) {
-                if (phaseId < helper.PHASE_TYPE_ID.CodingPhase) {
-                    return 'preCoding';
-                }
-                if (phaseId < helper.PHASE_TYPE_ID.ChallengePhase) {
-                    return 'preChallenge';
-                }
-                if (phaseId <= helper.PHASE_TYPE_ID.SystemTestingPhase) {
-                    return 'preSystest';
-                }
-                return 'systest';
-            }
-
-            function setLeaderboard(board, division, boardData) {
-                board.length = 0;
-                boardData.leaderboard.forEach(function (item) {
-                    if (!angular.isDefined(item.score)) {
-                        item.score = 0;
-                    }
-                    if (item.results) {
-                        item.results.forEach(function (problem) {
-                            if (!angular.isDefined(problem.score) || isFailed(problem.status)) {
-                                problem.score = 0;
-                            }
-                        });
-                    }
-                    board.push(item);
-                });
-                board.forEach(function (item) {
-                    item.roomPlace = 1;
-                    item.division = division;
-                    board.forEach(function (subItem) {
-                        if (item.roomId === subItem.roomId && item.handle !== subItem.handle &&
-                                item.score < subItem.score) {
-                            item.roomPlace += 1;
-                        }
-                    });
-                });
-            }
-
-            function loadLeaderboard(board, division) {
-                var url;
-                if ($scope.contest.phaseId === helper.PHASE_TYPE_ID.AlmostContestPhase) {
-                    url = 'data/4problems-leaderboard-div' + division + '-' + getDemoStatus($scope.contest.phaseId) + '.json';
-                } else {
-                    url = 'data/leaderboard-div' + division + '-' + getDemoStatus($scope.contest.phaseId) + '.json';
-                }
-                $http.get(url).success(function (boardData) {
-                    setLeaderboard(board, division, boardData);
-                    // populate data
-                    populateLeaderboard($scope.viewOn);
-                });
-            }
-
-            function setChallengeItems(challengers, items) {
-                var i;
-                challengers.length = 0;
-                for (i = 0; i < items.length; i += 1) {
-                    items[i].id = i + 1;
-                    challengers.push(items[i]);
-                }
-            }
-
-            function loadChallengers(challengers, division) {
-                var url = 'data/challengers-div' + division + '.json';
-                $http.get(url).success(function (data) {
-                    setChallengeItems(challengers, data.challengers);
-                    // populate data
-                    populateChallengers($scope.viewOn);
-                });
-            }
-
-            function loadChallenges(challenges, division) {
-                var url = 'data/challenges-div' + division + '.json';
-                $http.get(url).success(function (data) {
-                    setChallengeItems(challenges, data.challenges);
-                    // populate data
-                    populateChallenges($scope.viewOn);
-                });
-            }
-
-            function loadUserDivsionRoom() {
-                var leaderboardURL;
-                $http.get('data/div-room-' + $rootScope.username() + '.json').success(function (userData) {
-                    $scope.userDivision = userData.division;
-                    $scope.userRoomId = userData.roomId;
-                    // load mock data for room leaderboard
-                    if ($scope.contest.phaseId === helper.PHASE_TYPE_ID.AlmostContestPhase) {
-                        leaderboardURL = 'data/4problems-leaderboard-div' + $scope.userDivision + 'room' + $scope.userRoomId + '-' + getDemoStatus($scope.contest.phaseId) + '.json';
-                    } else {
-                        leaderboardURL = 'data/leaderboard-div' + $scope.userDivision + 'room' + $scope.userRoomId + '-' + getDemoStatus($scope.contest.phaseId) + '.json';
-                    }
-                    $http.get(leaderboardURL).
-                        success(function (boardData) {
-                            setLeaderboard($scope.roomBoard, $scope.userDivision, boardData);
-                            // populate data
-                            populateDataByView($scope.viewOn);
-                        });
-                    // load mock data for room challenges
-                    $http.get('data/challenges-div' + $scope.userDivision + 'room' + $scope.userRoomId + '.json').
-                        success(function (data) {
-                            setChallengeItems($scope.roomChallenges, data.challenges);
-                            // populate data
-                            if ($scope.viewOn === 'room') {
-                                populateDataByView($scope.viewOn);
-                            }
-                        });
-                    // load mock data for room challengers
-                    $http.get('data/challengers-div' + $scope.userDivision + 'room' + $scope.userRoomId + '.json').
-                        success(function (data) {
-                            setChallengeItems($scope.roomChallengers, data.challengers);
-                            // populate data
-                            if ($scope.viewOn === 'room') {
-                                populateDataByView($scope.viewOn);
-                            }
-                        });
-                });
-            }
-
-            var j;
-            $scope.contest = data;
-            $scope.$broadcast('rebuild:summary');
-            // set page title
-            $state.current.data.pageTitle = $scope.contest.name;
-            $state.current.data.pageMetaKeywords = $scope.contest.name + ",contest";
-
-            //demo: populate data according to $scope.contest.phaseId
-            if ($scope.contest.phaseId >= helper.PHASE_TYPE_ID.AlmostContestPhase) {
-                for (j = 0; j <= 1; j += 1) {
-                    loadLeaderboard($scope.boards[j], j + 1);
-                    loadChallengers($scope.challengersDivs[j], j + 1);
-                    loadChallenges($scope.challengesDivs[j], j + 1);
-                }
-                loadUserDivsionRoom();
-            }
-        });
-    // show data properly
-    $scope.formatScore = function (x) {
-        return x ? x.toFixed(2) : '0.00';
+    /**
+     * Get the score for display by dividing 100 and round at two digits after the decimal point.
+     *
+     * @param score the score multiplied by 100
+     * @returns {string} the score for display
+     */
+    $scope.formatScore = function (score) {
+        return (score * 0.01).toFixed(2);
     };
     $scope.percentage = function (success, total) {
         if (total <= 0) {
@@ -398,50 +272,89 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
         }
         return (success * 100.0 / total).toFixed(0) + '%';
     };
-    $scope.showResult = function (result, showBy) {
-        var statusId = revParseStatus(result.status);
-        if (statusId < helper.PROBLEM_STATUS_ID.Submitted) {
+
+    /**
+     * Get the css class for the color of the component status.
+     *
+     * @param status the status
+     * @returns {string} the css class name
+     */
+    $scope.getStatusColor = function (status) {
+        return 'color' + helper.CODER_PROBLEM_STATUS_NAME[status];
+    };
+
+    /**
+     * Get the result to display on the room/division summary table for a coder component.
+     *
+     * @param component the coder component object
+     * @param showBy 'points' or 'status'
+     * @returns {string} the string indicating the coder component
+     */
+    $scope.showResult = function (component, showBy) {
+        if (component.status < helper.CODER_PROBLEM_STATUS_ID.NOT_CHALLENGED) {
             // Not submitted, show status
-            return result.status;
+            return helper.CODER_PROBLEM_STATUS_NAME[component.status];
         }
-        if (statusId === helper.PROBLEM_STATUS_ID.Submitted) {
-            // Submitted, not challenged nor system tested, show points
-            return $scope.formatScore(result.score);
+        // show points when:
+        // 1) user wants to show by points; or
+        // 2) the problem is submitted but not challenged nor system tested
+        if (showBy === 'points' || component.status === helper.CODER_PROBLEM_STATUS_ID.NOT_CHALLENGED) {
+            return $scope.formatScore(component.points);
         }
-        if (showBy !== 'points') {
-            // show status
-            return result.status;
-        }
-        return statusId === helper.PROBLEM_STATUS_ID.Failed || statusId === helper.PROBLEM_STATUS_ID.Challenged ?
-                '0.00' : $scope.formatScore(result.score);
+        // show status
+        return helper.CODER_PROBLEM_STATUS_NAME[component.status];
     };
+
+    /**
+     * Check if the challenge related sections are availalbe.
+     *
+     * @returns {boolean} true if challege related sections are available
+     */
     $scope.challengeAvailable = function () {
-        return $scope.contest.phaseId >= helper.PHASE_TYPE_ID.ChallengePhase;
+        return $scope.contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.ChallengePhase;
     };
+
+    /**
+     * Check if the registration phase is finished.
+     *
+     * @returns {boolean} true if the registration phase is finished
+     */
     $scope.registrationFinished = function () {
-        return $scope.contest.phaseId >= helper.PHASE_TYPE_ID.AlmostContestPhase;
+        return $scope.contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.AlmostContestPhase;
     };
-    $scope.isViewable = function (problem) {
+
+    /**
+     * Check if the code of the component can be viewed by the user.
+     *
+     * @params component the component
+     * @returns {boolean} true if the component can be viewed 
+     */
+    $scope.isViewable = function (component) {
         // cannot view when phase is not challenge or after.
-        if ($scope.contest.phaseId < helper.PHASE_TYPE_ID.ChallengePhase) {
+        if ($scope.contest.phaseData.phaseType < helper.PHASE_TYPE_ID.ChallengePhase) {
             return false;
         }
-        // must be submitted
-        if (revParseStatus(problem.status) < helper.PROBLEM_STATUS_ID.Submitted) {
+        // cannot view if it is not submitted.
+        if (component.status < helper.CODER_PROBLEM_STATUS_ID.NOT_CHALLENGED) {
             return false;
         }
         return true;
     };
 
-    // back to contest page
-    $scope.goBack = function (contest) {
-        var divisionID = $stateParams.divisionId;
-        $state.go('user.contest', {contestId : contest.id, divisionId : divisionID});
+    /**
+     * Go back to the contest page.
+     */
+    $scope.goBack = function () {
+        $state.go('user.contest', {
+            contestId : $scope.contest.roundID,
+            divisionId : $scope.divisionID
+        });
     };
+
     $scope.toggleExpand = function (element, container, hidden) {
-        var target = angular.element(document.getElementById(element));
-        var containerPart = angular.element(document.getElementById(container));
-        var hiddenPart = angular.element(document.getElementById(hidden));
+        var target = angular.element(document.getElementById(element)),
+            containerPart = angular.element(document.getElementById(container)),
+            hiddenPart = angular.element(document.getElementById(hidden));
         if (!target.hasClass('expand')) {
             // expand
             target.addClass('expand');
@@ -486,7 +399,10 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
 
     // qtip here
     // use qtip to create a filter panel
-    var filter = $('.filterToggle');
+    var filter = $('.filterToggle'),
+        lbFilter = $('#leaderboardFilter'),
+        challengeFilter = $('#challengeFilter'),
+        challengerFilter = $('#challengerFilter');
     filter.qtip({
         content: {
             text: ''
@@ -509,13 +425,10 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
             classes: 'filterPanel'
         }
     });
-    var lbFilter = $('#leaderboardFilter');
     lbFilter.qtip('api').set('content.text', lbFilter.next());
     lbFilter.qtip('api').set('position.target', lbFilter);
-    var challengeFilter = $('#challengeFilter');
     challengeFilter.qtip('api').set('content.text', challengeFilter.next());
     challengeFilter.qtip('api').set('position.target', challengeFilter);
-    var challengerFilter = $('#challengerFilter');
     challengerFilter.qtip('api').set('content.text', challengerFilter.next());
     challengerFilter.qtip('api').set('position.target', challengerFilter);
 
@@ -588,9 +501,9 @@ var userContestDetailCtrl = ['$scope', '$http', '$state', '$stateParams', '$root
         if (panel === 'leaderboard') {
             lbFilter.qtip('api').toggle(false);
             if ($scope.getKeys(viewOn).lbFilterKey === 'specific') {
-                $scope.getKeys(viewOn).lbFilter.handle = $scope.lbHandleString;
+                $scope.getKeys(viewOn).lbFilter.userName = $scope.lbHandleString;
             } else {
-                $scope.getKeys(viewOn).lbFilter.handle = '';
+                $scope.getKeys(viewOn).lbFilter.userName = '';
             }
         } else if (panel === 'challenge') {
             challengeFilter.qtip('api').toggle(false);
