@@ -76,9 +76,9 @@ module.exports = function (grunt) {
 			combine: {
 				files: {
 					'build/css/bundle-light.css': [
-													'app/css/light/bootstrap.min.css',
+													'app/css/bootstrap.min.css',
 													'app/css/light/app.css',
-													'app/css/light/local.css',
+													'app/css/local.css',
 													'app/css/light/topcoder.css',
 													'bower_components/codemirror/lib/codemirror.css',
 													'bower_components/codemirror/addon/fold/foldgutter.css',
