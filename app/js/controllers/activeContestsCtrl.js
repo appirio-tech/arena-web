@@ -1,8 +1,30 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This controller handles coding editor related logic.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 2):
+ * - Moved socket handler of RoomInfoResponse to resolver.js
+ *
+ * @author amethystlei
+ * @version 1.1
+ */
 'use strict';
 /*global module, angular*/
 
+/**
+ * The helper.
+ *
+ * @type {exports}
+ */
 var helper = require('../helper');
 
+/**
+ * The controller for the active contests widget in the dashboard.
+ *
+ * @type {*[]}
+ */
 var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', 'socket', 'appHelper', function ($scope, $rootScope, $state, $http, $modal, socket, appHelper) {
     var getPhase = function (contest, phaseTypeId) {
         var i;
@@ -126,22 +148,21 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
 
     // action for 'Register' or 'Enter'
     $scope.doAction = function (contest) {
-        var roundID = contest.roundID, roomID;
+        var roundID = contest.roundID;
+
         $scope.okDisabled = true;
         // in the real app, we should perform real actions.
         if (contest.action === 'Enter') {
-            // the button is 'Enter'
-            socket.emit(helper.EVENT_NAME.EnterRoundRequest, {roundID: roundID});
-            socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
+            // Get ready to handle RoomInfoResponse broadcasted from resolvers.js
+            $scope.$on(helper.EVENT_NAME.RoomInfoResponse, function () {
+                // clears the listeners for RoomInfoResponse
+                $scope.$$listeners[helper.EVENT_NAME.RoomInfoResponse] = [];
 
-            socket.on(helper.EVENT_NAME.RoomInfoResponse, function (data) {
-                socket.remove(helper.EVENT_NAME.RoomInfoResponse);
-                roomID = data.roomID;
                 $scope.okDisabled = false;
 
                 var divisionID = null;
                 angular.forEach(contest.coderRooms, function (room) {
-                    if (room.roomID === data.roomID) {
+                    if (room.roomID === $rootScope.currentRoomInfo.roomID) {
                         divisionID = room.divisionID;
                     }
                 });
@@ -153,6 +174,8 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
                     });
                 }
             });
+            socket.emit(helper.EVENT_NAME.EnterRoundRequest, {roundID: roundID});
+            socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
 
             socket.remove(helper.EVENT_NAME.EndSyncResponse);
         } else {

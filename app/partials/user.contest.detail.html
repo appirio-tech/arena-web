@@ -2,12 +2,12 @@
     <div class="row-fluid dashboard contest detailPage">
         <div class="col-lg-12 text-left titleBar">
             <div class="col-lg-6 col-md-7">
-                <h1 class="title">Competition Arena: {{ contest.name }}</h1>
+                <h1 class="title">Competition Arena: {{ contest.roundName }}</h1>
             </div>
             <div class="col-lg-6 col-md-5 connection">
                 <div data-topcodertime></div><div data-connectionstatus></div>
             </div>
-            <a data-ng-click="goBack(contest)" class="btn btnBack">Back to Contest</a>
+            <a data-ng-click="goBack()" class="btn btnBack">Back to Contest</a>
         </div>
         <div class="container-fluid row-fluid mainContent">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">
@@ -287,7 +287,7 @@
                                 </div><!--/.heading-->
                                 <p data-ng-show="!registrationFinished()">The leaderboard is not ready.</p>
                                 <div class="tableWrapper" data-ng-show="registrationFinished()">
-                                    <div class="tHeadDiv" data-ng-class="{moreProblemTbl:contest.problems.length>3,normal:contest.problems.length<=3}">
+                                    <div class="tHeadDiv" data-ng-class="{moreProblemTbl:contest.problems[divisionID].length>3,normal:contest.problems[divisionID].length<=3}">
                                         <div class="innerWrapper">
                                             <table class="table table-condensed">
                                                 <thead>
@@ -298,54 +298,54 @@
                                                         <th class="col1 sortableHeading" data-ng-show="viewOn=='room'" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'roomPlace')">
                                                             Place<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='roomPlace' || getKeys(viewOn).leaderboardKey=='-roomPlace'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-roomPlace',ascArrow:getKeys(viewOn).leaderboardKey=='roomPlace'}" class="arrow"></span></span>
                                                         </th>
-                                                        <th class="col2 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'handle')">
-                                                            Handle<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='handle' || getKeys(viewOn).leaderboardKey=='-handle'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-handle',ascArrow:getKeys(viewOn).leaderboardKey=='handle'}" class="arrow"></span></span>
+                                                        <th class="col2 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'userName')">
+                                                            Handle<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='userName' || getKeys(viewOn).leaderboardKey=='-userName'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-userName',ascArrow:getKeys(viewOn).leaderboardKey=='userName'}" class="arrow"></span></span>
                                                         </th>
-                                                        <th data-ng-repeat="problem in contest.problems track by $index" class="colProblem sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'results['+$index+'].score')">
-                                                            {{problem.points}}<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='results['+$index+'].score' || getKeys(viewOn).leaderboardKey=='-results['+$index+'].score'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-results['+$index+'].score',ascArrow:getKeys(viewOn).leaderboardKey=='results['+$index+'].score'}" class="arrow"></span></span>
+                                                        <th data-ng-repeat="problem in contest.problems[divisionID] track by $index" class="colProblem sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', '-components['+$index+'].points')">
+                                                            {{ problem.primaryComponent.pointValue }}<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='components['+$index+'].points' || getKeys(viewOn).leaderboardKey=='-components['+$index+'].points'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-components['+$index+'].points',ascArrow:getKeys(viewOn).leaderboardKey=='components['+$index+'].points'}" class="arrow"></span></span>
                                                         </th>
-                                                        <th class="col6 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'score')">
-                                                            Score<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='score' || getKeys(viewOn).leaderboardKey=='-score'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-score',ascArrow:getKeys(viewOn).leaderboardKey=='score'}" class="arrow"></span></span>
+                                                        <th class="col6 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', '-totalPoints')">
+                                                            Score<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='totalPoints' || getKeys(viewOn).leaderboardKey=='-totalPoints'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-totalPoints',ascArrow:getKeys(viewOn).leaderboardKey=='totalPoints'}" class="arrow"></span></span>
                                                         </th>
                                                     </tr>
                                                 </thead>
                                             </table>
                                         </div><!--/.innerWrapper-->
                                     </div><!--/.tHeadDiv-->
-                                    <div class="tableDiv scroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:leaderboardTable" data-ng-class="{moreProblemTbl:contest.problems.length>3,normal:contest.problems.length<=3}">
+                                    <div class="tableDiv scroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:leaderboardTable" data-ng-class="{moreProblemTbl:contest.problems[divisionID].length>3,normal:contest.problems[divisionID].length<=3}">
                                         <div class="innerWrapper">
                                             <table class="table table-condensed">
                                                 <tbody>
-                                                    <tr data-ng-repeat="user in leaderboard | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey ">
-                                                        <td class="col1">{{viewOn=='room' ? user.roomPlace : user.roomId}}</td>
-                                                        <td class="col2"><span class="name">{{user.handle}}</span> <span>({{user.rating}})</span></td>
-                                                        <td data-ng-repeat="result in user.results track by $index" class="colProblem">
-                                                            <a data-ng-show="isViewable(result)" data-ng-click=""><span class="{{'color' + result.status}}">{{showResult(result, $parent.showBy)}}</span></a>
-                                                            <span data-ng-hide="isViewable(result)" class="{{'color' + result.status}}">{{showResult(result, $parent.showBy)}}</span>
+                                                     <tr data-ng-repeat="coder in getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey">
+                                                        <td class="col1">{{viewOn=='room' ? coder.roomPlace : roomID}}</td>
+                                                        <td class="col2"><span class="name">{{coder.userName}}</span> <span>({{coder.userRating}})</span></td>
+                                                        <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
+                                                            <a data-ng-show="isViewable(component)" data-ng-click=""><span class="{{getStatusColor(component.status)}}">{{showResult(component, $parent.showBy)}}</span></a>
+                                                            <span data-ng-hide="isViewable(component)" class="{{getStatusColor(component.status)}}">{{showResult(component, $parent.showBy)}}</span>
                                                         </td>
-                                                        <td class="col6">{{formatScore(user.score)}}</td>
+                                                        <td class="col6">{{formatScore(coder.totalPoints)}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div><!-- /.tableDiv -->
-                                    <div class="tableDiv default" data-ng-class="{moreProblemTbl:contest.problems.length>3,normal:contest.problems.length<=3}">
+                                    </div><!-- /.tableDiv .scroll -->
+                                    <div class="tableDiv default" data-ng-class="{moreProblemTbl:contest.problems[divisionID].length>3,normal:contest.problems[divisionID].length<=3}">
                                         <div class="innerWrapper">
-                                            <table class="table table-condensed">
+                                           <table class="table table-condensed">
                                                 <tbody>
-                                                    <tr data-ng-repeat="user in leaderboard | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey ">
-                                                        <td class="col1">{{viewOn=='room' ? user.roomPlace : user.roomId}}</td>
-                                                        <td class="col2"><span class="name">{{user.handle}}</span> <span>({{user.rating}})</span></td>
-                                                        <td data-ng-repeat="result in user.results track by $index" class="colProblem">
-                                                            <a data-ng-show="isViewable(result)" data-ng-click=""><span class="{{'color' + result.status}}">{{showResult(result, $parent.showBy)}}</span></a>
-                                                            <span data-ng-hide="isViewable(result)" class="{{'color' + result.status}}">{{showResult(result, $parent.showBy)}}</span>
+                                                     <tr data-ng-repeat="coder in getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey">
+                                                        <td class="col1">{{viewOn=='room' ? coder.roomPlace : roomID}}</td>
+                                                        <td class="col2"><span class="name">{{coder.userName}}</span> <span>({{coder.userRating}})</span></td>
+                                                        <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
+                                                            <a data-ng-show="isViewable(component)" data-ng-click=""><span class="{{getStatusColor(component.status)}}">{{showResult(component, $parent.showBy)}}</span></a>
+                                                            <span data-ng-hide="isViewable(component)" class="{{getStatusColor(component.status)}}">{{showResult(component, $parent.showBy)}}</span>
                                                         </td>
-                                                        <td class="col6">{{formatScore(user.score)}}</td>
+                                                        <td class="col6">{{formatScore(coder.totalPoints)}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </div>
-                                    </div><!-- /.tableDiv -->
+                                         </div>
+                                    </div><!-- /.tableDiv .default -->
                                 </div>
                             </section><!--/.leaderboardWrapper-->
                         </div><!--/.rightSec -->

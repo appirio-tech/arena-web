@@ -7,11 +7,14 @@
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 1):
  * - Updated to use real data.
  *
- * @author TCSASSEMBLER
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI - Coding IDE Part 2):
+ * - Added functions for the submission logic.
+ *
+ * @author tangzx, amethystlei
+ * @version 1.2
  */
 'use strict';
-/*global module, CodeMirror, angular, $ */
+/*global module, CodeMirror, angular, document, $ */
 
 /**
  * The helper.
@@ -73,6 +76,26 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             userInputDisabled = false,
             modalTimeoutPromise = null,
             /**
+             * Close the given modal. Use try/catch to get around the errors.
+             */
+            closeModal = function (modal) {
+                try {
+                    modal.close();
+                } catch (err) {
+                    console.log('Errors occurred when closing the modal: ' + err);
+                }
+            },
+            /**
+             * Dismiss the given modal. Use try/catch to get around the errors.
+             */
+            dismissModal = function (modal) {
+                try {
+                    modal.dismiss();
+                } catch (err) {
+                    console.log('Errors occurred when closing the modal: ' + err);
+                }
+            },
+            /**
              * The modal controller.
              *
              * @type {*[]}
@@ -88,7 +111,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                  */
                 $scope.ok = function () {
                     ok();
-                    $modalInstance.close();
+                    closeModal($modalInstance);
                 };
 
                 /**
@@ -96,7 +119,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                  */
                 $scope.cancel = function () {
                     cancel();
-                    $modalInstance.dismiss('cancel');
+                    dismissModal($modalInstance);
                 };
             }],
             /**
@@ -108,7 +131,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
              */
             openModal = function (data, handle, finish) {
                 if ($scope.currentModal) {
-                    $scope.currentModal.close();
+                    closeModal($scope.currentModal);
                     $scope.currentModal = undefined;
                 }
 
@@ -121,14 +144,18 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                             return data;
                         },
                         ok: function () {
-                            return handle;
+                            return function () {
+                                if (angular.isFunction(handle)) {
+                                    handle();
+                                }
+                                $scope.currentModal = undefined;
+                            };
                         },
                         cancel: function () {
                             return function () {
                                 if (angular.isFunction(finish)) {
                                     finish();
                                 }
-
                                 $scope.currentModal = undefined;
                             };
                         }
@@ -234,13 +261,20 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
          * Toggle test panel.
          */
         $scope.toggleTest = function () {
+            if (userInputDisabled || !$scope.problemLoaded) {
+                return;
+            }
             if ($scope.testOpen === false) {
+                disableUserInput();
                 openModal({
                     title: 'Retrieving Test Info',
                     message: 'Please wait for test info.',
                     enableClose: false
                 });
-
+                if (modalTimeoutPromise) {
+                    $timeout.cancel(modalTimeoutPromise);
+                }
+                modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
                 // get test info before open it
                 socket.emit(helper.EVENT_NAME.TestInfoRequest, {
                     componentID: $scope.componentID
@@ -354,27 +388,27 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
             indentUnit: 4,
             readOnly: true,
-            onLoad : function (_cm) {
-                $scope.cm = _cm;
+            onLoad : function (cmInstance) {
+                $scope.cm = cmInstance;
                 $scope.settingChanged = function () {
-                    _cm.setOption('mode', $scope.lang($scope.langIdx).langKey);
-                    _cm.setOption('theme', $scope.theme($scope.themeIdx).themeKey);
-                    _cm.setOption('lineNumbers', $scope.showLineNumber);
-                    _cm.setOption('foldGutter', $scope.lang($scope.langIdx).langGutter);
+                    cmInstance.setOption('mode', $scope.lang($scope.langIdx).langKey);
+                    cmInstance.setOption('theme', $scope.theme($scope.themeIdx).themeKey);
+                    cmInstance.setOption('lineNumbers', $scope.showLineNumber);
+                    cmInstance.setOption('foldGutter', $scope.lang($scope.langIdx).langGutter);
                     // HACK: reset the gutters to keep line numbers at the left of foldgutter.
                     if ($scope.showLineNumber) {
-                        _cm.setOption('gutters', ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+                        cmInstance.setOption('gutters', ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
                     } else {
-                        _cm.setOption('gutters', ["CodeMirror-foldgutter"]);
+                        cmInstance.setOption('gutters', ["CodeMirror-foldgutter"]);
                     }
                     $scope.settingsOpen = false;
                 };
-                _cm.on('change', function () {
+                cmInstance.on('change', function () {
                     $scope.contentDirty = true;
                 });
                 // comment out error handle related logic for now
                 /*
-                _cm.on('scroll', function () {
+                cmInstance.on('scroll', function () {
                     $scope.updateErrorMessages(true);
                 });
                 */
@@ -426,33 +460,102 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
         };
 
         /**
+         * Submit the solution.
+         */
+        $scope.submitSolution = function () {
+            if (userInputDisabled || !$scope.problemLoaded) {
+                return;
+            }
+            /**
+             * The submit handler.
+             */
+            var submitHandler = function () {
+                openModal({
+                    title: 'Warning',
+                    message: 'Would you like to submit your code?',
+                    buttons: ['Yes', 'No'],
+                    enableClose: true
+                }, function () {
+                    socket.emit(helper.EVENT_NAME.SubmitRequest, {componentID: $scope.componentID});
+                    $scope.testOpen = false;
+                });
+            };
+            if ($scope.contentDirty) {
+                openModal({
+                    title: 'Warning',
+                    message: 'You have made a change to your code since the last time you compiled. Do you want to continue with the submit?',
+                    buttons: ['Yes', 'No'],
+                    enableClose: true
+                }, submitHandler);
+            } else {
+                submitHandler();
+            }
+        };
+
+        // Handle the submit result response
+        socket.on(helper.EVENT_NAME.SubmitResultsResponse, function (data) {
+            if (modalTimeoutPromise) {
+                $timeout.cancel(modalTimeoutPromise);
+            }
+            if ($scope.currentModal) {
+                dismissModal($scope.currentModal);
+                $scope.currentModal = undefined;
+            }
+            enableUserInput();
+            openModal({
+                title: 'Submission Results',
+                message: data.message,
+                enableClose: true
+            });
+        });
+
+        /**
          * Handle pop up generic response.
          */
         socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
             }
+            if ($scope.currentModal) {
+                dismissModal($scope.currentModal);
+                $scope.currentModal = undefined;
+            }
 
             var i;
             enableUserInput();
 
-            if (data.title !== helper.POP_UP_TITLES.Error && data.title !== helper.POP_UP_TITLES.CompileResult && data.title !== helper.POP_UP_TITLES.TestResults) {
+            if (data.title !== helper.POP_UP_TITLES.Error && data.title !== helper.POP_UP_TITLES.CompileResult &&
+                    data.title !== helper.POP_UP_TITLES.TestResults && data.title !== helper.POP_UP_TITLES.MultipleSubmission) {
                 // only handle these responses for now
                 return;
             }
 
             data.message = replaceAll('<', '&lt;', data.message);
             data.message = replaceAll('>', '&gt;', data.message);
+
             openModal({
                 title: data.title,
                 message: data.message,
+                buttons: data.buttons,
                 enableClose: true
+            }, function () {
+                // handles the Multiple Submission response
+                if (data.title === helper.POP_UP_TITLES.MultipleSubmission) {
+                    // Resubmit the solution
+                    socket.emit(helper.EVENT_NAME.GenericPopupRequest, {
+                        popupType: data.type1,
+                        button: data.buttons.indexOf('Yes'),
+                        surveyData: [data.moveData] // the first item should be the component ID to be resubmitted
+                    });
+                }
             });
 
-            // clean test status once get any pop up response
-            // as may get error response
-            for (i = 0; i < $scope.userData.tests.length; i += 1) {
-                $scope.userData.tests[i].havingResult = false;
+            if (angular.isDefined($scope.userData.tests)) {
+                // clean test status once get any pop up response
+                // as may get error response
+                for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                    $scope.userData.tests[i].havingResult = false;
+                }
             }
             $scope.isTesting = false;
 
@@ -465,15 +568,24 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                     }
                 }
             }
+            if (data.title === helper.POP_UP_TITLES.CompileResult && data.type2 === helper.COMPILE_RESULTS_TYPE_ID.SUCCEEDED) {
+                // set content dirty to false when compile successfully.
+                $scope.contentDirty = false;
+            }
         });
 
         /**
          * Handle test info response.
          */
         socket.on(helper.EVENT_NAME.TestInfoResponse, function (data) {
+            if (modalTimeoutPromise) {
+                $timeout.cancel(modalTimeoutPromise);
+            }
+            enableUserInput();
+
             if (data.componentID === $scope.componentID) {
                 if ($scope.currentModal) {
-                    $scope.currentModal.dismiss('cancel');
+                    dismissModal($scope.currentModal);
                     $scope.currentModal = undefined;
                 }
                 $scope.testOpen = true;
@@ -660,6 +772,9 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
         // comment out error messages related code for now
         // set the ui-codemirror option
         $scope.errorBar = document.getElementsByClassName('errorBar')[0];
+        /**
+         * Rebuild the error bar.
+         */
         $scope.sharedObj.rebuildErrorBar = function () {
             // comment out error part for now
             /*
@@ -670,9 +785,9 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                 $scope.errorMessages = $scope.range($scope.lineNumbers);
                 $scope.updateErrorMessages(true);
             }
+            */
             angular.element($scope.errorBar).css('height',
                     (appHelper.getRenderedHeight($scope.cmElem) - 1) + 'px');
-            */
         };
         /*
         $scope.lineNumbers = 21;

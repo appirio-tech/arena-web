@@ -8,8 +8,13 @@
  * - Updated CreateProblemsResponse handler to move problems into rounds.
  * - Added getCurrentTCTime to get TC time.
  *
- * @author TCSASSEMBLER
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI - Coding IDE Part 2):
+ * - Added CreateChallengeTableResponse handler to initialize the room summary page.
+ * - Added UpdateCoderPointsResponse and UpdateCoderComponentResponse handlers to update room summary page.
+ * - Updated to handle RoomInfoResponse
+ *
+ * @author amethystlei
+ * @version 1.2
  */
 ///////////////
 // RESOLVERS //
@@ -51,6 +56,21 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             });
             deferred.resolve();
             return deferred.promise;
+        },
+        /**
+         * Update the coder placement.
+         *
+         * @param {Array} coders
+         */
+        updateCoderPlacement = function (coders) {
+            coders.forEach(function (item) {
+                item.roomPlace = 1;
+                coders.forEach(function (other) {
+                    if (item.userName !== other.userName && item.totalPoints < other.totalPoints) {
+                        item.roomPlace += 1;
+                    }
+                });
+            });
         };
 
     // if the listener is not ready, redirect
@@ -158,6 +178,11 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         return new Date().getTime() - timeDiff;
     };
 
+    socket.on(helper.EVENT_NAME.RoomInfoResponse, function (data) {
+        $rootScope.currentRoomInfo = data;
+        $rootScope.$broadcast(helper.EVENT_NAME.RoomInfoResponse);
+    });
+
     // handle create room list response
     socket.on(helper.EVENT_NAME.CreateRoomListResponse, function (data) {
         if ($rootScope.roundData[data.roundID]) {
@@ -166,6 +191,48 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             }
             $rootScope.roundData[data.roundID].coderRooms = data.coderRooms;
         }
+    });
+
+    // Handle create challenge table response.
+    // This response initializes the room summary table.
+    socket.on(helper.EVENT_NAME.CreateChallengeTableResponse, function (data) {
+        if (!angular.isDefined($rootScope.roomData)) {
+            $rootScope.roomData = {};
+        }
+        $rootScope.roomData[data.roomID] = data;
+        updateCoderPlacement($rootScope.roomData[data.roomID].coders);
+    });
+
+    // handle update coder points response
+    socket.on(helper.EVENT_NAME.UpdateCoderPointsResponse, function (data) {
+        if (data.roomID < 0) {
+            return;
+        }
+        angular.forEach($rootScope.roomData[data.roomID].coders, function (coder) {
+            if (coder.userName === data.coderHandle) {
+                // update the total points of the coder
+                coder.totalPoints = data.points;
+            }
+        });
+        updateCoderPlacement($rootScope.roomData[data.roomID].coders);
+    });
+
+    // handle update coder component response
+    socket.on(helper.EVENT_NAME.UpdateCoderComponentResponse, function (data) {
+        if (data.roomID < 0) {
+            return;
+        }
+        angular.forEach($rootScope.roomData[data.roomID].coders, function (coder) {
+            if (coder.userName === data.coderHandle) {
+                angular.forEach(coder.components, function (component) {
+                    if (component.componentID === data.component.componentID) {
+                        // update the component by copying fields from data.
+                        angular.extend(component, data.component);
+                    }
+                });
+            }
+        });
+        updateCoderPlacement($rootScope.roomData[data.roomID].coders);
     });
 
     // handle the end sync response
