@@ -90,7 +90,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
              */
             dismissModal = function (modal) {
                 try {
-                    modal.dismiss('cancel');
+                    modal.dismiss();
                 } catch (err) {
                     console.log('Errors occurred when closing the modal: ' + err);
                 }
@@ -531,6 +531,10 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                 return;
             }
 
+            if (data.title === helper.POP_UP_TITLES.Unauthorized && !$rootScope.isLoggedIn) {
+                return;
+            }
+
             data.message = replaceAll('<', '&lt;', data.message);
             data.message = replaceAll('>', '&gt;', data.message);
 
@@ -551,10 +555,12 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                 }
             });
 
-            // clean test status once get any pop up response
-            // as may get error response
-            for (i = 0; i < $scope.userData.tests.length; i += 1) {
-                $scope.userData.tests[i].havingResult = false;
+            if (angular.isDefined($scope.userData.tests)) {
+                // clean test status once get any pop up response
+                // as may get error response
+                for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                    $scope.userData.tests[i].havingResult = false;
+                }
             }
             $scope.isTesting = false;
 
@@ -567,7 +573,6 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                     }
                 }
             }
-
             if (data.title === helper.POP_UP_TITLES.CompileResult && data.type2 === helper.COMPILE_RESULTS_TYPE_ID.SUCCEEDED) {
                 // set content dirty to false when compile successfully.
                 $scope.contentDirty = false;

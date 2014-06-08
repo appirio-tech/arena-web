@@ -156,7 +156,7 @@ var userContestDetailCtrl = ['$scope', '$state', '$stateParams', '$rootScope', '
     $scope.roomKeys = {
         challengerKey: '-points',
         challengeKey: '-date',
-        leaderboardKey: '-components[0].points',
+        leaderboardKey: '-totalPoints',
         challengerFilterKey: 'all',
         challengeFilterKey: 'all',
         lbFilterKey: 'all',
