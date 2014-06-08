@@ -49,7 +49,7 @@
                             <a class="closeBtn" data-ng-click="cancelTheme()">x</a>
                             <div class="themesBox">
                               <p data-ng-repeat="theme in themesInfo.themes track by $index" class="themeItem">
-                                <input type="radio" data-ng-model="$parent.themeInUse" value="{{theme.key}}" name="themes" id="theme-{{$index}}" class="themeRadio"><label for="theme-{{$index}}" class="themeLbl">{{theme.name}}</label>
+                                <input type="radio" data-ng-model="$parent.themeInUse" value="{{theme.key}}" name="themes" id="theme-{{$index}}" class="themeRadio"><label for="theme-{{$index}}" class="themeLbl">{{theme.label}}</label>
                               </p>
                             </div><!--/.themesBox-->
                             <a class="btn" data-ng-click="applyTheme()">APPLY</a>

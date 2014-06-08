@@ -1,6 +1,7 @@
 *.log
 *.zip
 *.DS_Store
+*.Thumbs.db
 app/js/config.js
 node_modules
 bower_components

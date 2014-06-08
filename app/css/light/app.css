@@ -1,3 +1,9 @@
+/* bootstrap overrides */
+.panel{
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
 .text-center{text-align:center;}
 .text-left{text-align:left;}
 .text-right{text-align:right;}
@@ -7,9 +13,10 @@
 .auto-inline {float: left;width: auto !important;}
 html{height:100%;}
 body{
-    background:url(../img/bg.png) repeat 0 0 #DDE7F2;
-    font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;height:100%;
-    color:#fff;
+    background:url(../img/light/bg.png) repeat 0 0 #DDE7F2; 
+    font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+    height:100%;
+    color:#316f99;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     text-shadow:rgba(255,255,255,.01) 0 1px 0;
@@ -30,12 +37,12 @@ body a {cursor: pointer;}
 .panel-custom .schedulePanel:after,
 .panel-custom .statusPanel:after,
 .panelSummary .summaryWrapper div:before{
-    background-image: url(../img/sprite.png);
+    background-image: url(../img/light/sprite.png);
 }
 .dashboard .breadcrumb li:after,
 .contest .titleBar .shareLink a,
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
-    background-image: url(../img/sprite-2.png);
+    background-image: url(../img/light/sprite-2.png);
 }
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
@@ -60,11 +67,11 @@ body a {cursor: pointer;}
 .panelChatArea .searchIcon,
 .detailPage section .heading .filterArea a:before,
 .filterPanel .closeLink:before  {
-    background-image: url(../img/sprite-codeArena.png);
+    background-image: url(../img/light/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
 .panelCodeEditor .panel-body .settingsPanel {
-    background-image: url(../img/popup-bg.png);
+    background-image: url(../img/light/popup-bg.png);
 }
 .anon-header .navbar .navbar-brand, 
 .header .navbar-brand,
@@ -73,19 +80,19 @@ body a {cursor: pointer;}
 .userInfo .arrow,
 .header .navIcons .themePanel .closeBtn,
 .header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl:before {
-    background-image: url(../img/sprite-new-header.png);
+    background-image: url(../img/light/sprite-new-header.png);
     background-repeat: no-repeat;
 }
 .anon-header,
 .header {
-    background-image: url(../img/black-header.png);
+    background-image: url(../img/light/black-header.png);
     background-repeat: repeat-x;
 }
 .panelContestPlan .iconsWrapper .viewLbl,
 .calendar .fc-button-prev .fc-text-arrow,
 .calendar .fc-button-next .fc-text-arrow,
 .listView .listHeader .btnCtrl {
-    background-image: url(../img/sprite-contestPlan.png);
+    background-image: url(../img/light/sprite-contestPlan.png);
 }
 .panelCodeProblem .panel-heading > .collapseIcon:before,
 .panelCodeEditor .panel-heading > .collapseIcon:before,
@@ -95,7 +102,7 @@ body a {cursor: pointer;}
 .detailPage .leaderboardWrapper .heading .viewFilter .showLBLbl:before,
 .filterPanel .contentWrapper .dropdown .arrow,
 .detailPage section .table>thead>tr>th .arrow {
-    background-image: url(../img/sprite-room-summary.png);
+    background-image: url(../img/light/sprite-room-summary.png);
     background-repeat: no-repeat;
 }
 /*common button style*/
@@ -350,13 +357,9 @@ body a {cursor: pointer;}
 .header .navIcons .themePanel {
     width: 328px;
     height: 338px;
-    border: 1px solid #fff;
-    border-color: rgba(255,255,255,0.1);
-    background: #151718;
-    background: rgba(21,23,24,0.98);
-    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
-    -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    border: 1px solid #b7c9d7;
+    background: #f5f8fa;
+    background: rgba(245, 248, 250, 0.98);    
     position: absolute;
     top: 52px;
     right: -25px;
@@ -369,8 +372,8 @@ body a {cursor: pointer;}
     border-bottom: 12px solid;
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
-    color: #fff;
-    color: rgba(255,255,255,0.1);
+    color: #f5f8fa;
+    color: rgba(245,248,250,.98);
     position: absolute;
     top: -11px;
     right: 42px;
@@ -381,16 +384,17 @@ body a {cursor: pointer;}
     border-bottom: 11px solid;
     border-left: 11px solid transparent;
     border-right: 11px solid transparent;
-    color: #151718;
     position: absolute;
     top: -10px;
     right: 43px;
+    color: #f5f8fa;
+    color: rgba(245, 248, 250, 0.98);
 }
 .header .navIcons .themePanel h4,
 .header .navIcons .themePanel .themeItem {
     font-size: 14px;
     height: 52px;
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #b7c9d7;
     padding: 19px 0 19px;
     margin: 0;
     line-height: 12px;
@@ -442,7 +446,7 @@ body a {cursor: pointer;}
 .header .navIcons .themePanel .themeItem .themeRadio {display: none;}
 .header .navIcons .themePanel .btn {
     font-size: 16px;
-    background: #0f9abd;
+    background: #0999d1;
     display: block;
     width: 150px;
     margin: 20px auto;
@@ -468,13 +472,13 @@ body a {cursor: pointer;}
 }
 /* topcoder account login part */
 .hero .form .tcAccountBox input {
-    background: #1c1d1e;
-    color: #fff;
-    border-color: #494b4c;
+    background: #fff;
 }
 .hero .form .loginBox .data input[type="text"],
 .hero .form .loginBox .data input[type="password"] {
     padding: 5px;
+    color: #316f99;
+    border-color: #b7c9d7;
 }
 .hero .form .tcAccountBox .btn-lg:focus {
     outline-width: 0; 
@@ -482,10 +486,13 @@ body a {cursor: pointer;}
 .hero .form .tcAccountBox .btn-lg,
 .hero .form .social .btn-lg, 
 .codeArea .socialLinks .btn-lg {
-    background: #0ea7cd;
+    background: #0999d1;
     border: 0;
     margin-left: 111px;
     font-size: 14px;
+}
+.hero .form .tcAccountBox .btn-lg{
+    line-height: 16px;
 }
 .codeArea .socialLinks .btn-lg {margin-left: 0;}
 
@@ -509,7 +516,7 @@ body a {cursor: pointer;}
     padding: 0;
     margin-left: 112px;
     margin-top: 2px;
-    background: url(../img/checkbox.png) 0 0 no-repeat;
+    background: url(../img/light/checkbox.png) 0 0 no-repeat;
 }
 .hero .form .tcAccountBox .rememberCheckbox:checked ~ .rememberCheckboxLabel {
     background-position: 0 -19px;
@@ -579,13 +586,13 @@ body a {cursor: pointer;}
 }
 .hero .signup .separator{
     height: 177px;
-    border-left: 1px dashed #3d4143;
+    border-left: 1px dashed #b7c9d7;
     position: absolute;
     right: 3px;
     top: 90px;
 }
 .hero .loginBox {
-    border: 1px solid #3d4143;
+    border: 1px solid #b7c9d7;
     margin: 0 auto;
     width: 700px;
     height: 509px;
@@ -598,12 +605,11 @@ body a {cursor: pointer;}
     top: -45px;
 }
 .hero .loginBox header {
-    background: #212324;
-    border: 1px solid #282a2b;
+    background: #75a5c8;
     margin: 0 -15px;
     font-size: 18px;
     line-height: 70px;
-    color: #fff;
+    color: #316f99;
 }
 .hero .loginBox>div:first-child header{
     border-right: 0;
@@ -624,7 +630,7 @@ body a {cursor: pointer;}
 }
 .hero .loginBox .tcAccountBox,
 .hero .loginBox .social>div {
-    background: #282a2b;
+    background: #f5f8fa;
     height: 224px;
     margin: 0 -15px;
     padding: 24px 0 27px;
@@ -632,20 +638,20 @@ body a {cursor: pointer;}
 .hero .registerRow {
     text-align: center;
     height: 47px;
-    background: #212324;
-    border: 1px solid #282a2b;
+    background: #75a5c8;
+    border: none;
     line-height: 47px;
 }
 .hero .registerRow a {
-    color: #0bbbe7;
+    color: #fff;
     padding:0;
 }
 /* login footer part */
 .hero .loginBox footer {
-    border-top: 1px solid #3d4143;
-    background: #000;
-    height: 164px;
-    padding: 15px 17px;
+    border-top: 1px solid #c5d9e8;
+    background: #fff;
+    height: 166px;
+    padding: 16px 17px;
     margin: 0;
 }
 .hero .loginBox footer>p:first-child {
@@ -659,7 +665,7 @@ body a {cursor: pointer;}
     height: 0;
     width: 0;
     overflow: hidden;
-    background: url(../img/company_logo.png) 0 0 no-repeat;
+    background: url(../img/light/company_logo.png) 0 0 no-repeat;
     margin-left: 172px;
 }
 .hero .loginBox footer>p:last-child {
@@ -731,6 +737,7 @@ body a {cursor: pointer;}
 .codeArea .definition .item {display: inline-block; margin-right: 27px;}
 .codeArea .definition .item:last-child {margin-right: 0;}
 .dashboard .textWhite {color: #fff;}
+.dashboard .definition .item span {color: #316f99;}
 .dashboard .breadcrumb > li + li:before {
     content: "";
     padding: 0 10px;
@@ -780,7 +787,7 @@ body a {cursor: pointer;}
     letter-spacing: -0.030em;
 }
 .tcTime>span {
-    color: #fff;
+    color: #316f99;
 }
 .connectionStatus {
     display: block;
@@ -871,7 +878,7 @@ body a {cursor: pointer;}
     color: #687376;
     padding-right: 22px;
 }
-.codeArea .shareLink > ul > li > a:hover {text-decoration: none; color: #fff;}
+.codeArea .shareLink > ul > li > a:hover {text-decoration: none; color: #0bbbe7;}
 .codeArea .shareLink > ul > li > a:after {
     content: '';
     display: block;
@@ -882,8 +889,8 @@ body a {cursor: pointer;}
     right: 0;
     background-position: 0 0;
 }
-.codeArea .shareLink > ul > .open > a {color: #fff;}
-.codeArea .shareLink > ul > .open > a:after {background-position: -25px 0;}
+.codeArea .shareLink > ul > .open > a {color: #316f99;}
+.codeArea .shareLink > ul > .open > a:after {background-position: -27px 0;}
 .codeArea .shareLink .dropdown-menu {
     background-position: -354px -293px;
     border: 0;
@@ -894,6 +901,8 @@ body a {cursor: pointer;}
     right: 0;
     padding: 37px 10px 5px 8px;
     z-index: -1;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 .codeArea .shareLink .open .dropdown-menu {z-index: 100;}
 .codeArea .shareLink .dropdown-menu li {margin-bottom: 5px;}
@@ -917,14 +926,14 @@ body a {cursor: pointer;}
 
 /*********** footer style */
 footer{
-    background-color:#000;
+    background-color:#fffffe;
     color:#FFF;
     padding:10px 0;
     position: relative;
     width: 100%;
 }
 footer .line {
-    border-top: 1px solid #14191a;
+    border-top: 1px solid #c5d9e8;
     position: absolute;
     top: 1px;
     width: 100%;
@@ -952,7 +961,7 @@ footer .right .sponsorLogo {
     overflow: hidden;
     padding-top: 23px;
     padding-right: 188px;
-    background: url(../img/company_logo_small.png) 100% 100% no-repeat;
+    background: url(../img/light/company_logo_small.png) 100% 100% no-repeat;
     padding-left: 20px;
 }
 footer .right>span:nth-child(2) {
@@ -981,8 +990,8 @@ footer .right>span:nth-child(2) {
     padding-top: 15%;
 }
 .modal .modal-content {
-    background: #151718;
-    border: 1px solid #234760;
+    background: #f5f8fa;
+    border: 1px solid #b7c9d7;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -991,7 +1000,7 @@ footer .right>span:nth-child(2) {
     font-size: 16px;
     line-height: 25px;
     padding: 8px 31px;
-    background: #234760;
+    background: #75a5c8;
     border-width: 0;
     -webkit-border-radius:0;
     -moz-border-radius: 0;
@@ -1006,7 +1015,7 @@ footer .right>span:nth-child(2) {
     border-width: 0;
     padding: 14px 0 0;
     margin: 0;
-    color: #636d70;
+    color: #316f99;
     height: 200px;
     overflow-y: auto;
 }
@@ -1021,7 +1030,7 @@ footer .right>span:nth-child(2) {
      -webkit-border-radius:2px;
      -moz-border-radius:2px;
      border-radius: 2px;
-     line-height: 27px;
+     line-height: 24px;
      text-align: center;
      border: 0;
  }
@@ -1033,7 +1042,7 @@ footer .right>span:nth-child(2) {
 }
 .modal .modal-content .btn:hover {background: #3aadda;}
 .modal .modal-content .modal-footer {
-    border-width: 0;
+    border-width: 1px 0 0 0;
     margin: 0;
     clear:both;
     line-height: 15px;
@@ -1046,13 +1055,14 @@ footer .right>span:nth-child(2) {
 }
 /********************* active contests part */
 .panel-custom {
-    background: #151718;
+    background: transparent;
     width: 759px;
-    border: 1px solid #234760;
     height: 315px;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
+    background: #f5f8fa;
+    border: 1px solid #b7c9d7;
 }
 .panelContestStat {
     width: 407px;
@@ -1062,7 +1072,7 @@ footer .right>span:nth-child(2) {
     font-size: 16px;
     line-height: 25px;
     padding: 8px 31px;
-    background: #234760;
+    background: #75a5c8;
     -webkit-border-radius:0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -1072,7 +1082,7 @@ footer .right>span:nth-child(2) {
     border-width: 0; 
     padding: 14px 0 0;
     margin: 0;
-    color: #636d70;
+    color: #316f99;
 }
 .panel-custom .panel-body .mainContent {
     padding: 0 30px;
@@ -1080,7 +1090,7 @@ footer .right>span:nth-child(2) {
 .panel-custom .mainContent .btn {
     width: 94px;
     background: #0999d1;
-    line-height: 27px;
+    line-height: 24px;
     float: right;
     border: 0;
 }
@@ -1159,7 +1169,7 @@ footer .right>span:nth-child(2) {
     text-align: left;
 }
 .panel-custom .statusPanel .rightSide {
-    border-left: 1px dashed #3d4143;
+    border-left: 1px dashed #b7c9d7;
 }
 .panel-custom .statusPanel .leftSide>div span:nth-child(1) {width: 70px;}
 .panel-custom .statusPanel .leftSide>div span:nth-child(2) {width: 135px;}
@@ -1172,10 +1182,11 @@ footer .right>span:nth-child(2) {
 /* paginator part */
 .panel-custom .paginator {
     clear:both;
-    border-top: 1px solid #234760;
+    border-top: 1px solid #b7c9d7;
     line-height: 15px;
     color: #687376;
     padding: 10px 30px 14px;
+    background: #eef2f5;
 }
 .panel-custom .paginator span {
     margin-right: 14px;
@@ -1185,11 +1196,10 @@ footer .right>span:nth-child(2) {
     color: #0999d1;
 }
 .panel-custom .panel-body .textActive {
-    color: #0bbbe7;
     font-weight: 400;/*regular*/
 }
 .panel-custom .panel-body .textWhite {
-    color: #fff;
+    color: #316f99;
 }
 .panel-custom .panel-body .textRed {
     color: #ff0000;
@@ -1211,10 +1221,10 @@ footer .right>span:nth-child(2) {
     padding-top: 1px;
 }
 .panelCodeProblem .panel-heading {
-    background: #1f444e; 
+    background: #75a5c8; 
     height: 41px; 
 }
-.panelCodeEditor .panel-heading {background: #1f444e;height: 41px;}
+.panelCodeEditor .panel-heading {background: #75a5c8;height: 41px;}
 .panelCodeProblem .panel-heading > a:before,
 .panelCodeEditor .panel-heading > a:before { /*using new icon with new position*/
     content: '';
@@ -1235,11 +1245,11 @@ footer .right>span:nth-child(2) {
 .panelCodeProblem .panel-heading > a:hover,.panelCodeEditor .panel-heading > a:hover {text-decoration: none;}
 .panelCodeProblem .panel-body {
     border-top: 0;
-    border-color: #1f444e;
+    border-color: #b7c9d7;
     padding: 1px 0 0;
 }
 .panelCodeEditor .panel-body {
-    border-color:#1f444e;
+    border-color:#b7c9d7;
     border-top: 0;
 }
 #bottom-content {
@@ -1277,7 +1287,7 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .actionIcons > li {padding-left: 21px; position: relative;padding-top: 2px;}
 .panelCodeEditor .actionIcons > li + li {margin-left: 30px;}
 .panelCodeEditor .actionIcons > .link {cursor: pointer;}
-.panelCodeEditor .actionIcons > .link:hover {color: #fff;}
+.panelCodeEditor .actionIcons > .link:hover {color: #316f99;}
 .panelCodeEditor .actionIcons > li:before {
     content: '';
     display: block;
@@ -1306,7 +1316,7 @@ footer .right>span:nth-child(2) {
 
 .panelCodeEditor .toolBar .middlePart .findInput {
     height: 30px;
-    background: #162f36;
+    background: #fff;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -1315,6 +1325,8 @@ footer .right>span:nth-child(2) {
     position: relative;
     margin-right: 39px;
     margin-left: 30px;
+    border: 1px solid #b7c9d7;
+    line-height: 28px;
 }
 .panelCodeEditor .toolBar .middlePart .findInput > a{
     display: inline-block;
@@ -1329,7 +1341,7 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .toolBar .middlePart .gotoInput > label {font-size: 13px;}
 .panelCodeEditor .toolBar .middlePart .gotoInput input {
     width: 68px;
-    background: #162f36;
+    background: #fff;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -1337,19 +1349,21 @@ footer .right>span:nth-child(2) {
     margin-right: 30px;
     padding-left: 10px;
     padding-right: 10px;
+    border: 1px solid #b7c9d7;
 }
 .panelCodeEditor .toolBar .middlePart .gotoInput {position: relative;}
 .panelCodeEditor .toolBar .middlePart .gotoInput .arrow {
     display: inline-block;
     position: absolute;
     right: 0;
-    padding: 15px 14px;
+    padding: 14px 13px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    background: #162f36;
+    background: #fff;
+    border: 1px solid #b7c9d7;
 }
-.panelCodeEditor .toolBar .middlePart .gotoInput .arrow:hover {background: #0c191d; }
+.panelCodeEditor .toolBar .middlePart .gotoInput .arrow:hover {border: 1px solid #0bbbe7; }
 .panelCodeEditor .toolBar .middlePart .arrow:before {
     content: '';
     display: block;
@@ -1358,13 +1372,14 @@ footer .right>span:nth-child(2) {
     background-position: -50px -75px;
     position: absolute;
     top: 13px;
-    left: 10px;
+    left: 9px;
 }
 .panelCodeEditor .panel-body {padding-top: 0; position: relative; }
 .panelCodeEditor .panel-body .toolBar {
     height: 34px;
-    background: #232628;
-    border: 1px solid #151718;
+    padding-top: 1px;
+    background: #eef2f5;
+    border: none;
     border-bottom: 0;
     position: relative;
 }
@@ -1372,7 +1387,7 @@ footer .right>span:nth-child(2) {
     position: absolute;
     left: 0;
     top: 0;
-    background: #151718;
+    background: #fff;
     height: 0;
     width: 0;
     padding-left: 33px;
@@ -1401,6 +1416,8 @@ footer .right>span:nth-child(2) {
     top: -2px;
     left: -2px;
     z-index: -1;
+    background: #fff;
+    border: 1px solid #b7c9d7;
 }
 .panelCodeEditor .settingsPanel .closeIcon {
     position: absolute;
@@ -1432,17 +1449,15 @@ footer .right>span:nth-child(2) {
     height: 36px;
     width: 150px;
     display: block; 
-    background-image: url(../img/select.png);
+    background-image: url(../img/light/select.png);
     background-position: 100% 100%;
     background-repeat: no-repeat;
-    background-color: #151718;
-    background-color: rgba(21, 23, 24, 0.98);
-    border: 1px solid #fff;
-    border-color: rgba(255, 255, 255, 0.16);
+    background-color: transparent;
+    border: 1px solid #b7c9d7;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    color: #fff;
+    color: #316f99;
     padding: 4px 0 0 10px;
 }
 .panelCodeEditor .settingsPanel .settingDropDown .dropdown-toggle:hover {text-decoration:none;}
@@ -1472,7 +1487,7 @@ footer .right>span:nth-child(2) {
     height: 20px;
     width: 20px;
     border:1px solid #fff;
-    border-color: rgba(255, 255, 255, 0.16);
+    border-color: #316F99;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
@@ -1482,20 +1497,20 @@ footer .right>span:nth-child(2) {
     top: 2px;
 }
 .panelCodeEditor .settingsPanel .lineNumRadio:checked ~ .lineNumLbl:before {
-    box-shadow: 0 0 0 4px rgba(21,23,24,0.98) inset, 0 0 0 10px #fff inset;
+    box-shadow: 0 0 0 4px #fff inset,0 0 0 10px rgba(49,111,153,.98) inset;
 }
 .panelCodeEditor .settingsPanel .btn-settings {
     font-size: 16px;
     display: block;
     width: 150px;
-    background: #0f9abd;
+    background: #0999d1;
     margin-top: 19px;
 }
 .panelCodeEditor .panel-body .toolBar .active .settingsPanel {z-index: 20;}
 .panelCodeEditor .panel-body .toolBar .rightPart {
     float: right;
     font-size: 14px;
-    color: #fff;
+    color: #316f99;
     padding-top: 3px;
     padding-right: 102px;
     line-height: 24px;
@@ -1546,17 +1561,16 @@ footer .right>span:nth-child(2) {
     background-position: -75px 0;
 }
 .panelCodeEditor .toolBar .active .testToggle {
-    color: #fff; 
+    color: #316f99; 
     z-index: 21;
     padding-top: 3px;
     padding-left: 25px;
-    background: #151718;
-    background: rgba(21,23,24,0.98);
-    border: 1px solid #fff;
-    border-color: rgba(255,255,255,0.16);
+    background: #fff;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid #b7c9d7;
     border-bottom: 0;
 }
-.panelCodeEditor .toolBar .testToggle:hover {text-decoration: none; color: #fff;}
+.panelCodeEditor .toolBar .testToggle:hover {text-decoration: none; color: #0bbbe7;}
 .panelCodeEditor .toolBar .active .testToggle:before {background-position: -50px 0;}
 .panelCodeEditor .toolBar .testPanel {
     position: absolute;
@@ -1567,11 +1581,9 @@ footer .right>span:nth-child(2) {
     padding-right: 18px;
     overflow: hidden;
     z-index: -1;
-    background: #151718;
-    background: rgba(21,23,24,0.98);
-    border: 1px solid #fff;
-    border-color: rgba(255,255,255,0.16);
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    background: #fff;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid #b7c9d7;
 }
 .panelCodeEditor .toolBar .testPanel>div {
     height: 480px;
@@ -1581,15 +1593,14 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .testPanel header {
     width: 346px;
     height: 42px;
-    border: 1px solid #151718;
-    border-color: rgba(21,23,34,0.98);
-    background: #1a1c1d;
-    color: #687376;
+    background: #75a5c8;
+    color: #316f99;
     line-height: 10px;
     padding-top: 15px;
     padding-bottom: 16px;
     padding-left: 60px;
     position: relative;
+    border-bottom: 1px solid #b7c9d7;
 }
 .panelCodeEditor .testPanel header>a {
     display: block;
@@ -1643,7 +1654,7 @@ footer .right>span:nth-child(2) {
     margin-bottom: 10px;
 }
 .panelCodeEditor .testPanel .btn{
-    background: #0f9abd;
+    background: #0999d1;
     font-size: 16px;
     font-weight: 300;
 }
@@ -1653,12 +1664,11 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeEditor .testPanel .content .btnAlt + .btnAlt {margin-left: 16px; }
 .panelCodeEditor .testPanel .content input[type="text"] {
-    background: #151718;
+    background: #fff;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    border-color: #fff;
-    border-color: rgba(255,255,255,0.16);
+    border: 1px solid #b7c9d7;
     padding-left: 10px;
     font-weight: 300; 
 }
@@ -1673,7 +1683,7 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .testPanel .content .btn:hover,
 .panelCodeEditor .testPanel .bottom .btn:hover {
     text-decoration: none;
-    background: #27A4C4;
+    background: #3aadda;
 }
 .panelCodeEditor .testPanel .editParam {
     position: absolute;
@@ -1708,14 +1718,14 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .testPanel .bottom .message {position: absolute; top: 0; width: 178px; padding-top: 0; margin-bottom: 0;}
 .panelCodeEditor .testPanel .bottom img {position: absolute; top: 33px; left: 100px;}
 .panelCodeEditor .testPanel .bottom .caseCheck:checked ~ .caseLbl:before {background-position: -75px -150px;}
-.panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
-.panelCodeEditor .paddingRow {height: 7px;background: #151718;position: relative;}
+.panelCodeEditor .toolBar .active .testPanel {z-index: 22;}
+.panelCodeEditor .paddingRow {height: 7px;background: #eef2f5;position: relative; border-top: 1px solid #b7c9d7;}
 .panelCodeEditor .paddingRow:before {
     content: '';
     display: block;
     height: 7px;
     width: 34px;
-    background: #232628;
+    background: #eef2f5;
     position: absolute;
     left: 0;
     top: 0;
@@ -1726,7 +1736,7 @@ footer .right>span:nth-child(2) {
     display: block;
     height: 6px;
     width: 14px;
-    background: #232628;
+    background: #eef2f5;
     position: absolute;
     right: 1px;
     top: 1px;
@@ -1748,7 +1758,7 @@ footer .right>span:nth-child(2) {
     top: 41px;
     width: 14px;
     height: 474px;
-    background: #232628;
+    background: #eef2f5;
 }
 .errorBar>div {
     height: 20px;
@@ -1782,14 +1792,15 @@ footer .right>span:nth-child(2) {
 }
 /*hover style of resizer*/
 /*#resizer:hover {
-    background: #1f444e;
+    background: #b7c9d7;
 }*/
 /******************* count down widget */
 .panelCountDown {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
-    background: #1b2920;
+    background: #eef2f5;
+    color: #687376;
     border: 1px solid #5fb806;
     height: 92px;
     text-align: center;
@@ -1804,16 +1815,16 @@ footer .right>span:nth-child(2) {
 }
 .panelCountDown .singleLine {line-height: 48px; }
 /******************* contest status widget */
-.panelContestStat .panel-heading {background: #1f444e; padding: 7px 31px 9px; }
+.panelContestStat .panel-heading {background: #75a5c8; padding: 7px 31px 9px; }
 .panelContestStat .panel-body {
     padding: 0 30px;
     height: 536px;
-    border-color: #1f444e;
+    border-color: #b7c9d7;
     border-top: 0;
 }
 .panelContestStat .panel-body .overview {
     padding: 14px 0 25px;
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #b7c9d7;
 }
 .panelContestStat .panel-body .overview > div,
 .panelContestStat .panel-body .overview > div .column span,
@@ -1847,8 +1858,7 @@ footer .right>span:nth-child(2) {
     line-height: 20px;
 }
 .panelContestStat .breadcrumbHead {
-    padding: 9px 0 7px 31px;
-    padding-left: 28px;
+    padding: 0;
 }
 .panelContestStat .phaseDetails {padding: 8px 28px; }
 .panelContestStat .breadcrumbHead .breadcrumb {
@@ -1858,23 +1868,25 @@ footer .right>span:nth-child(2) {
     font-weight: 400;
 }
 .panelContestStat .breadcrumbHead .breadcrumb li:after {display: none; }
-.panelContestStat .breadcrumbHead .breadcrumb .active {color: #0bbbe7; }
+.panelContestStat .breadcrumbHead .breadcrumb .active {color: #316f99; background: #0bbbe7;}
 .panelContestStat .breadcrumbHead .breadcrumb li {
-    padding-left: 13px;
+    padding-left: 19px;
     padding-right: 9px;
+    height: 40px;
+    line-height: 40px;
 }
-.panelContestStat .breadcrumbHead .breadcrumb li:last-child {padding-right: 0; }
+.panelContestStat .breadcrumbHead .breadcrumb li:last-child {padding-right: 11px; }
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     content: '';
     background-position: -9px -82px;
     background-repeat: no-repeat;
-    opacity: 0.3;
+    opacity: 1;
     display: block;
-    height: 9px;
+    height: 10px;
     width: 9px;
     position: absolute;
-    left: 0;
-    top: 7px;
+    left: 7px;
+    top: 15px;
 }
 .panelContestStat .breadcrumbHead .breadcrumb .active:before {opacity: 1; }
 .panelContestStat .phaseDetails .compStatus,
@@ -1883,12 +1895,12 @@ footer .right>span:nth-child(2) {
 .panelContestStat .phaseDetails table {width: 100%; }
 .panelContestStat .phaseDetails table td{
     padding: 10px 0 10px 10px;
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #b7c9d7;
     line-height: 27px;
 }
 .panelContestStat .phaseDetails table th{
     padding: 8px 0 8px 10px;
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #b7c9d7;
     line-height: 26px;
     font-weight: 400;
 }
@@ -1909,7 +1921,7 @@ footer .right>span:nth-child(2) {
     overflow: hidden;
 }
 .panelOverview .panel-heading {
-    background: #1f444e;
+    background: #75a5c8;
     height: 40px;
     position: relative;
     padding-top: 7px;
@@ -1950,16 +1962,17 @@ footer .right>span:nth-child(2) {
 .panelOverview .panel-body {
     padding: 0;
     margin-top: 1px;
-    border-color: #1f444e;
+    border-color: #b7c9d7;
     border-top-width: 0;
     border-bottom-width: 0;
 }
+
 .panelOverview .panel-body .contentWrapper {
     height: 222px;
-    overflow: auto;
+    overflow: auto; 
     padding: 14px 22px 5px 30px;
-    background: #151717;    
-    border: 1px solid #234760;
+    background: #f5f8fa;    
+    border: 1px solid #b7c9d7;
     margin-top: 4px;
     margin-bottom: 3px;
 }
@@ -1982,12 +1995,12 @@ footer .right>span:nth-child(2) {
     left: 1px;
 }
 .panelOverview .overviewAndMessage .profile p {
-    color: #fff;
+    color: #316f99;
     margin-bottom: 0;
     line-height: 20px;
 }
 .panelOverview .overviewAndMessage .profile p label {
-    color: #687376;
+    color: #316f99;
     display: inline-block;
     width: 94px;
     margin-bottom: 0;
@@ -2011,21 +2024,21 @@ footer .right>span:nth-child(2) {
     padding-left: 0;
     padding-top: 6px;
     padding-bottom: 7px;
-    color: #fff;
-    border-color: #1f444e;
+    color: #316f99;
+    border-color: #b7c9d7;
 }
 .panelOverview .overviewAndMessage .messagesBox .date {
     width: 99px;
     padding-left: 2px;
-    color: #687376;
+    color: #316f99;
 }
 
 /* contest plan widget */
 .panelContestPlan {
     height: 315px;
     width: 407px;
-    border-color: #1f444e;
-    background: #151718;
+    border-color: #b7c9d7;
+    background: #f5f8fa;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -2107,7 +2120,7 @@ footer .right>span:nth-child(2) {
 .calendar .fc-header-title h2,
 .listView .listHeader h2 {
     font-size: 16px;
-    color: #687376;
+    color: #316f99;
     margin-bottom: 0;
     margin-top: 0;
 }
@@ -2119,14 +2132,14 @@ footer .right>span:nth-child(2) {
 .calendar .fc-border-separate tr.fc-last td,
 .calendar .fc-widget-content {border-width: 0;}
 .calendar .fc-border-separate tr.fc-last th {
-    border: 1px solid #1f444e;
+    border: 1px solid #b7c9d7;
     border-left-width: 0;
     border-right-width: 0;
     width: 48px;
 }
 .calendar .fc-border-separate thead .fc-day-header {
     font-weight: 400;
-    color: #687376;
+    color: #316f99;
     text-align: left;
     padding-left: 15px;
     padding-top: 9px;
@@ -2232,7 +2245,7 @@ footer .right>span:nth-child(2) {
 .listView .listHeader {
     height: 29px;
     position: relative;
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #b7c9d7;
     margin-right: 16px;
 }
 .listView .eventsContent {
@@ -2245,7 +2258,7 @@ footer .right>span:nth-child(2) {
     margin-bottom: 0;
 }
 .listView .eventsContent .table>tbody>tr>td {
-    border-color: #1f444e;
+    border-color: #b7c9d7;
     padding-top: 11px;
     padding-bottom: 12px;
 }
@@ -2264,11 +2277,9 @@ footer .right>span:nth-child(2) {
 /* style of message arena */
 .body .messageArena {
     max-width: 328px;
-    background-color: rgba(21,23,24,0.98); 
-    border-color: rgba(255,255,255,0.1);
-    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
-    -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    background-color: #f5f8fa;
+    background-color: rgba(245, 248, 250, 0.98);
+    border-color: #b7c9d7;
 }
 .messageArena:before {
     content: '';
@@ -2288,7 +2299,8 @@ footer .right>span:nth-child(2) {
     display: block;
     width: 0;
     height: 0;
-    color: rgba(21,23,24,0.98);
+    color: #f5f8fa;
+    color: rgba(245,248,250,.98);
     border-bottom: 10px solid;
     border-right: 10px solid transparent;
     border-left: 10px solid transparent;
@@ -2301,14 +2313,14 @@ footer .right>span:nth-child(2) {
     padding-left: 20px;
     padding-bottom: 14px;
     padding-right: 0;
-    color: #fff;
+    color: #316f99;
     min-height: 298px;
     min-width: 326px;
 }
 .messageArena .panelHeader {
     position: relative;
     margin-right: 20px;
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #b7c9d7;
 }
 .messageArena .panelHeader h3 {
     padding: 13px 0;
@@ -2367,7 +2379,7 @@ footer .right>span:nth-child(2) {
     padding: 9px 0 10px 22px;
     margin-right: 16px;
     width: 286px;
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #b7c9d7;
     position: relative;
 }
 .messageArena .messageBox .mItem:last-child {
@@ -2390,10 +2402,10 @@ footer .right>span:nth-child(2) {
 /*room summary widget in contest page*/
 .panelSummary {
     height: 275px;
-    border-color: #1f444e;
+    border-color: #b7c9d7;
 }
 .panelSummary .panel-heading {
-    background: #1f444e;
+    background: #75a5c8;
     padding-top: 6px;
     padding-bottom: 10px;
 }
@@ -2407,7 +2419,6 @@ footer .right>span:nth-child(2) {
     background: rgba(255,255,255,0);
 }
 .panelChatArea .panel-heading {
-    background-color: #1f444e;
     padding: 8px 0 8px 31px;
 }
 .panelChatArea .lobbyDropdown,
@@ -2430,21 +2441,23 @@ footer .right>span:nth-child(2) {
     height: 30px;
     width: 138px;
     display: block;
-    background-image: url(../img/select.png);
+    background-image: url(../img/light/select.png);
     background-position: 107% 50%;
     background-repeat: no-repeat;
-    background-color: #162f36;
-    background-color: rgba(22,47,54,0.99);
+    background-color: #52738c;
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     padding: 2px 0 0 10px;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    color: #fff;
 }
 .panelChatArea .lobbyDropdown .dropdown-toggle:hover,
 .panelChatArea .methodDropdown .dropdown-toggle:hover,
 .panelChatArea .memberDropdown .dropdown-toggle:hover {
     text-decoration: none;
-    color: inherit;
+    background-color: #234760;
 }
 .panelChatArea .lobbyDropdown .dropdown-menu{
     min-width:138px;
@@ -2485,13 +2498,14 @@ footer .right>span:nth-child(2) {
     position: absolute;
     width:20.5%;
     height:351px;
-    border-right: 1px solid #1f444e;
+    border-right: 1px solid #b7c9d7;
+    background-color: #dadada;
 }
 .panelChatArea .membersInfo .infoSection header a{
     display: block;
     width: 100%;
     height: 40px;
-    background-color: #191A1B;
+    background-color: #c6cfd6;
     padding: 7px 0 6px 31px;
     text-decoration: none;
     margin-bottom: 1px;
@@ -2569,7 +2583,7 @@ footer .right>span:nth-child(2) {
     color: rgb(23,139,5);
 }
 .panelChatArea .content .chatBoard .general{
-    color: #fff;
+    color: #316f99; 
 }
 .panelChatArea .content .chatBoard .secret{
     color: #808080;
@@ -2577,6 +2591,7 @@ footer .right>span:nth-child(2) {
 }
 .panelChatArea .content .chatBoard .toMe{
     background-color: #a90909;
+    color: #fff;
 }
 .panelChatArea .control-bar{
     padding: 0 0;
@@ -2604,7 +2619,6 @@ footer .right>span:nth-child(2) {
     min-width: 87px;
     max-height: 100px;
     height: 100px;
-    background-color: #40474a;
 }
 .panelChatArea .memberDropdown .dropdown-menu{
     max-height: 100px;
@@ -2613,15 +2627,11 @@ footer .right>span:nth-child(2) {
     background-color: #40474a;
 }
 .panelChatArea .methodDropdown .dropdown-menu li a{
-    color: #fff;
     padding-left: 7px;
-}
-.panelChatArea .methodDropdown .dropdown-menu li a:hover{
-    color: #333;
 }
 .panelChatArea .chatInput {
     height: 30px;
-    background: #162f36;
+    background: #52738c;
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -2629,23 +2639,24 @@ footer .right>span:nth-child(2) {
     padding-left: 10px;
     float: left;
     margin: 6px 0 0 4px;
+    color: #fff;
 }
 .panelChatArea .chatInput input{
     height: 30px;
     background: 0 0;
     width: 340px;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: 400;
     border-width: 0;
     line-height: 30px;
 }
 .panelChatArea .chatInput input::-webkit-input-placeholder{
     font-style: italic;
-    color: #687376;
+    color: #93a5b3;
 }
 .panelChatArea .chatInput input:-moz-placeholder{
     font-style: italic;
-    color: #687376;
+    color: #93a5b3;
 }
 .panelChatArea .chatInput input::-moz-placeholder{
     font-style: italic;
@@ -2711,7 +2722,7 @@ footer .right>span:nth-child(2) {
     color: rgb(129,129,129);
 }
 .rating-none{
-    color: #fff;
+    color: #010101;
 }
 .rating-admin{
     color: rgb(252,80,10);
@@ -2722,13 +2733,14 @@ footer .right>span:nth-child(2) {
 .chatWidget-modal-footer{
     margin-top: 0;
     margin-bottom: 0;
-    background-color: #1f444e;
+    background-color: #eef2f5;
+    border-top: 1px solid #b7c9d7;
 }
 .chatWidget-modal-body{
-    background-color: rgb(21, 23, 24);
+    background-color: #f5f8fa;
 }
 .chatWidget-modal-button{
-    background-color: rgb(9, 153, 209);
+    background-color: #0999d1;
 }
 .chatWidget-modal-body p{
     display: inline-block;
@@ -2822,7 +2834,7 @@ footer .right>span:nth-child(2) {
 .detailPage .panelSummary .panel-body .leftSec {
     padding: 7px 11px 25px 29px; /*left reduce 16*/
     height: 654px;
-    border-right: 1px solid #1f444e;
+    border-right: 1px solid #b7c9d7;
 }
 .detailPage .panelSummary .panel-body .rightSec,
 .detailPage .panel-body .leaderboardWrapper {
@@ -2852,7 +2864,7 @@ footer .right>span:nth-child(2) {
 }
 .detailPage section h3 {
     font-size: 16px;
-    color: #fff;
+    color: #316f99;
     font-weight: 400;
     letter-spacing: -0.025em;
     display: inline-block;
@@ -2938,7 +2950,7 @@ footer .right>span:nth-child(2) {
     display: none;
 }
 .filterPanel.qtip-default {
-    background: url(../img/filter-bg.png) 0 0 no-repeat;
+    background: url(../img/light/filter-bg.png) 0 0 no-repeat;
     background-color: transparent;
     border-width: 0;
     height: 162px;
@@ -2947,7 +2959,7 @@ footer .right>span:nth-child(2) {
     font-size: 14px;
 }
 .filterPanel.largeSize.qtip-default {
-    background: url(../img/filter-bg.png) 0 -162px no-repeat;
+    background: url(../img/light/filter-bg.png) 0 -162px no-repeat;
     height: 198px;
 }
 .filterPanel.qtip-default .qtip-content {
@@ -2959,7 +2971,7 @@ footer .right>span:nth-child(2) {
 }
 .filterPanel .closeLink {
     display: block;
-    color: #fff;
+    color: #316f99;
     padding-left: 25px;
     margin-bottom: 37px;
     -webkit-touch-callout: none;
@@ -2976,7 +2988,7 @@ footer .right>span:nth-child(2) {
 }
 .filterPanel .contentWrapper label {
     padding-left: 6px;
-    color: #fff;
+    color: #316f99;
     display: inline-block;
     position: absolute;
     top: 12px;
@@ -2988,14 +3000,14 @@ footer .right>span:nth-child(2) {
     height: 36px;
     width: 160px;
     background: transparent;
-    border: 1px solid #3d3d3d;
+    border: 1px solid #b7c9d7;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
     position: relative;
 }
 .filterPanel .contentWrapper .filterInput {
-    color: #fff;
+    color: #316f99;
     padding: 5px 9px;
 }
 .filterPanel .contentWrapper .filterInput:focus {
@@ -3003,7 +3015,7 @@ footer .right>span:nth-child(2) {
     color: #0050a1;
 }
 .filterPanel .contentWrapper .dropdown-toggle {
-    color: #fff;
+    color: #316f99;
     display: block;
     height: 34px;
     width: 158px;
@@ -3029,7 +3041,7 @@ footer .right>span:nth-child(2) {
     right: 0;
     height: 44px;
     width: 244px;
-    border-top: 1px solid #2d2f30;
+    border-top: 1px solid #b7c9d7;
     text-align: right;
 }
 .filterPanel .btnWrapper .btnFilter {
@@ -3050,7 +3062,7 @@ footer .right>span:nth-child(2) {
 }
 .detailPage .leaderboardWrapper .heading .viewFilter div {
     display: inline-block;
-    color: #fff;
+    color: #316f99;
     margin-left: 13px;
 }
 .detailPage .leaderboardWrapper .heading .viewFilter div:first-child {
@@ -3083,6 +3095,7 @@ footer .right>span:nth-child(2) {
     top: 1px;
     right: 15px;
     background-position: 0 0;
+    background-image: url(../img/light/expand-alt.png);
 }
 .detailPage .leaderboardWrapper .heading .expandIcon {
     top: 0;
@@ -3126,7 +3139,7 @@ footer .right>span:nth-child(2) {
     width: auto;
     padding: 0 14px 20px 30px;
     z-index: 10;
-    background: #151718;
+    background: #f5f8fa;
     border-width: 0;
 }
 .detailPage .panel-body .leaderboardWrapper.expand{ 
@@ -3147,7 +3160,7 @@ footer .right>span:nth-child(2) {
 .detailPage .table>thead>tr>th {
     font-weight: 400;
     border-width: 1px;
-    border-color: #1f444e;
+    border-color: #b7c9d7;
     padding-top: 16px;
     padding-bottom: 10px;
     position: relative;
@@ -3174,10 +3187,10 @@ footer .right>span:nth-child(2) {
     user-select: none;
 }
 .detailPage .table>tbody>tr>td {
-    color: #fff;
+    color: #316f99;
     padding: 4px 5px;
     border-top-width: 0;
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #b7c9d7;
     position: relative;
     vertical-align: middle;
     height: 31px;
@@ -3187,7 +3200,7 @@ footer .right>span:nth-child(2) {
     text-align: right;
 }
 .detailPage .table>tbody>tr>td>span {
-    color: #636d70;
+    color: #316f99;
 }
 .detailPage .leftSec .table .col1 {
     width: 29px;
@@ -3256,7 +3269,7 @@ footer .right>span:nth-child(2) {
     padding-bottom: 11px;
 }
 .detailPage section .table td .name{
-    color: #fff;
+    color: #316f99;
     display: inline-block;
     -ms-word-break:break-all;
     word-break:break-all;
@@ -3299,7 +3312,7 @@ footer .right>span:nth-child(2) {
     color: #ac4141;
 }
 .detailPage .leaderboardWrapper .colorOpened {
-    color: #fff;
+    color: #316f99;
 }
 .detailPage .leaderboardWrapper .colorUnopened {
     color: #5e676a;
@@ -3312,9 +3325,13 @@ footer .right>span:nth-child(2) {
 }
 .body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
     width: 7px;
-    background: #2a2b2c;
+    background: #0999d1;
 }
-
+.body  .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos:hover .ngsb-thumb {
+    background: #0885B6;
+    filter: "alpha(opacity=100)";
+    -ms-filter: "alpha(opacity=100)";
+}
 .messageArena .default .messageWrapper {height: 212px; overflow-x: hidden; overflow-y: scroll;}
 .listView .default .tableDiv {height: 219px; overflow-x: hidden; overflow-y: scroll;}
 .body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos:active {
@@ -3441,7 +3458,7 @@ footer .right>span:nth-child(2) {
         padding-left: 15px;
         border:1px solid #2d2f30;
         margin:0 0 15px;
-        background-image: url(../img/black-header.png);
+        background-image: url(../img/light/black-header.png);
         background-position: 0 0;
         background-repeat: repeat-x;
     }
@@ -3480,7 +3497,7 @@ footer .right>span:nth-child(2) {
     .header .navbar-right.userInfo {
         margin: 0;
         border:1px solid #2d2f30;
-        background-image: url(../img/black-header.png);
+        background-image: url(../img/light/black-header.png);
         background-position: 0 0;
         background-repeat: repeat-x;
         padding-left: 15px;
@@ -3637,7 +3654,7 @@ footer .right>span:nth-child(2) {
     .hero .loginBox footer .sponsorLogo {
         margin: 0 auto;
         padding: 23px 188px 0 0;
-        background-image: url(../img/company_logo_small.png); 
+        background-image: url(../img/light/company_logo_small.png); 
     }
     .hero .text p > span {width: auto; min-width: 250px; }
     .hero .loginBox .errorMessage {left: 50%; margin-left: -139px; }
@@ -3732,7 +3749,7 @@ footer .right>span:nth-child(2) {
 }
 @media only screen and (max-width: 668px) {
     .panelChatArea .membersInfo{
-        border-bottom: 1px solid #1f444e;
+        border-bottom: 1px solid #b7c9d7;
         border-right: 0;
     }
     .panelChatArea .membersInfo,
@@ -3919,7 +3936,7 @@ footer .right>span:nth-child(2) {
     .panelOverview .overviewAndMessage .profile {height: 137px;}
 }
 @media only screen and (max-width: 331px) {
-    .codeArea .titleBar {height: 165px;}
+     .codeArea .titleBar {height: 165px;}
     .panelCodeEditor .toolBar .testToggle {width: 83px;padding-left: 21px;}
     .panelCodeEditor .toolBar .active .testToggle {padding-left: 20px;}
     .panelCodeEditor .toolBar .testToggle:before {left: 2px;}
@@ -3949,4 +3966,20 @@ footer .right>span:nth-child(2) {
 
 .problemStatementRow .textWhite {
     float: left;
+}
+/* fullcalendar */
+.calendarView .fc-event{
+    color: #316f99;
+}
+
+/* tooltip */
+.body .tooltip.bottom .tooltip-arrow{
+    border-bottom-color: #75a5c8;
+}
+.body .tooltip-inner{
+    background-color: #75a5c8;
+}
+
+.chatWidget-modal-header .modal-title{
+    line-height: 24px;
 }

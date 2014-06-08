@@ -58,8 +58,8 @@ module.exports = function (grunt) {
             }
         },
         cssmin: {
-            build: {
-                src: [
+            build: {                
+				src: [
                     'app/css/bootstrap.min.css',
                     'app/css/app.css',
                     'app/css/local.css',
@@ -68,11 +68,26 @@ module.exports = function (grunt) {
                     'bower_components/codemirror/addon/fold/foldgutter.css',
                     'bower_components/fullcalendar/fullcalendar.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
-                    'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css'
+                    'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css'					
                 ],
-                // Compile to a single file to add a script tag for in your HTML
+                // Compile to a single file to add a script tag for in your HTML				
                 dest: 'build/css/bundle.css'
-            }
+			},
+			combine: {
+				files: {
+					'build/css/bundle-light.css': [
+													'app/css/bootstrap.min.css',
+													'app/css/light/app.css',
+													'app/css/local.css',
+													'app/css/light/topcoder.css',
+													'bower_components/codemirror/lib/codemirror.css',
+													'bower_components/codemirror/addon/fold/foldgutter.css',
+													'bower_components/fullcalendar/fullcalendar.css',
+													'thirdparty/jquery.qtip/jquery.qtip.min.css',
+													'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css'
+												]
+				}
+			}
         },
         uglify: {
             release: {
@@ -127,8 +142,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
 
     // The default tasks to run when you type: grunt
-    grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'copy:build', 'replace:cdn']);
-    grunt.registerTask('build', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'cssmin:combine', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('build', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'cssmin:combine', 'copy:build', 'replace:cdn']);
     //release tasks work out of build directory - build must be run first!
     grunt.registerTask('release', ['clean:release', 'uglify:release', 'copy:release']);
     grunt.registerTask('heroku', ['build']);
