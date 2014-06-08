@@ -525,13 +525,8 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             enableUserInput();
 
             if (data.title !== helper.POP_UP_TITLES.Error && data.title !== helper.POP_UP_TITLES.CompileResult &&
-                    data.title !== helper.POP_UP_TITLES.TestResults && data.title !== helper.POP_UP_TITLES.MultipleSubmission &&
-                    data.title !== helper.POP_UP_TITLES.Unauthorized) {
+                    data.title !== helper.POP_UP_TITLES.TestResults && data.title !== helper.POP_UP_TITLES.MultipleSubmission) {
                 // only handle these responses for now
-                return;
-            }
-
-            if (data.title === helper.POP_UP_TITLES.Unauthorized && !$rootScope.isLoggedIn) {
                 return;
             }
 
