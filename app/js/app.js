@@ -312,7 +312,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
 
 main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$cookies', 'themer', function ($rootScope, $state, sessionHelper, socket, $cookies, themer) {
  // setting defaut theme before json gets loaded
-    if ($cookies.themeInUse !== null) {
+    if ($cookies.themeInUse !== null && $cookies.themeInUse !== undefined) {
         themer.styles[0].key = $cookies.themeInUse;
         themer.styles[0].label = $cookies.themeLabel;
         themer.styles[0].href = $cookies.themeHref;

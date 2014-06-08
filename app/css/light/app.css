@@ -2971,7 +2971,7 @@ footer .right>span:nth-child(2) {
 }
 .filterPanel .closeLink {
     display: block;
-    color: #fff;
+    color: #316f99;
     padding-left: 25px;
     margin-bottom: 37px;
     -webkit-touch-callout: none;
@@ -2988,7 +2988,7 @@ footer .right>span:nth-child(2) {
 }
 .filterPanel .contentWrapper label {
     padding-left: 6px;
-    color: #fff;
+    color: #316f99;
     display: inline-block;
     position: absolute;
     top: 12px;
@@ -3007,7 +3007,7 @@ footer .right>span:nth-child(2) {
     position: relative;
 }
 .filterPanel .contentWrapper .filterInput {
-    color: #fff;
+    color: #316f99;
     padding: 5px 9px;
 }
 .filterPanel .contentWrapper .filterInput:focus {

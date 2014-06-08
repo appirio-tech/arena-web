@@ -7,13 +7,13 @@
 var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'themer', '$cookies',  function ($scope, $http, appHelper, notificationService, themer, $cookies) {
     // theme selector 
     $scope.themesInfo = [];
-    $cookies.themeInUse = $cookies.themeInUse === null ? 'DARK' : $cookies.themeInUse;
+    $cookies.themeInUse = ($cookies.themeInUse === null || $cookies.themeInUse === undefined) ? 'DARK' : $cookies.themeInUse;
     $scope.themeInUse = $scope.themeBackup = $cookies.themeInUse;
     themer.setSelected($scope.themeInUse);
     $scope.themePanelOpen = false;
     $http.get('data/themes.json').success(function (data) {
         $scope.themesInfo = data;
-        $cookies.themeInUse = $cookies.themeInUse === null ? data.currentKey : $cookies.themeInUse;
+        $cookies.themeInUse = ($cookies.themeInUse === null || $cookies.themeInUse === undefined) ? data.currentKey : $cookies.themeInUse;
         $scope.themeInUse = $scope.themeBackup = $cookies.themeInUse;
         themer.styles.pop();
         var i = 0;
@@ -22,7 +22,13 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'themer',
         }
         themer.setSelected($cookies.themeInUse);
     });
-    var closeThemeHandler = function (event) {
+    var selTheme, closeThemeHandler;
+    if ($cookies.themeInUse !== null && $cookies.themeInUse !== undefined) {
+        selTheme = themer.getSelected();
+        $cookies.themeLabel = selTheme.label;
+        $cookies.themeHref = selTheme.href;
+    }
+    closeThemeHandler = function (event) {
         // the depth of DOM tree rooted at the element with id 'themePanel'
         var themePanelDOMDepth = 4;
         if (!appHelper.clickOnTarget(event.target, 'themePanel', themePanelDOMDepth)) {
