@@ -7,8 +7,11 @@
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Contest Phase Movement):
  * - Updated to use real data.
  *
- * @author TCSASSEMBLER
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI Fix):
+ * - Updated startTimer to use time from tcTimeService.
+ *
+ * @author TCSASSEMBLER, dexy
+ * @version 1.2
  */
 'use strict';
 /*global module, angular*/
@@ -25,7 +28,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var contestCountdownCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'tcTimeService', function ($scope, $rootScope, socket, $timeout) {
+var contestCountdownCtrl = ['$scope', '$timeout', 'tcTimeService', function ($scope, $timeout, tcTimeService) {
     /**
      * messages for different phases.
      *
@@ -84,11 +87,7 @@ var contestCountdownCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'tcTim
         var seconds = -1;
         if ($scope.contest && $scope.contest.phaseData && $scope.contest.phaseData.endTime) {
             // how many seconds between now and the phase end time
-
-            // we didn't get time from tcTimeService as it's just a mock implementation currently
-            // we will move to use tcTimeService once it's implemented
-            // seconds = ($scope.contest.phaseData.endTime - tcTimeService.getTime()) / 1000;
-            seconds = ($scope.contest.phaseData.endTime - $rootScope.getCurrentTCTime()) / 1000;
+            seconds = ($scope.contest.phaseData.endTime - tcTimeService.getTime()) / 1000;
         }
         if (seconds > 0) {
             // set and start the timer, see angular-timer code for implementation details.
@@ -99,12 +98,14 @@ var contestCountdownCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'tcTim
         }
     };
 
+    /*jslint unparam: true*/
     // handle phase data response
     $scope.$on(helper.EVENT_NAME.PhaseDataResponse, function (event, data) {
         if (String(data.phaseData.roundID) === String($scope.roundID)) {
             $scope.startTimer();
         }
     });
+    /*jslint unparam: false*/
 
     if ($scope.contest) {
         // start counting down

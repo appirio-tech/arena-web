@@ -17,7 +17,7 @@ body{
     line-height:1.8em;
     font-weight: 400;
 }
-label{font-weight: normal;} 
+label{font-weight: normal;}
 hr {border-color: #D5D5D5;margin: 10px 0;}
 body a {cursor: pointer;}
 
@@ -66,7 +66,7 @@ body a {cursor: pointer;}
 .panelCodeEditor .panel-body .settingsPanel {
     background-image: url(../img/popup-bg.png);
 }
-.anon-header .navbar .navbar-brand, 
+.anon-header .navbar .navbar-brand,
 .header .navbar-brand,
 .header .navIcons>li>.icon:before,
 .userInfo .notification,
@@ -143,7 +143,7 @@ body a {cursor: pointer;}
     padding-top: 1px;
 }
 /* topcoder logo */
-.anon-header .navbar .navbar-brand, 
+.anon-header .navbar .navbar-brand,
 .navbar-brand {
     background-position: -21px -25px;
     background-repeat: no-repeat;
@@ -165,7 +165,7 @@ body a {cursor: pointer;}
     margin-left: 65px;
     height: 60px;
 }
-.header .navIcons > li{ 
+.header .navIcons > li{
     width: 60px;
     height: 60px;
     border-left: 1px solid #2d2f30;
@@ -175,7 +175,7 @@ body a {cursor: pointer;}
     width: 61px;
     border-right: 1px solid #2d2f30;
 }
-.header .navIcons > li > .icon{ 
+.header .navIcons > li > .icon{
     padding:0;
     width: 0;
     height: 0;
@@ -223,7 +223,7 @@ body a {cursor: pointer;}
 .navIcons .iconTS:before{
     background-position: -175px 0;
 }
-.navIcons .active .icon:after { 
+.navIcons .active .icon:after {
     content: '';
     display: block;
     height: 5px;
@@ -269,7 +269,7 @@ body a {cursor: pointer;}
     text-decoration:none;
 }
 
-.header .navbar-right.userInfo { 
+.header .navbar-right.userInfo {
     color: #fff;
     margin-right: 0;
 }
@@ -477,10 +477,10 @@ body a {cursor: pointer;}
     padding: 5px;
 }
 .hero .form .tcAccountBox .btn-lg:focus {
-    outline-width: 0; 
+    outline-width: 0;
 }
 .hero .form .tcAccountBox .btn-lg,
-.hero .form .social .btn-lg, 
+.hero .form .social .btn-lg,
 .codeArea .socialLinks .btn-lg {
     background: #0ea7cd;
     border: 0;
@@ -691,6 +691,9 @@ body a {cursor: pointer;}
     padding: 15px 15px 19px 0;
     height: 78px;/*update*/
     position: relative;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
 }
 .contest .titleBar {
     height: 77px;
@@ -752,27 +755,39 @@ body a {cursor: pointer;}
 .contest .breadcrumb li:after {
     right: -13px;
 }
+.lastLoginRow {
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    width:330px;
+}
 .dashboard .connection {
     font-size: 14px;
     float: right;
     text-align: right;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    width: 630px;
 }
 .codeArea .connection {
     padding-right: 92px;
+    width: 600px;
 }
 .contest .connection {
     padding-right: 83px;
+    width: 600px;
 }
 .dashboard .connection > div {
     display: inline-block;
-    padding-left: 34px;
+    padding-left: 25px;
 }
 .codeArea .connection>div {
     padding-left: 0;
 }
 .tcTime {
     display: block;
-    width: 114px;
+    width: 240px;
     font-size: 14px;
     text-align: left;
     color: #687376;
@@ -784,7 +799,7 @@ body a {cursor: pointer;}
 }
 .connectionStatus {
     display: block;
-    width: 107px;
+    width: 160px;
     font-size: 14px;
     color: #687376;
     line-height: 22px;
@@ -803,7 +818,7 @@ body a {cursor: pointer;}
 }
 .connectionStatus .green {
     background: #5fb806;
-    margin-left: 12px
+    margin-left: 8px
 }
 .connectionStatus .red {
     background: #f40000;
@@ -821,8 +836,8 @@ body a {cursor: pointer;}
 .codeArea .titleBar .textGreen {color: #5fb806;}
 .codeArea .titleBar .textRed {color: #f40000;}
 .dashboard .titleBar .title {
-    font: 300 26px/35px 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;/*Light*/  
-    margin: 0; 
+    font: 300 26px/35px 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;/*Light*/
+    margin: 0;
     margin-top: 7px;
 }
 .contest .titleBar .title {margin-top: 6px;}
@@ -864,10 +879,10 @@ body a {cursor: pointer;}
 }
 .codeArea .shareLink > ul {list-style: none; padding-left: 0;position: relative;}
 .codeArea .shareLink > ul > li > a {
-    position: absolute; 
-    top: 12px; 
+    position: absolute;
+    top: 12px;
     right: 13px;
-    z-index: 1001; 
+    z-index: 1001;
     color: #687376;
     padding-right: 22px;
 }
@@ -938,7 +953,7 @@ footer .right {
     padding: 10px 0;
     position: relative;
     float: left;
-    padding-left:230px; 
+    padding-left:230px;
     font: 400 15px "Source Code Pro","Helvetica Neue",Helvetica,Arial,sans-serif; /*SourceCodePro Regular*/
     color: #828282;
     letter-spacing: -0.08em;
@@ -1069,7 +1084,7 @@ footer .right>span:nth-child(2) {
     height: 40px;
 }
 .panel-custom .panel-body {
-    border-width: 0; 
+    border-width: 0;
     padding: 14px 0 0;
     margin: 0;
     color: #636d70;
@@ -1140,7 +1155,7 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     text-align: left;
 }
-.panel-custom .schedulePanel .title {width:180px;}
+.panel-custom .schedulePanel .title {width:170px;}
 .panel-custom .schedulePanel .startIn,.panel-custom .schedulePanel .endIn {width: 72px;}
 .panel-custom .schedulePanel .startIn>span,.panel-custom .schedulePanel .endIn>span{display: inline;}
 .panel-custom .schedulePanel .startTime {width: 200px;}
@@ -1150,7 +1165,7 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     vertical-align: top;
 }
-.panel-custom .statusPanel .leftSide span, 
+.panel-custom .statusPanel .leftSide span,
 .panel-custom .statusPanel .rightSide span {
     display: inline-block;
 }
@@ -1211,8 +1226,8 @@ footer .right>span:nth-child(2) {
     padding-top: 1px;
 }
 .panelCodeProblem .panel-heading {
-    background: #1f444e; 
-    height: 41px; 
+    background: #1f444e;
+    height: 41px;
 }
 .panelCodeEditor .panel-heading {background: #1f444e;height: 41px;}
 .panelCodeProblem .panel-heading > a:before,
@@ -1226,7 +1241,7 @@ footer .right>span:nth-child(2) {
     top: 10px;
     background-position: 0 0;
 }
-.panelCodeProblem .panel-heading .expand:before, 
+.panelCodeProblem .panel-heading .expand:before,
 .panelCodeEditor .panel-heading .expand:before {
      background-position: -21px 0;
 }
@@ -1249,7 +1264,7 @@ footer .right>span:nth-child(2) {
 .panelCodeProblem .panel-body{
     height: 169px;
     overflow-x: hidden;
-    overflow-y: scroll;  
+    overflow-y: scroll;
 }
 .panelCodeProblem .panel-body .statement {
     padding: 14px 31px 14px;
@@ -1267,9 +1282,9 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeEditor .actionIcons li, .panelCodeEditor .panel-body .toolBar div {display: inline-block;}
 .panelCodeEditor .toolBar .actionIcons {
-    list-style: none; 
+    list-style: none;
     display: inline-block;
-    padding-left: 48px; 
+    padding-left: 48px;
     font-size: 13px;
     color: #0bbbe7;
     padding-top: 1px;
@@ -1426,12 +1441,12 @@ footer .right>span:nth-child(2) {
     line-height: 10px;
     padding-top: 14px;
     padding-bottom: 12px;
-} 
+}
 .panelCodeEditor .settingsPanel .settingDropDown {list-style: none;padding-left: 0;}
 .panelCodeEditor .settingsPanel .settingDropDown .dropdown-toggle {
     height: 36px;
     width: 150px;
-    display: block; 
+    display: block;
     background-image: url(../img/select.png);
     background-position: 100% 100%;
     background-repeat: no-repeat;
@@ -1526,7 +1541,7 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     width: 102px;
     height: 35px;
-    padding-top: 4px; 
+    padding-top: 4px;
     padding-left: 26px;
     text-align: left;
     color: #fea700;
@@ -1546,7 +1561,7 @@ footer .right>span:nth-child(2) {
     background-position: -75px 0;
 }
 .panelCodeEditor .toolBar .active .testToggle {
-    color: #fff; 
+    color: #fff;
     z-index: 21;
     padding-top: 3px;
     padding-left: 25px;
@@ -1576,7 +1591,7 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .toolBar .testPanel>div {
     height: 480px;
     overflow-x: hidden;
-    overflow-y: scroll; 
+    overflow-y: scroll;
 }
 .panelCodeEditor .testPanel header {
     width: 346px;
@@ -1632,7 +1647,7 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeEditor .testPanel .content label {
     display: inline-block;
-    width: 102px; 
+    width: 102px;
     text-align:left;
     line-height: 36px;
     margin-bottom: 0;
@@ -1660,7 +1675,7 @@ footer .right>span:nth-child(2) {
     border-color: #fff;
     border-color: rgba(255,255,255,0.16);
     padding-left: 10px;
-    font-weight: 300; 
+    font-weight: 300;
 }
 .panelCodeEditor .testPanel .content textarea {
     background: #151718;
@@ -1685,7 +1700,7 @@ footer .right>span:nth-child(2) {
     vertical-align: top;
 }
 .panelCodeEditor .testPanel .editParam label {
-    position: absolute; 
+    position: absolute;
     top: 0;
     left: 36px;
 }
@@ -1758,8 +1773,8 @@ footer .right>span:nth-child(2) {
 }
 /*.errorBar .error {: #f40000;}*/
 .errorBar .error a {
-    display: block; 
-    width: 14px; 
+    display: block;
+    width: 14px;
     height: 20px;
     position: relative;
 }
@@ -1902,7 +1917,7 @@ footer .right>span:nth-child(2) {
 
 /* profile overview and important messages widget */
 .panelOverview {
-    width: 407px;
+    width: 460px;
     height: 393px;
     background: transparent;
     border: none;
@@ -1958,7 +1973,7 @@ footer .right>span:nth-child(2) {
     height: 222px;
     overflow: auto;
     padding: 14px 22px 5px 30px;
-    background: #151717;    
+    background: #151717;
     border: 1px solid #234760;
     margin-top: 4px;
     margin-bottom: 3px;
@@ -2000,7 +2015,7 @@ footer .right>span:nth-child(2) {
 .panelOverview .overviewAndMessage .profile .yellow {color: #dfd842;}
 .panelOverview .overviewAndMessage .profile .red {color: #ff0000;}
 .panelOverview .overviewAndMessage .profile .userNameRow {
-    font-size: 16px;
+    font-size: 15px;
     margin-bottom: 7px;
 }
 .panelOverview .overviewAndMessage .messagesBox .table {
@@ -2023,7 +2038,7 @@ footer .right>span:nth-child(2) {
 /* contest plan widget */
 .panelContestPlan {
     height: 315px;
-    width: 407px;
+    width: 460px;
     border-color: #1f444e;
     background: #151718;
     -webkit-border-radius: 0;
@@ -2063,11 +2078,11 @@ footer .right>span:nth-child(2) {
     background-position: 0 -28px;
 }
 .panelContestPlan .iconsWrapper .viewRadio:checked ~ .listLbl {
-    background-position: -19px -15px; 
+    background-position: -19px -15px;
 }
 .panelContestPlan .iconsWrapper .viewRadio:checked ~ .calendarLbl {
     background-position: -19px -28px;
-} 
+}
 .panelContestPlan .iconsWrapper .viewRadio:checked ~ .viewLbl:hover {
     opacity: 1;
 }
@@ -2101,7 +2116,7 @@ footer .right>span:nth-child(2) {
     display: none; /*waiting from thread*/
 }
 .calendar .fc-week .eventColor .fc-day-number {
-    color: #ff6600; 
+    color: #ff6600;
     cursor: pointer;
 }
 .calendar .fc-header-title h2,
@@ -2114,7 +2129,7 @@ footer .right>span:nth-child(2) {
 .calendar .fc-header-title h2{
     margin-bottom: 11px;
 }
-.calendar .fc-border-separate td.fc-last, 
+.calendar .fc-border-separate td.fc-last,
 .calendar .fc-border-separate th.fc-last,
 .calendar .fc-border-separate tr.fc-last td,
 .calendar .fc-widget-content {border-width: 0;}
@@ -2135,7 +2150,7 @@ footer .right>span:nth-child(2) {
 .calendar .fc-border-separate thead .fc-day-header.fc-first {
     padding-left: 13px;
 }
-.calendar .fc-header-right .fc-button-prev, 
+.calendar .fc-header-right .fc-button-prev,
 .calendar .fc-header-right .fc-button-next {
     margin-bottom: 2px;
     padding: 0;
@@ -2264,7 +2279,7 @@ footer .right>span:nth-child(2) {
 /* style of message arena */
 .body .messageArena {
     max-width: 328px;
-    background-color: rgba(21,23,24,0.98); 
+    background-color: rgba(21,23,24,0.98);
     border-color: rgba(255,255,255,0.1);
     -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
     -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
@@ -2377,7 +2392,7 @@ footer .right>span:nth-child(2) {
     top: 14px;
 }
 .messageArena .messageBox .mItem p {
-    margin-bottom: 0; 
+    margin-bottom: 0;
     line-height: 17px;
 }
 .messageArena .messageBox .mItem .bottomRow {
@@ -2759,12 +2774,12 @@ footer .right>span:nth-child(2) {
     position: relative;
     margin-right: 16px;
 }
-.panelSummary .summaryWrapper .sumDiv {  
+.panelSummary .summaryWrapper .sumDiv {
     height: 94px;
     padding-top: 13px;
     margin-right: -16px;
 }
-.panelSummary .summaryWrapper .sumDiv .innerWrapper{  
+.panelSummary .summaryWrapper .sumDiv .innerWrapper{
     padding-right: 16px;
 }
 .panelSummary .summaryWrapper .sumDiv .scroll {
@@ -2772,7 +2787,7 @@ footer .right>span:nth-child(2) {
 }
 .panelSummary .summaryWrapper .sumDiv .default {
     height: 81px;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
 .panelSummary .summaryWrapper .sumDiv:before {
     content: '';
@@ -2801,8 +2816,9 @@ footer .right>span:nth-child(2) {
 }
 .detailPage .connection { /*this page does not have share link*/
     padding-right: 0;
+    width: 600px;
 }
-.detailPage .titleBar .btnBack { 
+.detailPage .titleBar .btnBack {
     float: right;
     color: #fff;
     background: #0999d1;
@@ -2827,7 +2843,7 @@ footer .right>span:nth-child(2) {
 .detailPage .panelSummary .panel-body .rightSec,
 .detailPage .panel-body .leaderboardWrapper {
     height: 654px;
-} 
+}
 .detailPage .panelSummary .panel-body .rightSec {
     padding: 13px 13px 22px 29px;
 }
@@ -3010,7 +3026,7 @@ footer .right>span:nth-child(2) {
     padding: 2px 9px;
     border-width: 0;
     background-color: transparent;
-    font-weight: 300; 
+    font-weight: 300;
     text-align: left;
 }
 .filterPanel .contentWrapper .dropdown .arrow {
@@ -3129,7 +3145,7 @@ footer .right>span:nth-child(2) {
     background: #151718;
     border-width: 0;
 }
-.detailPage .panel-body .leaderboardWrapper.expand{ 
+.detailPage .panel-body .leaderboardWrapper.expand{
     padding-top: 13px;
 }
 #lSec.expand {
@@ -3287,7 +3303,7 @@ footer .right>span:nth-child(2) {
     background-position: -31px -41px;
     margin-top: 6px;
 }
-.detailPage .leaderboardWrapper .colorPassed, 
+.detailPage .leaderboardWrapper .colorPassed,
 .detailPage .leaderboardWrapper .colorSubmitted {
     color: #2c8236;
 }
@@ -3344,8 +3360,8 @@ footer .right>span:nth-child(2) {
     .contest .mainContent .leftBox {right: 407px; }
     .codeArea .mainContent,
     .detailPage .mainContent {
-        width: auto; 
-        padding: 0 15px; 
+        width: auto;
+        padding: 0 15px;
     }
 }
 @media only screen and (max-width: 1277px) {
@@ -3378,7 +3394,7 @@ footer .right>span:nth-child(2) {
     .panelContestStat .panel-body .schedule .details .column:first-child {
         width: 41%;
         min-width: 132px;
-    } 
+    }
     .panelContestStat .compStatus > .column:nth-child(2),
     .panelContestStat .panel-body .overview > div > .column:nth-child(2),
     .panelContestStat .panel-body .schedule .details .column:nth-child(2) {
@@ -3406,7 +3422,7 @@ footer .right>span:nth-child(2) {
     .detailPage .table>tbody>tr>td {
         padding: 4px;
     }
-} 
+}
 @media only screen and (max-width: 1082px) {
     .header .navbar-brand { padding-left:60px;}
 }
@@ -3427,8 +3443,8 @@ footer .right>span:nth-child(2) {
         margin-left: 0;
     }
     .header .navbar-collapse{
-        max-height: 90%; 
-        background-color:#1b1d1e; 
+        max-height: 90%;
+        background-color:#1b1d1e;
         padding-bottom: 20px;
     }
     .header .navbar-collapse:before {display: none; }
@@ -3507,7 +3523,7 @@ footer .right>span:nth-child(2) {
     .dashboard .mainContent .rightBox,
     .panelOverview {width: 610px; }
     .dashboard .mainContent {width: 640px; }
-    .codeArea .panel-custom, 
+    .codeArea .panel-custom,
     .codeArea .mainContent,
     .detailPage .mainContent,
     .detailPage .panel-custom {width: auto;}
@@ -3537,7 +3553,7 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .panel-body .middlePart ul {padding-left: 35px;}
     .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 15px;}
     .panelCodeEditor .panel-body .middlePart .findInput {
-        margin-right: 8px; 
+        margin-right: 8px;
         margin-left: 15px;
         width: 98px;
     }
@@ -3546,7 +3562,7 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 87px;}
     .messageArena:before {
         right: auto;
-        left: 149px; 
+        left: 149px;
     }
     .messageArena:after {
         right: auto;
@@ -3637,7 +3653,7 @@ footer .right>span:nth-child(2) {
     .hero .loginBox footer .sponsorLogo {
         margin: 0 auto;
         padding: 23px 188px 0 0;
-        background-image: url(../img/company_logo_small.png); 
+        background-image: url(../img/company_logo_small.png);
     }
     .hero .text p > span {width: auto; min-width: 250px; }
     .hero .loginBox .errorMessage {left: 50%; margin-left: -139px; }
@@ -3665,12 +3681,12 @@ footer .right>span:nth-child(2) {
     .codeArea .mainContent,
     .detailPage .mainContent {max-width: 766px;}
     .dashboard .mainContent .placeholder {overflow: hidden; }
-    .panel-custom .schedulePanel:after, 
-    .panel-custom .statusPanel:after, 
+    .panel-custom .schedulePanel:after,
+    .panel-custom .statusPanel:after,
     .panel-custom .summaryPanel:after {display: none; }
     .panel-custom .tabs {height: 46px; }
     .panel-custom .tabs .altNav {display: inline-block!important; }
-    .panel-custom .tabs .altNav .dropdown-toggle { 
+    .panel-custom .tabs .altNav .dropdown-toggle {
         -webkit-border-radius: 2px;
         -moz-border-radius: 2px;
         border-radius: 2px;
@@ -3680,7 +3696,7 @@ footer .right>span:nth-child(2) {
     .panel-custom .tabs .altNav .open a {background: transparent; }
     .panel-custom .tabs .altNav .open a:hover,
     .panel-custom .tabs .altNav .dropdown-toggle:hover {
-        background: #0999d1; 
+        background: #0999d1;
         color: #fff;
     }
     .panel-custom .nav > li > a {padding: 0; }
@@ -3696,7 +3712,7 @@ footer .right>span:nth-child(2) {
     .panel-custom .statusPanel .rightSide {
         border-left: 0;
         border-top: 1px dashed #3d4143;
-        padding-left: 0; 
+        padding-left: 0;
         padding-top: 12px;
         margin-top: 12px;
     }
@@ -3723,7 +3739,7 @@ footer .right>span:nth-child(2) {
     }
     .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 20px;}
     .panelCodeEditor .panel-body .middlePart .findInput {
-        margin-right: 10px; 
+        margin-right: 10px;
         margin-left: 20px;
         width: 168px;
     }
@@ -3751,7 +3767,7 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .panel-heading {height: 82px;clear: both;}
     .panelCodeEditor .panel-heading .rightPart{float: left;}
     .detailPage .tableWrapper {
-        overflow-x: auto;    
+        overflow-x: auto;
     }
     .detailPage .tableDiv,
     .detailPage .tHeadDiv {
@@ -3764,7 +3780,7 @@ footer .right>span:nth-child(2) {
 @media only screen and (max-width: 598px) {
     .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 15px;}
     .panelCodeEditor .panel-body .middlePart .findInput {
-        margin-right: 8px; 
+        margin-right: 8px;
         margin-left: 15px;
         width: 98px;
     }
@@ -3789,7 +3805,7 @@ footer .right>span:nth-child(2) {
     .codeArea .titleBar {height: 105px;}
     .codeArea .titleBar > div:first-child,
     .codeArea .titleBar>div:nth-child(2) {padding-right: 70px;}
-    .codeArea .titleBar .shareLink {right: 5px;} 
+    .codeArea .titleBar .shareLink {right: 5px;}
     .panelCodeEditor .panel-body .toolBar {
         height: 94px;
     }
@@ -3807,7 +3823,7 @@ footer .right>span:nth-child(2) {
     }
     .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 60px;}
     .panelCodeEditor .panel-body .middlePart .findInput {
-        margin-right: 10px; 
+        margin-right: 10px;
         margin-left: 20px;
         width: 148px;
     }
@@ -3878,7 +3894,7 @@ footer .right>span:nth-child(2) {
     .panelOverview .overviewAndMessage .profile p label {width: 80px;}
     .calendar .fc-day .numOfEvents {right: 1px;}
     .messageArena:before {
-        left: 172px; 
+        left: 172px;
     }
     .messageArena:after {
         left: 174px;
@@ -3910,7 +3926,7 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .toolBar .middlePart ul {margin-right: 0;}
     .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 53px;}
     .panelCodeEditor .panel-body .middlePart .findInput {
-        margin-right: 10px; 
+        margin-right: 10px;
         margin-left: 0px;
         width: 116px;
     }
@@ -3930,7 +3946,7 @@ footer .right>span:nth-child(2) {
     .messageArena .panelHeader,
     .messageArena .messageBox .mItem {width: 268px;}
     .messageArena:before {
-        left: 177px; 
+        left: 177px;
     }
     .messageArena:after {
         left: 179px;

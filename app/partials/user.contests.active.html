@@ -5,8 +5,9 @@
     <div class="panel-body" data-ng-show="getContests().length > 0">
         <div data-ng-repeat="contest in getContests() track by $index" data-ng-show="$index == currentContest" class="mainContent">
             <p class="infoRow">
-                <span >Single Round Match</span>
+<!--                <span >Single Round Match</span> -->
                 <span class="textWhite">{{ contest.contestName }}</span>
+                <span class="textRed" data-ng-show="contest.roundType == 2">{{ contest.roundName }}</span>
                 <span data-ng-show="isCountingDown(contest)">will start in</span>
                 <span class="textRed" data-ng-show="isCountingDown(contest)">{{ displayCountDown(contest) }}</span>
             </p>
@@ -81,13 +82,11 @@
         <span class="cancel-x" data-ng-click="cancel()">X</span>
     </div>
     <div class="modal-body">
-        <p>
-            {{ message }}
-        </p>
+        <p ng-bind-html="message"></p>
     </div>
     <div class="modal-footer">
         <button class="btn right-btn" data-ng-click="ok()" data-ng-show="buttons.length == 2">{{ buttons[0] }}</button>
         <button class="btn left-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 2">{{ buttons[1] }}</button>
         <button class="btn right-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 1">{{ buttons[0] }}</button>
     </div>
-</script>  
+</script>

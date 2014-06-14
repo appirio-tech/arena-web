@@ -13,55 +13,77 @@
  * Changes in version 1.3 (Module Assembly - Web Arena UI - Coding IDE Part 2):
  * - Added problem submission and room summary update related events and ID's.
  *
- * @author tangzx, amethystlei
- * @version 1.3
+ * Changes in version 1.4 (Module Assembly - Web Arena UI Fix):
+ * - Added ForcedLogoutResponse, Disconnected, Connected, SocketDisconnected, SocketConnected
+ *   SocketConnectionFailed, SocketError, SynchTimeRequest to events.
+ * - Added Disconnected to pop up titles.
+ * - Added pop up messages and Reconnecting message.
+ * - Reordered list of events in categories and alphabetically for easier overview.
+ * - Added time zone mapper.
+ * - Added REQUEST_TIME_OUT, SYNC_TIME_INTERVAL, CONNECTION_UPDATE_INTERVAL,
+ *   INNACTIVITY_TIMEOUT constants.
+ *
+ * @author tangzx, amethystlei, dexy
+ * @version 1.4
  */
 
 module.exports = {
     // Represents the event names
     EVENT_NAME: {
-        LogoutRequest: 'LogoutRequest',
-        SSOLoginRequest: 'SSOLoginRequest',
-        LoginResponse: 'LoginResponse',
-        UserInfoResponse: 'UserInfoResponse',
-        StartSyncResponse: 'StartSyncResponse',
-        CreateRoundListResponse: 'CreateRoundListResponse',
-        RoundScheduleResponse: 'RoundScheduleResponse',
-        KeepAliveInitializationDataResponse: 'KeepAliveInitializationDataResponse',
-        KeepAliveResponse: 'KeepAliveResponse',
-        KeepAliveRequest: 'KeepAliveRequest',
-        SynchTimeResponse: 'SynchTimeResponse',
-        EndSyncResponse: 'EndSyncResponse',
-        CreateProblemsResponse: 'CreateProblemsResponse',
-        UpdateRoundListResponse: 'UpdateRoundListResponse',
-        EnableRoundResponse: 'EnableRoundResponse',
-        RegisterInfoRequest: 'RegisterInfoRequest',
-        PopUpGenericResponse: 'PopUpGenericResponse',
-        RegisterRequest: 'RegisterRequest',
-        EnterRoundRequest: 'EnterRoundRequest',
-        RoomInfoResponse: 'RoomInfoResponse',
-        EnterRequest: 'EnterRequest',
-        MoveRequest: 'MoveRequest',
-        CreateRoomListResponse: 'CreateRoomListResponse',
-        PhaseDataResponse: 'PhaseDataResponse',
-        SystestProgressResponse: 'SystestProgressResponse',
-        RegisterUsersRequest: 'RegisterUsersRequest',
-        RegisteredUsersResponse: 'RegisteredUsersResponse',
-        OpenComponentForCodingRequest: 'OpenComponentForCodingRequest',
-        GetProblemResponse: 'GetProblemResponse',
-        OpenComponentResponse: 'OpenComponentResponse',
+        // backend requests
         CloseProblemRequest: 'CloseProblemRequest',
         CompileRequest: 'CompileRequest',
-        TestInfoRequest: 'TestInfoRequest',
-        TestInfoResponse: 'TestInfoResponse',
-        TestRequest: 'TestRequest',
-        SubmitRequest: 'SubmitRequest',
-        SubmitResultsResponse: 'SubmitResultsResponse',
+        EnterRequest: 'EnterRequest',
+        EnterRoundRequest: 'EnterRoundRequest',
         GenericPopupRequest: 'GenericPopupRequest',
-        UpdateLeaderBoardResponse: 'UpdateLeaderBoardResponse',
+        KeepAliveRequest: 'KeepAliveRequest',
+        LogoutRequest: 'LogoutRequest',
+        MoveRequest: 'MoveRequest',
+        OpenComponentForCodingRequest: 'OpenComponentForCodingRequest',
+        RegisterInfoRequest: 'RegisterInfoRequest',
+        RegisterRequest: 'RegisterRequest',
+        RegisterUsersRequest: 'RegisterUsersRequest',
+        SSOLoginRequest: 'SSOLoginRequest',
+        SubmitRequest: 'SubmitRequest',
+        SynchTimeRequest: 'SynchTimeRequest',
+        TestInfoRequest: 'TestInfoRequest',
+        TestRequest: 'TestRequest',
+        // backend responses
+        CreateChallengeTableResponse: 'CreateChallengeTableResponse',
+        CreateProblemsResponse: 'CreateProblemsResponse',
+        CreateRoomListResponse: 'CreateRoomListResponse',
+        CreateRoundListResponse: 'CreateRoundListResponse',
+        EnableRoundResponse: 'EnableRoundResponse',
+        EndSyncResponse: 'EndSyncResponse',
+        ForcedLogoutResponse: 'ForcedLogoutResponse',
+        GetProblemResponse: 'GetProblemResponse',
+        KeepAliveInitializationDataResponse: 'KeepAliveInitializationDataResponse',
+        KeepAliveResponse: 'KeepAliveResponse',
+        LoginResponse: 'LoginResponse',
+        OpenComponentResponse: 'OpenComponentResponse',
+        PhaseDataResponse: 'PhaseDataResponse',
+        PopUpGenericResponse: 'PopUpGenericResponse',
+        RegisteredUsersResponse: 'RegisteredUsersResponse',
+        RoomInfoResponse: 'RoomInfoResponse',
+        RoundScheduleResponse: 'RoundScheduleResponse',
+        StartSyncResponse: 'StartSyncResponse',
+        SubmitResultsResponse: 'SubmitResultsResponse',
+        SynchTimeResponse: 'SynchTimeResponse',
+        SystestProgressResponse: 'SystestProgressResponse',
+        TestInfoResponse: 'TestInfoResponse',
         UpdateCoderComponentResponse: 'UpdateCoderComponentResponse',
         UpdateCoderPointsResponse: 'UpdateCoderPointsResponse',
-        CreateChallengeTableResponse: 'CreateChallengeTableResponse'
+        UpdateLeaderBoardResponse: 'UpdateLeaderBoardResponse',
+        UpdateRoundListResponse: 'UpdateRoundListResponse',
+        UserInfoResponse: 'UserInfoResponse',
+        // internal events
+        Connected: 'Connected',
+        Disconnected: 'Disconnected',
+        // socket events
+        SocketConnected: 'connect',
+        SocketConnectionFailed: 'connect_failed',
+        SocketDisconnected: 'disconnect',
+        SocketError: 'error'
     },
 
     // Represents the phase names.
@@ -128,13 +150,37 @@ module.exports = {
 
     // the timeout of request
     REQUEST_TIME_OUT: 10 * 1000,
+    // the interval between two sync time requests
+    SYNC_TIME_INTERVAL: 45 * 1000,
+    // the interval between two connection checks
+    CONNECTION_UPDATE_INTERVAL: 5 * 1000,
+    // if server doesn't respond in this time interval (in ms) we will detect timeout
+    INNACTIVITY_TIMEOUT: 90 * 1000,
+    // default value for keep alive timeout
+    KEEP_ALIVE_TIMEOUT: 30 * 1000,
 
+    // pop up titles
     POP_UP_TITLES: {
         Error: 'Error.',
         CompileResult: 'Compile Result',
         TestResults: 'Test Results',
         MultipleSubmission: 'Multiple Submission',
-        Unauthorized: 'Unauthorized'
+        Unauthorized: 'Unauthorized',
+        Disconnected: 'Disconnected',
+        ForcedLogout: 'Client Connection Error'
+    },
+
+    // custom pop up messages
+    POP_UP_MESSAGES: {
+        Reconnecting: "Waiting to reconnect...\nPress Close to log out and go to the log in screen.",
+        ForcedLogout: 'The connection to the server has been lost. Logging off.'
+    },
+
+    // The mapper from time zone code (must be uppercase) to offset from UTC (in minutes).
+    // NOTE: List should be extended, here is the list: https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations
+    TIME_ZONES: {
+        "EDT": -4 * 60,
+        "EST": -5 * 60 // for North America, not Australia
     },
 
     // Compile results

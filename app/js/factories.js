@@ -8,8 +8,16 @@
  * - Added getUserPreferences method.
  * - Added remove listener function to socket.
  *
- * @author tangzx
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI Fix):
+ * - Added helper.
+ * - Some small changes to pass jslint.
+ * - Added $rootScope, $timeout and socket to tcTimeService, and removed $http and appHelper.
+ * - Updated tcTimeService to sync time with TC server.
+ * - Removed $http from connectionService, updated it to handle disconnection event.
+ * - Added getUserInfo to helper to retrieve complete user profile.
+ *
+ * @author tangzx, dexy
+ * @version 1.2
  */
 'use strict';
 var config = require('./config');
@@ -18,6 +26,7 @@ var socket = require('socket.io-client').connect(config.webSocketURL);
 /*jshint -W097*/
 /*global $ : false, angular : false, require, module*/
 
+var helper = require('./helper');
 ///////////////
 // FACTORIES //
 
@@ -28,7 +37,7 @@ factories.notificationService = ['$timeout', '$http', 'sessionHelper', function 
         notifications: [],
         unRead: 0
     },
-    repeatTimer = null;
+        repeatTimer = null;
     service.getUnRead = function () {
         return service.unRead;
     };
@@ -55,13 +64,13 @@ factories.notificationService = ['$timeout', '$http', 'sessionHelper', function 
         //   date: mm/dd/yy hh:mm AM|PM
         //   status: string
         //   message: string - message content
-        //   action: { 
+        //   action: {
         //     question: string - the action question
         //     target: string - target href (url)
         //   }
         // }
         var i, unreadDelta = 0;
-        for (i = messages.length - 1; i >= 0; i--) {
+        for (i = messages.length - 1; i >= 0; i -= 1) {
             service.notifications.unshift(messages[i]);
             if (!messages[i].read) {
                 unreadDelta += 1;
@@ -107,7 +116,7 @@ factories.notificationService = ['$timeout', '$http', 'sessionHelper', function 
     service.resetLoadMessages = function () {
         service.demoId = 0;
         service.demoCount = 0;
-        service.demoing = false,
+        service.demoing = false;
         service.repeatLoading = false;
         service.clearNotifications();
     };
@@ -189,9 +198,8 @@ factories.appHelper = [function () {
         if (!clicked) {
             return false;
         }
-        var j = 0;
         while (clicked && stepLimit > 0) {
-            --stepLimit;
+            stepLimit -= 1;
             if (clicked.id === id) {
                 return true;
             }
@@ -211,34 +219,93 @@ factories.appHelper = [function () {
     return helper;
 }];
 
-factories.tcTimeService = ['$http', 'appHelper', function ($http, appHelper) {
-    var service = {};
-    service.timeObj = {};
-    service.getTimeObj = function () {
-        if (!service.timePromise) {
-            // Load tc time here
-            service.timePromise = $http.get('data/tc-time.json');
-            service.timePromise.success(function (data) {
-                service.setTime(data.timeEST);
-            });
+factories.tcTimeService = ['$rootScope', '$timeout', '$filter', 'socket', function ($rootScope, $timeout, $filter, socket) {
+    var service = {},
+        counter = 0; // temporary solution before better handling of sync requests is added
+    // makes sync time request to the TC server
+    service.syncTimeRequest = function () {
+        if ($rootScope.connectionID !== undefined) {
+            socket.emit(helper.EVENT_NAME.SynchTimeRequest, {connectionID: $rootScope.connectionID});
         }
-        return service.timeObj;
     };
+    service.syncTimeTC = function () {
+        if ($rootScope.isLoggedIn) {
+            // we don't have correct handling of Sync requests/responses
+            // so this is a temporary solution before correct implementation
+            // of sync requests is added
+            if ($rootScope.startSyncResponse && counter < 3) {
+                counter += 1;
+                $rootScope.startSyncResponse = false;
+                $timeout(service.syncTimeTC, 1000);
+            } else {
+                counter = 0;
+                service.syncTimeRequest();
+                $timeout(service.syncTimeTC, helper.SYNC_TIME_INTERVAL);
+            }
+        } else {
+            $timeout(service.syncTimeTC, helper.SYNC_TIME_INTERVAL);
+        }
+    };
+    service.diffTC = 0;
+    service.syncTimeTC();
+    // helper function to return current time at TC server with zone offset (in minutes)
+    service.getTimeZoneOffset = function (zoneOffset) {
+        return service.getTime() + 60000 * zoneOffset;
+    };
+    // Helper function to retrieve the current time at TC server in a given zone.
+    // If zone code is not in a helper TIME_ZONES list, default value 0 will be used.
+    service.getTimeZone = function (zoneCode) {
+        var code = zoneCode.trim().toUpperCase;
+        if (angular.isDefined(helper.TIME_ZONES[code])) {
+            return service.getTimeZoneOffset(helper.TIME_ZONES[code]);
+        }
+        return service.getTimeZoneOffset(0);
+    };
+    // returns the current time at TC server
     service.getTime = function () {
-        var timeObj = service.getTimeObj();
-        return timeObj.startServerTime + (+(new Date) - timeObj.startClientTime);
+        return new Date().getTime() - service.diffTC;
     };
     // the central way to set time here
-    service.setTime = function (timeEST) {
-        service.timeObj.startServerTime = appHelper.parseDate(timeEST).getTime();
-        service.timeObj.startClientTime = +(new Date);
+    service.setTimeTC = function (timeTC) {
+        service.diffTC = new Date().getTime() - timeTC;
     };
+    // Retrieves local time zone short name.
+    // see: https://stackoverflow.com/questions/2897478/get-client-timezone-not-gmt-offset-amount-in-js
+    service.getZoneName = function () {
+        /*jslint regexp:true*/
+        var now = new Date().toString(), tmp,
+            timeZone = "UTC" + $filter('date')(new Date(), 'Z');
+        if (now.indexOf('(') > -1) {
+            tmp = now.match(/\([^\)]+\)/);
+            if (tmp !== null) {
+                tmp = tmp[0].match(/[A-Z]/g);
+                if (tmp !== null) {
+                    tmp = tmp.join('');
+                    if (tmp !== null) {
+                        timeZone = tmp;
+                    }
+                }
+            }
+        } else {
+            tmp = now.match(/[A-Z]{3,4}/);
+            if (tmp !== null) {
+                timeZone = tmp[0];
+            }
+        }
+        /*jslint regexp:false*/
+        if (timeZone === "GMT" && /(GMT\W*\d{4})/.test(now)) {
+            timeZone = RegExp.$1;
+        }
+        return timeZone;
+    };
+    $rootScope.timeZone = service.getZoneName();
     return service;
 }];
 
 // this service repeatedly updates the connection status
-factories.connectionService = ['$http', '$timeout', function ($http, $timeout) {
-    var service = {cStatus: {}};
+factories.connectionService = ['$timeout', '$rootScope', function ($timeout, $rootScope) {
+    var service = {cStatus: {}},
+        isConnected = false;
 
     // demoXXX are used for demo only.
     service.demoStatus = true;
@@ -250,43 +317,33 @@ factories.connectionService = ['$http', '$timeout', function ($http, $timeout) {
     };
 
     service.repeatUpdateStatus = function () {
-        var url = 'data/connection-status.json';
-        if (service.demoCounter > 0 && !service.demoStatus) {
-            url = 'data/connection-status-fail';
+        var inactivityInterval = new Date().getTime() - $rootScope.lastServerActivityTime;
+        if (inactivityInterval >= $rootScope.keepAliveTimeout) {
+            // emit keep alive request every timeout interval
+            socket.emit(helper.EVENT_NAME.KeepAliveRequest, {});
         }
-        $http({
-            method: 'GET',
-            url: url,
-            timeout: 3000   // wait for 3 seconds for response
-        }).success(function(data, status, headers, config) {
-            // connection is stable
-            if (service.cStatus.status !== 'stable') {
-                service.setConnectionStatus('stable');
+        if (socket.socket.connected && $rootScope.online && inactivityInterval < helper.INNACTIVITY_TIMEOUT) {
+            service.setConnectionStatus('stable');
+            if (!isConnected) {
+                isConnected = true;
+                $rootScope.$broadcast(helper.EVENT_NAME.Connected, {});
             }
-            if (service.demoCounter > 0) {
-                service.demoStatus = !service.demoStatus;
-            }
-            $timeout(service.repeatUpdateStatus, 3000);
-        }).error(function(data, status, headers, config) {
-            // connection is lost
-            if (service.cStatus.status === 'stable') {
-                service.setConnectionStatus('lost');
-            }
-            if (service.demoCounter > 0) {
-                service.demoStatus = !service.demoStatus;
-                service.demoCounter -= 1;
-            }
-            $timeout(service.repeatUpdateStatus, 3000);
-        });
+        } else {
+            isConnected = false;
+            service.setConnectionStatus('lost');
+            $rootScope.$broadcast(helper.EVENT_NAME.Disconnected, {});
+        }
+        $timeout(service.repeatUpdateStatus, helper.CONNECTION_UPDATE_INTERVAL);
     };
     service.repeatUpdateStatus();
 
+/*
     // for starting the demo
     $timeout(function () {
         // set to a positive integer to demo
         service.demoCounter = 0;
     }, 3000);
-
+*/
     return service;
 }];
 
@@ -329,6 +386,10 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
         var userInfo = angular.fromJson($window.localStorage.userInfo);
         return userInfo ? userInfo.handle : null;
     };
+    helper.getUserInfo = function () {
+        var userInfo = angular.fromJson($window.localStorage.userInfo);
+        return userInfo || null;
+    };
 
     /**
      * Get user preferences.
@@ -369,6 +430,7 @@ factories.socket = ['$rootScope', function ($rootScope) {
         on: function (eventName, callback) {
             socket.on(eventName, function () {
                 var args = arguments;
+                $rootScope.lastServerActivityTime = new Date().getTime();
                 $rootScope.$apply(function () {
                     callback.apply(socket, args);
                 });

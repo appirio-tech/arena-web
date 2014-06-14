@@ -697,6 +697,9 @@ body a {cursor: pointer;}
     padding: 15px 15px 19px 0;
     height: 78px;/*update*/
     position: relative;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
 }
 .contest .titleBar {
     height: 77px;
@@ -759,27 +762,39 @@ body a {cursor: pointer;}
 .contest .breadcrumb li:after {
     right: -13px;
 }
+.lastLoginRow {
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    width:330px;
+}
 .dashboard .connection {
     font-size: 14px;
     float: right;
     text-align: right;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    width: 630px;
 }
 .codeArea .connection {
     padding-right: 92px;
+    width: 600px;
 }
 .contest .connection {
     padding-right: 83px;
+    width: 600px;
 }
 .dashboard .connection > div {
     display: inline-block;
-    padding-left: 34px;
+    padding-left: 25px;
 }
 .codeArea .connection>div {
     padding-left: 0;
 }
 .tcTime {
     display: block;
-    width: 114px;
+    width: 240px;
     font-size: 14px;
     text-align: left;
     color: #687376;
@@ -791,7 +806,7 @@ body a {cursor: pointer;}
 }
 .connectionStatus {
     display: block;
-    width: 107px;
+    width: 160px;
     font-size: 14px;
     color: #687376;
     line-height: 22px;
@@ -810,7 +825,7 @@ body a {cursor: pointer;}
 }
 .connectionStatus .green {
     background: #5fb806;
-    margin-left: 12px
+    margin-left: 8px
 }
 .connectionStatus .red {
     background: #f40000;
@@ -1150,7 +1165,7 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     text-align: left;
 }
-.panel-custom .schedulePanel .title {width:180px;}
+.panel-custom .schedulePanel .title {width:170px;}
 .panel-custom .schedulePanel .startIn,.panel-custom .schedulePanel .endIn {width: 72px;}
 .panel-custom .schedulePanel .startIn>span,.panel-custom .schedulePanel .endIn>span{display: inline;}
 .panel-custom .schedulePanel .startTime {width: 200px;}
@@ -1914,7 +1929,7 @@ footer .right>span:nth-child(2) {
 
 /* profile overview and important messages widget */
 .panelOverview {
-    width: 407px;
+    width: 460px;
     height: 393px;
     background: transparent;
     border: none;
@@ -2013,7 +2028,7 @@ footer .right>span:nth-child(2) {
 .panelOverview .overviewAndMessage .profile .yellow {color: #dfd842;}
 .panelOverview .overviewAndMessage .profile .red {color: #ff0000;}
 .panelOverview .overviewAndMessage .profile .userNameRow {
-    font-size: 16px;
+    font-size: 15px;
     margin-bottom: 7px;
 }
 .panelOverview .overviewAndMessage .messagesBox .table {
@@ -2036,7 +2051,7 @@ footer .right>span:nth-child(2) {
 /* contest plan widget */
 .panelContestPlan {
     height: 315px;
-    width: 407px;
+    width: 460px;
     border-color: #b7c9d7;
     background: #f5f8fa;
     -webkit-border-radius: 0;
@@ -2813,6 +2828,7 @@ footer .right>span:nth-child(2) {
 }
 .detailPage .connection { /*this page does not have share link*/
     padding-right: 0;
+    width: 600px;
 }
 .detailPage .titleBar .btnBack { 
     float: right;

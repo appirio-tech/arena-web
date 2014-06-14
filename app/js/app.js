@@ -8,8 +8,14 @@
  * - Added userPreferences to root scope.
  * - Updated coding page state parameters.
  *
- * @author tangzx
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI Fix):
+ * - Added listeners for socket disconnection and error.
+ * - Added listeners on $window for online/offline events.
+ * - Added online and userInfo fields to root scope.
+ * - Added helper.
+ *
+ * @author tangzx, dexy
+ * @version 1.2
  */
 'use strict';
 /*jshint -W097*/
@@ -54,7 +60,8 @@ var resolvers = require('./resolvers'),
         transitionEasing                : 'ease-in-out',
         labelClass                      : 'floating-label',
         typeMatches                     : /text|password|email|number|search|url/
-    };
+    },
+    helper = require('./helper');
 
 // load controllers
 controllers.anonHomeCtrl = require('./controllers/anonHomeCtrl');
@@ -143,7 +150,6 @@ main.controller('overviewCtrl', controllers.overviewCtrl);
 main.controller('contestPlanCtrl', controllers.contestPlanCtrl);
 main.controller('baseCtrl', controllers.baseCtrl);
 main.controller('messageArenaCtrl', controllers.messageArenaCtrl);
-// main.controller('baseCtrl', controllers.baseCtrl);
 main.controller('contestSummaryCtrl', controllers.contestSummaryCtrl);
 main.controller('userContestDetailCtrl', controllers.userContestDetailCtrl);
 
@@ -178,7 +184,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
 
     themerProvider.setStyles(styles);
     themerProvider.setSelected(styles[0].key);
-//add an interceptor to always add authentication to api calls if logged in
+    //add an interceptor to always add authentication to api calls if logged in
     $httpProvider.interceptors.push(['sessionHelper', function (sessionHelper) {
         return {
             request: function (config) {
@@ -310,16 +316,29 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
         });
 }]);
 
-main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$cookies', 'themer', function ($rootScope, $state, sessionHelper, socket, $cookies, themer) {
- // setting defaut theme before json gets loaded
+main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeService', '$cookies', 'themer', function ($rootScope, $state, sessionHelper, socket, $window, tcTimeService, $cookies, themer) {
+    // setting defaut theme before json gets loaded
     if ($cookies.themeInUse !== null && $cookies.themeInUse !== undefined) {
         themer.styles[0].key = $cookies.themeInUse;
         themer.styles[0].label = $cookies.themeLabel;
         themer.styles[0].href = $cookies.themeHref;
     }
+    $rootScope.online = navigator.onLine;
+    $window.addEventListener("offline", function () {
+        $rootScope.$apply(function () {
+            $rootScope.online = false;
+        });
+    }, false);
+    $window.addEventListener("online", function () {
+        $rootScope.$apply(function () {
+            $rootScope.online = true;
+        });
+    }, false);
     //consider exposing states and state params to all templates
     $rootScope.$state = $state;
-
+    $rootScope.connectionID = undefined;
+    $rootScope.startSyncResponse = false;
+    $rootScope.lastServerActivityTime = new Date().getTime();
     $rootScope.$on('$stateChangeStart', function (event, toState) {
         //use whitelist approach
         var allowedStates = ['anon', 'anon.home', 'loggingin', 'user.logout'],
@@ -339,11 +358,26 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$cookies', 'themer
             return $rootScope.isLoggedIn;
         };
         $rootScope.username = sessionHelper.getUsername;
+        $rootScope.userInfo = sessionHelper.getUserInfo;
         $rootScope.userPreferences = sessionHelper.getUserPreferences;
         $rootScope.timezone = res ? res[1] : "";
+        $rootScope.timeService = tcTimeService;
+        $rootScope.keepAliveTimeout = helper.KEEP_ALIVE_TIMEOUT;
 
-        socket.on('connect', function () {
+        socket.on(helper.EVENT_NAME.SocketConnected, function () {
             $rootScope.connected = true;
+            $rootScope.$broadcast(helper.EVENT_NAME.Connected, {});
+        });
+        socket.on(helper.EVENT_NAME.SocketDisconnected, function () {
+            $rootScope.connected = false;
+            $rootScope.$broadcast(helper.EVENT_NAME.Disconnected, {});
+        });
+        socket.on(helper.EVENT_NAME.SocketConnectionFailed, function () {
+            $rootScope.connected = false;
+            $rootScope.$broadcast(helper.EVENT_NAME.Disconnected, {});
+        });
+        socket.on(helper.EVENT_NAME.SocketError, function () {
+            $rootScope.$broadcast(helper.EVENT_NAME.SocketError, {});
         });
     });
 }]);

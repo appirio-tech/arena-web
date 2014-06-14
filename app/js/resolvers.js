@@ -13,8 +13,16 @@
  * - Added UpdateCoderPointsResponse and UpdateCoderComponentResponse handlers to update room summary page.
  * - Updated to handle RoomInfoResponse
  *
- * @author amethystlei
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena UI Fix):
+ * - Added tcTimeService to the list of parameters.
+ * - Added startSyncResponse to the scope to indicate if sync responses have started.
+ * - Added connectionID to the rootScope needed for sync time requests.
+ * - Updated SynchTimeResponse handler to use time service to update TC time.
+ * - Added ForcedLogoutResponse handler to handle forced logout.
+ * - Removed getCurrentTCTime from $rootScope.
+ *
+ * @author amethystlei, dexy
+ * @version 1.3
  */
 ///////////////
 // RESOLVERS //
@@ -23,7 +31,6 @@
 
 var config = require('./config');
 var helper = require('./helper');
-
 /**
  * Represents the timeout of establishing socket connection.
  *
@@ -41,9 +48,8 @@ var DATE_FORMAT = 'EEE MMM d, h:mm a';
 //Here we put resolver logic into a container object so that the state declaration code section stays readable
 var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
-resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper',
-    'socket', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket) {
-    var deferred, sso = sessionHelper.getTcsso(), requestId, timeDiff = 0,
+resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService) {
+    var deferred, sso = sessionHelper.getTcsso(), requestId,
         forceLogout = function () {
             $rootScope.isLoggedIn = false;
             sessionHelper.clear();
@@ -72,19 +78,17 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 });
             });
         };
-
     // if the listener is not ready, redirect
     setTimeout(function () {
         if (!$rootScope.connected) {
             return forceLogout();
         }
     }, connectionTimeout);
-
     // handle the start sync response
     socket.on(helper.EVENT_NAME.StartSyncResponse, function (data) {
         requestId = data.requestId;
+        $rootScope.startSyncResponse = true;
     });
-
     // handle the login response
     socket.on(helper.EVENT_NAME.LoginResponse, function (data) {
         if (data.success) {
@@ -94,6 +98,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 cookies.set(config.ssoKey, sso, -1);
                 sessionHelper.clearRemember();
             }
+            $rootScope.connectionID = data.connectionID;
         } else {
             // if fail to log in, remove sso
             $rootScope.isLoggedIn = false;
@@ -151,32 +156,18 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
     // handle the keep alive initialization data response
     socket.on(helper.EVENT_NAME.KeepAliveInitializationDataResponse, function (data) {
-        var timeout = parseInt(data.timeout, 10);
+        $rootScope.keepAliveTimeout = parseInt(data.timeout, 10);
         // handle the keep alive response
         socket.on(helper.EVENT_NAME.KeepAliveResponse, function () {
             console.log('Keep alive responded.');
         });
-        // emit keep alive request every timeout interval
-        setInterval(function () {
-            socket.emit(helper.EVENT_NAME.KeepAliveRequest, {});
-        }, timeout);
     });
 
     // handle the sync time response
     socket.on(helper.EVENT_NAME.SynchTimeResponse, function (data) {
-        $rootScope.now = data.time;
-        timeDiff = new Date().getTime() - data.time;
+        tcTimeService.setTimeTC(data.time);
+        $rootScope.now = tcTimeService.getTime();
     });
-
-    /**
-     * Get current TC time.
-     * it's a temp fix for server time, we will use tcTimeService once it's implemented.
-     *
-     * @returns {number} the time.
-     */
-    $rootScope.getCurrentTCTime = function () {
-        return new Date().getTime() - timeDiff;
-    };
 
     socket.on(helper.EVENT_NAME.RoomInfoResponse, function (data) {
         $rootScope.currentRoomInfo = data;
@@ -191,6 +182,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             }
             $rootScope.roundData[data.roundID].coderRooms = data.coderRooms;
         }
+        $rootScope.$broadcast(helper.EVENT_NAME.CreateRoomListResponse, data);
     });
 
     // Handle create challenge table response.
@@ -237,6 +229,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
     // handle the end sync response
     socket.on(helper.EVENT_NAME.EndSyncResponse, function (data) {
+        $rootScope.startSyncResponse = false;
         if (data.requestId !== requestId) {
             return forceLogout();
         }
@@ -262,6 +255,11 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
     // request login
     socket.emit(helper.EVENT_NAME.SSOLoginRequest, {sso: sso});
+
+    // handle forced logout
+    socket.on(helper.EVENT_NAME.ForcedLogoutResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.ForcedLogoutResponse, data);
+    });
 }];
 
 //This function checks if there is already a sso cookie

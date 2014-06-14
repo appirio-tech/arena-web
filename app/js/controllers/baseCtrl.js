@@ -1,11 +1,145 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This file provides the base controller.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI Fix):
+ * - Added pop up modal.
+ * - Handle ForcedLogoutResponse, Disconnected, Connected events.
+ *
+ * @author dexy
+ * @version 1.1
+ */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
 /*global document, angular:false, $:false, module, window*/
 
-//for header
-var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'themer', '$cookies',  function ($scope, $http, appHelper, notificationService, themer, $cookies) {
-    // theme selector 
+/**
+ * The helper.
+ *
+ * @type {exports}
+ */
+var helper = require('../helper');
+
+/**
+ * The base controller.
+ *
+ * @type {*[]}
+ */
+var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connectionService', '$modal', '$state', 'themer', '$cookies', function ($scope, $http, appHelper, notificationService, connectionService, $modal, $state, themer, $cookies) {
+    var /**
+         * The modal controller.
+         *
+         * @type {*[]}
+         */
+        popupModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', 'cancel', function ($scope, $modalInstance, data, ok, cancel) {
+            $scope.title = data.title;
+            $scope.message = data.message.replace(/(\r\n|\n|\r)/gm, "<br/>");
+            $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
+            $scope.enableClose = data.enableClose;
+
+            /**
+             * OK handler.
+             */
+            $scope.ok = function () {
+                ok();
+                $modalInstance.close();
+            };
+
+            /**
+             * Cancel handler.
+             */
+            $scope.cancel = function () {
+                cancel();
+                $modalInstance.dismiss('cancel');
+            };
+        }],
+        /**
+         * Open modal function.
+         *
+         * @param data the data
+         * @param handle the handler
+         * @param finish the finish function
+         */
+        openModal = function (data, handle, finish) {
+            if ($scope.currentModal) {
+                $scope.currentModal.close();
+                $scope.currentModal = undefined;
+            }
+
+            $scope.currentModal = $modal.open({
+                templateUrl: 'popupModalBase.html',
+                controller: popupModalCtrl,
+                backdrop: 'static',
+                resolve: {
+                    data: function () {
+                        return data;
+                    },
+                    ok: function () {
+                        return handle;
+                    },
+                    cancel: function () {
+                        return function () {
+                            if (angular.isFunction(finish)) {
+                                finish();
+                            }
+
+                            $scope.currentModal = undefined;
+                        };
+                    }
+                }
+            });
+        },
+        isDisconnecting = false,
+        closeThemeHandler = function (event) {
+            // the depth of DOM tree rooted at the element with id 'themePanel'
+            var themePanelDOMDepth = 4;
+            if (!appHelper.clickOnTarget(event.target, 'themePanel', themePanelDOMDepth)) {
+                if (appHelper.clickOnTarget(event.target, 'iconTS', 1)) {
+                    event.preventDefault();
+                }
+                $scope.cancelTheme();
+            }
+        },
+        selTheme;
+    /*jslint unparam: true*/
+    $scope.$on(helper.EVENT_NAME.ForcedLogoutResponse, function (event, data) {
+        openModal({
+            title: helper.POP_UP_TITLES.ForcedLogout,
+            message: helper.POP_UP_MESSAGES.ForcedLogout,
+            enableClose: true
+        }, null, function () {
+            $state.go('user.logout');
+        });
+    });
+    $scope.$on(helper.EVENT_NAME.Disconnected, function (event, data) {
+        if (!isDisconnecting) {
+            isDisconnecting = true;
+            openModal({
+                title: helper.POP_UP_TITLES.Disconnected,
+                message: helper.POP_UP_MESSAGES.Reconnecting,
+                enableClose: true
+            }, null, function () {
+                isDisconnecting = false;
+                if (connectionService.cStatus.status === 'lost') {
+                    $state.go('user.logout');
+                }
+            });
+        }
+    });
+    $scope.$on(helper.EVENT_NAME.Connected, function (event, data) {
+        if (isDisconnecting) {
+            isDisconnecting = false;
+            if ($scope.currentModal !== undefined) {
+                $scope.currentModal.dismiss('cancel');
+            }
+            $state.go('anon.home');
+        }
+    });
+    /*jslint unparam: false*/
+    // theme selector
     $scope.themesInfo = [];
     $cookies.themeInUse = ($cookies.themeInUse === null || $cookies.themeInUse === undefined) ? 'DARK' : $cookies.themeInUse;
     $scope.themeInUse = $scope.themeBackup = $cookies.themeInUse;
@@ -22,22 +156,11 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'themer',
         }
         themer.setSelected($cookies.themeInUse);
     });
-    var selTheme, closeThemeHandler;
     if ($cookies.themeInUse !== null && $cookies.themeInUse !== undefined) {
         selTheme = themer.getSelected();
         $cookies.themeLabel = selTheme.label;
         $cookies.themeHref = selTheme.href;
     }
-    closeThemeHandler = function (event) {
-        // the depth of DOM tree rooted at the element with id 'themePanel'
-        var themePanelDOMDepth = 4;
-        if (!appHelper.clickOnTarget(event.target, 'themePanel', themePanelDOMDepth)) {
-            if (appHelper.clickOnTarget(event.target, 'iconTS', 1)) {
-                event.preventDefault();
-            }
-            $scope.cancelTheme();
-        }
-    };
     $scope.closeThemeSelector = function () {
         $scope.themePanelOpen = false;
         document.removeEventListener('click', closeThemeHandler);
