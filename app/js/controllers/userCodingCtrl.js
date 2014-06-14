@@ -7,11 +7,15 @@
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 1):
  * - Updated to use real data.
  *
- * @author TCSASSEMBLER
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI Fix):
+ * - Added tcTimeService and updated its usage.
+ *
+ * @author TCSASSEMBLER, dexy
+ * @version 1.2
  */
 'use strict';
 /*global module, angular, $*/
+/*jslint browser:true */
 
 /**
  * The helper.
@@ -25,8 +29,8 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket', '$window', '$timeout',
-    function ($scope, $stateParams, $state, $rootScope, socket, $window, $timeout) {
+var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket', '$window', '$timeout', 'tcTimeService',
+    function ($scope, $stateParams, $state, $rootScope, socket, $window, $timeout, tcTimeService) {
         // shared between children scopes
         $scope.sharedObj = {};
         $scope.topStatus = 'normal';
@@ -55,10 +59,10 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
             // origin height of top-content: 169(with 1px padding)
             // origin height of bottom-content: 516
             // origin height of codemirror: 475
-            var windowWidth = window.innerWidth;
-            if ((target === 'top-content' && $scope.topStatus === 'expand') || 
-                (target === 'bottom-content' && $scope.bottomStatus === 'expand')) {
-                //return to normal status 
+            var windowWidth = $window.innerWidth;
+            if ((target === 'top-content' && $scope.topStatus === 'expand') ||
+                    (target === 'bottom-content' && $scope.bottomStatus === 'expand')) {
+                //return to normal status
                 $('#top-content').css({
                     height: 169 + 'px'
                 });
@@ -98,10 +102,10 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
                     });
                 }
                 $('#bottom-content').css({
-                    height: 0 + 'px'
+                    height: '0' + 'px'
                 });
                 $('#codeArea').css({
-                    height: 0 + 'px'
+                    height: '0' + 'px'
                 });
                 $scope.topStatus = 'expand';
                 $scope.bottomStatus = 'normal';
@@ -168,7 +172,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
                         phase = $scope.roundData[$scope.roundID].phaseData;
                         if (phase.phaseType === helper.PHASE_TYPE_ID.CodingPhase) {
                             // how many seconds between now and the phase end time
-                            seconds = (phase.endTime - $scope.getCurrentTCTime()) / 1000;
+                            seconds = (phase.endTime - tcTimeService.getTime()) / 1000;
                         }
                     }
                     if (seconds > 0) {

@@ -7,8 +7,11 @@
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 2):
  * - Moved socket handler of RoomInfoResponse to resolver.js
  *
- * @author amethystlei
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI Fix):
+ * - Removed updating $rootScope.now and moved to tcTimeCtrl.
+ *
+ * @author amethystlei, dexy
+ * @version 1.2
  */
 'use strict';
 /*global module, angular*/
@@ -40,13 +43,14 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
     },
         updateContest = function (contest) {
             contest.detailIndex = 1;
-            contest.action = contest.phaseData.phaseType === helper.PHASE_TYPE_ID.CodingPhase ? 'Enter' : '';
+            contest.action = (contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.AlmostContestPhase
+                            && contest.coderRooms.length > 0) ? 'Enter' : '';
         },
         // show the active tab name when active contest widget is narrow
         tabNames = ['Contest Summary', 'Contest Schedule', 'My Status'],
         popupModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', function ($scope, $modalInstance, data, ok) {
             $scope.title = data.title;
-            $scope.message = data.message;
+            $scope.message = data.message.replace(/(\r\n|\n|\r)/gm, "<br/>");
             $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
             $scope.ok = function () {
                 ok();
@@ -75,13 +79,14 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
     $scope.range = appHelper.range;
     $scope.currentContest = 0;
 
-    // Renders the TC TIME
-    setInterval(function () {
-        $rootScope.$apply(function () {
-            $rootScope.now = $rootScope.getCurrentTCTime();
-        });
-    }, 1000);
-
+    /*jslint unparam:true*/
+    $scope.$on(helper.EVENT_NAME.CreateRoomListResponse, function (event, data) {
+        updateContest($rootScope.roundData[data.roundID]);
+    });
+    $scope.$on(helper.EVENT_NAME.PhaseDataResponse, function (event, data) {
+        updateContest($rootScope.roundData[data.phaseData.roundID]);
+    });
+    /*jslint unparam:false*/
     angular.forEach($rootScope.roundData, function (contest) {
         updateContest(contest);
     });
@@ -149,7 +154,6 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
     // action for 'Register' or 'Enter'
     $scope.doAction = function (contest) {
         var roundID = contest.roundID;
-
         $scope.okDisabled = true;
         // in the real app, we should perform real actions.
         if (contest.action === 'Enter') {

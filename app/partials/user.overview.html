@@ -6,16 +6,19 @@
         <div class="panel-body">
             <div class="contentWrapper" data-ng-show="showSection==='overview'">
                 <div class="profile">
-                    <img data-ng-src="{{userProfile.avatar}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="{{userProfile.username}}"/>
-                    <p class="userNameRow"><span class="{{getUserColor()}}">{{userProfile.username}}</span></p>
-                    <p class="ratingRow">
+                    <img data-ng-src="{{userProfile.avatar}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="{{userProfile.handle}}"/>
+                    <p class="userNameRow"><span class="{{getUserColor()}}">{{userProfile.handle}}</span></p>
+                    <p class="ratingRow" data-ng-show="userProfile.rating>0">
                         <label>Rating</label>:&nbsp;<span class="{{getRatingColor()}}">{{userProfile.rating}}</span>
                     </p>
+                    <p class="ratingRow" data-ng-show="userProfile.rating<=0">
+                        <label>Rating</label>:&nbsp;<span>Not rated</span>
+                    </p>
                     <p class="competeRow">
-                        <label>Competed in</label>:&nbsp;<span>{{userProfile.competedIn}} event<span data-ng-hide="userProfile.competedIn===1">s</span></span>
+                        <label>Competed in</label>:&nbsp;<span>{{userProfile.numRatedEvents}} event<span data-ng-hide="userProfile.numRatedEvents===1">s</span></span>
                     </p>
                     <p class="lastLoginRow">
-                        <label>Last Login</label>:&nbsp;<span>{{userProfile.lastLogin}}</span>
+                        <label>Last Login</label>:&nbsp;<span>{{userProfile.lastLogin| date:'yyyy-MM-dd h:mm a'}} {{ timeZone }}</span>
                     </p>
                 </div><!--/.profile-->
                 <div class="messagesBox">
