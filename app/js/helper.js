@@ -23,15 +23,20 @@
  * - Added REQUEST_TIME_OUT, SYNC_TIME_INTERVAL, CONNECTION_UPDATE_INTERVAL,
  *   INNACTIVITY_TIMEOUT constants.
  *
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Chat Widget):
+ * - Added chat-related events and constants.
+ *
  * @author tangzx, amethystlei, dexy
- * @version 1.4
+ * @version 1.5
  */
 
 module.exports = {
     // Represents the event names
     EVENT_NAME: {
         // backend requests
+        ChatRequest: 'ChatRequest',
         CloseProblemRequest: 'CloseProblemRequest',
+        CoderInfoRequest: 'CoderInfoRequest',
         CompileRequest: 'CompileRequest',
         EnterRequest: 'EnterRequest',
         EnterRoundRequest: 'EnterRoundRequest',
@@ -50,9 +55,11 @@ module.exports = {
         TestRequest: 'TestRequest',
         // backend responses
         CreateChallengeTableResponse: 'CreateChallengeTableResponse',
+        CreateMenuResponse: 'CreateMenuResponse',
         CreateProblemsResponse: 'CreateProblemsResponse',
         CreateRoomListResponse: 'CreateRoomListResponse',
         CreateRoundListResponse: 'CreateRoundListResponse',
+        CreateUserListResponse: 'CreateUserListResponse',
         EnableRoundResponse: 'EnableRoundResponse',
         EndSyncResponse: 'EndSyncResponse',
         ForcedLogoutResponse: 'ForcedLogoutResponse',
@@ -71,9 +78,11 @@ module.exports = {
         SynchTimeResponse: 'SynchTimeResponse',
         SystestProgressResponse: 'SystestProgressResponse',
         TestInfoResponse: 'TestInfoResponse',
+        UpdateChatResponse: 'UpdateChatResponse',
         UpdateCoderComponentResponse: 'UpdateCoderComponentResponse',
         UpdateCoderPointsResponse: 'UpdateCoderPointsResponse',
         UpdateLeaderBoardResponse: 'UpdateLeaderBoardResponse',
+        UpdateUserListResponse: 'UpdateUserListResponse',
         UpdateRoundListResponse: 'UpdateRoundListResponse',
         UserInfoResponse: 'UserInfoResponse',
         // internal events
@@ -159,11 +168,16 @@ module.exports = {
     // default value for keep alive timeout
     KEEP_ALIVE_TIMEOUT: 30 * 1000,
 
+    // maximum characters of a message can be sent in chat rooms.
+    MAX_CHAT_LENGTH: 256,
+
     // pop up titles
     POP_UP_TITLES: {
         Error: 'Error.',
         CompileResult: 'Compile Result',
         TestResults: 'Test Results',
+        CoderInfo: 'Coder Info',
+        IncorrectUsage: 'Incorrect Usage',
         MultipleSubmission: 'Multiple Submission',
         Unauthorized: 'Unauthorized',
         Disconnected: 'Disconnected',
@@ -181,6 +195,46 @@ module.exports = {
     TIME_ZONES: {
         "EDT": -4 * 60,
         "EST": -5 * 60 // for North America, not Australia
+    },
+
+    // Menu type ID for chat rooms
+    MENU_TYPE_ID: {
+        LobbyMenu: 3
+    },
+
+    // Room type ID for chat rooms
+    ROOM_TYPE_ID: {
+        CoderRoom: 2,
+        LobbyRoom: 3,
+        AdminRoom: 12
+    },
+
+    // User list type
+    USER_LIST: {
+        RoomUsers: 0
+    },
+
+    // User list update action
+    USER_LIST_UPDATE: {
+        Add: 0,
+        Remove: 1
+    },
+
+    // Chat types
+    CHAT_TYPES: {
+        UserChat: 0,
+        SystemChat: 1,
+        EmphSystemChat: 2,
+        IrcChat: 3,
+        ModeratedChatQuestionChat: 4,
+        ModeratedChatSpeakerChat: 5,
+        WhisperToYouChat: 6
+    },
+
+    // Chat scopes
+    CHAT_SCOPES: {
+        GlobalChatScope: 1,
+        TeamChatScope: 2
     },
 
     // Compile results

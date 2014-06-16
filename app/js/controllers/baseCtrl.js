@@ -56,42 +56,6 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
                 $modalInstance.dismiss('cancel');
             };
         }],
-        /**
-         * Open modal function.
-         *
-         * @param data the data
-         * @param handle the handler
-         * @param finish the finish function
-         */
-        openModal = function (data, handle, finish) {
-            if ($scope.currentModal) {
-                $scope.currentModal.close();
-                $scope.currentModal = undefined;
-            }
-
-            $scope.currentModal = $modal.open({
-                templateUrl: 'popupModalBase.html',
-                controller: popupModalCtrl,
-                backdrop: 'static',
-                resolve: {
-                    data: function () {
-                        return data;
-                    },
-                    ok: function () {
-                        return handle;
-                    },
-                    cancel: function () {
-                        return function () {
-                            if (angular.isFunction(finish)) {
-                                finish();
-                            }
-
-                            $scope.currentModal = undefined;
-                        };
-                    }
-                }
-            });
-        },
         isDisconnecting = false,
         closeThemeHandler = function (event) {
             // the depth of DOM tree rooted at the element with id 'themePanel'
@@ -104,9 +68,46 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
             }
         },
         selTheme;
+
+    /**
+     * Open modal function.
+     *
+     * @param data the data
+     * @param handle the handler
+     * @param finish the finish function
+     */
+    $scope.openModal = function (data, handle, finish) {
+        if ($scope.currentModal) {
+            $scope.currentModal.close();
+            $scope.currentModal = undefined;
+        }
+
+        $scope.currentModal = $modal.open({
+            templateUrl: 'popupModalBase.html',
+            controller: popupModalCtrl,
+            backdrop: 'static',
+            resolve: {
+                data: function () {
+                    return data;
+                },
+                ok: function () {
+                    return handle;
+                },
+                cancel: function () {
+                    return function () {
+                        if (angular.isFunction(finish)) {
+                            finish();
+                        }
+
+                        $scope.currentModal = undefined;
+                    };
+                }
+            }
+        });
+    };
     /*jslint unparam: true*/
     $scope.$on(helper.EVENT_NAME.ForcedLogoutResponse, function (event, data) {
-        openModal({
+        $scope.openModal({
             title: helper.POP_UP_TITLES.ForcedLogout,
             message: helper.POP_UP_MESSAGES.ForcedLogout,
             enableClose: true
@@ -117,7 +118,7 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
     $scope.$on(helper.EVENT_NAME.Disconnected, function (event, data) {
         if (!isDisconnecting) {
             isDisconnecting = true;
-            openModal({
+            $scope.openModal({
                 title: helper.POP_UP_TITLES.Disconnected,
                 message: helper.POP_UP_MESSAGES.Reconnecting,
                 enableClose: true
