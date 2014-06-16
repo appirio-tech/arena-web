@@ -10,8 +10,12 @@
  * Changes in version 1.2 (Module Assembly - Web Arena UI - Coding IDE Part 2):
  * - Added functions for the submission logic.
  *
- * @author tangzx, amethystlei
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Chat Widget):
+ * - Updated to handle PopUpGenericResponse with $scope instead of socket.
+ * - Updated modal closing logic to avoid the same popup appearing more than once.
+ *
+ * @author tangzx, amethystlei, TCSASSEMBLER
+ * @version 1.3
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $ */
@@ -30,7 +34,6 @@ var helper = require('../helper');
  */
 var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket', '$timeout', 'themer',
     function ($scope, $window, appHelper, $modal, socket, $timeout, themer) {
-    
         var indentRangeFinder = {
                 rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.indent, CodeMirror.fold.comment)
             },
@@ -77,16 +80,6 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             userInputDisabled = false,
             modalTimeoutPromise = null,
             /**
-             * Close the given modal. Use try/catch to get around the errors.
-             */
-            closeModal = function (modal) {
-                try {
-                    modal.close();
-                } catch (err) {
-                    console.log('Errors occurred when closing the modal: ' + err);
-                }
-            },
-            /**
              * Dismiss the given modal. Use try/catch to get around the errors.
              */
             dismissModal = function (modal) {
@@ -112,7 +105,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                  */
                 $scope.ok = function () {
                     ok();
-                    closeModal($modalInstance);
+                    dismissModal($modalInstance);
                 };
 
                 /**
@@ -132,7 +125,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
              */
             openModal = function (data, handle, finish) {
                 if ($scope.currentModal) {
-                    closeModal($scope.currentModal);
+                    dismissModal($scope.currentModal);
                     $scope.currentModal = undefined;
                 }
 
@@ -510,10 +503,11 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             });
         });
 
+        /*jslint unparam: true*/
         /**
          * Handle pop up generic response.
          */
-        socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
+        $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
             }
@@ -551,7 +545,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                 }
             });
 
-            if (angular.isDefined($scope.userData.tests)) {
+            if (angular.isDefined($scope.userData) && angular.isDefined($scope.userData.tests)) {
                 // clean test status once get any pop up response
                 // as may get error response
                 for (i = 0; i < $scope.userData.tests.length; i += 1) {
@@ -574,6 +568,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                 $scope.contentDirty = false;
             }
         });
+        /*jslint unparam: false*/
 
         /**
          * Handle test info response.

@@ -2,136 +2,115 @@
  * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
  */
 /**
- * This file provides the chat area controller.
+ * This controller handles chat area related logic.
  *
  * Changes in version 1.1 (Module Assembly - Web Arena UI Fix):
  * - Many simple changed (syntax) to clean the file and pass jslint.
  * - Changed userProfile.username to userProfile.handle to display correct information
  * - Added $rootScope to the list of parameters
  *
- * @author dexy
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI - Chat Widget):
+ * - Updated to use real data.
+ *
+ * @author dexy, amethystlei
+ * @version 1.2
  */
 'use strict';
-//global chat area, module
+/*global require, module, angular */
 
 /**
- * The chat area controller.
+ * The helper.
+ *
+ * @type {exports}
+ */
+var helper = require('../helper');
+
+/**
+ * The main controller for chat area.
  *
  * @type {*[]}
  */
-var chatAreaCtrl = ['$scope', '$rootScope', '$timeout', '$modal', function ($scope, $rootScope, $timeout, $modal) {
-    /*jslint unparam: true*/
-    var rebuildAllScrollbar = function () {
+var chatAreaCtrl = ['$scope', '$rootScope', '$modal', 'socket', '$timeout', function ($scope, $rootScope, $modal, socket, $timeout) {
+    var roundData,
+        waitingCoderInfo = false,
+        modalTimeoutPromise = null,
+        rebuildAllScrollbar = function () {
             $scope.$broadcast('rebuild:methods');
             $scope.$broadcast('rebuild:members');
-            if (!$scope.collapseMemberHere) {
-                $scope.$broadcast('rebuild:whosHere');
-            } else {
-                $scope.$broadcast('rebuild:registrants');
-            }
-        },
-        openAlertModal = function () {
-            $modal.open({
-                templateUrl: 'partials/user.chat.area.alert.html',
-                controller: function ($scope, $modalInstance) {
-                    $scope.ok = function () {
-                        $modalInstance.close();
-                    };
-                }
-            });
+            $scope.rebuildScrollbar('info');
+            $scope.$broadcast('rebuild:chatboard');
         };
-    /*jslint unparam: false*/
 
     $scope.showRatingKey = true;
     $scope.showRegistrant = false;
     $scope.showMemberHere = true;
+    $scope.collapseRatingKey = true;
+    $scope.collapseMemberHere = false;
+    $scope.collapseRegistrant = false;
+    $scope.disableSelect = true;
+    // array of rating key dropdown
+    $scope.ratingKeyArray = [
+        {name: "2200+",     class: "rating-red"},
+        {name: "1500-2199", class: "rating-yellow"},
+        {name: "1200-1499", class: "rating-purple"},
+        {name: "0900-1199", class: "rating-green"},
+        {name: "0001-0899", class: "rating-grey"},
+        {name: "Non-Rated", class: "rating-none"},
+        {name: "Admin",     class: "rating-admin"}
+    ];
+    $scope.findMode = false;
+    $scope.findText = "";
+    $scope.matchCheck = false;
+    $scope.highlightCheck = true;
+    $scope.whosHereOrderPredicate = '-name.toLowerCase()';
+    $scope.registrantOrderPredicate = '-userName.toLowerCase()';
+    $scope.methodIdx = 1;
+    $rootScope.memberIdx = null;
+    $scope.chatText = "";
+    $scope.methodsArray = [
+        "Admins",
+        "General",
+        "Me",
+        "Question",
+        "Reply To",
+        "Whisper"
+    ];
+    $scope.ratingKeyScrollHeight = '';
+    $scope.registrantsScrollHeight = '';
+    $scope.whosHereScrollHeight = '';
 
-/*
-    $http.get('data/profile-' + $rootScope.username() + '.json').success(function (data) {
-        $scope.userProfile = data;
-        $scope.whosHereArray.push({
-            name: $scope.userProfile.username,
-            rating: $scope.userProfile.rating
-        });
-    });
-*/
-    $scope.userProfile = $rootScope.userInfo();
-
-
-
-    function systemNotification() {
-        // in current arena implementation, system will give a
-        // message after a user step in lobby
-        $timeout(function () {
-            $scope.chatContent.push({
-                text: "System> " + $scope.userProfile.handle + " has entered the room.",
-                type: "system"
+    if ($rootScope.currentRoomInfo.roomType === helper.ROOM_TYPE_ID.LobbyRoom) {
+        // set lobby room menu
+        $rootScope.roomMenu = $rootScope.lobbyMenu;
+    } else {
+        // set competing room menu
+        $rootScope.roomMenu = {};
+        roundData = $rootScope.roundData[$rootScope.currentRoomInfo.roundID];
+        if (roundData) {
+            // for now, only list the room assigned to the user in competing room,
+            // simply remove the conditions to show more rooms.
+            angular.forEach(roundData.coderRooms, function (room) {
+                if (+room.roomID === +$rootScope.currentRoomInfo.roomID) {
+                    $rootScope.roomMenu[room.roomID] = room;
+                }
             });
-        }, 500);
-
-        $timeout(function () {
-            $scope.chatContent.push({
-                text: "System>" + $scope.whosHereArray[3].name + " has left the room.",
-                type: "system"
-            });
-            $scope.whosHereArray.splice(3, 1);
-        }, 2000);
-
-        $timeout(function () {
-            $scope.whosHereArray.push({name: "Iron man", rating: 2499});
-            $scope.chatContent.push({
-                text: "System>" + $scope.whosHereArray[$scope.whosHereArray.length - 1].name + " has entered the room.",
-                type: "system"
-            });
-        }, 3000);
-
-        $timeout(function () {
-            $scope.chatText = "Username 6> " + $scope.userProfile.handle + ": Hi, I have some questions..." + " ";
-            $scope.chatContent.push({
-                text: $scope.chatText,
-                type: "general toMe"
-            });
-            $scope.chatText = "";
-            $scope.$broadcast('rebuild:chatboard');
-
-            // when all this done rebuild the scroll bar
-            rebuildAllScrollbar();
-        }, 4000);
+            if (angular.isDefined(roundData.adminRoom) && +roundData.adminRoom.roomID === +$rootScope.currentRoomInfo.roomID) {
+                $rootScope.roomMenu[roundData.adminRoom.roomID] = roundData.adminRoom;
+            }
+        }
     }
 
-    systemNotification.call();
+    if ($rootScope.isEnteringRoom) {
+        $rootScope.chatContent = [];
+        socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
+    }
 
-    //initialize showRegistrant by directive's attribute, default to false, not to show the registrants section
-    this.init = function (registrantsConfig) {
-        if (registrantsConfig !== undefined && registrantsConfig === "true") {
-            $scope.showRegistrant = true;
-        }
-    };
-
-    // lobby dropdown
-    $scope.lobbyIdx = 0;
-    $scope.lobbiesArray = [
-        "Lobby1",
-        "Lobby2",
-        "Lobby3",
-        "Lobby4",
-        "Lobby5"
-    ];
-    $scope.getLobbyName = function (lobbyIdx) {
-        return $scope.lobbiesArray[lobbyIdx];
-    };
-    $scope.setLobby = function (index) {
-        systemNotification.call();
-        $scope.whosHereArray.splice($scope.whosHereArray.length - 1, 1);
-        $scope.chatContent = [];
-        $scope.lobbyIdx = index;
-        // reset the chatboard and whos here and registrant area.
-        $scope.$broadcast('rebuild:chatboard');
-        rebuildAllScrollbar();
-    };
-
-    // this function return the css class of rating value
+    /**
+     * This function returns the css class of rating value.
+     *
+     * @param {number} rating the rating
+     * @returns {string} the CSS class to show different colors
+     */
     $scope.getRatingClass = function (rating) {
         if (rating >= 2200) {
             return "rating-red";
@@ -157,227 +136,288 @@ var chatAreaCtrl = ['$scope', '$rootScope', '$timeout', '$modal', function ($sco
         return "";
     };
 
-    // array of rating key dropdown
-    $scope.ratingKeyArray = [
-        {name: "2200+",     class: "rating-red"},
-        {name: "1500-2199", class: "rating-yellow"},
-        {name: "1200-1499", class: "rating-purple"},
-        {name: "0900-1199", class: "rating-green"},
-        {name: "0001-0899", class: "rating-grey"},
-        {name: "Non-Rated", class: "rating-none"},
-        {name: "Admin",     class: "rating-admin"}
-    ];
-    $scope.collapseRatingKey = false;
-
-    // array of who's Here
-    $scope.whosHereArray = [
-        {name: "Username1", rating: 2200},
-        {name: "Username2", rating: 2400},
-        {name: "Username3", rating: 1500},
-        {name: "Username4", rating: 2199},
-        {name: "Username5", rating: 1200},
-        {name: "Username6", rating: 1499},
-        {name: "Username7", rating: 900},
-        {name: "Username8", rating: 1199},
-        {name: "Username9", rating: 1},
-        {name: "Username10", rating: 899},
-        {name: "Username11", rating: 0},
-        {name: "Username12", rating: -1} //this is admin
-    ];
-
-    $scope.showCoderInfo = function (index) {
-        var coderInfo = {
-                username: $scope.whosHereArray[index].name,
-                rating: $scope.whosHereArray[index].rating,
-                rated: 1,
-                since: "Otc 25, 2013",
-                country: "China",
-                coderType: "Student",
-                school: "Hogwarts School of Witchcraft and Wizardry",
-                quote: "Member of ...."
-            };
-        $modal.open({
-            templateUrl: 'partials/user.chat.area.coderinfo.html',
-            controller: function ($scope, $modalInstance, coderInfo) {
-                $scope.coderInfo = coderInfo;
-                $scope.ok = function () {
-                    $modalInstance.close();
-                };
-            },
-            resolve: {
-                coderInfo: function () {
-                    return coderInfo;
-                }
-            }
-        });
+    /**
+     * Initializes showRegistrant by directive's attribute, default to false, not to show the registrants section.
+     *
+     * @param {string} registrantsConfig indicates whether the registrants section should show.
+     */
+    this.init = function (registrantsConfig) {
+        if (registrantsConfig !== undefined && registrantsConfig === "true") {
+            $scope.showRegistrant = true;
+            $scope.registrantsArray = $rootScope.roomData[$rootScope.currentRoomInfo.roomID].coders;
+        }
     };
 
-    $scope.collapseMemberHere = true;
-    $scope.collapseRegistrant = true;
+    /**
+     * Gets the title of the current room.
+     *
+     * @returns {string} the room title
+     */
+    $scope.getRoomTitle = function () {
+        if (!angular.isDefined($rootScope.currentRoomInfo)) {
+            return '';
+        }
+        if (!angular.isDefined($rootScope.currentRoomInfo.roomID)) {
+            return '';
+        }
+        if (!angular.isDefined($rootScope.roomMenu[$rootScope.currentRoomInfo.roomID])) {
+            return '';
+        }
+        return $rootScope.roomMenu[$rootScope.currentRoomInfo.roomID].roomTitle;
+    };
+    /**
+     * Gets the ID of the current room.
+     *
+     * @returns {string} the ID of the current room
+     */
+    $scope.getCurrentRoomID = function () {
+        if (!angular.isDefined($rootScope.currentRoomInfo)) {
+            return -1;
+        }
+        return $rootScope.currentRoomInfo.roomID;
+    };
+    /**
+     * Sets the current room with the given room ID.
+     *
+     * @param {(string|number)} roomID the room ID
+     */
+    $scope.setRoom = function (roomID) {
+        if (+roomID === +$rootScope.currentRoomInfo.roomID) {
+            return;
+        }
+        socket.emit(helper.EVENT_NAME.MoveRequest, {moveType: $rootScope.roomMenu[roomID].roomType, roomID: roomID});
+        socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
+        $rootScope.chatContent = [];
+        $scope.$broadcast('rebuild:chatboard');
+    };
 
+    /**
+     * Set timeout modal.
+     */
+    function setTimeoutModal() {
+        $scope.openModal({
+            title: 'Timeout',
+            message: 'Sorry, the request is timeout.',
+            enableClose: true
+        });
+        modalTimeoutPromise = null;
+        waitingCoderInfo = false;
+    }
+
+    /**
+     * Requests to show coder info.
+     *
+     * @param {string} name the name of the user
+     * @param {string} userType the user type
+     */
+    $scope.showCoderInfo = function (name, userType) {
+        if (waitingCoderInfo) {
+            return;
+        }
+        waitingCoderInfo = true;
+        if (modalTimeoutPromise) {
+            $timeout.cancel(modalTimeoutPromise);
+        }
+        modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
+        socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
+    };
+
+    /*jslint unparam: true*/
+    // handles the PopUpGenericResponse to show coder info or error messages. 
+    $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
+        if (data.title === helper.POP_UP_TITLES.CoderInfo) {
+            if (modalTimeoutPromise) {
+                $timeout.cancel(modalTimeoutPromise);
+            }
+            waitingCoderInfo = false;
+            $modal.open({
+                templateUrl: 'partials/user.chat.area.coderinfo.html',
+                controller: function ($scope, $modalInstance, coderInfo) {
+                    $scope.coderInfo = coderInfo;
+                    $scope.ok = function () {
+                        $modalInstance.close();
+                    };
+                },
+                resolve: {
+                    coderInfo: function () {
+                        return data.message;
+                    }
+                }
+            });
+        } else if (data.title === helper.POP_UP_TITLES.IncorrectUsage) {
+            $scope.openModal({
+                title: helper.POP_UP_TITLES.IncorrectUsage,
+                message: data.message,
+                enableClose: true
+            });
+        }
+    });
+    /*jslint unparam: false*/
+
+    /**
+     * Gets the chat method name.
+     *
+     * @param {number} methodIdx the method index
+     * @returns {string} the method name
+     */
     $scope.getMethodName = function (methodIdx) {
         return $scope.methodsArray[methodIdx];
     };
-    $scope.disableSelect = true;
+
+    /**
+     * Sets the chat method.
+     *
+     * @param {number} index the method index
+     */
     $scope.setChatMethod = function (index) {
         $scope.methodIdx = index;
         //if user choose "Admins", "General", "Me",
         // there is no need to specify a user to talk to
         // in current arena implementation. so set memberIdx to null
         if (index < 3) {
-            $scope.memberIdx = null;
+            $rootScope.memberIdx = null;
             $scope.disableSelect = true;
+            $scope.disableInput = true;
         } else {
             $scope.disableSelect = false;
+            $scope.disableInput = false;
         }
     };
-    $scope.methodIdx = 1;
-    $scope.methodsArray = [
-        "Admins",
-        "General",
-        "Me",
-        "Question",
-        "Reply to",
-        "Whisper"
-    ];
 
-    $scope.memberIdx = null;
+    /**
+     * Gets the member name for the dropdown at the bottom of the widget.
+     *
+     * @param {number} memberIdx the index in the dropdown
+     * @returns {string} the member name
+     */
     $scope.getMemberName = function (memberIdx) {
         if (memberIdx === null) {
             return " ";
         }
         return $scope.whosHereArray[memberIdx].name;
     };
+    /**
+     * Gets the CSS class of the member's rating.
+     *
+     * @param {number} memberIdx the index in the dropdown
+     * @returns {string} the CSS class
+     */
     $scope.getMemberRatingClass = function (memberIdx) {
         if (memberIdx === null) {
             return "";
         }
         return $scope.getRatingClass($scope.whosHereArray[memberIdx].rating);
     };
+
+    /**
+     * Sets the member talking to.
+     *
+     * @param {number} index the index of the member talking to
+     */
     $scope.talkTo = function (index) {
-        $scope.memberIdx = index;
+        $rootScope.memberIdx = index;
     };
 
+    /**
+     * Sets the talk-to user.
+     *
+     * @param {number} index the index of the member talking to
+     */
+    $scope.setTalkTo = function (index) {
+        $scope.talkToUser = $scope.getMemberName(index);
+    };
 
-    // this function rebuild the multi ng-scrollbars in this widget.
+    /**
+     * Rebuilds the multi ng-scrollbars in this widget.
+     *
+     * @param {object} bar the scroll bar(s) to rebuild
+     */
     $scope.rebuildScrollbar = function (bar) {
         //the left aside have a fixed height, so we need to customize the height of each
         // ng-scrollbar which belong to registrants, who's here and rating key section.
         //
         // the height is calculate by the height of left aside, header of each section and
         // height of the rating key ul
-        if ($scope.collapseRatingKey) {
-            if ($scope.showRegistrant) {
-                $scope.whosHereScrollHeight = "scroll-height-1"; // 351-3*41
-                $scope.registrantsScrollHeight = "scroll-height-1";
-            } else {
-                $scope.whosHereScrollHeight = "scroll-height-2"; //351-2*41
+
+        if (bar === 'info') {
+            var sectionOpen = ($scope.collapseRatingKey === false ? 1 : 0) +
+                ($scope.collapseRegistrant === false ? 1 : 0) +
+                ($scope.collapseMemberHere === false ? 1 : 0);
+
+            if ($scope.collapseRatingKey === false) {
+                $scope.ratingKeyScrollHeight = "scroll-height-" + String(sectionOpen);
+                $scope.$broadcast('rebuild:ratingKey');
             }
-        } else {
-            if ($scope.showRegistrant) {
-                $scope.whosHereScrollHeight = "scroll-height-3"; // 351-186-41*2
-                $scope.registrantsScrollHeight = "scroll-height-3";
-            } else {
-                $scope.whosHereScrollHeight = "scroll-height-4"; //351-184-41
-            }
-        }
-        // this function is reusable, can rebuild a specify ng-scrollbar according to
-        // "bar" param
-        if (bar === "methods") {
-            $scope.$broadcast('rebuild:methods');
-        } else if (bar === "members") {
-            $scope.$broadcast('rebuild:members');
-        } else if (bar === "registrants") {
-            $scope.$broadcast('rebuild:registrants');
-        } else if (bar === 'whoshere') {
-            $scope.$broadcast('rebuild:whosHere');
-        } else {
-            if (!$scope.collapseMemberHere) {
-                $scope.$broadcast('rebuild:whosHere');
-            } else {
+            if ($scope.collapseRegistrant === false) {
+                $scope.registrantsScrollHeight = "scroll-height-" + String(sectionOpen);
                 $scope.$broadcast('rebuild:registrants');
             }
+            if ($scope.collapseMemberHere === false) {
+                $scope.whosHereScrollHeight = "scroll-height-" + String(sectionOpen);
+                $scope.$broadcast('rebuild:whosHere');
+            }
+        } else if (bar === 'methods') {
+            $scope.$broadcast('rebuild:methods');
+        } else if (bar === 'members') {
+            $scope.$broadcast('rebuild:members');
         }
     };
 
+    rebuildAllScrollbar();
 
-    // this is the array of the chat texts in the chat area
-    $scope.chatContent = [];
-    $scope.chatText = "";
-
-    // this function adjust the chatText content and style according to chat method.
-    // current arena implementation have three text style:
-    // system style: green color
-    // general style: white color
-    // secret style: italic and grey
+    /**
+     * Submits the text content according to the chat method selected.
+     */
     $scope.chatSubmit = function () {
-        if ($scope.chatText === "") {
+        if ($scope.chatText === '') {
             return;
         }
-        var type = "general";
+        if ($scope.chatText.length > helper.MAX_CHAT_LENGTH) {
+            $scope.openModal({
+                title: 'Error',
+                message: 'You have entered ' + $scope.chatText.length +
+                    ' Characters. Please limit your message size to ' + helper.MAX_CHAT_LENGTH + ' characters.',
+                enableClose: true
+            });
+            return;
+        }
+        if ($scope.methodIdx >= 4) {
+            // Reply-To / Whisper chat must have a recipient.
+            if ($scope.talkToUser === undefined || $scope.talkToUser === '') {
+                $scope.openModal({
+                    title: 'Error',
+                    message: 'You need to enter who the message is going to',
+                    enableClose: true
+                });
+                $scope.chatText = "";
+                return;
+            }
+        }
+        var msg;
         switch ($scope.methodIdx) {
         case 0:
-            $scope.chatText = $scope.userProfile.handle + "> admins: " + $scope.chatText;
+            msg = 'admins: ' + $scope.chatText + '\n';
             break;
         case 1:
-            $scope.chatText = $scope.userProfile.username + "> " + $scope.chatText;
+            msg = $scope.chatText + '\n';
             break;
         case 2:
-            $scope.chatText = "**" + $scope.userProfile.username + " " + $scope.chatText + " ";
-            type = "secret";
+            msg = '/me ' + $scope.chatText + '\n';
             break;
         case 3:
-            if ($scope.memberIdx === null) {
-                openAlertModal();
-                $scope.chatText = "";
-                return;
-            }
-            $scope.chatText = $scope.userProfile.username + "> " + $scope.whosHereArray[$scope.memberIdx].name + ": " + $scope.chatText + " ";
-            if ($scope.whosHereArray[$scope.memberIdx].name === $scope.userProfile.username) {
-                type += " toMe";
-            }
+            msg = '/moderator ' + $scope.chatText + '\n';
             break;
         case 4:
-            if ($scope.memberIdx === null) {
-                openAlertModal();
-                $scope.chatText = "";
-                return;
-            }
-            $scope.chatText = $scope.userProfile.username + "> " + $scope.whosHereArray[$scope.memberIdx].name + ": " + $scope.chatText + " ";
-            if ($scope.whosHereArray[$scope.memberIdx].name === $scope.userProfile.username) {
-                type += " toMe";
-            }
+            msg = $scope.talkToUser + ': ' + $scope.chatText + '\n';
             break;
         case 5:
-            if ($scope.memberIdx === null) {
-                openAlertModal();
-                $scope.chatText = "";
-                return;
-            }
-            type = "secret";
-            if ($scope.whosHereArray[$scope.memberIdx].name === $scope.userProfile.username) {
-                $scope.chatText = $scope.userProfile.username + " whisper to " + "you: " + $scope.chatText;
-                type += " toMe";
-                break;
-            }
-            $scope.chatText = "You whisper to " + $scope.whosHereArray[$scope.memberIdx].name + ": " + $scope.chatText;
+            msg = '/msg ' + $scope.talkToUser + ' ' + $scope.chatText + '\n';
             break;
         default:
         }
-        $scope.chatContent.push({
-            text: $scope.chatText,
-            type: type
-        });
+        socket.emit(helper.EVENT_NAME.ChatRequest, {msg: msg, roomID: $rootScope.currentRoomInfo.roomID, scope: $rootScope.chatScope});
         $scope.chatText = "";
-        // after user submit the text, rebuild the ng-scrollbar of chat area
-        $scope.$broadcast('rebuild:chatboard');
     };
-
-    $scope.findMode = false;
-    $scope.findText = "";
-    $scope.matchCheck = false;
-    $scope.highlightCheck = true;
-
 }];
 
 module.exports = chatAreaCtrl;

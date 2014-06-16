@@ -10,8 +10,11 @@
  * Changes in version 1.2 (Module Assembly - Web Arena UI Fix):
  * - Updated startTimer to use time from tcTimeService.
  *
- * @author TCSASSEMBLER, dexy
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Chat Widget):
+ * - Fixed the issue of the timer that reports errors in the web console.
+ *
+ * @author amethystlei, dexy
+ * @version 1.3
  */
 'use strict';
 /*global module, angular*/
@@ -97,6 +100,12 @@ var contestCountdownCtrl = ['$scope', '$timeout', 'tcTimeService', function ($sc
             }, 200);
         }
     };
+
+    /**
+     * The milliseconds for the count down. The real value will be set when the timer is ready to start.
+     * @type {number}
+     */
+    $scope.countdown = 1;
 
     /*jslint unparam: true*/
     // handle phase data response

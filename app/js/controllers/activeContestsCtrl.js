@@ -2,7 +2,7 @@
  * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
  */
 /**
- * This controller handles coding editor related logic.
+ * This controller handles active contests related logic.
  *
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 2):
  * - Moved socket handler of RoomInfoResponse to resolver.js
@@ -10,8 +10,12 @@
  * Changes in version 1.2 (Module Assembly - Web Arena UI Fix):
  * - Removed updating $rootScope.now and moved to tcTimeCtrl.
  *
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Chat Widget):
+ * - Updated the contest entering logic, moved handlers to resolvers.
+ * - Updated to use scope broadcasting to handle registration responses.
+ *
  * @author amethystlei, dexy
- * @version 1.2
+ * @version 1.3
  */
 'use strict';
 /*global module, angular*/
@@ -157,45 +161,30 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
         $scope.okDisabled = true;
         // in the real app, we should perform real actions.
         if (contest.action === 'Enter') {
-            // Get ready to handle RoomInfoResponse broadcasted from resolvers.js
-            $scope.$on(helper.EVENT_NAME.RoomInfoResponse, function () {
-                // clears the listeners for RoomInfoResponse
-                $scope.$$listeners[helper.EVENT_NAME.RoomInfoResponse] = [];
-
+            $rootScope.competingRoomID = -1;
+            // requests will be sent by the resolvers
+            $state.go('user.contest', {
+                contestId: contest.roundID
+            }).then(function () {
                 $scope.okDisabled = false;
-
-                var divisionID = null;
-                angular.forEach(contest.coderRooms, function (room) {
-                    if (room.roomID === $rootScope.currentRoomInfo.roomID) {
-                        divisionID = room.divisionID;
-                    }
-                });
-
-                if (divisionID) {
-                    $state.go('user.contest', {
-                        contestId: contest.roundID,
-                        divisionId: divisionID
-                    });
-                }
             });
-            socket.emit(helper.EVENT_NAME.EnterRoundRequest, {roundID: roundID});
-            socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
-
-            socket.remove(helper.EVENT_NAME.EndSyncResponse);
         } else {
-            socket.emit(helper.EVENT_NAME.RegisterInfoRequest, {roundID: roundID});
-
-            // show the popup
-            socket.remove(helper.EVENT_NAME.PopUpGenericResponse);
-            socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
+            /*jslint unparam: true*/
+            // define the listener for showing the popup
+            $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
+                // remove the listener
+                $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
                 var modalInstance = openModal(data, function () {
-
-                    socket.emit(helper.EVENT_NAME.RegisterRequest, {roundID: roundID});
-                    socket.remove(helper.EVENT_NAME.PopUpGenericResponse);
-                    socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
+                    /*jslint unparam: true*/
+                    // Agreed to register, listen to registration results.
+                    $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
+                        // Remove the listener.
+                        $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
                         var innerModalInstance = openModal(data, null);
                         innerModalInstance.result.then(null, null);
                     });
+                    /*jslint unparam: false*/
+                    socket.emit(helper.EVENT_NAME.RegisterRequest, {roundID: roundID});
                 });
                 modalInstance.result.then(function () {
                     contest.isRegistered = true;
@@ -205,6 +194,8 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
                 });
                 $scope.okDisabled = false;
             });
+            /*jslint unparam: false*/
+            socket.emit(helper.EVENT_NAME.RegisterInfoRequest, {roundID: roundID});
         }
     };
 

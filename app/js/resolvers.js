@@ -21,8 +21,12 @@
  * - Added ForcedLogoutResponse handler to handle forced logout.
  * - Removed getCurrentTCTime from $rootScope.
  *
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Chat Widget):
+ * - Updated to resolve required data for pages that contain chat widgets.
+ * - Added handlers for chat-related responses.
+ *
  * @author amethystlei, dexy
- * @version 1.3
+ * @version 1.4
  */
 ///////////////
 // RESOLVERS //
@@ -169,9 +173,141 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         $rootScope.now = tcTimeService.getTime();
     });
 
+    /**
+     * Handle room info response.
+     * Logics for chat rooms are implemented here
+     * as the data should be updated even when the user is in coding/leaderboard pages.
+     */
     socket.on(helper.EVENT_NAME.RoomInfoResponse, function (data) {
         $rootScope.currentRoomInfo = data;
-        $rootScope.$broadcast(helper.EVENT_NAME.RoomInfoResponse);
+        if ($rootScope.currentRoomInfo.roomType === helper.ROOM_TYPE_ID.LobbyRoom) {
+            $rootScope.lobbyID = $rootScope.currentRoomInfo.roomID;
+        } else if ($rootScope.currentRoomInfo.roomType === helper.ROOM_TYPE_ID.CoderRoom) {
+            $rootScope.competingRoomID = $rootScope.currentRoomInfo.roomID;
+        }
+    });
+
+    /**
+     * Handle create user list response.
+     * Logics for chat rooms are implemented here
+     * as the data should be prepared before entering the chat room or
+     * even when the user is in coding/leaderboard pages.
+     */
+    socket.on(helper.EVENT_NAME.CreateUserListResponse, function (data) {
+        var i;
+        $rootScope.whosHereArray = [];
+        for (i = 0; i < data.names.length; i += 1) {
+            $rootScope.whosHereArray.push({
+                name: data.names[i],
+                userListItem: data.userListItems[i],
+                rating: data.ratings[i]
+            });
+        }
+    });
+
+    /**
+     * Handle create menu response.
+     * Logics for chat rooms are implemented here
+     * as the data should be prepared before entering the chat room or
+     * even when the user is in coding/leaderboard pages.
+     */
+    socket.on(helper.EVENT_NAME.CreateMenuResponse, function (data) {
+        if (data.type === helper.MENU_TYPE_ID.LobbyMenu) {
+            var i;
+            $rootScope.lobbyMenu = {};
+            for (i = 0; i < data.names.length; i += 1) {
+                $rootScope.lobbyMenu[data.ids[i]] = {
+                    roomTitle: data.names[i],
+                    roomID: data.ids[i],
+                    roomType: helper.ROOM_TYPE_ID.LobbyRoom
+                };
+            }
+        }
+    });
+
+    /**
+     * handle register response.
+     */
+    socket.on(helper.EVENT_NAME.RegisteredUsersResponse, function (data) {
+        $rootScope.roundData[data.roundID].registrants = data.userListItems;
+    });
+
+    /**
+     * Update user list in the chat room.
+     * Logics for chat rooms are implemented here
+     * as the data should be prepared before entering the chat room or
+     * even when the user is in coding/leaderboard pages.
+     */
+    socket.on(helper.EVENT_NAME.UpdateUserListResponse, function (data) {
+        var hasUserFlag = false,
+            i;
+        if (data.roomID === $rootScope.currentRoomInfo.roomID && data.type === helper.USER_LIST.RoomUsers) {
+            for (i = 0; i < $rootScope.whosHereArray.length; i += 1) {
+                if ($rootScope.whosHereArray[i].name === data.userListItem.userName) {
+                    hasUserFlag = true;
+                    if (data.action === helper.USER_LIST_UPDATE.Remove) {
+                        $rootScope.whosHereArray.splice(i, 1);
+                        if ($rootScope.memberIdx === i) {
+                            $rootScope.memberIdx = null;
+                        }
+                    }
+                }
+            }
+            if (!hasUserFlag && data.action === helper.USER_LIST_UPDATE.Add) {
+                $rootScope.whosHereArray.push({
+                    name: data.userListItem.userName,
+                    userListItem: data.userListItem,
+                    rating: data.userListItem.userRating
+                });
+            }
+            $rootScope.$broadcast('rebuild:whosHere');
+            $rootScope.$broadcast('rebuild:members');
+        }
+    });
+
+    socket.remove(helper.EVENT_NAME.UpdateChatResponse);
+    // update chat content
+    socket.on(helper.EVENT_NAME.UpdateChatResponse, function (data) {
+        /**
+         * Get the chat type for font display.
+         *
+         * @param {string} typeID the type ID
+         * @return {string} the CSS class for fonts
+         */
+        function getChatType(typeID) {
+            switch (typeID) {
+            case helper.CHAT_TYPES.UserChat:
+                return 'general';
+            case helper.CHAT_TYPES.SystemChat:
+                return 'system';
+            case helper.CHAT_TYPES.EmphSystemChat:
+                return 'emph system';
+            case helper.CHAT_TYPES.IrcChat:
+                return 'secret';
+            case helper.CHAT_TYPES.WhisperToYouChat:
+                return 'secret toMe';
+            }
+            return '';
+        }
+
+        $rootScope.chatScope = data.scope;
+        var user = data.data.split(':')[0];
+        if (user === $rootScope.username()) {
+            $rootScope.chatContent.push({
+                userRating: data.rating,
+                prefix: data.prefix,
+                text: data.data,
+                type: 'toMe'
+            });
+        } else {
+            $rootScope.chatContent.push({
+                userRating: data.rating,
+                prefix: data.prefix,
+                text: data.data,
+                type: getChatType(data.type)
+            });
+        }
+        $rootScope.$broadcast('rebuild:chatboard');
     });
 
     // handle create room list response
@@ -227,12 +363,13 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         updateCoderPlacement($rootScope.roomData[data.roomID].coders);
     });
 
-    // handle the end sync response
+    // handle the end sync response for initialization when logging in
     socket.on(helper.EVENT_NAME.EndSyncResponse, function (data) {
         $rootScope.startSyncResponse = false;
         if (data.requestId !== requestId) {
             return forceLogout();
         }
+        socket.remove(helper.EVENT_NAME.EndSyncResponse);
         // go to dashboard page
         deferred = $q.defer();
         deferred.promise.then(function () {
@@ -253,6 +390,16 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         $rootScope.roundData[data.roundID].systestProgress = data.done + '/' + data.total;
     });
 
+    // handle registrated user response
+    socket.on(helper.EVENT_NAME.RegisteredUsersResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.RegisteredUsersResponse, data);
+    });
+
+    // handle popup generic response
+    socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.PopUpGenericResponse, data);
+    });
+
     // request login
     socket.emit(helper.EVENT_NAME.SSOLoginRequest, {sso: sso});
 
@@ -260,6 +407,89 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     socket.on(helper.EVENT_NAME.ForcedLogoutResponse, function (data) {
         $rootScope.$broadcast(helper.EVENT_NAME.ForcedLogoutResponse, data);
     });
+}];
+
+/**
+ * The resolver for entering lobby room.
+ *
+ * @type {*[]}
+ */
+resolvers.enterLobbyRoom = ['$q', 'socket', '$rootScope', function ($q, socket, $rootScope) {
+    var deferred = $q.defer(),
+        requestId = null;
+
+    // handle end-sync response
+    socket.on(helper.EVENT_NAME.EndSyncResponse, function (data) {
+        socket.remove(helper.EVENT_NAME.EndSyncResponse);
+        if (requestId === data.requestId) {
+            $rootScope.isEnteringRoom = true;
+            deferred.resolve();
+        }
+    });
+
+    // handle start-sync response
+    socket.on(helper.EVENT_NAME.StartSyncResponse, function (data) {
+        socket.remove(helper.EVENT_NAME.StartSyncResponse);
+        requestId = data.requestId;
+    });
+
+    if (angular.isDefined($rootScope.lobbyID) && $rootScope.lobbyID > -1) {
+        if (!angular.isDefined($rootScope.currentRoomInfo) || $rootScope.currentRoomInfo.roomID !== $rootScope.lobbyID) {
+            socket.emit(helper.EVENT_NAME.MoveRequest, {
+                moveType: $rootScope.lobbyMenu[$rootScope.lobbyID].roomType,
+                roomID: $rootScope.lobbyID
+            });
+        } else {
+            // no need to change room, enter room directly
+            $rootScope.isEnteringRoom = false;
+            deferred.resolve();
+        }
+    } else {
+        // no previous lobby, send default MoveRequest
+        socket.emit(helper.EVENT_NAME.MoveRequest, {moveType: 3, roomID: -1});
+    }
+    return deferred.promise;
+}];
+
+/**
+ * The resolver for entering competing room.
+ *
+ * @type {*[]}
+ */
+resolvers.enterCompetingRoom = ['$q', 'socket', '$rootScope', '$stateParams', function ($q, socket, $rootScope, $stateParams) {
+    var deferred = $q.defer(),
+        requestId = null;
+
+    // handle end-sync response
+    socket.on(helper.EVENT_NAME.EndSyncResponse, function (data) {
+        socket.remove(helper.EVENT_NAME.EndSyncResponse);
+        if (requestId === data.requestId) {
+            $rootScope.isEnteringRoom = true;
+            deferred.resolve();
+        }
+    });
+
+    // handle start-sync response
+    socket.on(helper.EVENT_NAME.StartSyncResponse, function (data) {
+        socket.remove(helper.EVENT_NAME.StartSyncResponse);
+        requestId = data.requestId;
+    });
+
+    if (angular.isDefined($rootScope.competingRoomID) && $rootScope.competingRoomID > -1) {
+        if (!angular.isDefined($rootScope.currentRoomInfo) || $rootScope.currentRoomInfo.roomID !== $rootScope.competingRoomID) {
+            socket.emit(helper.EVENT_NAME.MoveRequest, {
+                moveType: $rootScope.roomData[$rootScope.competingRoomID].roomType,
+                roomID: $rootScope.competingRoomID
+            });
+        } else {
+            // no need to change room, enter room directly
+            $rootScope.isEnteringRoom = false;
+            deferred.resolve();
+        }
+    } else {
+        socket.emit(helper.EVENT_NAME.EnterRoundRequest, {roundID: Number($stateParams.contestId)});
+    }
+    return deferred.promise;
 }];
 
 //This function checks if there is already a sso cookie

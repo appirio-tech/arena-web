@@ -7,8 +7,12 @@
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Contest Phase Movement):
  * - Updated to use real data.
  *
- * @author TCSASSEMBLER
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI - Chat Widget):
+ * - Updated to retrieve divisionID based on roomID and roundID.
+ * - Updated to remove divisionID from the state params.
+ *
+ * @author amethystlei
+ * @version 1.2
  */
 'use strict';
 /*global module, angular*/
@@ -25,12 +29,18 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userContestCtrl = ['$scope', '$http', '$rootScope', '$stateParams', '$state', 'socket',
-    function ($scope, $http, $rootScope, $stateParams, $state, socket) {
+var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket',
+    function ($scope, $rootScope, $stateParams, $state, socket) {
         // load contest data with contest id
-        $scope.roundID = $stateParams.contestId;
-        $scope.divisionID = $stateParams.divisionId;
+        $scope.roundID = +$stateParams.contestId;
         $scope.contest = $rootScope.roundData[$scope.roundID];
+        $scope.divisionID = null;
+        angular.forEach($scope.contest.coderRooms, function (room) {
+            if (angular.isDefined($rootScope.currentRoomInfo) &&
+                    room.roomID === $rootScope.currentRoomInfo.roomID) {
+                $scope.divisionID = room.divisionID;
+            }
+        });
 
         /**
          * Init with contest.

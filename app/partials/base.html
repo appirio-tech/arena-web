@@ -22,7 +22,7 @@
                 <div data-collapse="navCollapsed" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navIcons">
                         <li data-ng-class="{ active: $state.includes('user.dashboard') }">
-                          <a data-ui-sref="user.dashboard" class="icon iconLobby">LOBBY</a><a data-ui-sref="user.dashboard" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Lobby"></a>
+                          <a data-ui-sref="user.dashboard" class="icon iconLobby">LOBBY</a><a data-ui-sref="user.dashboard" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Lobby" data-ng-click="returnLobby()"></a>
                         </li>
                         <li data-ng-class="{ active: $state.includes('user.contests') || $state.includes('user.contest') || $state.includes('user.coding') || $state.includes('user.contestSummary')}">
                           <a class="icon iconContests">CONTESTS</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Contests"></a>

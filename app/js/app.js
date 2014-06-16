@@ -14,8 +14,11 @@
  * - Added online and userInfo fields to root scope.
  * - Added helper.
  *
- * @author tangzx, dexy
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Chat Widget):
+ * - Updated to resolve required data for pages that contain chat widgets.
+ *
+ * @author tangzx, dexy, amethystlei
+ * @version 1.3
  */
 'use strict';
 /*jshint -W097*/
@@ -214,7 +217,10 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
                 pageTitle: "Application Dashboard",
                 pageMetaKeywords: "dashboard"
             },
-            templateUrl: 'partials/user.dashboard.html'
+            templateUrl: 'partials/user.dashboard.html',
+            resolve: {
+                enterRoom: resolvers.enterLobbyRoom
+            }
         })
         .state('user.coding', {
             url: '/coding/{roundId}/{problemId}/{divisionId}',
@@ -226,13 +232,16 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
             controller: 'userCodingCtrl'
         })
         .state('user.contest', {
-            url: '/contests/{contestId}/{divisionId}',
+            url: '/contests/{contestId}',
             data: {
                 pageTitle: "Contest",
                 pageMetaKeywords: "contest"
             },
             templateUrl: 'partials/user.contest.html',
-            controller: 'userContestCtrl'
+            controller: 'userContestCtrl',
+            resolve: {
+                enterRoom: resolvers.enterCompetingRoom
+            }
         })
         .state('user.contestSummary', {
             url: '/contests/{contestId}/{divisionId}/summary/{viewOn}',

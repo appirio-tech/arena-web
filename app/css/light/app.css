@@ -2468,6 +2468,26 @@ footer .right>span:nth-child(2) {
     transition-duration: 0.3s;
     color: #fff;
 }
+.panelChatArea .lobbyDropdown .dropdown-toggle {
+    width: auto;
+    min-width: 138px;
+    padding-right: 20px;
+}
+.panelChatArea .memberInput {
+    width: 87px;
+    height: 30px;
+    border-width: 0;
+    background: transparent;
+    font-weight: 300;
+    position: absolute;
+    padding-left: 10px;
+    padding-top: 0;
+    padding-bottom: 2px;
+    color: #fff;
+}
+.panelChatArea .memberInput:focus {
+    outline: none;
+}
 .panelChatArea .lobbyDropdown .dropdown-toggle:hover,
 .panelChatArea .methodDropdown .dropdown-toggle:hover,
 .panelChatArea .memberDropdown .dropdown-toggle:hover {
@@ -2548,17 +2568,20 @@ footer .right>span:nth-child(2) {
     color: inherit;
 }
 /** different level of ng-scrollbar height **/
-.panelChatArea .scroll-height-1{
-    height: 224px;
+.panelChatArea .threeSections .scroll-height-1{
+    height: 228px;
 }
-.panelChatArea .scroll-height-2{
-    height: 265px;
+.panelChatArea .threeSections .scroll-height-2{
+    height: 114px;
 }
-.panelChatArea .scroll-height-3{
-    height: 89px;
+.panelChatArea .threeSections .scroll-height-3{
+    height: 76px;
 }
-.panelChatArea .scroll-height-4{
-    height: 122px;
+.panelChatArea .twoSections .scroll-height-1{
+    height: 269px;
+}
+.panelChatArea .twoSections .scroll-height-2{
+    height: 134px;
 }
 .panelChatArea .membersInfo .infoSection header a:before{
     content: '';
@@ -2572,6 +2595,14 @@ footer .right>span:nth-child(2) {
 }
 .panelChatArea .membersInfo .infoSection header a.collapsed:before{
     background-position: -75px 0;
+}
+.panelChatArea .membersInfo .users .current {
+    background: #75a5c8;
+    background: rgba(117, 165, 200, 0.6);
+}
+.panelChatArea .membersInfo .users .rating-admin,
+.panelChatArea .chatBoard .rating-admin {
+    font-style: italic;
 }
 .panelChatArea .content{
     display: inline-block;
@@ -2593,6 +2624,10 @@ footer .right>span:nth-child(2) {
 .panelChatArea .content .chatBoard ul{
     padding: 0 10px 10px 10px;
     list-style: none;
+}
+.panelChatArea .content .chatBoard .emph{
+    font-weight: bold;
+    font-style: italic;
 }
 .panelChatArea .content .chatBoard .system{
     color: rgb(23,139,5);
@@ -2639,7 +2674,6 @@ footer .right>span:nth-child(2) {
     max-height: 100px;
     height: 100px;
     min-width: 107px;
-    background-color: #40474a;
 }
 .panelChatArea .methodDropdown .dropdown-menu li a{
     padding-left: 7px;
@@ -2761,7 +2795,11 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     width: 100px;
 }
-
+.chatWidget-modal-body .coderInfo {
+    background: transparent;
+    color: #636d70;
+    border-width: 0;
+}
 .panelSummary .panel-body {
     padding: 7px 14px 20px 30px;
 }
@@ -3594,18 +3632,6 @@ footer .right>span:nth-child(2) {
     }
     .panelChatArea .chatInput input{
         width: 225px;
-    }
-    .panelChatArea .scroll-height-1{
-        height: 220px;
-    }
-    .panelChatArea .scroll-height-2{
-        height: 260px;
-    }
-    .panelChatArea .scroll-height-3{
-        height: 78px;
-    }
-    .panelChatArea .scroll-height-4{
-        height: 118px;
     }
     .detailPage .panelSummary .panel-body .leftSec {
         border-right-width: 0;
