@@ -11,13 +11,14 @@
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 connection">
                 <div>
-                    <label>Coding&nbsp;</label>
-                    <span class="textGreen" data-timer data-autostart="false" data-interval="1000" data-countdown="countdown" data-ng-if="!notInCodingPhase">
+                    <label data-ng-show="currentStateName()=='user.coding'">Coding&nbsp;</label>
+                    <label data-ng-show="currentStateName()=='user.viewCode' && isChallengePhase()">Challenge&nbsp;</label>
+                    <span class="textGreen" data-timer data-autostart="false" data-interval="1000" data-countdown="countdown" ng-if="!noCountdown">
                         <span data-ng-show="days > 1">{{days}} days,&nbsp;</span>
                         <span data-ng-show="days === 1">{{days}} day,&nbsp;</span>
                         {{hhours}}:{{mminutes}}:{{sseconds}}
                     </span>
-                    <span class="textGreen" data-ng-if="notInCodingPhase">
+                    <span class="textGreen" data-ng-if="noCountdown">
                         00:00:00
                     </span>
                 </div>
@@ -37,6 +38,9 @@
                     </li>
                 </ul>
             </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
+            <a data-ng-click="goBack()" class="btn btnBack">Back to Contest</a>
         </div>
         <div class="container-fluid row-fluid mainContent">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">

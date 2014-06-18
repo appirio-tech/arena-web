@@ -2,7 +2,9 @@
  * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
  */
 /**
- * This controller handles coding editor related logic.
+ * This controller handles user coding page logic.
+ * Currently it can be used for coding and viewing others' code.
+ * It is distinguished by states 'user.coding' and 'user.viewCode'.
  *
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 1):
  * - Updated to use real data.
@@ -14,8 +16,11 @@
  * - Updated to handle PopUpGenericResponse with $scope instead of socket.
  * - Updated modal closing logic to avoid the same popup appearing more than once.
  *
- * @author tangzx, amethystlei, TCSASSEMBLER
- * @version 1.3
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Challenge Phase):
+ * - Updated to integrate with challenge related logic.
+ *
+ * @author tangzx, amethystlei
+ * @version 1.4
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $ */
@@ -232,6 +237,10 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
          * Toggle settings.
          */
         $scope.toggleSettings = function () {
+            if ($scope.currentStateName() !== helper.STATE_NAME.Coding) {
+                // disable when it is not in the state user.coding
+                return;
+            }
             $scope.settingsOpen = !$scope.settingsOpen;
             if ($scope.settingsOpen) {
                 // backup data
@@ -248,6 +257,29 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             }
         };
 
+        /**
+         * Checks if a user is assigned to a room.
+         *
+         * @param  {string}  handle the handle to be checked
+         * @param  {number}  roomID the room ID
+         * @returns {boolean} true if the user is assigned to the room
+         */
+        $scope.isCoderAssigned = function (handle, roomID) {
+            if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+                return true;
+            }
+            if (roomID === undefined) {
+                return false;
+            }
+            var i;
+            for (i = 0; i < $scope.roomData[roomID].coders.length; i += 1) {
+                if ($scope.roomData[roomID].coders[i].userName === handle) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
         // hide/show test panel
         $scope.testOpen = false;
 
@@ -256,6 +288,11 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
          */
         $scope.toggleTest = function () {
             if (userInputDisabled || !$scope.problemLoaded) {
+                return;
+            }
+            if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
+                // for challenges, not prior message should be sent.
+                $scope.testOpen = !$scope.testOpen;
                 return;
             }
             if ($scope.testOpen === false) {
@@ -357,6 +394,43 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
         $scope.testCompleted = false;
         $scope.isTesting = false;
         $scope.caseIndex = null;
+
+        if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+            $scope.panelName = 'Test Panel';
+        } else if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
+            $scope.panelName = 'Challenge';
+            // find the component object so that when the component is challenged
+            // the status can be updated inside the coding editor.
+            $scope.component = (function () {
+                var result;
+                angular.forEach($scope.roomData[$scope.defendantRoomID].coders, function (coder) {
+                    if (coder.userName === $scope.defendant) {
+                        angular.forEach(coder.components, function (component) {
+                            if (component.componentID === $scope.componentID) {
+                                result = component;
+                            }
+                        });
+                    }
+                });
+                return result;
+            }());
+            // set the page title, maybe it should display in the editor's title
+            angular.forEach($scope.roundData[$scope.roundID].problems[$scope.divisionID], function (problem) {
+                if (problem.primaryComponent && problem.primaryComponent.componentID === $scope.componentID) {
+                    $scope.$state.current.data.pageTitle = $scope.defendant + "'s " +
+                        problem.primaryComponent.pointValue + '-point problem (' + $scope.getLangName($scope.langIdx) + ')';
+                }
+            });
+            /**
+             * Checks if the current component is successfully challenged.
+             *
+             * @returns {boolean} true if the current component is successfully challenged.
+             */
+            $scope.isChallenged = function () {
+                return angular.isDefined($scope.component) &&
+                    $scope.component.status === helper.CODER_PROBLEM_STATUS_ID.CHALLENGE_SUCCEEDED;
+            };
+        }
 
         /**
          * The code mirror config.
@@ -519,8 +593,11 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             var i;
             enableUserInput();
 
-            if (data.title !== helper.POP_UP_TITLES.Error && data.title !== helper.POP_UP_TITLES.CompileResult &&
-                    data.title !== helper.POP_UP_TITLES.TestResults && data.title !== helper.POP_UP_TITLES.MultipleSubmission) {
+            if (data.title !== helper.POP_UP_TITLES.Error &&
+                    data.title !== helper.POP_UP_TITLES.CompileResult &&
+                    data.title !== helper.POP_UP_TITLES.TestResults &&
+                    data.title !== helper.POP_UP_TITLES.MultipleSubmission &&
+                    data.title !== helper.POP_UP_TITLES.ChallengeResults) {
                 // only handle these responses for now
                 return;
             }
@@ -529,7 +606,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             data.message = replaceAll('>', '&gt;', data.message);
 
             openModal({
-                title: data.title,
+                title: (data.title !== helper.POP_UP_TITLES.Error ? data.title : 'Error'),
                 message: data.message,
                 buttons: data.buttons,
                 enableClose: true
@@ -599,6 +676,14 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                     }
                 });
             });
+            $scope.customTest = [];
+            /*jslint unparam: true*/
+            angular.forEach($scope.problem.allArgTypes, function (arg) {
+                $scope.customTest.push({
+                    value: ''
+                });
+            });
+            /*jslint unparam: false*/
 
             /**
              * Select all test. Will not happen currently.
@@ -608,7 +693,6 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             $scope.selectAll = function ($event) {
                 var checkbox = $event.target,
                     action = checkbox.checked;
-                console.log('select all: ' + action);
                 $scope.userData.tests.forEach(function (testCase) {
                     testCase.checked = action;
                 });
@@ -626,8 +710,27 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                         return false;
                     }
                 }
-                return true;
+                return !!$scope.customChecked;
             };
+
+            /**
+             * Generates the confirmation for the challenge parameters.
+             *
+             * @return {string} the html source in the confirmation popup
+             */
+            function getChallengeConfirmationPopup() {
+                var paramNum,
+                    allArgTypes = $scope.problem.allArgTypes,
+                    testCase = $scope.customChecked ? $scope.customTest : $scope.userData.tests[$scope.caseIndex],
+                    html = '';
+
+                for (paramNum = 0; paramNum < allArgTypes.length; paramNum += 1) {
+                    html += '<li>(' + (paramNum + 1) + ') <span class="argType">' + allArgTypes[paramNum].typeMapping[$scope.lang($scope.langIdx).id] + '</span>';
+                    html += '&nbsp;<span>' + ($scope.customChecked ? $scope.customTest[paramNum].value : testCase.params[paramNum].value) + '</span>';
+                    html += '</li>';
+                }
+                return '<ul>' + html + '</ul>';
+            }
 
             /**
              * Run selected test case, or show error modal.
@@ -635,43 +738,52 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             $scope.runTests = function () {
 
                 $scope.isLight = themer.getSelected().key === 'LIGHT' ? '/light' : '';
-                var count = 0, i, j, params = [], args = [], param;
+                var count = 0, i, j, params = [], args = [], param, testcase;
                 for (i = 0; i < $scope.userData.tests.length; i += 1) {
                     count += $scope.userData.tests[i].checked ? 1 : 0;
                 }
+                count += $scope.customChecked ? 1 : 0;
 
                 if (count !== 1) {
                     openModal({
                         title: 'Error',
-                        message: 'You are required to select exactly one test case to run.',
+                        message: 'You are required to select exactly one test case.',
                         enableClose: true
                     });
                     return;
                 }
 
-                for (i = 0; i < $scope.userData.tests.length; i += 1) {
-                    if ($scope.userData.tests[i].checked) {
-                        $scope.caseIndex = i;
-                        for (j = 0; j < $scope.userData.tests[i].params.length; j += 1) {
-                            param = $.trim($scope.userData.tests[i].params[j].value);
-
-                            if (param.length > 1 && param[0] === '{' && param[param.length - 1] === '}') {
-                                param = '[' + param.substr(1, param.length - 2) + ']';
-                            }
-
-                            try {
-                                param = JSON.parse(param);
-                            } catch (e) {
-                                openModal({
-                                    title: 'Error',
-                                    message: 'The param ' + param + ' is invalid.',
-                                    enableClose: true
-                                });
-                                return;
-                            }
-                            params.push(param);
+                if ($scope.customChecked) {
+                    testcase = $scope.customTest;
+                } else {
+                    for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                        if ($scope.userData.tests[i].checked) {
+                            $scope.caseIndex = i;
+                            testcase = $scope.userData.tests[i].params;
+                            break;
                         }
                     }
+                }
+
+                // $scope.customTest[paramNum].value
+                for (j = 0; j < testcase.length; j += 1) {
+                    param = $.trim(testcase[j].value);
+
+                    if (param.length > 1 && param[0] === '{' && param[param.length - 1] === '}') {
+                        param = '[' + param.substr(1, param.length - 2) + ']';
+                    }
+
+                    try {
+                        param = JSON.parse(param);
+                    } catch (e) {
+                        openModal({
+                            title: 'Error',
+                            message: 'The param ' + param + ' is invalid.',
+                            enableClose: true
+                        });
+                        return;
+                    }
+                    params.push(param);
                 }
 
                 for (i = 0; i < params.length; i += 1) {
@@ -694,13 +806,31 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                     }
                 }
 
-                socket.emit(helper.EVENT_NAME.TestRequest, {
-                    componentID: $scope.componentID,
-                    args: args
-                });
-
-                $scope.testCompleted = false;
-                $scope.isTesting = true;
+                if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+                    // test my code
+                    socket.emit(helper.EVENT_NAME.TestRequest, {
+                        componentID: $scope.componentID,
+                        args: args
+                    });
+                    $scope.testCompleted = false;
+                    $scope.isTesting = true;
+                } else if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
+                    // challenge others' code
+                    openModal({
+                        title: 'Confirm Parameters',
+                        message: getChallengeConfirmationPopup(),
+                        buttons: ['OK', 'Cancel'],
+                        enableClose: true
+                    }, function () {
+                        socket.emit(helper.EVENT_NAME.ChallengeRequest, {
+                            componentID: $scope.componentID,
+                            defender: $scope.defendant,
+                            test: args
+                        });
+                        $scope.testCompleted = false;
+                        $scope.isTesting = true;
+                    });
+                }
             };
 
             // set the code written by the user
@@ -738,7 +868,8 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             // $scope.showLineNumber = $scope.userData.showLineNumber ? true : false;
 
             $scope.settingChanged();
-            enableEditor();
+            // enable the editior only when it is at the state helper.STATE_NAME.Coding.
+            enableEditor($scope.currentStateName() === helper.STATE_NAME.Coding);
 
             // comment out auto-compile & auto-save related code for now
             /*

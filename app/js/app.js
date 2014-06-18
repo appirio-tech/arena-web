@@ -17,8 +17,12 @@
  * Changes in version 1.3 (Module Assembly - Web Arena UI - Chat Widget):
  * - Updated to resolve required data for pages that contain chat widgets.
  *
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Challenge Phase):
+ * - Added state user.viewCode for code viewing pages.
+ * - Added function $rootScope.currentStateName for all the scopes to easily know the current state.
+ *
  * @author tangzx, dexy, amethystlei
- * @version 1.3
+ * @version 1.4
  */
 'use strict';
 /*jshint -W097*/
@@ -231,6 +235,15 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
             templateUrl: 'partials/user.coding.html',
             controller: 'userCodingCtrl'
         })
+        .state('user.viewCode', {
+            url: '/viewCode/{roundId}/{componentId}/{divisionId}/{roomId}/{defendant}',
+            data: {
+                pageTitle: "View Code",
+                pageMetaKeywords: "code,arena"
+            },
+            templateUrl: 'partials/user.coding.html',
+            controller: 'userCodingCtrl'
+        })
         .state('user.contest', {
             url: '/contests/{contestId}',
             data: {
@@ -350,7 +363,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     $rootScope.lastServerActivityTime = new Date().getTime();
     $rootScope.$on('$stateChangeStart', function (event, toState) {
         //use whitelist approach
-        var allowedStates = ['anon', 'anon.home', 'loggingin', 'user.logout'],
+        var allowedStates = [helper.STATE_NAME.Anonymous, helper.STATE_NAME.AnonymousHome, helper.STATE_NAME.LoggingIn, helper.STATE_NAME.Logout],
             publicState = false,
             res = /\(([A-Z]{3})\)/.exec(new Date().toString());
 
@@ -360,7 +373,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
 
         if (!publicState && !$rootScope.isLoggedIn) {
             event.preventDefault();
-            $state.go('anon.home');
+            $state.go(helper.STATE_NAME.AnonymousHome);
         }
         //expose this for the base.html template
         $rootScope.loggedIn = function () {
@@ -389,4 +402,12 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
             $rootScope.$broadcast(helper.EVENT_NAME.SocketError, {});
         });
     });
+    /**
+     * Get the current state name, can be used in any scope without injecting the state service.
+     *
+     * @returns {string} the current state name
+     */
+    $rootScope.currentStateName = function () {
+        return $state.current.name;
+    };
 }]);

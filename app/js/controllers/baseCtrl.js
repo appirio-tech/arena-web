@@ -112,7 +112,7 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
             message: helper.POP_UP_MESSAGES.ForcedLogout,
             enableClose: true
         }, null, function () {
-            $state.go('user.logout');
+            $state.go(helper.STATE_NAME.Logout);
         });
     });
     $scope.$on(helper.EVENT_NAME.Disconnected, function (event, data) {
@@ -125,7 +125,7 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
             }, null, function () {
                 isDisconnecting = false;
                 if (connectionService.cStatus.status === 'lost') {
-                    $state.go('user.logout');
+                    $state.go(helper.STATE_NAME.Logout);
                 }
             });
         }
@@ -136,7 +136,7 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
             if ($scope.currentModal !== undefined) {
                 $scope.currentModal.dismiss('cancel');
             }
-            $state.go('anon.home');
+            $state.go(helper.STATE_NAME.AnonymousHome);
         }
     });
     /*jslint unparam: false*/

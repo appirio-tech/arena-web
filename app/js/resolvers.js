@@ -62,7 +62,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             // defer the logout promise
             deferred = $q.defer();
             deferred.promise.then(function () {
-                $state.go('anon.home');
+                $state.go(helper.STATE_NAME.AnonymousHome);
             });
             deferred.resolve();
             return deferred.promise;
@@ -203,6 +203,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 rating: data.ratings[i]
             });
         }
+        $rootScope.$broadcast('rebuild:whosHere');
+        $rootScope.$broadcast('rebuild:members');
     });
 
     /**
@@ -373,7 +375,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         // go to dashboard page
         deferred = $q.defer();
         deferred.promise.then(function () {
-            $state.go('user.dashboard');
+            $state.go(helper.STATE_NAME.Dashboard);
         });
         deferred.resolve();
         return deferred.promise;
@@ -396,6 +398,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     });
 
     // handle popup generic response
+    socket.remove(helper.EVENT_NAME.PopUpGenericResponse);
     socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
         $rootScope.$broadcast(helper.EVENT_NAME.PopUpGenericResponse, data);
     });
@@ -497,7 +500,7 @@ resolvers.alreadyLoggedIn = ['$q', '$state', 'sessionHelper', function ($q, $sta
     var deferred = $q.defer();
     deferred.promise.then(function () {
         if (sessionHelper.isLoggedIn()) {
-            $state.go('loggingin');
+            $state.go(helper.STATE_NAME.LoggingIn);
         }
     });
     deferred.resolve();
@@ -513,7 +516,7 @@ resolvers.logout = ['$rootScope', '$q', '$state', 'sessionHelper', 'socket', fun
     // defer the logout promise
     var deferred = $q.defer();
     deferred.promise.then(function () {
-        $state.go('anon.home');
+        $state.go(helper.STATE_NAME.AnonymousHome);
     });
     deferred.resolve();
     return deferred.promise;

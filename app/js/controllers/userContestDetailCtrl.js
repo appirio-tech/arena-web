@@ -7,8 +7,12 @@
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 2):
  * - Updated to use real data for room summary.
  *
+ * Changes in version 1.2 (Module Assembly - Web Arena UI - Challenge Phase):
+ * - Added the navigation for viewing code.
+ * - Removed unnecessary $state injection as it is exposed by $rootScope.
+ *
  * @author amethystlei
- * @version 1.1
+ * @version 1.2
  */
 'use strict';
 /*jshint -W097*/
@@ -27,7 +31,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userContestDetailCtrl = ['$scope', '$state', '$stateParams', '$rootScope', '$location', function ($scope, $state, $stateParams, $rootScope, $location) {
+var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location', function ($scope, $stateParams, $rootScope, $location) {
     /**
      * Check if the client suppports touch screen.
      *
@@ -114,7 +118,7 @@ var userContestDetailCtrl = ['$scope', '$state', '$stateParams', '$rootScope', '
     $scope.divisionID = $stateParams.divisionId;
     $scope.roomID = $rootScope.currentRoomInfo.roomID;
 
-    $state.current.data.pageTitle = $scope.contest.roundName;
+    $scope.$state.current.data.pageTitle = $scope.contest.roundName;
 
     // room
     $scope.userRoomId = 0;
@@ -298,7 +302,7 @@ var userContestDetailCtrl = ['$scope', '$state', '$stateParams', '$rootScope', '
         // show points when:
         // 1) user wants to show by points; or
         // 2) the problem is submitted but not challenged nor system tested
-        if (showBy === 'points' || component.status === helper.CODER_PROBLEM_STATUS_ID.NOT_CHALLENGED) {
+        if (showBy === 'points' || component.status <= helper.CODER_PROBLEM_STATUS_ID.CHALLENGE_FAILED) {
             return $scope.formatScore(component.points);
         }
         // show status
@@ -345,7 +349,7 @@ var userContestDetailCtrl = ['$scope', '$state', '$stateParams', '$rootScope', '
      * Go back to the contest page.
      */
     $scope.goBack = function () {
-        $state.go('user.contest', {
+        $scope.$state.go(helper.STATE_NAME.Contest, {
             contestId : $scope.contest.roundID,
             divisionId : $scope.divisionID
         });
@@ -525,6 +529,37 @@ var userContestDetailCtrl = ['$scope', '$state', '$stateParams', '$rootScope', '
     $scope.pressKeyInFilter = function (ev, viewOn, panel) {
         if (ev.which === 13) {
             $scope.filterBegin(viewOn, panel);
+        }
+    };
+
+    /**
+     * View the source of the given coder and component.
+     *
+     * @param {{
+     *           userName: string,
+     *           userRating: number,
+     *           teamName: string,
+     *           userID: number,
+     *           userType: number,
+     *           countryName: string,
+     *           components: {
+     *              componentID: number,
+     *              points: number,
+     *              status: number,
+     *              language: number
+     *           }
+     *        }} coder
+     * @param {number} componentId
+     */
+    $scope.viewCode = function (coder, componentId) {
+        if ($scope.contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.ChallengePhase) {
+            $scope.$state.go(helper.STATE_NAME.ViewCode, {
+                roundId: $stateParams.contestId,
+                divisionId: $scope.divisionID,
+                componentId: componentId,
+                roomId: $scope.roomID,
+                defendant: coder.userName
+            });
         }
     };
 }];

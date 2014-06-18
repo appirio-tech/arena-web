@@ -163,7 +163,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', '$modal', '
         if (contest.action === 'Enter') {
             $rootScope.competingRoomID = -1;
             // requests will be sent by the resolvers
-            $state.go('user.contest', {
+            $state.go(helper.STATE_NAME.Contest, {
                 contestId: contest.roundID
             }).then(function () {
                 $scope.okDisabled = false;

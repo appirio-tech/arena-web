@@ -26,14 +26,33 @@
  * Changes in version 1.5 (Module Assembly - Web Arena UI - Chat Widget):
  * - Added chat-related events and constants.
  *
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Challenge Phase):
+ * - Added challenge phase related events.
+ * - Added state names.
+ *
  * @author tangzx, amethystlei, dexy
- * @version 1.5
+ * @version 1.6
  */
 
 module.exports = {
+    // Represents the state names
+    STATE_NAME: {
+        User: 'user',
+        Dashboard: 'user.dashboard',
+        Coding: 'user.coding',
+        ViewCode: 'user.viewCode',
+        Contest: 'user.contest',
+        ContestSummary: 'user.contestSummary',
+        Logout: 'user.logout',
+        Anonymous: 'anon',
+        AnonymousHome: 'anon.home',
+        LoggingIn: 'loggingin'
+    },
+
     // Represents the event names
     EVENT_NAME: {
         // backend requests
+        ChallengeRequest: 'ChallengeRequest',
         ChatRequest: 'ChatRequest',
         CloseProblemRequest: 'CloseProblemRequest',
         CoderInfoRequest: 'CoderInfoRequest',
@@ -41,6 +60,7 @@ module.exports = {
         EnterRequest: 'EnterRequest',
         EnterRoundRequest: 'EnterRoundRequest',
         GenericPopupRequest: 'GenericPopupRequest',
+        GetChallengeProblemRequest: 'GetChallengeProblemRequest',
         KeepAliveRequest: 'KeepAliveRequest',
         LogoutRequest: 'LogoutRequest',
         MoveRequest: 'MoveRequest',
@@ -180,6 +200,7 @@ module.exports = {
         IncorrectUsage: 'Incorrect Usage',
         MultipleSubmission: 'Multiple Submission',
         Unauthorized: 'Unauthorized',
+        ChallengeResults: 'Challenge Results',
         Disconnected: 'Disconnected',
         ForcedLogout: 'Client Connection Error'
     },
