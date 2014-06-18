@@ -1028,6 +1028,14 @@ footer .right>span:nth-child(2) {
 .modal .modal-content .modal-body p {
     margin: auto 20px;
 }
+.modal .modal-content .modal-body ul {
+    list-style: none;
+}
+.modal .modal-content .modal-body .argType {
+    display: inline-block;
+    width: 100px;
+    color: white;
+}
 .modal .modal-content .btn {
      height: 36px;
      width: 94px;
@@ -1535,6 +1543,12 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .toolBar .editorCheckbox:checked ~ .editorCheckLbl:before {
     background-position: -75px -150px;
 }
+.panelCodeEditor .toolBar .rightPart>div.challenged {
+    width: auto;
+    color: #f40000;
+    font-style: italic;
+    font-weight: bold;
+}
 .panelCodeEditor .toolBar .rightPart>div:first-child {width: 139px;text-align:left;}
 .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 107px;text-align: left;}
 .panelCodeEditor .toolBar .testToggle {
@@ -1591,7 +1605,7 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .toolBar .testPanel>div {
     height: 480px;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .panelCodeEditor .testPanel header {
     width: 346px;
@@ -2856,13 +2870,19 @@ footer .right>span:nth-child(2) {
     padding-right: 0;
     width: 600px;
 }
-.detailPage .titleBar .btnBack {
+.detailPage .titleBar .btnBack,
+.codeArea .btnBack { 
     float: right;
     color: #fff;
     background: #0999d1;
     margin-top: 5px;
 }
-.detailPage .titleBar .btnBack:hover {
+.codeArea .btnBack {
+    margin-top: -3px;
+    margin-bottom: 5px;
+}
+.detailPage .titleBar .btnBack:hover,
+.codeArea .btnBack:hover {
     color: #fff;
     opacity: 0.8;
 }
@@ -3341,7 +3361,8 @@ footer .right>span:nth-child(2) {
     background-position: -31px -41px;
     margin-top: 6px;
 }
-.detailPage .leaderboardWrapper .colorPassed,
+.detailPage .leaderboardWrapper .colorPassed, 
+.detailPage .leaderboardWrapper .colorPending,
 .detailPage .leaderboardWrapper .colorSubmitted {
     color: #2c8236;
 }
@@ -3799,7 +3820,8 @@ footer .right>span:nth-child(2) {
     .detailPage .tHeadDiv {
         min-width: 540px;
     }
-    .detailPage .titleBar .btnBack {
+    .detailPage .titleBar .btnBack,
+    .codeArea .btnBack {
         margin-bottom: 5px;
     }
 }

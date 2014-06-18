@@ -13,8 +13,11 @@
  * Changes in version 1.3 (Module Assembly - Web Arena UI - Chat Widget):
  * - Fixed the issue of the timer that reports errors in the web console.
  *
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Challenge Phase):
+ * - Fixed the angular-timer usage to avoid error messages in console.
+ *
  * @author amethystlei, dexy
- * @version 1.3
+ * @version 1.4
  */
 'use strict';
 /*global module, angular*/
@@ -53,6 +56,8 @@ var contestCountdownCtrl = ['$scope', '$timeout', 'tcTimeService', function ($sc
         'Tie Breaking Voting Phase is started.',
         'Moderated Chatting Phase is started.'
     ];
+    // bind the property countdown to the template.
+    $scope.countdown = 1;
 
     /**
      * Get phase message.

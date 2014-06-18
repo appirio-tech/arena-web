@@ -132,7 +132,7 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', function ($sc
      * @param problem the problem
      */
     $scope.openProblem = function (problem) {
-        $state.go('user.coding', {
+        $state.go(helper.STATE_NAME.Coding, {
             problemId: problem.problemID,
             roundId: $scope.roundID,
             divisionId: $scope.divisionID

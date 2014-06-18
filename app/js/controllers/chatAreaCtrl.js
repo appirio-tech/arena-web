@@ -146,6 +146,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', '$modal', 'socket', '$timeout', func
             $scope.showRegistrant = true;
             $scope.registrantsArray = $rootScope.roomData[$rootScope.currentRoomInfo.roomID].coders;
         }
+        rebuildAllScrollbar();
     };
 
     /**
@@ -362,8 +363,6 @@ var chatAreaCtrl = ['$scope', '$rootScope', '$modal', 'socket', '$timeout', func
             $scope.$broadcast('rebuild:members');
         }
     };
-
-    rebuildAllScrollbar();
 
     /**
      * Submits the text content according to the chat method selected.

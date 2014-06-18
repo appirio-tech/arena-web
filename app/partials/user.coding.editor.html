@@ -6,7 +6,7 @@
         <div class="toolBar">
             <div data-ng-class="{active:settingsOpen,inactive:!settingsOpen}">
                 <a class="settingsToggle" data-ng-click="toggleSettings()">settings</a>
-                <div class="settingsPanel" data-ng-show="settingsOpen">
+                <div class="settingsPanel" data-ng-show="settingsOpen && currentStateName=='user.coding'">
                     <a data-ng-click="toggleSettings()" class="closeIcon"></a>
                     <div class="editorRow">
                         <label class="textWhite">Editor</label>
@@ -39,20 +39,45 @@
             </div>
             <div class="middlePart">
                 <ul class="actionIcons"><!-- avoid unnecessary blank
-                --><li class="link saveLink">Save</li><!--  avoid unnecessary blank
-                --><li class="link clearLink" data-ng-click="clearEditor()">Clear</li><!--  avoid unnecessary blank
-                --><li class="link compileLink" data-ng-click="compileSolution()">Compile</li><!--
-                --><li class="link submitLink" data-ng-click="submitSolution()">Submit</li>
+                --><li class="link saveLink"  data-ng-hide="currentStateName()==='user.viewCode'">Save</li><!--  avoid unnecessary blank
+                --><li class="link clearLink" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode'">Clear</li><!--  avoid unnecessary blank
+                --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode'">Compile</li><!--
+                --><li class="link submitLink" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode'">Submit</li>
                 </ul><!--  avoid unnecessary blank
-                --><div class="findInput"><input type="text" name="find" placeholder="Find"/><a data-ng-click="" class="searchIcon"></a></div><!--  avoid unnecessary blank
-                --><div class="gotoInput"><label for="goto">Go To</label><input type="text" name="goto" id="goto" value="" /><a class="arrow"></a></div>
+                --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" placeholder="Find"/><a data-ng-click="" class="searchIcon"></a></div><!--  avoid unnecessary blank
+                --><div class="gotoInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><label for="goto">Go To</label><input type="text" name="goto" id="goto" value="" /><a class="arrow"></a></div>
             </div>
             <div class="rightPart">
-                <div><input type="checkbox" name="autoCompile" id="compileCheck" class="editorCheckbox" data-ng-model="autoCompile" /><label for="compileCheck" class="editorCheckLbl">Auto Compile</label></div><!-- avoid unnecessary blank
-                --><div><input type="checkbox" name="autoSave" id="saveCheck" class="editorCheckbox" data-ng-model="autoSave" /><label for="saveCheck" class="editorCheckLbl">Auto Save</label></div><!--  avoid unnecessary blank
-                --><div data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">Test Panel</a>
+                <div data-ng-hide="currentStateName()==='user.viewCode'"><input type="checkbox" name="autoCompile" id="compileCheck" class="editorCheckbox" data-ng-model="autoCompile" /><label for="compileCheck" class="editorCheckLbl">Auto Compile</label></div><!-- avoid unnecessary blank
+                --><div data-ng-hide="currentStateName()==='user.viewCode'"><input type="checkbox" name="autoSave" id="saveCheck" class="editorCheckbox" data-ng-model="autoSave" /><label for="saveCheck" class="editorCheckLbl">Auto Save</label></div><!--  avoid unnecessary blank
+                --><div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged.</div><div data-ng-if="currentStateName()=='user.coding' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID)" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>
                     <div class="testPanel" data-ng-show="testOpen">
                         <div>
+                            <!-- Custom test case for Challenge Phase -->
+                            <div class='testCase' data-ng-if="isChallengePhase() && currentStateName()=='user.viewCode'" data-ng-init="caseNum='custom'; toggle=true">
+                                <header><!-- avoid unnecessary blank
+                                 --><input type="checkbox" id="testCase-{{caseNum}}" name="testCase-{{caseNum}}" class="caseCheck" ng-disabled="isTesting" data-ng-model="$parent.customChecked" /><!-- avoid unnecessary blank
+                                 --><a data-ng-click="toggle=!toggle" data-ng-class="{open:toggle,collapsed:!toggle}"></a><!-- avoid unnecessary blank
+                                 --><label for="testCase-{{caseNum}}" class="caseLbl">Test Case</label>
+                                </header>
+                                <div class="content" data-ng-show="toggle">
+                                    <div class="testParam" data-ng-repeat="param in $parent.customTest track by $index" data-ng-init="paramNum=$index; editting=false">
+                                        <div data-ng-hide="editting"><label for="param-{{caseNum}}-{{paramNum}}">{{problem.allArgTypes[paramNum].typeMapping[lang(langIdx).id]}} {{problem.paramNames[paramNum]}}</label>
+                                        <input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType" /></div>
+                                        <a data-ng-show="!!param.complexType && param.complexType.length > 0" data-ng-click="editting=true; editParam($caseNum, $paramNum)" class="btn">
+                                            <span data-ng-show="!param.created">Create</span>
+                                            <span data-ng-show="param.created">Modify</span>
+                                        </a>
+                                        <div class="editParam" data-ng-show="editting">
+                                            <label>{{param.type}}  -- {{param.complexType}}</label>
+                                            <textarea>{{param.value}}</textarea>
+                                            <a data-ng-click="param.created=true; editting=false" class="btn btnAlt">OK</a>
+                                            <a data-ng-click="param.created=false; editting=false" class="btn btnAlt">Cancel</a>
+                                        </div>                                    
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Example test cases -->
                             <div class='testCase' data-ng-repeat="testCase in userData.tests track by $index" data-ng-init="caseNum=$index; toggle=true">
                                 <header><!-- avoid unnecessary blank
                                  --><input type="checkbox" id="testCase-{{caseNum}}" name="testCase-{{caseNum}}" class="caseCheck" ng-disabled="isTesting" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" /><!-- avoid unnecessary blank
@@ -80,7 +105,8 @@
                             <div class="bottom">
                                 <input type="checkbox" id="testCase-all" class="caseCheck" ng-disabled="true" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()" /><label for="testCase-all" class="caseLbl">Check All</label>
                                 <label data-ng-show="testCompleted && !isTesting" class="message">Test is completed.</label>
-                                <a data-ng-click="runTests()" data-ng-show="!isTesting" class="btn">{{ testCompleted ? "Re-Run" : "Run Test" }}</a>
+                                <a data-ng-click="runTests()" data-ng-if="currentStateName()=='user.coding'" data-ng-show="!isTesting" class="btn">{{ testCompleted ? "Re-Run" : "Run Test" }}</a>
+                                <a data-ng-click="runTests()" data-ng-if="currentStateName()=='user.viewCode'" data-ng-show="!isTesting" class="btn">Challenge</a>
                                 <img data-ng-show="isTesting" alt="busy..." src="img/loadinfo.net.gif" data-ng-src="img{{isLight}}/loadinfo.net.gif"/>
                             </div>
                         </div>

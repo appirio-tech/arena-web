@@ -3,6 +3,8 @@
  */
 /**
  * This controller handles user coding page logic.
+ * Currently it can be used for coding and viewing others' code.
+ * It is distinguished by states 'user.coding' and 'user.viewCode'.
  *
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Coding IDE Part 1):
  * - Updated to use real data.
@@ -10,11 +12,16 @@
  * Changes in version 1.2 (Module Assembly - Web Arena UI Fix):
  * - Added tcTimeService and updated its usage.
  *
- * @author TCSASSEMBLER, dexy
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Challenge Phase):
+ * - Updated to integrate code viewing logics.
+ * - Fixed the angular-timer usage to avoid error messages in console.
+ * - Removed unnecessary $state injection as it is exposed by $rootScope. 
+ *
+ * @author dexy, amethystlei
+ * @version 1.3
  */
 'use strict';
-/*global module, angular, $*/
+/*global module, angular, document, $*/
 /*jslint browser:true */
 
 /**
@@ -29,12 +36,15 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket', '$window', '$timeout', 'tcTimeService',
-    function ($scope, $stateParams, $state, $rootScope, socket, $window, $timeout, tcTimeService) {
+var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', 'tcTimeService',
+    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, tcTimeService) {
         // shared between children scopes
         $scope.sharedObj = {};
         $scope.topStatus = 'normal';
         $scope.bottomStatus = 'normal';
+        // modal defined in the parent scope can be used by the child scope (userCodingEditor.js).
+        // When onLeavingCodingPage is executed, the modal opened by the child scope can be closed.
+        $scope.currentModal = null;
 
         // problem data
         $scope.problem = {};
@@ -46,6 +56,19 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
         $scope.hasExampleTest = false;
 
         var componentOpened = false, problemRetrieved = false, notified = false, round;
+
+        /**
+         * Check whether it is in Challenge Phase.
+         *
+         * @returns {boolean} is this phase or not.
+         */
+        $scope.isChallengePhase = function () {
+            var roundData = $scope.roundData[$scope.roundID];
+            if (!angular.isDefined(roundData) || !angular.isDefined(roundData.phaseData)) {
+                return false;
+            }
+            return roundData.phaseData.phaseType === helper.PHASE_TYPE_ID.ChallengePhase;
+        };
 
         $scope.getTopStatus = function () {
             return $scope.topStatus;
@@ -166,11 +189,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
                     // broadcast problem-load message to child states.
                     $scope.$broadcast('problem-loaded');
 
-                    // start coding phase count down
+                    // start coding/challenge phase count down
                     var seconds = -1, phase;
                     if ($scope.roundData && $scope.roundData[$scope.roundID] && $scope.roundData[$scope.roundID].phaseData) {
                         phase = $scope.roundData[$scope.roundID].phaseData;
-                        if (phase.phaseType === helper.PHASE_TYPE_ID.CodingPhase) {
+                        if (phase.phaseType === helper.PHASE_TYPE_ID.CodingPhase ||
+                                phase.phaseType === helper.PHASE_TYPE_ID.ChallengePhase) {
                             // how many seconds between now and the phase end time
                             seconds = (phase.endTime - tcTimeService.getTime()) / 1000;
                         }
@@ -182,11 +206,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
                             $scope.$broadcast('timer-start');
                         }, 200);
                     } else {
-                        $scope.notInCodingPhase = true;
+                        $scope.noCountdown = true;
                     }
                 }
             }
         }
+        $scope.countdown = 1;
 
         /**
          * Get argument type string.
@@ -289,8 +314,6 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
         // get problem response
         socket.on(helper.EVENT_NAME.GetProblemResponse, function (data) {
             var component = data.problem.problemComponents[0];
-
-            // make sure the response is for the request problem
             if (component.componentId !== $scope.componentID) {
                 return;
             }
@@ -306,9 +329,6 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
             // get languages from round data
             // it may be undefined, but assign it anyway
             $scope.problem.supportedLanguages = $scope.roundData[$scope.roundID].customProperties.allowedLanguages;
-
-            // set page title to problem name
-            $state.current.data.pageTitle = 'Problem: ' + $scope.problem.name;
 
             // set user data
             $scope.tests = component.testCases;
@@ -367,6 +387,17 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
         });
 
         /**
+         * Go back to the contest page.
+         */
+        $scope.goBack = function () {
+            $scope.$state.go(helper.STATE_NAME.ContestSummary, {
+                contestId : $scope.roundID,
+                divisionId : $scope.divisionID,
+                viewOn : 'room'
+            });
+        };
+
+        /**
          * Send close problem request when leaving.
          */
         function onLeavingCodingPage() {
@@ -374,10 +405,17 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
                 $scope.currentModal.dismiss('cancel');
                 $scope.currentModal = undefined;
             }
-            if ($scope.username()) {
+            if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+                if ($scope.username()) {
+                    socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
+                        problemID: $scope.componentID,
+                        writer: $scope.username()
+                    });
+                }
+            } else {
                 socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
                     problemID: $scope.componentID,
-                    handle: $scope.username()
+                    writer: $scope.defendant
                 });
             }
         }
@@ -389,32 +427,54 @@ var userCodingCtrl = ['$scope', '$stateParams', '$state', '$rootScope', 'socket'
             $scope.cmElem = document.getElementsByClassName('CodeMirror')[0];
         });
 
-        // load problem
-        if ($scope.problemID) {
-            round = $rootScope.roundData[$scope.roundID];
-            if (round) {
-                if (round.problems) {
-                    if (angular.isDefined(round.problems[$scope.divisionID])) {
-                        angular.forEach(round.problems[$scope.divisionID], function (problem) {
-                            if (problem.problemID === $scope.problemID) {
-                                $scope.problem = problem;
-                                $scope.componentID = problem.components[0].componentID;
+        // load problem depended on states
+        if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+            if ($scope.problemID) {
+                round = $rootScope.roundData[$scope.roundID];
+                if (round) {
+                    if (round.problems) {
+                        if (angular.isDefined(round.problems[$scope.divisionID])) {
+                            angular.forEach(round.problems[$scope.divisionID], function (problem) {
+                                if (problem.problemID === $scope.problemID) {
+                                    $scope.problem = problem;
+                                    $scope.componentID = problem.components[0].componentID;
 
-                                socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
-                                    problemID: $scope.componentID
-                                });
-
-                                $timeout(function () {
-                                    socket.emit(helper.EVENT_NAME.OpenComponentForCodingRequest, {
-                                        componentID: $scope.componentID,
-                                        handle: $scope.username()
+                                    socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
+                                        problemID: $scope.componentID
                                     });
-                                }, 100);
-                            }
-                        });
+
+                                    $timeout(function () {
+                                        socket.emit(helper.EVENT_NAME.OpenComponentForCodingRequest, {
+                                            componentID: $scope.componentID,
+                                            handle: $scope.username()
+                                        });
+                                    }, 100);
+                                }
+                            });
+                        }
                     }
                 }
             }
+        } else if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
+            // close the previous problem if any
+            if (angular.isDefined($scope.defendant) && angular.isDefined($scope.componentID)) {
+                socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
+                    problemID: $scope.componentID,
+                    writer: $scope.defendant
+                });
+            }
+            $scope.componentID = Number($stateParams.componentId);
+            $scope.defendant = $stateParams.defendant;
+            $scope.defendantRoomID = $stateParams.roomId;
+
+            $timeout(function () {
+                socket.emit(helper.EVENT_NAME.GetChallengeProblemRequest, {
+                    defendant: $scope.defendant,
+                    componentID: $scope.componentID,
+                    pretty: false,
+                    roomID: $stateParams.roomId
+                });
+            }, 100);
         }
     }];
 

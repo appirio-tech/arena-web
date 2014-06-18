@@ -39,7 +39,7 @@
 
     <!-- begin of chat area -->
     <div class="content">
-        <div class="chatBoard" data-ng-chat-area-scrollbar data-rebuild-on="rebuild:chatboard" data-bottom rebuild-on-resize>
+        <div class="chatBoard" data-ng-scrollbar data-keep-bottom data-rebuild-on="rebuild:chatboard" data-rebuild-on-resize>
             <ul>
                 <li data-ng-repeat="chat in chatContent"><span class="{{getRatingClass(chat.userRating)}}" data-ng-show="chat.prefix">{{chat.prefix}} </span><span data-ng-class="chat.type">{{chat.text}}</span></li>
             </ul>
