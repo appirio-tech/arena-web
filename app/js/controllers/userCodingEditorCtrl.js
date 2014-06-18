@@ -676,7 +676,6 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                     }
                 });
             });
-            $scope.customChecked = false;
             $scope.customTest = [];
             /*jslint unparam: true*/
             angular.forEach($scope.problem.allArgTypes, function (arg) {
@@ -739,7 +738,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             $scope.runTests = function () {
 
                 $scope.isLight = themer.getSelected().key === 'LIGHT' ? '/light' : '';
-                var count = 0, i, j, params = [], args = [], param;
+                var count = 0, i, j, params = [], args = [], param, testcase;
                 for (i = 0; i < $scope.userData.tests.length; i += 1) {
                     count += $scope.userData.tests[i].checked ? 1 : 0;
                 }
@@ -754,29 +753,37 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                     return;
                 }
 
-                for (i = 0; i < $scope.userData.tests.length; i += 1) {
-                    if ($scope.userData.tests[i].checked) {
-                        $scope.caseIndex = i;
-                        for (j = 0; j < $scope.userData.tests[i].params.length; j += 1) {
-                            param = $.trim($scope.userData.tests[i].params[j].value);
-
-                            if (param.length > 1 && param[0] === '{' && param[param.length - 1] === '}') {
-                                param = '[' + param.substr(1, param.length - 2) + ']';
-                            }
-
-                            try {
-                                param = JSON.parse(param);
-                            } catch (e) {
-                                openModal({
-                                    title: 'Error',
-                                    message: 'The param ' + param + ' is invalid.',
-                                    enableClose: true
-                                });
-                                return;
-                            }
-                            params.push(param);
+                if ($scope.customChecked) {
+                    testcase = $scope.customTest;
+                } else {
+                    for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                        if ($scope.userData.tests[i].checked) {
+                            $scope.caseIndex = i;
+                            testcase = $scope.userData.tests[i].params;
+                            break;
                         }
                     }
+                }
+
+                // $scope.customTest[paramNum].value
+                for (j = 0; j < testcase.length; j += 1) {
+                    param = $.trim(testcase[j].value);
+
+                    if (param.length > 1 && param[0] === '{' && param[param.length - 1] === '}') {
+                        param = '[' + param.substr(1, param.length - 2) + ']';
+                    }
+
+                    try {
+                        param = JSON.parse(param);
+                    } catch (e) {
+                        openModal({
+                            title: 'Error',
+                            message: 'The param ' + param + ' is invalid.',
+                            enableClose: true
+                        });
+                        return;
+                    }
+                    params.push(param);
                 }
 
                 for (i = 0; i < params.length; i += 1) {

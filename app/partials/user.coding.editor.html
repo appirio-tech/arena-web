@@ -50,7 +50,7 @@
             <div class="rightPart">
                 <div data-ng-hide="currentStateName()==='user.viewCode'"><input type="checkbox" name="autoCompile" id="compileCheck" class="editorCheckbox" data-ng-model="autoCompile" /><label for="compileCheck" class="editorCheckLbl">Auto Compile</label></div><!-- avoid unnecessary blank
                 --><div data-ng-hide="currentStateName()==='user.viewCode'"><input type="checkbox" name="autoSave" id="saveCheck" class="editorCheckbox" data-ng-model="autoSave" /><label for="saveCheck" class="editorCheckLbl">Auto Save</label></div><!--  avoid unnecessary blank
-                --><div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged.</div><div data-ng-if="currentStateName()=='user.coding' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID)" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>
+                --><div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged.</div><div data-ng-show="currentStateName()=='user.coding' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID)" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>
                     <div class="testPanel" data-ng-show="testOpen">
                         <div>
                             <!-- Custom test case for Challenge Phase -->
