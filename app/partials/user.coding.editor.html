@@ -6,7 +6,7 @@
         <div class="toolBar">
             <div data-ng-class="{active:settingsOpen,inactive:!settingsOpen}">
                 <a class="settingsToggle" data-ng-click="toggleSettings()">settings</a>
-                <div class="settingsPanel" data-ng-show="settingsOpen && currentStateName=='user.coding'">
+                <div class="settingsPanel" data-ng-show="settingsOpen && currentStateName()=='user.coding'">
                     <a data-ng-click="toggleSettings()" class="closeIcon"></a>
                     <div class="editorRow">
                         <label class="textWhite">Editor</label>

@@ -8,8 +8,13 @@
  * - Added pop up modal.
  * - Handle ForcedLogoutResponse, Disconnected, Connected events.
  *
- * @author dexy
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI - System Tests):
+ * - Added $filter as an injected service.
+ * - Added handler for PopUpGenericResponse to partially handle the Phase Change messages.
+ * - Added handler for SingleBroadcastResponse.
+ *
+ * @author dexy, amethystlei
+ * @version 1.2
  */
 'use strict';
 /*jshint -W097*/
@@ -28,7 +33,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connectionService', '$modal', '$state', 'themer', '$cookies', function ($scope, $http, appHelper, notificationService, connectionService, $modal, $state, themer, $cookies) {
+var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connectionService', '$modal', '$state', 'themer', '$cookies', '$filter', function ($scope, $http, appHelper, notificationService, connectionService, $modal, $state, themer, $cookies, $filter) {
     var /**
          * The modal controller.
          *
@@ -138,6 +143,36 @@ var baseCtrl = ['$scope', '$http', 'appHelper', 'notificationService', 'connecti
             }
             $state.go(helper.STATE_NAME.AnonymousHome);
         }
+    });
+    $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
+        // handle phase change messages
+        if (data.title === helper.POP_UP_TITLES.PhaseChange) {
+            if (!data.buttons) {
+                // handle confirmation for System Test Phase Change for now.
+                $scope.openModal({
+                    title: helper.POP_UP_TITLES.PhaseChange,
+                    message: data.message,
+                    enableClose: true
+                });
+            }
+        }
+    });
+    $scope.$on(helper.EVENT_NAME.SingleBroadcastResponse, function (event, data) {
+        var html =
+            '<section>' +
+            '  <h4>Broadcast Information</h4>' +
+            '  <p>Time: ' + $filter('date')(new Date(data.broadcast.time), 'MM/dd/yy HH:mm a') + ' ' + $scope.timeZone + '</p>' +
+            '  <p>Round: ' + data.broadcast.roundName + '</p>' +
+            '</section>' +
+            '<section>' +
+            '  <h4>Broadcast Message</h4>' +
+            '  <p>' + data.broadcast.message + '</p>' +
+            '</section>';
+        $scope.openModal({
+            title: 'Round Broadcast',
+            message: html,
+            enableClose: true
+        });
     });
     /*jslint unparam: false*/
     // theme selector

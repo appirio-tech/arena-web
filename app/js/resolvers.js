@@ -25,8 +25,12 @@
  * - Updated to resolve required data for pages that contain chat widgets.
  * - Added handlers for chat-related responses.
  *
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - System Tests):
+ * - Updated the handler of SystestProgressResponse to display progress with percentage.
+ * - Added handler for SingleBroadcastResponse to display single broadcast response.
+ *
  * @author amethystlei, dexy
- * @version 1.4
+ * @version 1.5
  */
 ///////////////
 // RESOLVERS //
@@ -389,7 +393,9 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
     // handle system test progress response
     socket.on(helper.EVENT_NAME.SystestProgressResponse, function (data) {
-        $rootScope.roundData[data.roundID].systestProgress = data.done + '/' + data.total;
+        // display as percentage instead of '0/0'
+        $rootScope.roundData[data.roundID].systestProgress =
+            data.total === data.done ? '100.00%' : (data.done * 100.0 / data.total).toFixed(2) + '%';
     });
 
     // handle registrated user response
@@ -401,6 +407,12 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     socket.remove(helper.EVENT_NAME.PopUpGenericResponse);
     socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
         $rootScope.$broadcast(helper.EVENT_NAME.PopUpGenericResponse, data);
+    });
+
+    // handle single broadcast response
+    socket.remove(helper.EVENT_NAME.SingleBroadcastResponse);
+    socket.on(helper.EVENT_NAME.SingleBroadcastResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.SingleBroadcastResponse, data);
     });
 
     // request login
