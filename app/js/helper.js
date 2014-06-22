@@ -30,8 +30,12 @@
  * - Added challenge phase related events.
  * - Added state names.
  *
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - System Tests):
+ * - Added SingleBroadcastResponse to event name constants.
+ * - Added PhaseChange to pop up titles.
+ *
  * @author tangzx, amethystlei, dexy
- * @version 1.6
+ * @version 1.7
  */
 
 module.exports = {
@@ -93,6 +97,7 @@ module.exports = {
         RegisteredUsersResponse: 'RegisteredUsersResponse',
         RoomInfoResponse: 'RoomInfoResponse',
         RoundScheduleResponse: 'RoundScheduleResponse',
+        SingleBroadcastResponse: 'SingleBroadcastResponse',
         StartSyncResponse: 'StartSyncResponse',
         SubmitResultsResponse: 'SubmitResultsResponse',
         SynchTimeResponse: 'SynchTimeResponse',
@@ -201,6 +206,7 @@ module.exports = {
         MultipleSubmission: 'Multiple Submission',
         Unauthorized: 'Unauthorized',
         ChallengeResults: 'Challenge Results',
+        PhaseChange: 'Phase Change',
         Disconnected: 'Disconnected',
         ForcedLogout: 'Client Connection Error'
     },
