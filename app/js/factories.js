@@ -16,8 +16,11 @@
  * - Removed $http from connectionService, updated it to handle disconnection event.
  * - Added getUserInfo to helper to retrieve complete user profile.
  *
- * @author tangzx, dexy
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Updated present and past phrases for verbs in appHelper.getPhaseTime.
+ *
+ * @author tangzx, dexy, amethystlei
+ * @version 1.3
  */
 'use strict';
 var config = require('./config');
@@ -143,18 +146,33 @@ factories.appHelper = [function () {
     // Used in contest schedule displaying.
     // Usually we have start time and end time.
     // When start time is not available, end time should take its place.
-    helper.getPhaseTime = function (phase, id) {
+    helper.getPhaseTime = function (phase, id, currentPhase) {
+        function displayStart() {
+            return phase.phaseType <= currentPhase.phaseType ? 'Started' : 'Starts';
+        }
+        function displayEnd() {
+            return phase.phaseType < currentPhase.phaseType ? 'Ended' : 'Ends';
+        }
         if (id === 0) {
             if (helper.isStringNotNullNorEmpty(phase.start)) {
-                return {key: 'Start', value: phase.start};
+                return {
+                    key: displayStart(),
+                    value: phase.start
+                };
             }
             if (helper.isStringNotNullNorEmpty(phase.end)) {
-                return {key: 'End', value: phase.end};
+                return {
+                    key: displayEnd(),
+                    value: phase.end
+                };
             }
         } else if (id === 1) {
             if (helper.isStringNotNullNorEmpty(phase.start) &&
                     helper.isStringNotNullNorEmpty(phase.end)) {
-                return {key: 'End', value: phase.end};
+                return {
+                    key: displayEnd(),
+                    value: phase.end
+                };
             }
         }
         return {};

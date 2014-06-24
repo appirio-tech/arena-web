@@ -12,8 +12,11 @@
  * Changes in version 1.2 (Module Assembly - Web Arena UI - Chat Widget):
  * - Updated to use real data.
  *
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Moved the function for calculating rating colors to baseCtrl.js to enable global usage.
+ *
  * @author dexy, amethystlei
- * @version 1.2
+ * @version 1.3
  */
 'use strict';
 /*global require, module, angular */
@@ -104,37 +107,6 @@ var chatAreaCtrl = ['$scope', '$rootScope', '$modal', 'socket', '$timeout', func
         $rootScope.chatContent = [];
         socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
     }
-
-    /**
-     * This function returns the css class of rating value.
-     *
-     * @param {number} rating the rating
-     * @returns {string} the CSS class to show different colors
-     */
-    $scope.getRatingClass = function (rating) {
-        if (rating >= 2200) {
-            return "rating-red";
-        }
-        if (rating >= 1500) {
-            return "rating-yellow";
-        }
-        if (rating >= 1200) {
-            return "rating-purple";
-        }
-        if (rating >= 900) {
-            return "rating-green";
-        }
-        if (rating >= 1) {
-            return "rating-grey";
-        }
-        if (rating === 0) {
-            return "rating-none";
-        }
-        if (rating === -1) {
-            return "rating-admin";
-        }
-        return "";
-    };
 
     /**
      * Initializes showRegistrant by directive's attribute, default to false, not to show the registrants section.

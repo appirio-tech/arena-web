@@ -29,8 +29,12 @@
  * - Updated the handler of SystestProgressResponse to display progress with percentage.
  * - Added handler for SingleBroadcastResponse to display single broadcast response.
  *
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Removed weekly information from date format (DATE_FORMAT).
+ * - Updated the handler of RoundScheduleResponse to use $rootScope.timeZone instead of $rootScope.timezone.
+ *
  * @author amethystlei, dexy
- * @version 1.5
+ * @version 1.6
  */
 ///////////////
 // RESOLVERS //
@@ -51,7 +55,7 @@ var connectionTimeout = 25000;
  *
  * @type {string}
  */
-var DATE_FORMAT = 'EEE MMM d, h:mm a';
+var DATE_FORMAT = 'MMM d, h:mm a';
 
 //Here we put resolver logic into a container object so that the state declaration code section stays readable
 var resolvers = {};
@@ -138,7 +142,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         $rootScope.roundData[data.roundID].phases = [];
         angular.forEach(data.schedule, function (phase) {
             var format = function (time) {
-                return $filter('date')(new Date(time), DATE_FORMAT) + ' ' + $rootScope.timezone;
+                return $filter('date')(new Date(time), DATE_FORMAT) + ' ' + $rootScope.timeZone;
             };
             phase.start = format(phase.startTime);
             phase.end = format(phase.endTime);

@@ -17,8 +17,13 @@
  * - Fixed the angular-timer usage to avoid error messages in console.
  * - Removed unnecessary $state injection as it is exposed by $rootScope. 
  *
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Added the handler for PhaseDataResponse to implement coding time update (add time).
+ * - Fixed the issue that changing the testcases in Test Panel will also change
+ *   the content in the problem area.
+ * 
  * @author dexy, amethystlei
- * @version 1.3
+ * @version 1.4
  */
 'use strict';
 /*global module, angular, document, $*/
@@ -42,9 +47,6 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $scope.sharedObj = {};
         $scope.topStatus = 'normal';
         $scope.bottomStatus = 'normal';
-        // modal defined in the parent scope can be used by the child scope (userCodingEditor.js).
-        // When onLeavingCodingPage is executed, the modal opened by the child scope can be closed.
-        $scope.currentModal = null;
 
         // problem data
         $scope.problem = {};
@@ -159,6 +161,41 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 $scope.sharedObj.rebuildErrorBar();
             }
         };
+        $scope.countdown = 1;
+
+        /**
+         * Set and start the timer.
+         */
+        function startTimer() {
+            // start coding/challenge phase count down
+            var seconds = -1, phase;
+            if ($scope.roundData && $scope.roundData[$scope.roundID] && $scope.roundData[$scope.roundID].phaseData) {
+                phase = $scope.roundData[$scope.roundID].phaseData;
+                if (phase.phaseType === helper.PHASE_TYPE_ID.CodingPhase ||
+                        phase.phaseType === helper.PHASE_TYPE_ID.ChallengePhase) {
+                    // how many seconds between now and the phase end time
+                    seconds = (phase.endTime - tcTimeService.getTime()) / 1000;
+                }
+            }
+            if (seconds > 0) {
+                // set and start the timer, see angular-timer code for implementation details.
+                $timeout(function () {
+                    $scope.$broadcast('timer-set-countdown', seconds - 0.2);
+                    $scope.$broadcast('timer-start');
+                }, 200);
+            } else {
+                $scope.noCountdown = true;
+            }
+        }
+
+        /*jslint unparam: true*/
+        // handle phase data response
+        $scope.$on(helper.EVENT_NAME.PhaseDataResponse, function (event, data) {
+            if (String(data.phaseData.roundID) === String($scope.roundID)) {
+                startTimer();
+            }
+        });
+        /*jslint unparam: false*/
 
         /**
          * Send notification when problem data is ready.
@@ -172,10 +209,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     $scope.userData.tests = $scope.tests;
                     $scope.examples = [];
                     angular.forEach($scope.userData.tests, function (test) {
-                        if (test.example === true) {
-                            $scope.hasExampleTest = true;
-                            $scope.examples.push(test);
-                        }
+                        var copiedTest = {};
                         test.params = [];
 
                         angular.forEach(test.input, function (input) {
@@ -183,35 +217,19 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                                 value: input
                             });
                         });
+                        if (test.example === true) {
+                            angular.copy(test, copiedTest);
+                            $scope.hasExampleTest = true;
+                            $scope.examples.push(copiedTest);
+                        }
                     });
                     $scope.problemLoaded = true;
-
                     // broadcast problem-load message to child states.
                     $scope.$broadcast('problem-loaded');
-
-                    // start coding/challenge phase count down
-                    var seconds = -1, phase;
-                    if ($scope.roundData && $scope.roundData[$scope.roundID] && $scope.roundData[$scope.roundID].phaseData) {
-                        phase = $scope.roundData[$scope.roundID].phaseData;
-                        if (phase.phaseType === helper.PHASE_TYPE_ID.CodingPhase ||
-                                phase.phaseType === helper.PHASE_TYPE_ID.ChallengePhase) {
-                            // how many seconds between now and the phase end time
-                            seconds = (phase.endTime - tcTimeService.getTime()) / 1000;
-                        }
-                    }
-                    if (seconds > 0) {
-                        // set and start the timer, see angular-timer code for implementation details.
-                        $timeout(function () {
-                            $scope.$broadcast('timer-set-countdown', seconds - 0.2);
-                            $scope.$broadcast('timer-start');
-                        }, 200);
-                    } else {
-                        $scope.noCountdown = true;
-                    }
+                    startTimer();
                 }
             }
         }
-        $scope.countdown = 1;
 
         /**
          * Get argument type string.
@@ -387,23 +405,30 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         });
 
         /**
-         * Go back to the contest page.
+         * Go back to the contest page when the user is using the coding editor.
+         * Go back to the contest summary page when user is viewing others' code.
          */
         $scope.goBack = function () {
-            $scope.$state.go(helper.STATE_NAME.ContestSummary, {
-                contestId : $scope.roundID,
-                divisionId : $scope.divisionID,
-                viewOn : 'room'
-            });
+            if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+                $scope.$state.go(helper.STATE_NAME.Contest, {
+                    contestId: $scope.roundID
+                });
+            } else {
+                $scope.$state.go(helper.STATE_NAME.ContestSummary, {
+                    contestId : $scope.roundID,
+                    divisionId : $scope.divisionID,
+                    viewOn : 'room'
+                });
+            }
         };
 
         /**
          * Send close problem request when leaving.
          */
         function onLeavingCodingPage() {
-            if ($scope.currentModal) {
-                $scope.currentModal.dismiss('cancel');
-                $scope.currentModal = undefined;
+            if ($rootScope.currentModal) {
+                $rootScope.currentModal.dismiss('cancel');
+                $rootScope.currentModal = undefined;
             }
             if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
                 if ($scope.username()) {

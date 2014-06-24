@@ -7,8 +7,11 @@
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Contest Phase Movement):
  * - Updated to use real data.
  *
- * @author TCSASSEMBLER
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Updated phase messages for System Test.
+ *
+ * @author amethystlei
+ * @version 1.2
  */
 'use strict';
 /*global module, angular*/
@@ -39,8 +42,8 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', function ($sc
         'Coding Phase', // 4 - coding
         'Intermission Phase', // 5 - after coding, before challenge
         'Challenge Phase', // 6 - challenge
-        'Preparing for System Tests', // 7 - after challenge, before sys. test
-        'System Tests', // 8 - sys. test
+        'Preparing for System Test Phase', // 7 - after challenge, before sys. test
+        'System Test Phase', // 8 - sys. test
         'Contest Complete' // 9 - complete
     ];
 

@@ -1,0 +1,654 @@
+body{
+    background:url(../img/bg.png) repeat 0 0 #DDE7F2;
+    color:#fff;
+}
+.btn-facebook:after,
+.btn-twitter:after,
+.btn-google:after,
+.btn-github:after,
+.dashboard .titleBar .brand,
+.panel-custom .summaryPanel:after,
+.panel-custom .schedulePanel:after,
+.panel-custom .statusPanel:after,
+.panelSummary .summaryWrapper div:before{
+    background-image: url(../img/sprite.png);
+}
+.dashboard .breadcrumb li:after,
+.contest .titleBar .shareLink a,
+.panelContestStat .breadcrumbHead .breadcrumb li:before {
+    background-image: url(../img/sprite-2.png);
+}
+.codeArea .vote:before,
+.codeArea .titleBar .shareLink > ul > li > a:after,
+.codeArea .socialLinks a:before,
+.panelCodeEditor .actionIcons > li:before,
+.panelCodeEditor .toolBar .middlePart .findInput > a,
+.panelCodeEditor .toolBar .middlePart .arrow:before,
+.panelCodeEditor .settingsToggle:before,
+.panelCodeEditor .toolBar .editorCheckLbl:before,
+.panelCodeEditor .toolBar .testToggle:before,
+.panelCodeEditor .panel-body .settingsPanel .closeIcon,
+.panelCodeEditor .testPanel header>a,
+.panelCodeEditor .testPanel .caseLbl:before,
+.panelCodeEditor .testPanel .bottom label:before,
+.panelOverview .panel-heading .showSectionLbl:before,
+.messageArena .panelHeader .btnClose:before,
+.messageArena .panelHeader .legends label:before,
+.messageArena .messageBox .mItem:before,
+.panelChatArea .control-bar .findCheckLbl:before,
+.panelChatArea .membersInfo .infoSection header a:before,
+.panelChatArea .findIcon,
+.panelChatArea .searchIcon,
+.detailPage section .heading .filterArea a:before,
+.filterPanel .closeLink:before  {
+    background-image: url(../img/sprite-codeArena.png);
+}
+.codeArea .shareLink .dropdown-menu,
+.panelCodeEditor .panel-body .settingsPanel {
+    background-image: url(../img/popup-bg.png);
+}
+.anon-header .navbar .navbar-brand,
+.header .navbar-brand,
+.header .navIcons>li>.icon:before,
+.userInfo .notification,
+.userInfo .arrow,
+.header .navIcons .themePanel .closeBtn,
+.header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl:before {
+    background-image: url(../img/sprite-new-header.png);
+}
+.anon-header,
+.header {
+    background-image: url(../img/black-header.png);
+}
+.panelContestPlan .iconsWrapper .viewLbl,
+.calendar .fc-button-prev .fc-text-arrow,
+.calendar .fc-button-next .fc-text-arrow,
+.listView .listHeader .btnCtrl {
+    background-image: url(../img/sprite-contestPlan.png);
+}
+.panelCodeProblem .panel-heading > .collapseIcon:before,
+.panelCodeEditor .panel-heading > .collapseIcon:before,
+.detailPage section .heading .expandIcon,
+.detailPage .table>tbody>tr>td .icon,
+.detailPage .table>thead>tr>th .sort,
+.detailPage .leaderboardWrapper .heading .viewFilter .showLBLbl:before,
+.filterPanel .contentWrapper .dropdown .arrow,
+.detailPage section .table>thead>tr>th .arrow {
+    background-image: url(../img/sprite-room-summary.png);
+}
+
+/***************header style*/
+.header .navIcons .themePanel {
+    border-color: #fff;
+    border-color: rgba(255,255,255,0.1);
+    background: #151718;
+    background: rgba(21,23,24,0.98);
+    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+}
+.header .navIcons .themePanel:before {
+    color: #fff;
+    color: rgba(255,255,255,0.1);
+}
+.header .navIcons .themePanel:after {
+    color: #151718;
+}
+.header .navIcons .themePanel h4,
+.header .navIcons .themePanel .themeItem {
+    border-color: #1f444e;
+}
+.header .navIcons .themePanel .btn {
+    background: #0f9abd;
+}
+
+/*******************login page*/
+
+/* topcoder account login part */
+.hero .form .tcAccountBox input {
+    background: #1c1d1e;
+    color: #fff;
+    border-color: #494b4c;
+}
+.hero .form .tcAccountBox .btn-lg,
+.hero .form .social .btn-lg,
+.codeArea .socialLinks .btn-lg {
+    background: #0ea7cd;
+}
+.hero .form .social .btn-facebook, .codeArea .socialLinks .btn-facebook {background-color:#45619d;}
+.hero .form .social .btn-facebook:hover,.codeArea .socialLinks .btn-facebook:hover {background-color:#4D69BB;}
+.hero .form .social .btn-twitter, .codeArea .socialLinks .btn-twitter{background-color:#55acee;}
+.hero .form .social .btn-twitter:hover,.codeArea .socialLinks .btn-twitter:hover {background-color:#62CAF9;}
+.hero .form .social .btn-google,.codeArea .socialLinks .btn-google {background-color:#dd4b39;}
+.hero .form .social .btn-google:hover,.codeArea .socialLinks .btn-google:hover {background-color:#e05d4d;}
+.hero .form .social .btn-github,.codeArea .socialLinks .btn-github{background-color: #444;}
+.hero .form .social .btn-github:hover,.codeArea .socialLinks .btn-github:hover {background-color: #515151;}
+/* custom checkbox */
+.hero .form .tcAccountBox .rememberCheckboxLabel {    
+    background: url(../img/checkbox.png) 0 0 no-repeat;
+}
+
+/* social media login part */
+.hero .signup .separator{
+    border-color: #3d4143;
+}
+.hero .loginBox {
+    border-color: #3d4143;
+}
+.hero .loginBox header {
+    background: #212324;
+    border: 1px solid #282a2b;
+    color: #fff;
+}
+.hero .loginBox .tcAccountBox,
+.hero .loginBox .social>div {
+    background: #282a2b;
+}
+.hero .registerRow {
+    background: #212324;
+    border-color: #282a2b;
+}
+.hero .registerRow a {
+    color: #0bbbe7;
+}
+/* login footer part */
+.hero .loginBox footer {
+    border-color: #3d4143;
+    background: #000;
+    height: 164px;
+    padding: 15px 17px;
+}
+.hero .loginBox footer .sponsorLogo {
+    background: url(../img/company_logo.png) 0 0 no-repeat;
+}
+
+/*************** dashboard page */
+/* basical stucture, title, breadcrumb and connection */
+.tcTime>span {
+    color: #fff;
+}
+.codeArea .shareLink > ul > li > a:hover {color: #fff;}
+.codeArea .shareLink > ul > .open > a {color: #fff;}
+.codeArea .shareLink > ul > .open > a:after {background-position: -25px 0;}
+
+
+/*********** footer style */
+footer{
+    background-color:#000;
+}
+footer .line {
+    border-color: #14191a;
+}
+footer .right .sponsorLogo {
+    background: url(../img/company_logo_small.png) 100% 100% no-repeat;
+}
+
+/********************* modal */
+.modal .modal-content {
+    background: #151718;
+    border-color: #234760;
+}
+.modal .modal-content .modal-header { 
+    background: #234760;
+}
+.modal .modal-content .modal-body {
+    color: #636d70;
+}
+.modal .modal-content .btn {
+     line-height: 27px;
+}
+.modal .modal-content .modal-footer {
+    border-width: 0;
+}
+/********************* active contests part */
+.panel-custom {
+    background: #151718;
+    border-color: #234760;
+}
+.panel-custom .panel-heading {
+    background: #234760;
+}
+.panel-custom .panel-body {
+    color: #636d70;
+}
+.panel-custom .mainContent .btn {
+    line-height: 27px;
+}
+/* tabs */
+.panel-custom .statusPanel .rightSide {
+    border-color: #3d4143;
+}
+/* paginator part */
+.panel-custom .paginator {
+    border-color: #234760;
+}
+
+.panel-custom .panel-body .textActive {
+    color: #0bbbe7;
+}
+.panel-custom .panel-body .textWhite {
+    color: #fff;
+}
+.panel-custom .panel-body .textRed {
+    color: #ff0000;
+}
+
+/* problem area widget */
+.panelCodeProblem .panel-heading {
+    background: #1f444e;
+}
+.panelCodeEditor .panel-heading {background: #1f444e;}
+
+.panelCodeProblem .panel-body {
+    border-color: #1f444e;
+}
+.panelCodeEditor .panel-body {
+    border-color:#1f444e;
+}
+
+/* code editor widget */
+.panelCodeEditor .actionIcons > .link:hover {color: #fff;}
+
+.panelCodeEditor .toolBar .middlePart .findInput {
+    background: #162f36;
+}
+.panelCodeEditor .toolBar .middlePart .gotoInput input {
+    background: #162f36;
+}
+.panelCodeEditor .toolBar .middlePart .gotoInput .arrow {
+    padding: 15px 14px;
+    background: #162f36;
+}
+.panelCodeEditor .toolBar .middlePart .gotoInput .arrow:hover {
+    background: #0c191d; 
+}
+.panelCodeEditor .toolBar .middlePart .arrow:before {
+    left: 10px;
+}
+.panelCodeEditor .panel-body .toolBar {
+    background: #232628;
+    border-color: #151718;
+}
+.panelCodeEditor .toolBar .settingsToggle {
+    background: #151718;
+}
+.panelCodeEditor .settingsPanel .settingDropDown .dropdown-toggle {
+    background-image: url(../img/select.png);
+    background-color: #151718;
+    background-color: rgba(21, 23, 24, 0.98);
+    border-color: #fff;
+    border-color: rgba(255, 255, 255, 0.16);
+    color: #fff;
+}
+.panelCodeEditor .settingsPanel .settingDropDown .dropdown-menu>li>.current {
+    background: #999; 
+    color: #fff;
+}
+.panelCodeEditor .settingsPanel .lineNumberRow .lineNumLbl:before {
+    border-color: rgba(255, 255, 255, 0.16);
+}
+.panelCodeEditor .settingsPanel .lineNumRadio:checked ~ .lineNumLbl:before {
+    box-shadow: 0 0 0 4px rgba(21,23,24,0.98) inset, 0 0 0 10px #fff inset;
+}
+.panelCodeEditor .settingsPanel .btn-settings {
+    background: #0f9abd;
+}
+.panelCodeEditor .panel-body .toolBar .rightPart {
+    color: #fff;
+}
+.panelCodeEditor .toolBar .active .testToggle {
+    color: #fff;
+    background: #151718;
+    background: rgba(21,23,24,0.98);
+    border-color: rgba(255,255,255,0.16);
+}
+.panelCodeEditor .toolBar .testToggle:hover {color: #fff;}
+.panelCodeEditor .toolBar .testPanel {
+    background: #151718;
+    background: rgba(21,23,24,0.98);
+    border-color: rgba(255,255,255,0.16);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+}
+.panelCodeEditor .testPanel header {
+    border: 1px solid #151718;
+    border-color: rgba(21,23,34,0.98);
+    background: #1a1c1d;
+    color: #687376;
+}
+.panelCodeEditor .testPanel .btn{
+    background: #0f9abd;
+}
+.panelCodeEditor .testPanel .content input[type="text"] {
+    background: #151718;
+    border-color: rgba(255,255,255,0.16);
+}
+.panelCodeEditor .settingsPanel .btn-settings:hover,
+.panelCodeEditor .testPanel .content .btn:hover,
+.panelCodeEditor .testPanel .bottom .btn:hover {
+    background: #27A4C4;
+}
+.panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
+.panelCodeEditor .paddingRow {background: #151718;}
+.panelCodeEditor .paddingRow:before {
+    background: #232628;
+}
+.panelCodeEditor .paddingRow:after {
+    background: #232628;
+}
+.panelCodeEditor .panel-body .errorBar {
+    background: #232628;
+}
+/* resizer */
+/*hover style of resizer*/
+/*#resizer:hover {
+    background: #1f444e;
+}*/
+/******************* count down widget */
+.panelCountDown {
+    background: #1b2920;
+}
+/******************* contest status widget */
+.panelContestStat .panel-heading {background: #1f444e;}
+.panelContestStat .panel-body {
+    border-color: #1f444e;
+}
+.panelContestStat .panel-body .overview {
+    border-bottom: 1px solid #1f444e;
+}
+.panelContestStat .breadcrumbHead {
+    padding: 9px 0 7px 28px;
+}
+.panelContestStat .breadcrumbHead .breadcrumb .active {color: #0bbbe7; }
+.panelContestStat .breadcrumbHead .breadcrumb li {
+    padding-left: 13px;
+}
+.panelContestStat .breadcrumbHead .breadcrumb li:last-child {padding-right: 0; }
+.panelContestStat .breadcrumbHead .breadcrumb li:before {
+    opacity: 0.3;
+    height: 9px;
+    left: 0;
+    top: 7px;
+}
+.panelContestStat .phaseDetails table td{
+    border-bottom: 1px solid #1f444e;
+}
+.panelContestStat .phaseDetails table th{
+    border-bottom: 1px solid #1f444e;
+}
+
+/* profile overview and important messages widget */
+.panelOverview { 
+    background: transparent;
+}
+.panelOverview .panel-heading {
+    background: #1f444e;
+}
+.panelOverview .panel-body {
+    border-color: #1f444e;
+}
+.panelOverview .panel-body .contentWrapper {
+    background: #151717;
+    border: 1px solid #234760;
+}
+.panelOverview .overviewAndMessage .profile p {
+    color: #fff;
+}
+.panelOverview .overviewAndMessage .profile p label {
+    color: #687376;
+}
+.panelOverview .overviewAndMessage .messagesBox td {
+    color: #fff;
+    border-color: #1f444e;
+}
+.panelOverview .overviewAndMessage .messagesBox .date {
+    color: #687376;
+}
+
+/* contest plan widget */
+.panelContestPlan {
+    border-color: #1f444e;
+    background: #151718;
+}
+/*for calendar and list view*/
+.calendar .fc-header-title h2,
+.listView .listHeader h2 {
+    color: #687376;
+}
+.calendar .fc-border-separate tr.fc-last th {
+    border-color: #1f444e;
+}
+.calendar .fc-border-separate thead .fc-day-header {
+    color: #687376;
+}
+.listView .listHeader {
+    border-bottom: 1px solid #1f444e;
+}
+.listView .eventsContent .table>tbody>tr>td {
+    border-color: #1f444e;
+}
+/* style of message arena */
+.body .messageArena {
+    background-color: rgba(21,23,24,0.98);
+    border-color: rgba(255,255,255,0.1);
+    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+}
+.messageArena:after {
+    color: rgba(21,23,24,0.98);
+}
+.messageArena .qtip-content {
+    color: #fff;
+}
+.messageArena .panelHeader {
+    border-bottom: 1px solid #1f444e;
+}
+.messageArena .messageBox .mItem {
+    border-bottom: 1px solid #1f444e;
+}
+
+/*room summary widget in contest page*/
+.panelSummary {
+    border-color: #1f444e;
+}
+.panelSummary .panel-heading {
+    background: #1f444e;
+}
+.panelChatArea .panel-heading {
+    background-color: #1f444e;
+}
+.panelChatArea .lobbyDropdown .dropdown-toggle,
+.panelChatArea .methodDropdown .dropdown-toggle,
+.panelChatArea .memberDropdown .disableSelect,
+.panelChatArea .memberDropdown .dropdown-toggle {
+    background-image: url(../img/select.png);
+    background-color: #162f36;
+    background-color: rgba(22,47,54,0.99);
+}
+.panelChatArea .lobbyDropdown .dropdown-toggle:hover,
+.panelChatArea .methodDropdown .dropdown-toggle:hover,
+.panelChatArea .memberDropdown .dropdown-toggle:hover {
+    color: inherit;
+}
+.panelChatArea .membersInfo{
+    border-right: 1px solid #1f444e;
+}
+.panelChatArea .membersInfo .infoSection header a{
+    background-color: #191A1B;
+}
+.panelChatArea .membersInfo .users .current {
+    background: #050035;
+    background: rgba(5, 0, 53, 0.9);
+}
+.panelChatArea .content .chatBoard .general{
+    color: #fff;
+}
+.panelChatArea .content .chatBoard .toMe{
+    background-color: #a90909;
+}
+.panelChatArea .methodDropdown .dropdown-menu{
+    background-color: #40474a;
+}
+.panelChatArea .memberDropdown .dropdown-menu{
+    background-color: #40474a;
+}
+.panelChatArea .methodDropdown .dropdown-menu li a{
+    color: #fff;
+}
+.panelChatArea .methodDropdown .dropdown-menu li a:hover{
+    color: #333;
+}
+.panelChatArea .chatInput {
+    background: #162f36;
+}
+.panelChatArea .chatInput input{
+    font-weight: 300;
+}
+.panelChatArea .chatInput input::-webkit-input-placeholder{
+    color: #687376;
+}
+.panelChatArea .chatInput input:-moz-placeholder{
+    color: #687376;
+}
+.panelChatArea .chatInput input::-moz-placeholder{
+    color: #687376;
+}
+.panelChatArea .chatInput input:-ms-input-placeholder{
+    color: #687376;
+}
+/** rating style and role style **/
+.rating-red{
+    color: rgb(251,0,9);
+}
+.rating-yellow{
+    color: rgb(217,212,10);
+}
+.rating-purple{
+    color: rgb(80,15,203);
+}
+.rating-green{
+    color: rgb(23,139,5);
+}
+.rating-grey{
+    color: rgb(129,129,129);
+}
+.rating-none{
+    color: #fff;
+}
+.rating-admin{
+    color: rgb(252,80,10);
+}
+
+/** Modal style **/
+.chatWidget-modal-header,
+.chatWidget-modal-footer{
+    background-color: #1f444e;
+}
+.chatWidget-modal-body{
+    background-color: rgb(21, 23, 24);
+}
+.chatWidget-modal-button{
+    background-color: rgb(9, 153, 209);
+}
+
+/* contest summary page --> uesr.contest.detail.html*/
+.detailPage .panelSummary .panel-body .leftSec {
+    border-right: 1px solid #1f444e;
+}
+/* challengers section */
+.detailPage section h3 {
+    color: #fff;
+}
+.filterPanel.qtip-default {
+    background: url(../img/filter-bg.png) 0 0 no-repeat;
+}
+.filterPanel.largeSize.qtip-default {
+    background: url(../img/filter-bg.png) 0 -162px no-repeat;
+}
+.filterPanel .closeLink {
+    color: #fff;
+}
+.filterPanel .contentWrapper label {
+    color: #fff;
+}
+.filterPanel .contentWrapper .dropdown,
+.filterPanel .contentWrapper .filterInput {
+    border: 1px solid #3d3d3d;
+}
+.filterPanel .contentWrapper .filterInput {
+    color: #fff;
+}
+.filterPanel .contentWrapper .dropdown-toggle {
+    color: #fff;
+}
+.filterPanel .btnWrapper {
+    border-top: 1px solid #2d2f30;
+}
+.detailPage .leaderboardWrapper .heading .viewFilter div {
+    color: #fff;
+}
+
+/* expand/collapse action */
+.detailPage .panel-body section.expand{
+    background: #151718;
+}
+/*common style of table in detail page */
+.detailPage .table>thead>tr>th {
+    border-color: #1f444e;
+}
+.detailPage .table>tbody>tr>td {
+    color: #fff;
+    border-bottom: 1px solid #1f444e;
+}
+.detailPage .table>tbody>tr>td>span {
+    color: #636d70;
+}
+.detailPage section .table td .name{
+    color: #fff;
+}
+.detailPage .leaderboardWrapper .colorPassed, 
+.detailPage .leaderboardWrapper .colorPending,
+.detailPage .leaderboardWrapper .colorSubmitted {
+    color: #2c8236;
+}
+.detailPage .leaderboardWrapper .colorCompiled {
+    color: #f99800;
+}
+.detailPage .leaderboardWrapper .colorChallenged,
+.detailPage .leaderboardWrapper .colorFailed {
+    color: #ac4141;
+}
+.detailPage .leaderboardWrapper .colorOpened {
+    color: #fff;
+}
+.detailPage .leaderboardWrapper .colorUnopened {
+    color: #5e676a;
+}
+.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
+    background: #2a2b2c;
+}
+
+/*bootstrap small devices tablets*/
+@media only screen and (max-width: 991px) {
+    .header .navIcons > li {
+        background-image: url(../img/black-header.png);
+    }
+    .header .navbar-right.userInfo {
+        background-image: url(../img/black-header.png);
+    }
+}
+/* boostrap extra small devices */
+@media only screen and (max-width: 767px) {
+    .hero .loginBox footer .sponsorLogo {
+        background-image: url(../img/company_logo_small.png);
+    }
+}
+/* special sizes which widget will overflow */
+@media only screen and (max-width: 668px) {
+    .panelChatArea .membersInfo{
+        border-bottom: 1px solid #1f444e;
+    }
+}
+@media only screen and (max-width: 421px) {
+    .panelContestStat .breadcrumbHead {height: 63px; }
+}
