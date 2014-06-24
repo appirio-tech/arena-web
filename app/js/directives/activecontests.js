@@ -7,7 +7,7 @@
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Chat Widget):
  * - Updated to use seperate scope to prevent interfering the chat widget in Dashboard.
  *
- * @author TCSASSEMBLER
+ * @author amethystlei
  * @version 1.1
  */
 'use strict';

@@ -5,7 +5,7 @@
                 <div class="loginBox"> 
                     <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <span class="errorMessage" data-ng-show="hasError">Invalid username or password. Please try again.</span>
-                        <header>Login with your TopCoder account<span class="hidden-xs">or</span></header>
+                        <header>Login with your topcoder account<span class="hidden-xs">or</span></header>
                         <form name="accountLoginForm" novalidate class=" tcAccountBox" data-ng-class="{error: hasError}" data-ng-submit="accountLogin();">
                           <p class="data">
                             <label>Username</label>
@@ -35,12 +35,12 @@
                             <p><a data-ng-click="socialLogin('facebook');" class="btn btn-primary btn-lg btn-facebook">Facebook</a></p>
                             <p><a data-ng-click="socialLogin('twitter');" class="btn btn-primary btn-lg btn-twitter">Twitter</a></p>
                             <p><a data-ng-click="socialLogin('google-oauth2');" class="btn btn-primary btn-lg btn-google">Google+</a></p>
-                            <p><a data-ng-click="socialLogin('linkedin');" class="btn btn-primary btn-lg btn-linkedIn">LinkedIn</a></p>
+                            <p><a data-ng-click="socialLogin('github');" class="btn btn-primary btn-lg btn-github">GitHub</a></p><!-- update, use github account to login -->
                         </div>
                     </div>
                     <!-- /.social -->
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 registerRow">
-                        New User? <a>Click here to Register</a>
+                        New User? <a href="http://www.topcoder.com/?action=callback">Click here to Register</a>
                     </div>
                     <footer class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <p>OWR SPONSOR</p>

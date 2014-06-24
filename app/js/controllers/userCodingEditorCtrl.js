@@ -19,8 +19,11 @@
  * Changes in version 1.4 (Module Assembly - Web Arena UI - Challenge Phase):
  * - Updated to integrate with challenge related logic.
  *
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Updated to use the global popup modal defined in baseCtrl.js.
+ *
  * @author tangzx, amethystlei
- * @version 1.4
+ * @version 1.5
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $ */
@@ -37,8 +40,8 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket', '$timeout', 'themer',
-    function ($scope, $window, appHelper, $modal, socket, $timeout, themer) {
+var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'socket', '$timeout', 'themer',
+    function ($rootScope, $scope, $window, appHelper, socket, $timeout, themer) {
         var indentRangeFinder = {
                 rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.indent, CodeMirror.fold.comment)
             },
@@ -83,84 +86,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                 }
             ],
             userInputDisabled = false,
-            modalTimeoutPromise = null,
-            /**
-             * Dismiss the given modal. Use try/catch to get around the errors.
-             */
-            dismissModal = function (modal) {
-                try {
-                    modal.dismiss();
-                } catch (err) {
-                    console.log('Errors occurred when closing the modal: ' + err);
-                }
-            },
-            /**
-             * The modal controller.
-             *
-             * @type {*[]}
-             */
-            popupModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', 'cancel', function ($scope, $modalInstance, data, ok, cancel) {
-                $scope.title = data.title;
-                $scope.message = data.message.replace(/(\r\n|\n|\r)/gm, "<br/>");
-                $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
-                $scope.enableClose = data.enableClose;
-
-                /**
-                 * OK handler.
-                 */
-                $scope.ok = function () {
-                    ok();
-                    dismissModal($modalInstance);
-                };
-
-                /**
-                 * Cancel handler.
-                 */
-                $scope.cancel = function () {
-                    cancel();
-                    dismissModal($modalInstance);
-                };
-            }],
-            /**
-             * Open modal function.
-             *
-             * @param data the data
-             * @param handle the handler
-             * @param finish the finish function
-             */
-            openModal = function (data, handle, finish) {
-                if ($scope.currentModal) {
-                    dismissModal($scope.currentModal);
-                    $scope.currentModal = undefined;
-                }
-
-                $scope.currentModal = $modal.open({
-                    templateUrl: 'popupModal.html',
-                    controller: popupModalCtrl,
-                    backdrop: 'static',
-                    resolve: {
-                        data: function () {
-                            return data;
-                        },
-                        ok: function () {
-                            return function () {
-                                if (angular.isFunction(handle)) {
-                                    handle();
-                                }
-                                $scope.currentModal = undefined;
-                            };
-                        },
-                        cancel: function () {
-                            return function () {
-                                if (angular.isFunction(finish)) {
-                                    finish();
-                                }
-                                $scope.currentModal = undefined;
-                            };
-                        }
-                    }
-                });
-            };
+            modalTimeoutPromise = null;
 
         /**
          * Enable editor.
@@ -217,7 +143,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
          * Set timeout modal.
          */
         function setTimeoutModal() {
-            openModal({
+            $scope.openModal({
                 title: 'Timeout',
                 message: 'Sorry, the request is timeout.',
                 enableClose: true
@@ -297,7 +223,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             }
             if ($scope.testOpen === false) {
                 disableUserInput();
-                openModal({
+                $scope.openModal({
                     title: 'Retrieving Test Info',
                     message: 'Please wait for test info.',
                     enableClose: false
@@ -507,9 +433,27 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             if (userInputDisabled || !$scope.problemLoaded) {
                 return;
             }
+            /**
+             * Get source code from CodeMirror.
+             *
+             * @type {string}
+             */
+            var code = $scope.cm.getValue();
+
+            // This is according to the comment in https://apps.topcoder.com/bugs/browse/BUGHUNTS4WEBBASEDARENA-87
+            // Actually we can safely send blank code to the server and will get the same response.
+            if (code === '') {
+                $scope.openModal({
+                    title: 'Error',
+                    message: 'You cannot compile blank code.',
+                    enableClose: true
+                });
+                return;
+            }
+
             disableUserInput();
 
-            openModal({
+            $scope.openModal({
                 title: 'Compiling',
                 message: 'Please wait for compiling results.',
                 enableClose: false
@@ -518,7 +462,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             socket.emit(helper.EVENT_NAME.CompileRequest, {
                 componentID: $scope.componentID,
                 language: $scope.lang($scope.langIdx).id,
-                code: $scope.cm.getValue()
+                code: code
             });
             $scope.testOpen = false;
             if (modalTimeoutPromise) {
@@ -538,7 +482,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
              * The submit handler.
              */
             var submitHandler = function () {
-                openModal({
+                $scope.openModal({
                     title: 'Warning',
                     message: 'Would you like to submit your code?',
                     buttons: ['Yes', 'No'],
@@ -549,7 +493,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                 });
             };
             if ($scope.contentDirty) {
-                openModal({
+                $scope.openModal({
                     title: 'Warning',
                     message: 'You have made a change to your code since the last time you compiled. Do you want to continue with the submit?',
                     buttons: ['Yes', 'No'],
@@ -565,12 +509,8 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
             }
-            if ($scope.currentModal) {
-                dismissModal($scope.currentModal);
-                $scope.currentModal = undefined;
-            }
             enableUserInput();
-            openModal({
+            $scope.openModal({
                 title: 'Submission Results',
                 message: data.message,
                 enableClose: true
@@ -585,9 +525,9 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
             }
-            if ($scope.currentModal) {
-                dismissModal($scope.currentModal);
-                $scope.currentModal = undefined;
+            if ($rootScope.currentModal) {
+                $rootScope.currentModal.dismiss('cancel');
+                $rootScope.currentModal = undefined;
             }
 
             var i;
@@ -605,7 +545,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             data.message = replaceAll('<', '&lt;', data.message);
             data.message = replaceAll('>', '&gt;', data.message);
 
-            openModal({
+            $scope.openModal({
                 title: (data.title !== helper.POP_UP_TITLES.Error ? data.title : 'Error'),
                 message: data.message,
                 buttons: data.buttons,
@@ -657,9 +597,9 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
             enableUserInput();
 
             if (data.componentID === $scope.componentID) {
-                if ($scope.currentModal) {
-                    dismissModal($scope.currentModal);
-                    $scope.currentModal = undefined;
+                if ($rootScope.currentModal) {
+                    $rootScope.currentModal.dismiss('cancel');
+                    $rootScope.currentModal = undefined;
                 }
                 $scope.testOpen = true;
             }
@@ -710,7 +650,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                         return false;
                     }
                 }
-                return !!$scope.customChecked;
+                return $scope.currentStateName() === helper.STATE_NAME.Coding || !!$scope.customChecked;
             };
 
             /**
@@ -745,7 +685,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                 count += $scope.customChecked ? 1 : 0;
 
                 if (count !== 1) {
-                    openModal({
+                    $scope.openModal({
                         title: 'Error',
                         message: 'You are required to select exactly one test case.',
                         enableClose: true
@@ -765,7 +705,6 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                     }
                 }
 
-                // $scope.customTest[paramNum].value
                 for (j = 0; j < testcase.length; j += 1) {
                     param = $.trim(testcase[j].value);
 
@@ -776,7 +715,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                     try {
                         param = JSON.parse(param);
                     } catch (e) {
-                        openModal({
+                        $scope.openModal({
                             title: 'Error',
                             message: 'The param ' + param + ' is invalid.',
                             enableClose: true
@@ -795,7 +734,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                         }
                         args.push(param);
                     } else if (param instanceof Object) {
-                        openModal({
+                        $scope.openModal({
                             title: 'Error',
                             message: 'The param ' + param + ' is invalid.',
                             enableClose: true
@@ -816,7 +755,7 @@ var userCodingEditorCtrl = ['$scope', '$window', 'appHelper', '$modal', 'socket'
                     $scope.isTesting = true;
                 } else if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
                     // challenge others' code
-                    openModal({
+                    $scope.openModal({
                         title: 'Confirm Parameters',
                         message: getChallengeConfirmationPopup(),
                         buttons: ['OK', 'Cancel'],

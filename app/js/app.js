@@ -21,8 +21,12 @@
  * - Added state user.viewCode for code viewing pages.
  * - Added function $rootScope.currentStateName for all the scopes to easily know the current state.
  *
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Updated page titles.
+ * - Removed $rootScope.timezone as it is no longer used.
+ *
  * @author tangzx, dexy, amethystlei
- * @version 1.4
+ * @version 1.5
  */
 'use strict';
 /*jshint -W097*/
@@ -218,7 +222,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
         .state('user.dashboard', {
             url: '/dashboard',
             data: {
-                pageTitle: "Application Dashboard",
+                pageTitle: "Dashboard",
                 pageMetaKeywords: "dashboard"
             },
             templateUrl: 'partials/user.dashboard.html',
@@ -229,8 +233,8 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
         .state('user.coding', {
             url: '/coding/{roundId}/{problemId}/{divisionId}',
             data: {
-                pageTitle: "Coding Arena",
-                pageMetaKeywords: "coding,arena"
+                pageTitle: "Coding Page",
+                pageMetaKeywords: "coding"
             },
             templateUrl: 'partials/user.coding.html',
             controller: 'userCodingCtrl'
@@ -323,8 +327,8 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
                 alreadyLoggedIn : resolvers.alreadyLoggedIn
             },
             data: {
-                pageTitle: "Home Page",
-                pageMetaKeywords: "Home Page"
+                pageTitle: "Login Page",
+                pageMetaKeywords: "Login Page"
             }
         })
         .state('loggingin', {
@@ -332,6 +336,10 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
             //url: '/access_token={accessToken}&id_token={idToken}&token_type={tokenType}',
             url: '/loggingin',
             template: 'Completing login... One moment please...',
+            data: {
+                pageTitle: "Logging In",
+                pageMetaKeywords: "login"
+            },
             resolve: {
                 finishLogin: resolvers.finishLogin
             }
@@ -382,7 +390,6 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         $rootScope.username = sessionHelper.getUsername;
         $rootScope.userInfo = sessionHelper.getUserInfo;
         $rootScope.userPreferences = sessionHelper.getUserPreferences;
-        $rootScope.timezone = res ? res[1] : "";
         $rootScope.timeService = tcTimeService;
         $rootScope.keepAliveTimeout = helper.KEEP_ALIVE_TIMEOUT;
 

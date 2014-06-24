@@ -34,8 +34,11 @@
  * - Added SingleBroadcastResponse to event name constants.
  * - Added PhaseChange to pop up titles.
  *
+ * Changes in version 1.8 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Updated PHASE_NAME for System Test.
+ *
  * @author tangzx, amethystlei, dexy
- * @version 1.7
+ * @version 1.8
  */
 
 module.exports = {
@@ -130,7 +133,7 @@ module.exports = {
         'Intermission Phase',
         'Challenge Phase',
         'Pending System Phase',
-        'System Testing Phase',
+        'System Test Phase',
         'Contest Complete Phase',
         'Voting Phase',
         'Tie Breaking Voting Phase',

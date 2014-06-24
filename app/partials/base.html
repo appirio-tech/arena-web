@@ -2,7 +2,7 @@
         <div class="navbar navbar-top" role="navigation">
             <div class="container-fluid">
               <h1 class="navbar-title">
-                <a class="navbar-brand" href="https://www.topcoder.com">Topcoder</a><span class="navbar-title-text">arena</span>
+                <a class="navbar-brand" href="http://www.topcoder.com">topcoder</a><span class="navbar-title-text">arena</span>
               </h1>
            </div>
         </div>
@@ -16,7 +16,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <h1 class="navbar-title"> <a class="navbar-brand" href="https://www.topcoder.com">Topcoder</a><span class="navbar-title-text">arena</span></h1>
+                    <h1 class="navbar-title"> <a class="navbar-brand" href="http://www.topcoder.com">topcoder</a><span class="navbar-title-text">arena</span></h1>
                 </div>
 
                 <div data-collapse="navCollapsed" class="collapse navbar-collapse">
@@ -57,7 +57,7 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right userInfo">
-                        <li>Welcome&nbsp;<a class="username">{{ username() }}</a></li> <!-- data-ui-sref="user.profile.details" -->
+                        <li>Welcome&nbsp;<span class="username {{getRatingClass(userInfo().rating)}}">{{ username() }}</span></li> <!-- data-ui-sref="user.profile.details" -->
                         <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
                         <li><a data-ui-sref="user.logout" class="arrow"></a></li>
                     </ul>
