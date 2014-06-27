@@ -318,7 +318,11 @@
                                                 <tbody>
                                                      <tr data-ng-repeat="coder in getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey">
                                                         <td class="col1">{{viewOn=='room' ? coder.roomPlace : roomID}}</td>
-                                                        <td class="col2"><span class="name">{{coder.userName}}</span> <span>({{coder.userRating}})</span></td>
+                                                        <td class="col2"><!-- avoid blank
+                                                            --><!-- avoid blank
+                                                            --><span class="name {{getRatingClass(coder.userRating)}}"><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span>{{coder.userName}}</span>&nbsp;<!-- avoid blank
+                                                            --><span class="rating">({{coder.userRating}})</span>
+                                                        </td>
                                                         <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
                                                             <a data-ng-show="isViewable(component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component.status)}}">{{showResult(component, $parent.showBy)}}</span></a>
                                                             <span data-ng-hide="isViewable(component)" class="{{getStatusColor(component.status)}}">{{showResult(component, $parent.showBy)}}</span>
@@ -335,7 +339,11 @@
                                                 <tbody>
                                                      <tr data-ng-repeat="coder in getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey">
                                                         <td class="col1">{{viewOn=='room' ? coder.roomPlace : roomID}}</td>
-                                                        <td class="col2"><span class="name">{{coder.userName}}</span> <span>({{coder.userRating}})</span></td>
+                                                        <td class="col2"><!-- avoid blank 
+                                                            --><!-- avoid blank 
+                                                            --><span class="name {{getRatingClass(coder.userRating)}}"><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span>{{coder.userName}}</span>&nbsp;<!-- avoid blank 
+                                                            --><span class="rating">({{coder.userRating}})</span>
+                                                        </td>
                                                         <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
                                                             <a data-ng-show="isViewable(component)" data-ng-click=""><span class="{{getStatusColor(component.status)}}">{{showResult(component, $parent.showBy)}}</span></a>
                                                             <span data-ng-hide="isViewable(component)" class="{{getStatusColor(component.status)}}">{{showResult(component, $parent.showBy)}}</span>

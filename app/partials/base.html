@@ -57,7 +57,7 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right userInfo">
-                        <li>Welcome&nbsp;<span class="username {{getRatingClass(userInfo().rating)}}">{{ username() }}</span></li> <!-- data-ui-sref="user.profile.details" -->
+                        <li>Welcome&nbsp;<span class="{{getRatingClass(userInfo().rating)}}">{{ username() }}</span></li>
                         <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
                         <li><a data-ui-sref="user.logout" class="arrow"></a></li>
                     </ul>

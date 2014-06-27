@@ -55,7 +55,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', '$modal', 'socket', '$timeout', func
     $scope.ratingKeyArray = [
         {name: "2200+",     class: "rating-red"},
         {name: "1500-2199", class: "rating-yellow"},
-        {name: "1200-1499", class: "rating-purple"},
+        {name: "1200-1499", class: "rating-blue"},
         {name: "0900-1199", class: "rating-green"},
         {name: "0001-0899", class: "rating-grey"},
         {name: "Non-Rated", class: "rating-none"},
@@ -107,6 +107,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', '$modal', 'socket', '$timeout', func
         $rootScope.chatContent = [];
         socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
     }
+
 
     /**
      * Initializes showRegistrant by directive's attribute, default to false, not to show the registrants section.
@@ -314,7 +315,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', '$modal', 'socket', '$timeout', func
 
         if (bar === 'info') {
             var sectionOpen = ($scope.collapseRatingKey === false ? 1 : 0) +
-                ($scope.collapseRegistrant === false ? 1 : 0) +
+                ($scope.showRegistrant === true && $scope.collapseRegistrant === false ? 1 : 0) +
                 ($scope.collapseMemberHere === false ? 1 : 0);
 
             if ($scope.collapseRatingKey === false) {

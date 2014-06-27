@@ -727,7 +727,6 @@ body a {cursor: pointer;}
 .connectionStatus .inactive {
     opacity: 0.23;
 }
-/*.codeArea .connection > div {width: auto;}*/
 .codeArea .connection > div:nth-child(2) {padding-left: 44px;}
 .codeArea .connection .rate {
     width: 95px;
@@ -2414,6 +2413,13 @@ footer .right>span:nth-child(2) {
     width: 100%;
     height: 100%;
     display: block;
+    padding-left: 21px;
+    position: relative;
+}
+.panelChatArea .membersInfo .infoSection .scrollable li a .user {
+    height: 100%;
+    width: 100%;
+    display: inline-block;
 }
 .panelChatArea .membersInfo .infoSection .scrollable li a:hover{
     text-decoration: none;
@@ -2609,25 +2615,25 @@ footer .right>span:nth-child(2) {
 }
 /** rating style and role style **/
 .rating-red{
-    color: rgb(251,0,9);
+    color: #ee0000;
 }
 .rating-yellow{
-    color: rgb(217,212,10);
+    color: #ddcc00;
 }
-.rating-purple{
-    color: rgb(80,15,203);
+.rating-blue{
+    color: #6666ff;
 }
 .rating-green{
-    color: rgb(23,139,5);
+    color: #00a900;
 }
 .rating-grey{
-    color: rgb(129,129,129);
+    color: #999;
 }
 .rating-none{
     color: #fff;
 }
 .rating-admin{
-    color: rgb(252,80,10);
+    color: #ff9900;
 }
 
 /** Modal style **/
@@ -3107,9 +3113,6 @@ footer .right>span:nth-child(2) {
 .detailPage .table>tbody>tr>td:last-child {
     text-align: right;
 }
-.detailPage .table>tbody>tr>td>span {
-    color: #636d70;
-}
 .detailPage .leftSec .table .col1 {
     width: 29px;
     padding-right: 0;
@@ -3177,10 +3180,12 @@ footer .right>span:nth-child(2) {
     padding-bottom: 11px;
 }
 .detailPage section .table td .name{
-    color: #fff;
     display: inline-block;
     -ms-word-break:break-all;
     word-break:break-all;
+}
+.detailPage section .table td .rating {
+    color: #636d70;
 }
 .challengeWrapper .table .colVs {
     color: #d70000;
@@ -3854,4 +3859,53 @@ footer .right>span:nth-child(2) {
 
 .problemStatementRow .textWhite {
     float: left;
+}
+/* rating indicator */
+.ratingIcon,
+.ratingIcon>span {
+    display: inline-block;
+}
+.ratingIcon {
+    vertical-align: middle;
+    position: relative;
+    min-width: 14px;
+    min-height: 14px;
+}
+.ratingIcon>svg,
+.ratingIcon>span {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.targetIndicator {
+    height: 14px;
+    width: 14px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.panelOverview .ratingRow .ratingIcon {
+    margin-right: 3px;
+    margin-left: 2px;
+    height: 20px;
+    width: 14px;
+}
+.panelOverview .ratingRow .ratingIcon>svg,
+.panelOverview .ratingRow .ratingIcon>span{
+    top: 2px;
+}
+.panelChatArea .membersInfo .infoSection .scrollable li a .ratingIcon {
+    width: 21px;
+    height: 20px;
+    position: absolute;
+    left: 0;
+    top: 5px;
+}
+.detailPage section .table td .ratingIcon {
+    width: 18px;
+    height: 20px;
+}
+.detailPage section .table td .ratingIcon>svg,
+.detailPage section .table td .ratingIcon>span {
+    top: 2px;
 }

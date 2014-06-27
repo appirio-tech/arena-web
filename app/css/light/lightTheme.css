@@ -618,10 +618,7 @@ footer .right .sponsorLogo {
     color: #316f99;
     border-bottom: 1px solid #b7c9d7;
 }
-.detailPage .table>tbody>tr>td>span {
-    color: #316f99;
-}
-.detailPage section .table td .name{
+.detailPage .table>tbody>tr>td>.rating{
     color: #316f99;
 }
 .detailPage .leaderboardWrapper .colorPassed,

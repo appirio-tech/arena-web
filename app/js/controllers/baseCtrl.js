@@ -18,8 +18,11 @@
  * - Fixed the issue of showing duplicate modals.
  * - Moved the function for calculating rating colors from chat widget to enable global usage.
  *
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Rating Indicator):
+ * - Updated rating-purple to rating-blue in $scope.getRatingClass.
+ *
  * @author dexy, amethystlei
- * @version 1.3
+ * @version 1.4
  */
 'use strict';
 /*jshint -W097*/
@@ -301,7 +304,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return "rating-yellow";
         }
         if (rating >= 1200) {
-            return "rating-purple";
+            return "rating-blue";
         }
         if (rating >= 900) {
             return "rating-green";
@@ -312,7 +315,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         if (rating === 0) {
             return "rating-none";
         }
-        if (rating === -1) {
+        if (rating < 0) {
             return "rating-admin";
         }
         return "";

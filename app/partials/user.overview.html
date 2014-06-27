@@ -9,7 +9,7 @@
                     <img data-ng-src="{{userProfile.avatar}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="{{userProfile.handle}}"/>
                     <p class="userNameRow"><span class="{{getRatingClass(userProfile.rating)}}">{{userProfile.handle}}</span></p>
                     <p class="ratingRow" data-ng-show="userProfile.rating>0">
-                        <label>Rating</label>:&nbsp;<span class="{{getRatingClass(userProfile.rating)}}">{{userProfile.rating}}</span>
+                        <label>Rating</label>:<span data-rating-indicator="{{userProfile.rating}}" data-username="{{userProfile.handle}}overview" class="ratingIcon"></span><span class="{{getRatingClass(userProfile.rating)}}">{{userProfile.rating}}</span>
                     </p>
                     <p class="ratingRow" data-ng-show="userProfile.rating<=0">
                         <label>Rating</label>:&nbsp;<span>Not rated</span>
