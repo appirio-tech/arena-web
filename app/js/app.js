@@ -25,8 +25,11 @@
  * - Updated page titles.
  * - Removed $rootScope.timezone as it is no longer used.
  *
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Rating Indicator):
+ * - Updated to include the directive for rating indicator.
+ *
  * @author tangzx, dexy, amethystlei
- * @version 1.5
+ * @version 1.6
  */
 'use strict';
 /*jshint -W097*/
@@ -111,6 +114,7 @@ directives.overview = require('./directives/overview');
 directives.contestPlan = require('./directives/contestPlan');
 directives.messageArena = require('./directives/messageArena');
 directives.contestSummary = require('./directives/contestSummary');
+directives.ratingIndicator = require('./directives/ratingIndicator');
 
 /*global $ : false, angular : false */
 /*jslint nomen: true, browser: true */
@@ -181,6 +185,7 @@ main.directive('overview', directives.overview);
 main.directive('contestPlan', directives.contestPlan);
 main.directive('messageArena', directives.messageArena);
 main.directive('contestSummary', directives.contestSummary);
+main.directive('ratingIndicator', directives.ratingIndicator);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
@@ -372,8 +377,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     $rootScope.$on('$stateChangeStart', function (event, toState) {
         //use whitelist approach
         var allowedStates = [helper.STATE_NAME.Anonymous, helper.STATE_NAME.AnonymousHome, helper.STATE_NAME.LoggingIn, helper.STATE_NAME.Logout],
-            publicState = false,
-            res = /\(([A-Z]{3})\)/.exec(new Date().toString());
+            publicState = false;
 
         angular.forEach(allowedStates, function (allowedState) {
             publicState = publicState || (toState.name === allowedState);
