@@ -2613,28 +2613,6 @@ footer .right>span:nth-child(2) {
 .panelChatArea .control-bar .findCheckbox:checked ~ .findCheckLbl:before {
     background-position: -75px -150px;
 }
-/** rating style and role style **/
-.rating-red{
-    color: #ee0000;
-}
-.rating-yellow{
-    color: #ddcc00;
-}
-.rating-blue{
-    color: #6666ff;
-}
-.rating-green{
-    color: #00a900;
-}
-.rating-grey{
-    color: #999;
-}
-.rating-none{
-    color: #fff;
-}
-.rating-admin{
-    color: #ff9900;
-}
 
 /** Modal style **/
 .chatWidget-modal-header,
