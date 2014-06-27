@@ -532,25 +532,25 @@ footer .right .sponsorLogo {
 }
 /** rating style and role style **/
 .rating-red{
-    color: rgb(251,0,9);
+    color: #ee0000;
 }
 .rating-yellow{
-    color: rgb(217,212,10);
+    color: #ddcc00;
 }
-.rating-purple{
-    color: rgb(80,15,203);
+.rating-blue{
+    color: #6666ff;
 }
 .rating-green{
-    color: rgb(23,139,5);
+    color: #00a900;
 }
 .rating-grey{
-    color: rgb(129,129,129);
+    color: #999;
 }
 .rating-none{
-    color: #010101;
+    color: #000;
 }
 .rating-admin{
-    color: rgb(252,80,10);
+    color: #ff9900;
 }
 
 /** Modal style **/
