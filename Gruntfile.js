@@ -145,7 +145,11 @@ module.exports = function (grunt) {
                     mode: 'zip'
                 },
                 files: [
-                    { src: './build/**' }
+                    { 
+                        expand: true,
+                        cwd: './build',
+                        src: '**' 
+                    }
                 ]
             }
         }
