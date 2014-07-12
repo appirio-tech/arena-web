@@ -1,6 +1,6 @@
 body{
-    background:url(../img/bg.png) repeat 0 0 #DDE7F2;
-    color:#fff;
+    background:#fff;
+    color:#333;
 }
 .btn-facebook:after,
 .btn-twitter:after,
@@ -11,12 +11,12 @@ body{
 .panel-custom .schedulePanel:after,
 .panel-custom .statusPanel:after,
 .panelSummary .summaryWrapper div:before{
-    background-image: url(../img/sprite.png);
+    background-image: url(../img/orange/sprite.png);
 }
 .dashboard .breadcrumb li:after,
 .contest .titleBar .shareLink a,
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
-    background-image: url(../img/sprite-2.png);
+    background-image: url(../img/orange/sprite-2.png);
 }
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
@@ -41,18 +41,18 @@ body{
 .panelChatArea .searchIcon,
 .detailPage section .heading .filterArea a:before,
 .filterPanel .closeLink:before  {
-    background-image: url(../img/sprite-codeArena.png);
+    background-image: url(../img/orange/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
 .panelCodeEditor .panel-body .settingsPanel {
-    background-image: url(../img/popup-bg.png);
+    background-image: url(../img/orange/popup-bg.png);
 }
 .anon-header .navbar .navbar-brand,
 .header .navbar-brand,
 .header .navIcons>li>.icon:before,
 .userInfo .notification,
 .userInfo .arrow,
-.header .navIcons .themePanel .closeBtn,
+.header .navIcons .themePanel .closeBtn:before,
 .header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl:before {
     background-image: url(../img/sprite-new-header.png);
 }
@@ -64,7 +64,7 @@ body{
 .calendar .fc-button-prev .fc-text-arrow,
 .calendar .fc-button-next .fc-text-arrow,
 .listView .listHeader .btnCtrl {
-    background-image: url(../img/sprite-contestPlan.png);
+    background-image: url(../img/orange/sprite-contestPlan.png);
 }
 .panelCodeProblem .panel-heading > .collapseIcon:before,
 .panelCodeEditor .panel-heading > .collapseIcon:before,
@@ -74,10 +74,21 @@ body{
 .detailPage .leaderboardWrapper .heading .viewFilter .showLBLbl:before,
 .filterPanel .contentWrapper .dropdown .arrow,
 .detailPage section .table>thead>tr>th .arrow {
-    background-image: url(../img/sprite-room-summary.png);
+    background-image: url(../img/orange/sprite-room-summary.png);
 }
-
+.filterPanel.qtip-default,
+.filterPanel.largeSize.qtip-default {
+    background-image: url(../img/orange/filter-bg.png);
+    background-repeat: no-repeat;
+}
+.panelCodeEditor .testPanel .bottom .loadIcon {
+    background-image: url(../img/orange/loadinfo.net.gif);
+    background-repeat: no-repeat;
+}
 /***************header style*/
+.userInfo .rating-none {
+    color: #fff;
+}
 .header .navIcons .themePanel {
     border-color: #fff;
     border-color: rgba(255,255,255,0.1);
@@ -95,25 +106,45 @@ body{
     color: #151718;
 }
 .header .navIcons .themePanel h4,
+.header .navIcons .themePanel .themeItem:last-child {
+    border-color: #ff8a00;
+    border-color: rgba(255,138,0,0.41);
+    color: #fff;
+}
 .header .navIcons .themePanel .themeItem {
-    border-color: #1f444e;
+    border-color: #7b612e;
+    color: #fff;
 }
 .header .navIcons .themePanel .btn {
-    background: #0f9abd;
+    background: #ff8a00;
+}
+.header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl {
+    color: #ff8a00;
 }
 
 /*******************login page*/
 
 /* topcoder account login part */
 .hero .form .tcAccountBox input {
-    background: #1c1d1e;
-    color: #fff;
-    border-color: #494b4c;
+    background: #fff;
+}
+.hero .form .loginBox .data input[type="text"],
+.hero .form .loginBox .data input[type="password"] {
+    color: #333;
+    border-color: #e7e7e7;
 }
 .hero .form .tcAccountBox .btn-lg,
 .hero .form .social .btn-lg,
-.codeArea .socialLinks .btn-lg {
-    background: #0ea7cd;
+.codeArea .socialLinks .btn-lg,
+.codeArea .btnBack,
+.detailPage .titleBar .btnBack {
+    background: #ff8a00;
+}
+.hero .form .tcAccountBox .btn-lg{
+    line-height: 16px;
+}
+.hero .form .tcAccountBox .btn-lg:hover {
+    background: #ffa133;
 }
 .hero .form .social .btn-facebook, .codeArea .socialLinks .btn-facebook {background-color:#45619d;}
 .hero .form .social .btn-facebook:hover,.codeArea .socialLinks .btn-facebook:hover {background-color:#4D69BB;}
@@ -124,110 +155,153 @@ body{
 .hero .form .social .btn-github,.codeArea .socialLinks .btn-github{background-color: #444;}
 .hero .form .social .btn-github:hover,.codeArea .socialLinks .btn-github:hover {background-color: #515151;}
 /* custom checkbox */
-.hero .form .tcAccountBox .rememberCheckboxLabel {    
-    background: url(../img/checkbox.png) 0 0 no-repeat;
+.hero .form .tcAccountBox .rememberCheckboxLabel {
+    background: url(../img/orange/checkbox.png) 0 0 no-repeat;
 }
 
 /* social media login part */
 .hero .signup .separator{
-    border-color: #3d4143;
+    border-color: #e7e7e7;
 }
 .hero .loginBox {
-    border-color: #3d4143;
+    border-color: #e7e7e7;
 }
 .hero .loginBox header {
-    background: #212324;
-    border: 1px solid #282a2b;
-    color: #fff;
+    background: #f0f0f0;
+    color: #656565;
+}
+.hero .loginBox header>span {
+    color: #ff8a00;
+    color: rgba(255,138,0,0.3);
 }
 .hero .loginBox .tcAccountBox,
 .hero .loginBox .social>div {
-    background: #282a2b;
+    background: #fffffd;
 }
 .hero .registerRow {
-    background: #212324;
-    border-color: #282a2b;
+    background: #f0f0f0;
+    border: none;
 }
 .hero .registerRow a {
-    color: #0bbbe7;
+    color: #ff8a00;
 }
 /* login footer part */
 .hero .loginBox footer {
-    border-color: #3d4143;
-    background: #000;
-    height: 164px;
-    padding: 15px 17px;
+    border-color: #e7e7e7;
+    background: #fff;
+    height: 166px;
+    padding: 16px 17px;
 }
 .hero .loginBox footer .sponsorLogo {
-    background: url(../img/company_logo.png) 0 0 no-repeat;
+    background: url(../img/orange/company_logo.png) 0 0 no-repeat;
 }
 
-/*************** dashboard page */
+/*************** basic style of page */
 /* basical stucture, title, breadcrumb and connection */
+.dashboard .definition .item span,
 .tcTime>span {
-    color: #fff;
+    color: #ff8a00;
 }
-.codeArea .shareLink > ul > li > a:hover {color: #fff;}
-.codeArea .shareLink > ul > .open > a {color: #fff;}
+.codeArea .shareLink > ul > li > a:hover {color: #ff8a00;}
+.codeArea .shareLink > ul > .open > a {color: #ff8a00;}
 .codeArea .shareLink > ul > .open > a:after {background-position: -25px 0;}
 
-
+.codeArea .shareLink .dropdown-menu {
+    -webkit-box-shadow: none;
+    box-shadow: none
+}
+.dropdown-menu>.active>a,
+.dropdown-menu>.active>a:focus,
+.dropdown-menu>.active>a:hover {
+    background-color: #ff8a00;
+}
 /*********** footer style */
 footer{
-    background-color:#000;
+    background-color:#fff;
 }
 footer .line {
-    border-color: #14191a;
+    border-color: #ff8a00;
 }
 footer .right .sponsorLogo {
-    background: url(../img/company_logo_small.png) 100% 100% no-repeat;
+    background: url(../img/orange/company_logo_small.png) 100% 100% no-repeat;
+}
+footer .left>span {
+    color: #ff8a00;
 }
 
 /********************* modal */
 .modal .modal-content {
-    background: #151718;
-    border-color: #234760;
+    background: #fff;
+    border-color: #e7e7e7;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
-.modal .modal-content .modal-header { 
-    background: #234760;
+.modal .modal-content .modal-header {
+    background: #f0f0f0;
+    color: #656565;
 }
 .modal .modal-content .modal-body {
-    color: #636d70;
+    color: #333;
 }
 .modal .modal-content .btn {
      line-height: 27px;
+     background: #ff8a00;
+}
+.modal .modal-content .btn:hover {
+    background: #ffa133;
+}
+.modal .modal-content .btn:focus,
+.modal .modal-content .btn:active:focus {
+    outline-color: #ffa133;
 }
 .modal .modal-content .modal-footer {
     border-width: 0;
 }
-/********************* active contests part */
+/* ng-scrollbar style */
+.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
+    background: #ff8a00;
+}
+/*********************  widgets */
+/* active contests widget */
 .panel-custom {
-    background: #151718;
-    border-color: #234760;
+    background: #fff;
+    border-color: #e7e7e7;
 }
 .panel-custom .panel-heading {
-    background: #234760;
+    background: #f0f0f0;
+    color: #656565;
+    border-bottom: 2px solid #e7e7e7;
 }
 .panel-custom .panel-body {
-    color: #636d70;
+    color: #687376;
 }
 .panel-custom .mainContent .btn {
     line-height: 27px;
+    background: #ff8a00;
+}
+.panel-custom .mainContent .btn:hover {
+    background: #ffa133;
 }
 /* tabs */
+.panel-custom .schedulePanel,
+.panel-custom .statusPanel,
+.panel-custom .summaryPanel {
+    border-color: #ff8a00;
+    color: #333;
+}
 .panel-custom .statusPanel .rightSide {
-    border-color: #3d4143;
+    border-color: #e7e7e7;
 }
 /* paginator part */
 .panel-custom .paginator {
-    border-color: #234760;
+    border-color: #e7e7e7;
 }
 
 .panel-custom .panel-body .textActive {
-    color: #0bbbe7;
+    color: #ff8a00;
 }
 .panel-custom .panel-body .textWhite {
-    color: #fff;
+    color: #333;
 }
 .panel-custom .panel-body .textRed {
     color: #ff0000;
@@ -235,108 +309,109 @@ footer .right .sponsorLogo {
 
 /* problem area widget */
 .panelCodeProblem .panel-heading {
-    background: #1f444e;
+    background: #f0f0f0;
 }
-.panelCodeEditor .panel-heading {background: #1f444e;}
-
+.panelCodeEditor .panel-heading {
+    background: #f0f0f0;
+}
+.panelCodeProblem .panel-heading > .collapseIcon:before,
+.panelCodeEditor .panel-heading > .collapseIcon:before {
+    opacity: 0.5;
+}
 .panelCodeProblem .panel-body {
-    border-color: #1f444e;
+    border-color: #e7e7e7;
 }
 .panelCodeEditor .panel-body {
-    border-color:#1f444e;
+    border-color:#e7e7e7;
 }
 
 /* code editor widget */
-.panelCodeEditor .actionIcons > .link:hover {color: #fff;}
-
+.panelCodeEditor .actionIcons > .link:hover {color: #687376;}
+.panelCodeEditor .toolBar .actionIcons {
+    color: #ff8a00;
+}
 .panelCodeEditor .toolBar .middlePart .findInput {
-    background: #162f36;
+    background: #fff;
 }
 .panelCodeEditor .toolBar .middlePart .gotoInput input {
-    background: #162f36;
+    background: #fff;
 }
 .panelCodeEditor .toolBar .middlePart .gotoInput .arrow {
     padding: 15px 14px;
-    background: #162f36;
+    background: #fff;
 }
 .panelCodeEditor .toolBar .middlePart .gotoInput .arrow:hover {
-    background: #0c191d; 
+    background: #f0f0f0;
 }
 .panelCodeEditor .toolBar .middlePart .arrow:before {
     left: 10px;
 }
 .panelCodeEditor .panel-body .toolBar {
-    background: #232628;
-    border-color: #151718;
+    background: #e7e7e7;
+    border-width: 0;
 }
 .panelCodeEditor .toolBar .settingsToggle {
-    background: #151718;
+    background: #fff;
 }
 .panelCodeEditor .settingsPanel .settingDropDown .dropdown-toggle {
-    background-image: url(../img/select.png);
-    background-color: #151718;
-    background-color: rgba(21, 23, 24, 0.98);
-    border-color: #fff;
-    border-color: rgba(255, 255, 255, 0.16);
-    color: #fff;
+    background-image: url(../img/orange/select.png);
+    background-color: #fff;
+    border-color: #e7e7e7;
+    color: #333;
 }
 .panelCodeEditor .settingsPanel .settingDropDown .dropdown-menu>li>.current {
-    background: #999; 
+    background: #999;
     color: #fff;
 }
 .panelCodeEditor .settingsPanel .lineNumberRow .lineNumLbl:before {
-    border-color: rgba(255, 255, 255, 0.16);
+    border-color: #e7e7e7;
 }
 .panelCodeEditor .settingsPanel .lineNumRadio:checked ~ .lineNumLbl:before {
-    box-shadow: 0 0 0 4px rgba(21,23,24,0.98) inset, 0 0 0 10px #fff inset;
+    box-shadow: 0 0 0 4px #fff inset, 0 0 0 10px #ff8a00 inset;
 }
 .panelCodeEditor .settingsPanel .btn-settings {
-    background: #0f9abd;
+    background: #ff8a00;
 }
 .panelCodeEditor .panel-body .toolBar .rightPart {
-    color: #fff;
+    color: #333;
 }
 .panelCodeEditor .toolBar .active .testToggle {
-    color: #fff;
-    background: #151718;
-    background: rgba(21,23,24,0.98);
-    border-color: rgba(255,255,255,0.16);
+    color: #333;
+    background: #fff;
+    border-color: #e7e7e7;
 }
-.panelCodeEditor .toolBar .testToggle:hover {color: #fff;}
+.panelCodeEditor .toolBar .testToggle:hover {color: #333;}
 .panelCodeEditor .toolBar .testPanel {
-    background: #151718;
-    background: rgba(21,23,24,0.98);
-    border-color: rgba(255,255,255,0.16);
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    background: #fff;
+    border-color: #e7e7e7;
 }
 .panelCodeEditor .testPanel header {
-    border: 1px solid #151718;
-    border-color: rgba(21,23,34,0.98);
-    background: #1a1c1d;
-    color: #687376;
+    border: 1px solid #e7e7e7;
+    background: #f0f0f0;
+    color: #333;
 }
 .panelCodeEditor .testPanel .btn{
-    background: #0f9abd;
+    background: #ff8a00;
 }
 .panelCodeEditor .testPanel .content input[type="text"] {
-    background: #151718;
-    border-color: rgba(255,255,255,0.16);
+    background: #fff;
+    border-color: #e7e7e7;
 }
 .panelCodeEditor .settingsPanel .btn-settings:hover,
 .panelCodeEditor .testPanel .content .btn:hover,
 .panelCodeEditor .testPanel .bottom .btn:hover {
-    background: #27A4C4;
+    background: #ffa133;
 }
 .panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
-.panelCodeEditor .paddingRow {background: #151718;}
+.panelCodeEditor .paddingRow {background: #fff;}
 .panelCodeEditor .paddingRow:before {
-    background: #232628;
+    background: #e7e7e7;
 }
 .panelCodeEditor .paddingRow:after {
-    background: #232628;
+    background: #e7e7e7;
 }
 .panelCodeEditor .panel-body .errorBar {
-    background: #232628;
+    background: #e7e7e7;
 }
 /* resizer */
 /*hover style of resizer*/
@@ -345,60 +420,101 @@ footer .right .sponsorLogo {
 }*/
 /******************* count down widget */
 .panelCountDown {
-    background: #1b2920;
+    background: #fff;
+    border-color: #ff8a00;
 }
 /******************* contest status widget */
-.panelContestStat .panel-heading {background: #1f444e;}
+.panelContestStat .panel-heading {
+    background: #f0f0f0;
+    border-bottom-width: 1px;
+    border-left: 1px solid #e7e7e7;
+}
 .panelContestStat .panel-body {
-    border-color: #1f444e;
+    border-color: #e7e7e7;
+    background: #fffffd;
 }
 .panelContestStat .panel-body .overview {
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #ffe6c7;
 }
 .panelContestStat .breadcrumbHead {
     padding: 9px 0 7px 28px;
 }
-.panelContestStat .breadcrumbHead .breadcrumb .active {color: #0bbbe7; }
+.panelContestStat .breadcrumbHead .breadcrumb .active {
+    color: #ff890c;
+    opacity: 1;
+}
 .panelContestStat .breadcrumbHead .breadcrumb li {
     padding-left: 13px;
+    color: #656565;
+    opacity: 0.48;
 }
 .panelContestStat .breadcrumbHead .breadcrumb li:last-child {padding-right: 0; }
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
-    opacity: 0.3;
+    opacity: 0.625;
     height: 9px;
     left: 0;
     top: 7px;
+    padding: 0;
+    background-position: 0 -82px;
+}
+.panelContestStat .breadcrumbHead .breadcrumb .active:before {
+    background-position: -9px -82px;
 }
 .panelContestStat .phaseDetails table td{
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #ffe6c7;
 }
 .panelContestStat .phaseDetails table th{
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #ffe6c7;
 }
-
+.panelContestStat .panel-body a {
+    color: #333;
+}
+.panelContestStat .panel-body a:hover {
+    color: #ff8a00;
+}
 /* profile overview and important messages widget */
-.panelOverview { 
+.panelOverview {
     background: transparent;
 }
 .panelOverview .panel-heading {
-    background: #1f444e;
+    background: #f0f0f0;
+    border-bottom-width: 1px;
+    border: 1px solid #e7e7e7;
+}
+.panelOverview .panel-heading.active {
+    background: #ff8a00;
+    color: #fff;
+    border-width: 0;
+}
+.panelOverview .panel-heading .showSectionRadio:checked~.showSectionLbl:before {
+    background-position: -50px -20px;
 }
 .panelOverview .panel-body {
-    border-color: #1f444e;
+    border-color: #e7e7e7;
+}
+.panelOverview .panel-heading.active + .panel-body {
+    margin-top: 0;
 }
 .panelOverview .panel-body .contentWrapper {
-    background: #151717;
-    border: 1px solid #234760;
+    background: #fff;
+    border: 1px solid #e7e7e7;
+    border-bottom-width: 0;
+    height: 230px;
+    margin: 0;
+}
+.panelOverview>section:last-child .panel-body .contentWrapper {
+    height: 229px;
+    border-bottom-width: 1px;
 }
 .panelOverview .overviewAndMessage .profile p {
-    color: #fff;
+    color: #333;
 }
 .panelOverview .overviewAndMessage .profile p label {
     color: #687376;
 }
 .panelOverview .overviewAndMessage .messagesBox td {
-    color: #fff;
-    border-color: #1f444e;
+    color: #333;
+    border-color: #ffe9cf;
 }
 .panelOverview .overviewAndMessage .messagesBox .date {
     color: #687376;
@@ -406,8 +522,11 @@ footer .right .sponsorLogo {
 
 /* contest plan widget */
 .panelContestPlan {
-    border-color: #1f444e;
-    background: #151718;
+    border-color: #e7e7e7;
+    background: #fff;
+}
+.panelContestPlan .panel-heading {
+    color: #656565;
 }
 /*for calendar and list view*/
 .calendar .fc-header-title h2,
@@ -415,17 +534,27 @@ footer .right .sponsorLogo {
     color: #687376;
 }
 .calendar .fc-border-separate tr.fc-last th {
-    border-color: #1f444e;
+    border-color: #ffe9cf;
 }
 .calendar .fc-border-separate thead .fc-day-header {
     color: #687376;
 }
+.calendar .fc-header .fc-button-month {
+    color: #ff8a00;
+}
+.calendarView .fc-event{
+    color: #333;
+}
 .listView .listHeader {
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #ffe6c9;
 }
 .listView .eventsContent .table>tbody>tr>td {
-    border-color: #1f444e;
+    border-color: #ffe6c9;
 }
+.panelContestPlan .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
+    background: #e7e7e7;
+}
+
 /* style of message arena */
 .body .messageArena {
     background-color: rgba(21,23,24,0.98);
@@ -441,29 +570,52 @@ footer .right .sponsorLogo {
     color: #fff;
 }
 .messageArena .panelHeader {
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #784911;
 }
 .messageArena .messageBox .mItem {
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #7B612E;
 }
-
+.messageArena a {
+    color: #ff8a00;
+}
 /*room summary widget in contest page*/
 .panelSummary {
-    border-color: #1f444e;
+    border-color: #e7e7e7;
 }
 .panelSummary .panel-heading {
-    background: #1f444e;
+    background: #f0f0f0;
 }
+.panelSummary .panel-body {
+    background: #fffffd;
+    color: #636d70;
+}
+.panelSummary .panel-body .summaryWrapper {
+    border-color: #ff8a00;
+}
+.panelSummary .summaryWrapper .sumDiv:before {
+    background-position: -136px -44px;
+}
+.panelSummary .mainContent .detailLink {
+    color: #656565;
+}
+.panelSummary .mainContent .detailLink:hover {
+    color: #ff8a00;
+}
+/* Chat Area Widget */
 .panelChatArea .panel-heading {
-    background-color: #1f444e;
+    background-color: #f0f0f0;
+    border-bottom-width: 1px;
 }
 .panelChatArea .lobbyDropdown .dropdown-toggle,
 .panelChatArea .methodDropdown .dropdown-toggle,
 .panelChatArea .memberDropdown .disableSelect,
 .panelChatArea .memberDropdown .dropdown-toggle {
-    background-image: url(../img/select.png);
-    background-color: #162f36;
-    background-color: rgba(22,47,54,0.99);
+    background-image: url(../img/orange/select.png);
+    background-color: #fff;
+}
+.panelChatArea .lobbyDropdown .dropdown-toggle,
+.panelChatArea .methodDropdown .dropdown-toggle {
+    color: #333;
 }
 .panelChatArea .lobbyDropdown .dropdown-toggle:hover,
 .panelChatArea .methodDropdown .dropdown-toggle:hover,
@@ -471,50 +623,55 @@ footer .right .sponsorLogo {
     color: inherit;
 }
 .panelChatArea .membersInfo{
-    border-right: 1px solid #1f444e;
+    border-right: 1px solid #e7e7e7;
 }
 .panelChatArea .membersInfo .infoSection header a{
-    background-color: #191A1B;
+    background-color: #e7e7e7;
 }
 .panelChatArea .membersInfo .users .current {
-    background: #050035;
-    background: rgba(5, 0, 53, 0.9);
+    background: #ffe8cc;
+    background: rgba(255,138,0,0.2);
+}
+.panelChatArea .content {
+    background: #f5f8fa;
 }
 .panelChatArea .content .chatBoard .general{
-    color: #fff;
+    color: #333;
 }
 .panelChatArea .content .chatBoard .toMe{
     background-color: #a90909;
-}
-.panelChatArea .methodDropdown .dropdown-menu{
-    background-color: #40474a;
-}
-.panelChatArea .memberDropdown .dropdown-menu{
-    background-color: #40474a;
-}
-.panelChatArea .methodDropdown .dropdown-menu li a{
     color: #fff;
 }
-.panelChatArea .methodDropdown .dropdown-menu li a:hover{
+.panelChatArea .methodDropdown .dropdown-menu{
+    background-color: #fff;
+}
+.panelChatArea .memberDropdown .dropdown-menu{
+    background-color: #fff;
+}
+.panelChatArea .methodDropdown .dropdown-menu li a{
     color: #333;
 }
-.panelChatArea .chatInput {
-    background: #162f36;
+.panelChatArea .methodDropdown .dropdown-menu li a:hover{
+    color: #666;
 }
-.panelChatArea .chatInput input{
-    font-weight: 300;
+.panelChatArea .chatInput {
+    background: #fff;
+    color: #333;
 }
 .panelChatArea .chatInput input::-webkit-input-placeholder{
-    color: #687376;
+    color: #333;
 }
 .panelChatArea .chatInput input:-moz-placeholder{
-    color: #687376;
+    color: #333;
 }
 .panelChatArea .chatInput input::-moz-placeholder{
-    color: #687376;
+    color: #333;
 }
 .panelChatArea .chatInput input:-ms-input-placeholder{
-    color: #687376;
+    color: #333;
+}
+.panelChatArea .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
+    background: #e7e7e7;
 }
 /** rating style and role style **/
 .rating-red{
@@ -533,7 +690,7 @@ footer .right .sponsorLogo {
     color: #999;
 }
 .rating-none{
-    color: #fff;
+    color: #0b0b0b;
 }
 .rating-admin{
     color: #ff9900;
@@ -542,68 +699,80 @@ footer .right .sponsorLogo {
 /** Modal style **/
 .chatWidget-modal-header,
 .chatWidget-modal-footer{
-    background-color: #1f444e;
+    background-color: #f0f0f0;
 }
 .chatWidget-modal-body{
-    background-color: rgb(21, 23, 24);
+    background-color: #fff;
 }
 .chatWidget-modal-button{
-    background-color: rgb(9, 153, 209);
+    background-color: #ff8a00;
+}
+.chatWidget-modal-button:focus,
+.chatWidget-modal-button:active:focus {
+    outline-color: #ffa133;
 }
 
 /* contest summary page --> uesr.contest.detail.html*/
 .detailPage .panelSummary .panel-body .leftSec {
-    border-right: 1px solid #1f444e;
+    border-right: 1px solid #dededd;
 }
 /* challengers section */
 .detailPage section h3 {
-    color: #fff;
+    color: #656565;
 }
-.filterPanel.qtip-default {
-    background: url(../img/filter-bg.png) 0 0 no-repeat;
-}
-.filterPanel.largeSize.qtip-default {
-    background: url(../img/filter-bg.png) 0 -162px no-repeat;
+.detailPage section .heading .filterArea>a {
+    color: #656565;
 }
 .filterPanel .closeLink {
-    color: #fff;
+    color: #333;
 }
 .filterPanel .contentWrapper label {
-    color: #fff;
+    color: #333;
 }
 .filterPanel .contentWrapper .dropdown,
 .filterPanel .contentWrapper .filterInput {
-    border: 1px solid #3d3d3d;
+    border: 1px solid #e7e7e7;
+    background: #fff;
 }
-.filterPanel .contentWrapper .filterInput {
-    color: #fff;
-}
+.filterPanel .contentWrapper .filterInput,
 .filterPanel .contentWrapper .dropdown-toggle {
-    color: #fff;
+    color: #333;
 }
 .filterPanel .btnWrapper {
-    border-top: 1px solid #2d2f30;
+    border-top: 1px solid #e7e7e7;
+}
+.filterPanel .btnWrapper .btnFilter {
+    background: #ff8a00;
 }
 .detailPage .leaderboardWrapper .heading .viewFilter div {
-    color: #fff;
+    color: #656565;
 }
 
 /* expand/collapse action */
 .detailPage .panel-body section.expand{
-    background: #151718;
+    background: #fff;
 }
 /*common style of table in detail page */
-.detailPage .table>thead>tr>th {
-    border-color: #1f444e;
+.detailPage .table>thead:first-child>tr:first-child>th {
+    background: #e7e7e7;
+    color: #636d70;
+    padding-top: 8px;
+    padding-bottom: 7px;
+    border-top: 8px solid #fff;
+    border-bottom-width: 3px;
+    border-color: #fff;
+}
+.detailPage .table>tbody>tr:first-child>td {
+    border-top: 1px solid #ffe6c7;
 }
 .detailPage .table>tbody>tr>td {
-    color: #fff;
-    border-bottom: 1px solid #1f444e;
+    color: #333;
+    border-bottom: 1px solid #ffe6c7;
 }
 .detailPage .table>tbody>tr>td>.rating {
-    color: #636d70;
+    color: #656565;
 }
-.detailPage .leaderboardWrapper .colorPassed, 
+.detailPage .leaderboardWrapper .colorPassed,
 .detailPage .leaderboardWrapper .colorPending,
 .detailPage .leaderboardWrapper .colorSubmitted {
     color: #2c8236;
@@ -616,13 +785,16 @@ footer .right .sponsorLogo {
     color: #ac4141;
 }
 .detailPage .leaderboardWrapper .colorOpened {
-    color: #fff;
+    color: #ff8a00;
 }
 .detailPage .leaderboardWrapper .colorUnopened {
     color: #5e676a;
 }
-.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #2a2b2c;
+.filterPanel .contentWrapper .filterInput:focus {
+    color: #333;
+}
+.detailPage .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
+    background: #e7e7e7;
 }
 
 /*bootstrap small devices tablets*/
@@ -636,16 +808,38 @@ footer .right .sponsorLogo {
 }
 /* boostrap extra small devices */
 @media only screen and (max-width: 767px) {
+    .panel-custom .tabs .altNav .dropdown-toggle {
+        color: #ff8a00;
+    }
+    .panel-custom .tabs .altNav .dropdown-toggle:hover,
+    .panel-custom .tabs .altNav .open a:hover {
+        background: #ff8a00;
+    }
     .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/company_logo_small.png);
+        background-image: url(../img/orange/company_logo_small.png);
     }
 }
 /* special sizes which widget will overflow */
 @media only screen and (max-width: 668px) {
     .panelChatArea .membersInfo{
-        border-bottom: 1px solid #1f444e;
+        border-bottom: 1px solid #e7e7e7;
     }
 }
 @media only screen and (max-width: 421px) {
-    .panelContestStat .breadcrumbHead {height: 63px; }
+    .panelContestStat .breadcrumbHead {
+        white-space: normal;
+        height: 63px;
+    }
+}
+
+/* tooltip */
+.body .tooltip.bottom .tooltip-arrow{
+    border-bottom-color: #ff8a00;
+}
+.body .tooltip-inner{
+    background-color: #ff8a00;
+}
+
+.chatWidget-modal-header .modal-title{
+    line-height: 24px;
 }

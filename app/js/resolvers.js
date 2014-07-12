@@ -39,7 +39,9 @@
 ///////////////
 // RESOLVERS //
 'use strict';
-/*global module, angular*/
+/*jshint -W097*/
+/*jshint strict:false*/
+/*global require, setTimeout, console, module, angular*/
 
 var config = require('./config');
 var helper = require('./helper');
@@ -94,7 +96,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     // if the listener is not ready, redirect
     setTimeout(function () {
         if (angular.isUndefined($rootScope.isLoggedIn)) {
-            $rootScope.$apply(function(){
+            $rootScope.$apply(function () {
                 $rootScope.loginTimeout = true;
             });
             return forceLogout();
@@ -398,15 +400,19 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
     // handle phase data response
     socket.on(helper.EVENT_NAME.PhaseDataResponse, function (data) {
-        $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
-        $rootScope.$broadcast(helper.EVENT_NAME.PhaseDataResponse, data);
+        if ($rootScope.roundData[data.phaseData.roundID]) {
+            $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
+            $rootScope.$broadcast(helper.EVENT_NAME.PhaseDataResponse, data);
+        }
     });
 
     // handle system test progress response
     socket.on(helper.EVENT_NAME.SystestProgressResponse, function (data) {
-        // display as percentage instead of '0/0'
-        $rootScope.roundData[data.roundID].systestProgress =
-            data.total === data.done ? '100.00%' : (data.done * 100.0 / data.total).toFixed(2) + '%';
+        if ($rootScope.roundData[data.roundID]) {
+            // display as percentage instead of '0/0'
+            $rootScope.roundData[data.roundID].systestProgress =
+                data.total === data.done ? '100.00%' : (data.done * 100.0 / data.total).toFixed(2) + '%';
+        }
     });
 
     // handle registrated user response
