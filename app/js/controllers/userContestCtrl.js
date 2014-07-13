@@ -31,9 +31,21 @@ var helper = require('../helper');
  */
 var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket',
     function ($scope, $rootScope, $stateParams, $state, socket) {
+        function setContest(data) {
+            $scope.contest = data;
+            // rebuild the contest schedule when phase data updated
+            $scope.$broadcast('rebuild:contestSchedule');
+        }
+        /*jslint unparam:true*/
+        $scope.$on(helper.EVENT_NAME.PhaseDataResponse, function (event, data) {
+            // phase data already set in resolvers.js, no need to assign again.
+            $scope.$broadcast('rebuild:contestSchedule');
+        });
+        /*jslint unparam:false*/
+
         // load contest data with contest id
         $scope.roundID = +$stateParams.contestId;
-        $scope.contest = $rootScope.roundData[$scope.roundID];
+        setContest($rootScope.roundData[$scope.roundID]);
         $scope.divisionID = null;
         angular.forEach($scope.contest.coderRooms, function (room) {
             if (angular.isDefined($rootScope.currentRoomInfo) &&
@@ -59,14 +71,14 @@ var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket
                 $rootScope.roundData[data.roundData.roundID] = data.roundData;
 
                 if (String($scope.roundID) === String(data.roundData.roundID)) {
-                    $scope.contest = $rootScope.roundData[$scope.roundID];
+                    setContest($rootScope.roundData[$scope.roundID]);
                     initWithContest($scope.contest);
                 }
             } else if (data.action === 2) {
                 delete $rootScope.roundData[data.roundData.roundID];
 
                 if (String($scope.roundID) === String(data.roundData.roundID)) {
-                    $scope.contest = null;
+                    setContest(null);
                 }
             }
         });

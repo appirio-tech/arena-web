@@ -1724,17 +1724,33 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     width: 68px;
 }
-.panelContestStat .panel-body .overview > div > .column:nth-child(2),
-.panelContestStat .panel-body .schedule .details .column:nth-child(2) {
+.panelContestStat .overview > div {
+    position: relative;
+}
+.panelContestStat .overview > div > .column {
+    vertical-align: middle;
+}
+.panelContestStat .panel-body .overview > div > .column:nth-child(2) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 223px;
+    width: 200px;
 }
-.panelContestStat .panel-body .overview > div > .column:nth-child(2):hover,
-.panelContestStat .panel-body .schedule .details .column:nth-child(2):hover {
+.panelContestStat .panel-body .overview > div > .column:nth-child(2):hover {
     overflow: visible;
     text-overflow: inherit;
+}
+.panelContestStat .panel-body .schedule .details .column:nth-child(2) {
+    overflow: auto;
+    width: 223px;
+}
+/*for custom ng-scrollbar*/
+.panelContestStat .panel-body .scheduleContent.scroll { 
+    overflow-y: hidden;
+}
+/*for default scrollbar*/
+.panelContestStat .panel-body .scheduleContent.default {
+    overflow-y: auto;
 }
 .panelContestStat .panel-body .schedule header {
     font-size: 16px;
@@ -3282,6 +3298,11 @@ footer .right>span:nth-child(2) {
         width: auto;
         padding: 0 15px;
     }
+    /* add scrollbar for contest schedule in contest overview */
+    .panelContestStat .panel-body .scheduleContent {
+        width: 380px;
+        max-height: 325px;
+    }
 }
 @media only screen and (max-width: 1277px) {
     .detailPage .tableDiv .table-responsive,
@@ -3344,6 +3365,9 @@ footer .right>span:nth-child(2) {
     .detailPage .table>thead>tr>th,
     .detailPage .table>tbody>tr>td {
         padding: 4px;
+    }
+    .panelContestStat .panel-body .scheduleContent {
+        height: auto;
     }
 }
 @media only screen and (max-width: 1121px) {

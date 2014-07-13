@@ -28,7 +28,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', function ($scope, appHelper, $state, socket) {
+var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', function ($scope, appHelper, $state, socket, $timeout) {
     /**
      * The status.
      *
@@ -151,6 +151,10 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', function ($sc
 
     // request register users
     socket.emit(helper.EVENT_NAME.RegisterUsersRequest, { roundID: $scope.roundID });
+
+    $timeout(function () {
+        $scope.$broadcast('rebuild:contestSchedule');
+    }, 100);
 }];
 
 module.exports = contestStatsCtrl;
