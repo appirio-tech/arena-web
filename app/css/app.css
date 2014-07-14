@@ -7,7 +7,7 @@
 .auto-inline {float: left;width: auto !important;}
 html{height:100%;}
 body{
-    background:url(../img/bg.png) repeat 0 0 #DDE7F2;
+    background:url(../img/dark/bg.png) repeat 0 0 #DDE7F2;
     font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
     height:100%;
     -webkit-font-smoothing:antialiased;
@@ -30,7 +30,7 @@ body a {cursor: pointer;}
 .header .navIcons>li>.icon:before,
 .userInfo .notification,
 .userInfo .arrow,
-.header .navIcons .themePanel .closeBtn,
+.header .navIcons .themePanel .closeBtn:before,
 .header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl:before,
 .panelCodeProblem .panel-heading > .collapseIcon:before,
 .panelCodeEditor .panel-heading > .collapseIcon:before,
@@ -326,15 +326,22 @@ body a {cursor: pointer;}
     line-height: 12px;
 }
 .header .navIcons .themePanel .closeBtn {
-    width: 0;
-    height: 0;
-    overflow: hidden;
-    padding-top: 8px;
-    padding-left: 9px;
+    width: 30px;
+    height: 30px;
     position: absolute;
-    top: 23px;
-    right: 19px;
+    top: 12px;
+    right: 8px;
+}
+.header .navIcons .themePanel .closeBtn:before {
+    content: '';
+    display: block;
+    height: 8px;
+    width: 9px;
     background-position: 0 -25px;
+    position: absolute;
+    bottom: 11px;
+    left: 10px;
+
 }
 .header .navIcons .themePanel .themesBox {
     padding: 0 1px;
@@ -1588,7 +1595,15 @@ footer .right>span:nth-child(2) {
     background-position: -50px -150px;
 }
 .panelCodeEditor .testPanel .bottom .message {position: absolute; top: 0; width: 178px; padding-top: 0; margin-bottom: 0;}
-.panelCodeEditor .testPanel .bottom img {position: absolute; top: 33px; left: 100px;}
+.panelCodeEditor .testPanel .bottom .loadIcon {
+    position: absolute;
+    top: 33px;
+    left: 100px;
+    display: block;
+    height: 24px;
+    width: 24px;
+    background-position: 0 0;
+}
 .panelCodeEditor .testPanel .bottom .caseCheck:checked ~ .caseLbl:before {background-position: -75px -150px;}
 .panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
 .panelCodeEditor .paddingRow {height: 7px;background: #151718;position: relative;}
@@ -1686,7 +1701,6 @@ footer .right>span:nth-child(2) {
 .panelContestStat .panel-heading {padding: 7px 31px 9px; }
 .panelContestStat .panel-body {
     padding: 0 20px;
-    height: 536px;
     border-top: 0;
 }
 .panelContestStat .panel-body .overview {
@@ -1710,8 +1724,34 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     width: 68px;
 }
-.panelContestStat .panel-body .overview > div > .column:nth-child(2),
-.panelContestStat .panel-body .schedule .details .column:nth-child(2) {width: 223px; }
+.panelContestStat .overview > div {
+    position: relative;
+}
+.panelContestStat .overview > div > .column {
+    vertical-align: middle;
+}
+.panelContestStat .panel-body .overview > div > .column:nth-child(2) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 200px;
+}
+.panelContestStat .panel-body .overview > div > .column:nth-child(2):hover {
+    overflow: visible;
+    text-overflow: inherit;
+}
+.panelContestStat .panel-body .schedule .details .column:nth-child(2) {
+    overflow: auto;
+    width: 223px;
+}
+/*for custom ng-scrollbar*/
+.panelContestStat .panel-body .scheduleContent.scroll { 
+    overflow-y: hidden;
+}
+/*for default scrollbar*/
+.panelContestStat .panel-body .scheduleContent.default {
+    overflow-y: auto;
+}
 .panelContestStat .panel-body .schedule header {
     font-size: 16px;
     line-height: 16px;
@@ -2704,6 +2744,12 @@ footer .right>span:nth-child(2) {
     padding-right: 0;
     /*width: 600px;*//*it will cause overflow when screen is less than 1300px*/
 }
+.detailPage .connectionStatus {
+    text-align: right;
+}
+.detailPage .btnRow {
+    padding-right: 0;
+}
 .detailPage .titleBar .btnBack,
 .codeArea .btnBack { 
     float: right;
@@ -2843,7 +2889,7 @@ footer .right>span:nth-child(2) {
     display: none;
 }
 .filterPanel.qtip-default {
-    background: url(../img/filter-bg.png) 0 0 no-repeat;
+    background-position: 0 0;
     background-color: transparent;
     border-width: 0;
     height: 162px;
@@ -2852,7 +2898,7 @@ footer .right>span:nth-child(2) {
     font-size: 14px;
 }
 .filterPanel.largeSize.qtip-default {
-    background: url(../img/filter-bg.png) 0 -162px no-repeat;
+    background-position: 0 -162px;
     height: 198px;
 }
 .filterPanel.qtip-default .qtip-content {
@@ -3252,6 +3298,11 @@ footer .right>span:nth-child(2) {
         width: auto;
         padding: 0 15px;
     }
+    /* add scrollbar for contest schedule in contest overview */
+    .panelContestStat .panel-body .scheduleContent {
+        width: 380px;
+        max-height: 325px;
+    }
 }
 @media only screen and (max-width: 1277px) {
     .detailPage .tableDiv .table-responsive,
@@ -3315,6 +3366,9 @@ footer .right>span:nth-child(2) {
     .detailPage .table>tbody>tr>td {
         padding: 4px;
     }
+    .panelContestStat .panel-body .scheduleContent {
+        height: auto;
+    }
 }
 @media only screen and (max-width: 1121px) {
     .panelCodeEditor .panel-body .toolBar {
@@ -3373,7 +3427,6 @@ footer .right>span:nth-child(2) {
         padding-left: 15px;
         border:1px solid #2d2f30;
         margin:0 0 15px;
-        background-image: url(../img/black-header.png);
         background-position: 0 0;
         background-repeat: repeat-x;
     }
@@ -3409,10 +3462,12 @@ footer .right>span:nth-child(2) {
     .header .navIcons .themeSwitcher a:before {
         left: 33px;
     }
+    .header .navIcons .themeSwitcher .closeBtn {
+        padding-left: 0;
+    }
     .header .navbar-right.userInfo {
         margin: 0;
         border:1px solid #2d2f30;
-        background-image: url(../img/black-header.png);
         background-position: 0 0;
         background-repeat: repeat-x;
         padding-left: 15px;
@@ -3483,7 +3538,15 @@ footer .right>span:nth-child(2) {
     .panel-custom .schedulePanel,
     .panel-custom .statusPanel,
     .panelSummary .summaryWrapper,
-    .panelSummary .summaryWrapper section {height: auto; overflow: hidden; }
+    .panelSummary .summaryWrapper section {
+        height: auto;
+        overflow: hidden;
+    }
+    .panel-custom .summaryPanel,
+    .panel-custom .schedulePanel,
+    .panel-custom .statusPanel {
+        min-height: 115px;
+    }
     .panel-custom .mainContent .tabs,
     .panel-custom .schedulePanel,
     .panel-custom .summaryPanel,
@@ -3560,7 +3623,6 @@ footer .right>span:nth-child(2) {
     .hero .loginBox footer .sponsorLogo {
         margin: 0 auto;
         padding: 23px 188px 0 0;
-        background-image: url(../img/company_logo_small.png);
     }
     .hero .text p > span {width: auto; min-width: 250px; }
     .hero .loginBox .errorMessage {left: 50%; margin-left: -139px; }
@@ -3603,6 +3665,9 @@ footer .right>span:nth-child(2) {
     .codeArea .mainContent {padding: 0;}
     .codeArea .titleBar>div:first-child,.codeArea .connection {padding-left: 0;padding-right: 65px;}
     .codeArea .shareLink>ul>li>a {right: 5px;}
+    .detailPage .connectionStatus {
+        text-align: left;
+    }
 }
 /* special sizes which widget will overflow */
 @media only screen and (max-width: 741px) {
@@ -3735,6 +3800,12 @@ footer .right>span:nth-child(2) {
     .panelOverview .overviewAndMessage .profile {padding-left: 98px;}
     .panelOverview .overviewAndMessage .profile img {left: 11px;}
     .panelOverview .overviewAndMessage .messagesBox {padding: 0 9px 0 10px;}
+}
+@media only screen and (max-width: 400px) {
+    .contest .panelContestStat .panel-body .overview>div>.column,
+    .contest .panelContestStat .panel-body .schedule .details .column {
+        width: 100%;
+    }
 }
 @media only screen and (max-width: 394px) {
     .panelCodeEditor .toolBar .rightPart>div:first-child {width: 116px;}

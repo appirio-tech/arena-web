@@ -46,7 +46,7 @@
                           <a id="iconTS" class="icon iconTS" data-ng-click="openThemeSelector($event)">THEME SWITCHER</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Theme switcher" data-ng-click="openThemeSelector($event)"></a>
                           <div class="themePanel" data-ng-show="themePanelOpen" id="themePanel">
                             <h4>Themes&nbsp;({{themesInfo.themes.length}})</h4>
-                            <a class="closeBtn" data-ng-click="cancelTheme()">x</a>
+                            <a class="closeBtn" data-ng-click="cancelTheme()"></a>
                             <div class="themesBox">
                               <p data-ng-repeat="theme in themesInfo.themes track by $index" class="themeItem">
                                 <input type="radio" data-ng-model="$parent.themeInUse" value="{{theme.key}}" name="themes" id="theme-{{$index}}" class="themeRadio"><label for="theme-{{$index}}" class="themeLbl">{{theme.label}}</label>

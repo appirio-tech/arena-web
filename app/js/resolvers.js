@@ -39,7 +39,9 @@
 ///////////////
 // RESOLVERS //
 'use strict';
-/*global module, angular*/
+/*jshint -W097*/
+/*jshint strict:false*/
+/*global require, setTimeout, console, module, angular*/
 
 var config = require('./config');
 var helper = require('./helper');
@@ -94,7 +96,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     // if the listener is not ready, redirect
     setTimeout(function () {
         if (angular.isUndefined($rootScope.isLoggedIn)) {
-            $rootScope.$apply(function(){
+            $rootScope.$apply(function () {
                 $rootScope.loginTimeout = true;
             });
             return forceLogout();
@@ -398,7 +400,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
     // handle phase data response
     socket.on(helper.EVENT_NAME.PhaseDataResponse, function (data) {
-        if($rootScope.roundData[data.phaseData.roundID]) {
+        if ($rootScope.roundData[data.phaseData.roundID]) {
             $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
             $rootScope.$broadcast(helper.EVENT_NAME.PhaseDataResponse, data);
         }

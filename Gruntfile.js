@@ -77,7 +77,7 @@ module.exports = function (grunt) {
             }
         },
         cssmin: {
-            build: {
+            dark: {
                 src: [
                     'app/css/bootstrap.min.css',
                     'bower_components/codemirror/lib/codemirror.css',
@@ -87,13 +87,13 @@ module.exports = function (grunt) {
                     'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                     'app/css/app.css',
                     'app/css/local.css',
-                    'app/css/topcoder.css',
-                    'app/css/darkTheme.css'
+                    'app/css/dark/topcoder.css',
+                    'app/css/dark/darkTheme.css'
                 ],
                 // Compile to a single file to add a script tag for in your HTML
                 dest: 'build/css/bundle.css'
             },
-            combine: {
+            light: {
                 files: {
                     'build/css/bundle-light.css': [
                         'app/css/bootstrap.min.css',
@@ -106,6 +106,22 @@ module.exports = function (grunt) {
                         'app/css/local.css',
                         'app/css/light/topcoder.css',
                         'app/css/light/lightTheme.css'
+                    ]
+                }
+            },
+            orange: {
+                files: {
+                    'build/css/bundle-orange.css': [
+                        'app/css/bootstrap.min.css',
+                        'bower_components/codemirror/lib/codemirror.css',
+                        'bower_components/codemirror/addon/fold/foldgutter.css',
+                        'bower_components/fullcalendar/fullcalendar.css',
+                        'thirdparty/jquery.qtip/jquery.qtip.min.css',
+                        'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
+                        'app/css/app.css',
+                        'app/css/local.css',
+                        'app/css/orange/topcoder.css',
+                        'app/css/orange/orangeTheme.css'
                     ]
                 }
             }
@@ -145,10 +161,10 @@ module.exports = function (grunt) {
                     mode: 'zip'
                 },
                 files: [
-                    { 
+                    {
                         expand: true,
                         cwd: './build',
-                        src: '**' 
+                        src: '**'
                     }
                 ]
             }
@@ -167,8 +183,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
 
     // The default tasks to run when you type: grunt
-    grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'cssmin:combine', 'copy:build', 'replace:cdn']);
-    grunt.registerTask('build', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:build', 'cssmin:combine', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('build', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
     //release tasks work out of build directory - build must be run first!
     grunt.registerTask('release', ['clean:release', 'uglify:release', 'copy:release']);
     grunt.registerTask('heroku', ['build']);
