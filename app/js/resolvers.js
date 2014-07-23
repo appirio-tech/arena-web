@@ -33,8 +33,12 @@
  * - Removed weekly information from date format (DATE_FORMAT).
  * - Updated the handler of RoundScheduleResponse to use $rootScope.timeZone instead of $rootScope.timezone.
  *
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - Division Summary):
+ * - Added $broadcast to the $rootScope of CreateChallengeTableResponse and
+ *   UpdateCoderComponentResponse events.
+ *
  * @author amethystlei, dexy
- * @version 1.6
+ * @version 1.7
  */
 ///////////////
 // RESOLVERS //
@@ -348,6 +352,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         }
         $rootScope.roomData[data.roomID] = data;
         updateCoderPlacement($rootScope.roomData[data.roomID].coders);
+        $rootScope.$broadcast(helper.EVENT_NAME.CreateChallengeTableResponse, data);
     });
 
     // handle update coder points response
@@ -362,6 +367,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             }
         });
         updateCoderPlacement($rootScope.roomData[data.roomID].coders);
+        $rootScope.$broadcast(helper.EVENT_NAME.UpdateCoderPointsResponse, data);
     });
 
     // handle update coder component response
@@ -380,6 +386,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             }
         });
         updateCoderPlacement($rootScope.roomData[data.roomID].coders);
+        $rootScope.$broadcast(helper.EVENT_NAME.UpdateCoderComponentResponse, data);
     });
 
     // handle the end sync response for initialization when logging in
