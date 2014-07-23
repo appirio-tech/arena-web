@@ -21,8 +21,14 @@
  * Changes in version 1.4 (Module Assembly - Web Arena UI - Rating Indicator):
  * - Updated rating-purple to rating-blue in $scope.getRatingClass.
  *
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Division Summary):
+ * - Added $timeout and socket.
+ * - Moved waitingCoderInfo, modalTimeoutPromise, setTimeoutModal and showCoderInfo
+ *   from chatAreaCtrl
+ * - Updated PopUpGenericResponse handler to cover CoderInfo and Incorrect Usage title.
+ *
  * @author dexy, amethystlei
- * @version 1.4
+ * @version 1.5
  */
 'use strict';
 /*jshint -W097*/
@@ -41,7 +47,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', 'connectionService', '$modal', '$state', 'themer', '$cookies', '$filter', function ($rootScope, $scope, $http, appHelper, notificationService, connectionService, $modal, $state, themer, $cookies, $filter) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', 'connectionService', '$modal', '$state', 'themer', '$cookies', '$filter', '$timeout', 'socket', function ($rootScope, $scope, $http, appHelper, notificationService, connectionService, $modal, $state, themer, $cookies, $filter, $timeout, socket) {
     var /**
          * The modal controller.
          *
@@ -80,7 +86,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 $scope.cancelTheme();
             }
         },
-        selTheme;
+        selTheme,
+        waitingCoderInfo = false,
+        modalTimeoutPromise = null;
 
     // modal defined in the root scope can be used by other scopes.
     $rootScope.currentModal = null;
@@ -171,6 +179,31 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     enableClose: true
                 });
             }
+        } else if (data.title === helper.POP_UP_TITLES.CoderInfo) {
+            if (modalTimeoutPromise) {
+                $timeout.cancel(modalTimeoutPromise);
+            }
+            waitingCoderInfo = false;
+            $modal.open({
+                templateUrl: 'partials/user.chat.area.coderinfo.html',
+                controller: function ($scope, $modalInstance, coderInfo) {
+                    $scope.coderInfo = coderInfo;
+                    $scope.ok = function () {
+                        $modalInstance.close();
+                    };
+                },
+                resolve: {
+                    coderInfo: function () {
+                        return data.message;
+                    }
+                }
+            });
+        } else if (data.title === helper.POP_UP_TITLES.IncorrectUsage) {
+            $scope.openModal({
+                title: helper.POP_UP_TITLES.IncorrectUsage,
+                message: data.message,
+                enableClose: true
+            });
         }
     });
     $scope.$on(helper.EVENT_NAME.SingleBroadcastResponse, function (event, data) {
@@ -319,6 +352,37 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return "rating-admin";
         }
         return "";
+    };
+
+    /**
+     * Set timeout modal.
+     */
+    function setTimeoutModal() {
+        $scope.openModal({
+            title: 'Timeout',
+            message: 'Sorry, the request is timeout.',
+            enableClose: true
+        });
+        modalTimeoutPromise = null;
+        waitingCoderInfo = false;
+    }
+
+    /**
+     * Requests to show coder info.
+     *
+     * @param {string} name the name of the user
+     * @param {string} userType the user type
+     */
+    $scope.showCoderInfo = function (name, userType) {
+        if (waitingCoderInfo) {
+            return;
+        }
+        waitingCoderInfo = true;
+        if (modalTimeoutPromise) {
+            $timeout.cancel(modalTimeoutPromise);
+        }
+        modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
+        socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
     };
 }];
 

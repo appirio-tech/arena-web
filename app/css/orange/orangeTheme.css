@@ -772,17 +772,101 @@ footer .left>span {
 .detailPage .table>tbody>tr>td>.rating {
     color: #656565;
 }
-.detailPage .leaderboardWrapper .colorPassed,
-.detailPage .leaderboardWrapper .colorPending,
-.detailPage .leaderboardWrapper .colorSubmitted {
+/**** Default language ****/
+.detailPage .leaderboardWrapper .colorSubmittedDefault {
+    color: #ac4141;
+}
+.detailPage .leaderboardWrapper .colorChallengedDefault {
+    color: #ac4141;
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedDefault {
+    color: #ac4141;
+}
+.detailPage .leaderboardWrapper .colorFailedDefault {
+    color: #ac4141;
+    font-style: italic!important;
+}
+/**** Java language ****/
+.detailPage .leaderboardWrapper .colorSubmittedJava {
+    color: rgb(0, 255, 0);
+}
+.detailPage .leaderboardWrapper .colorChallengedJava {
+    color: rgb(0, 255, 0);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedJava {
+    color: rgb(0, 255, 0);
+}
+.detailPage .leaderboardWrapper .colorFailedJava {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
+/**** CPP language ****/
+.detailPage .leaderboardWrapper .colorSubmittedCpp {
+    color: rgb(255, 155, 153);
+}
+.detailPage .leaderboardWrapper .colorChallengedCpp {
+    color: rgb(255, 155, 153);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedCpp {
+    color: rgb(255, 155, 153);
+}
+.detailPage .leaderboardWrapper .colorFailedCpp {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
+/**** C# language ****/
+.detailPage .leaderboardWrapper .colorSubmittedCsharp {
+    color: rgb(102, 102, 255);
+}
+.detailPage .leaderboardWrapper .colorChallengedCsharp {
+    color: rgb(102, 102, 255);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedCsharp {
+    color: rgb(102, 102, 255);
+}
+.detailPage .leaderboardWrapper .colorFailedCsharp {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}/**** VB language ****/
+.detailPage .leaderboardWrapper .colorSubmittedVB {
+    color: rgb(129, 217, 255);
+}
+.detailPage .leaderboardWrapper .colorChallengedVB {
+    color: rgb(129, 217, 255);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedVB {
+    color: rgb(129, 217, 255);
+}
+.detailPage .leaderboardWrapper .colorFailedVB {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
+/**** Python language ****/
+.detailPage .leaderboardWrapper .colorSubmittedPython {
+    color: rgb(255, 102, 255);
+}
+.detailPage .leaderboardWrapper .colorChallengedPython {
+    color: rgb(255, 102, 255);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedPython {
+    color: rgb(255, 102, 255);
+}
+.detailPage .leaderboardWrapper .colorFailedPython {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
+
+.detailPage .leaderboardWrapper .colorPending {
     color: #2c8236;
 }
 .detailPage .leaderboardWrapper .colorCompiled {
     color: #f99800;
-}
-.detailPage .leaderboardWrapper .colorChallenged,
-.detailPage .leaderboardWrapper .colorFailed {
-    color: #ac4141;
 }
 .detailPage .leaderboardWrapper .colorOpened {
     color: #ff8a00;
@@ -790,6 +874,7 @@ footer .left>span {
 .detailPage .leaderboardWrapper .colorUnopened {
     color: #5e676a;
 }
+
 .filterPanel .contentWrapper .filterInput:focus {
     color: #333;
 }

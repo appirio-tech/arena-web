@@ -11,8 +11,11 @@
  * - Updated to retrieve divisionID based on roomID and roundID.
  * - Updated to remove divisionID from the state params.
  *
- * @author amethystlei
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Division Summary):
+ * - Added isDivisionActive to check if the division is active.
+ *
+ * @author amethystlei, dexy
+ * @version 1.3
  */
 'use strict';
 /*global module, angular*/
@@ -29,8 +32,8 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket',
-    function ($scope, $rootScope, $stateParams, $state, socket) {
+var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket', 'appHelper',
+    function ($scope, $rootScope, $stateParams, $state, socket, appHelper) {
         function setContest(data) {
             $scope.contest = data;
             // rebuild the contest schedule when phase data updated
@@ -53,7 +56,7 @@ var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket
                 $scope.divisionID = room.divisionID;
             }
         });
-
+        $scope.isDivisionActive = appHelper.isDivisionActive;
         /**
          * Init with contest.
          *
