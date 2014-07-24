@@ -413,7 +413,7 @@ body a {cursor: pointer;}
 .codeArea .socialLinks .btn-lg {margin-left: 0;}
 
 .hero .form .tcAccountBox .btn-lg:hover {background: #3eb9d7;}
-.hero .form .error .data input {
+.hero .form form .data input.error {
     border-color: #8f4c16;
 }
 .hero .form .tcAccountBox label {
@@ -887,6 +887,15 @@ footer .right>span:nth-child(2) {
     padding-bottom: 20px;
 }
 /********************* modal */
+.modal {
+    overflow-y: auto;
+}
+.modal-open {
+    overflow:auto;
+    overflow-x:hidden;
+}
+/* ** /.Fix to page move right ** */
+
 .modal .modal-dialog {
     padding-top: 15%;
 }
@@ -926,7 +935,6 @@ footer .right>span:nth-child(2) {
 .modal .modal-content .modal-body .argType {
     display: inline-block;
     width: 100px;
-    color: white;
 }
 .modal .modal-content .btn {
      height: 36px;
@@ -1105,7 +1113,7 @@ footer .right>span:nth-child(2) {
 .panelCodeProblem {
     width: auto;
     height: auto;
-    margin-bottom: 0;
+    margin-bottom: -4px;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -1625,6 +1633,9 @@ footer .right>span:nth-child(2) {
     text-align: left;
     padding-left: 7px;
     min-width: 15px;
+}
+.disableCursor .CodeMirror-lines{
+    cursor: not-allowed;
 }
 .panelCodeEditor .panel-body .errorBar {
     position: absolute;
@@ -2337,6 +2348,7 @@ footer .right>span:nth-child(2) {
     padding-left: 10px;
     padding-top: 0;
     padding-bottom: 2px;
+    line-height: 1.3;
 }
 .panelChatArea .memberInput:focus {
     outline: none;
@@ -2473,15 +2485,25 @@ footer .right>span:nth-child(2) {
     margin-bottom: 5px;
     height: 297px;
     width:100%;
-    word-break: break-all;
 }
 .panelChatArea .content .chatBoard .ng-scope{
     margin-bottom: 0;
     padding-bottom: 0;
 }
 .panelChatArea .content .chatBoard ul{
-    padding: 0 10px 10px 10px;
+    padding: 0 13px 10px 10px;
     list-style: none;
+}
+.panelChatArea .content .chatBoard ul li pre{
+    background-color: transparent;
+    font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+    border: 0;
+    font-size: inherit;
+    padding: inherit;
+    margin: inherit;
+    display: inline;
+    white-space: pre-wrap;
+    word-break: normal;
 }
 .panelChatArea .content .chatBoard .emph{
     font-weight: bold;
@@ -2556,7 +2578,7 @@ footer .right>span:nth-child(2) {
     font-size: 13px;
     font-weight: 300;
     border-width: 0;
-    line-height: 30px;
+    line-height: 1.3;
 }
 .panelChatArea .chatInput input::-webkit-input-placeholder{
     font-style: italic;
@@ -2709,7 +2731,7 @@ footer .right>span:nth-child(2) {
     float: right;
     color: #fff;
     background: #0999d1;
-    margin-top: -3px;
+    margin-top: 3px;
     margin-bottom: 5px;
 }
 .detailPage .titleBar .btnBack:hover,
@@ -3190,24 +3212,6 @@ footer .right>span:nth-child(2) {
 .detailPage .table .col6>.iconFail {
     background-position: -31px -41px;
     margin-top: 6px;
-}
-.detailPage .leaderboardWrapper .colorPassed, 
-.detailPage .leaderboardWrapper .colorPending,
-.detailPage .leaderboardWrapper .colorSubmitted {
-    color: #2c8236;
-}
-.detailPage .leaderboardWrapper .colorCompiled {
-    color: #f99800;
-}
-.detailPage .leaderboardWrapper .colorChallenged,
-.detailPage .leaderboardWrapper .colorFailed {
-    color: #ac4141;
-}
-.detailPage .leaderboardWrapper .colorOpened {
-    color: #fff;
-}
-.detailPage .leaderboardWrapper .colorUnopened {
-    color: #5e676a;
 }
 .body .ngsb-wrap .ngsb-scrollbar .ngsb-track {
     background: transparent;

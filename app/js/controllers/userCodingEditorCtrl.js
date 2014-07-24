@@ -22,6 +22,9 @@
  * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix):
  * - Updated to use the global popup modal defined in baseCtrl.js.
  *
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - User cannot focus on coding area in readonly mode
+ *
  * @author tangzx, amethystlei
  * @version 1.5
  */
@@ -94,8 +97,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * @param enable whether enable
          */
         function enableEditor(enable) {
+
             if ($scope.cm) {
-                $scope.cm.setOption('readOnly', enable === false);
+                $scope.cm.setOption('readOnly', enable === false ? 'nocursor' : false);
             }
         }
 
@@ -111,8 +115,10 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * Enable user inputs.
          */
         function enableUserInput() {
-            userInputDisabled = false;
-            enableEditor();
+            if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+                userInputDisabled = false;
+                enableEditor();
+            }
         }
 
         /**
@@ -381,7 +387,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             foldGutter: $scope.lang($scope.langIdx).langGutter,
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
             indentUnit: 4,
-            readOnly: true,
+            readOnly: 'nocursor',
             onLoad : function (cmInstance) {
                 $scope.cm = cmInstance;
                 $scope.settingChanged = function () {
@@ -541,7 +547,6 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 // only handle these responses for now
                 return;
             }
-
             data.message = replaceAll('<', '&lt;', data.message);
             data.message = replaceAll('>', '&gt;', data.message);
 

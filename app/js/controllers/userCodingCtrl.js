@@ -21,7 +21,10 @@
  * - Added the handler for PhaseDataResponse to implement coding time update (add time).
  * - Fixed the issue that changing the testcases in Test Panel will also change
  *   the content in the problem area.
- * 
+ *
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Initialize noCountdown to true, so that user won't see 00:00:01 when page loads
+ *
  * @author dexy, amethystlei
  * @version 1.4
  */
@@ -47,6 +50,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $scope.sharedObj = {};
         $scope.topStatus = 'normal';
         $scope.bottomStatus = 'normal';
+        $scope.noCountdown = true;
 
         // problem data
         $scope.problem = {};
@@ -169,6 +173,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         function startTimer() {
             // start coding/challenge phase count down
             var seconds = -1, phase;
+            $scope.noCountdown = false;
             if ($scope.roundData && $scope.roundData[$scope.roundID] && $scope.roundData[$scope.roundID].phaseData) {
                 phase = $scope.roundData[$scope.roundID].phaseData;
                 if (phase.phaseType === helper.PHASE_TYPE_ID.CodingPhase ||

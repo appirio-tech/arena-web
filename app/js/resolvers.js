@@ -33,8 +33,11 @@
  * - Removed weekly information from date format (DATE_FORMAT).
  * - Updated the handler of RoundScheduleResponse to use $rootScope.timeZone instead of $rootScope.timezone.
  *
- * @author amethystlei, dexy
- * @version 1.6
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Hyphenated chat text to break correctly in chat widget
+ *
+ * @author amethystlei, dexy, ananthhh
+ * @version 1.7
  */
 ///////////////
 // RESOLVERS //
@@ -60,7 +63,7 @@ var DATE_FORMAT = 'MMM d, h:mm a';
 //Here we put resolver logic into a container object so that the state declaration code section stays readable
 var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
-resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService) {
+resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', 'appHelper', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService, appHelper) {
     var deferred, sso = sessionHelper.getTcsso(), requestId,
         forceLogout = function () {
             $rootScope.isLoggedIn = false;
@@ -90,11 +93,21 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 });
             });
         };
+    // No need to start again if user already logged in
+    if ($rootScope.isLoggedIn) {
+        // go to dashboard page
+        deferred = $q.defer();
+        deferred.promise.then(function () {
+            $state.go(helper.STATE_NAME.Dashboard);
+        });
+        deferred.resolve();
+        return deferred.promise;
+    }
     $rootScope.loginTimeout = false;
     // if the listener is not ready, redirect
     setTimeout(function () {
         if (angular.isUndefined($rootScope.isLoggedIn)) {
-            $rootScope.$apply(function(){
+            $rootScope.$apply(function () {
                 $rootScope.loginTimeout = true;
             });
             return forceLogout();
@@ -398,7 +411,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
     // handle phase data response
     socket.on(helper.EVENT_NAME.PhaseDataResponse, function (data) {
-        if($rootScope.roundData[data.phaseData.roundID]) {
+        if ($rootScope.roundData[data.phaseData.roundID]) {
             $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
             $rootScope.$broadcast(helper.EVENT_NAME.PhaseDataResponse, data);
         }

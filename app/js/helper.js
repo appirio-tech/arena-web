@@ -37,8 +37,11 @@
  * Changes in version 1.8 (Module Assembly - Web Arena UI - Phase I Bug Fix):
  * - Updated PHASE_NAME for System Test.
  *
- * @author tangzx, amethystlei, dexy
- * @version 1.8
+ * Changes in version 1.9 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Added language list
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh
+ * @version 1.9
  */
 
 module.exports = {
@@ -184,7 +187,14 @@ module.exports = {
         '160': 'Failed',
         '150': 'Passed'
     },
-
+    PROBLEM_LANGUAGE_CODE: {
+        '0' : 'default',
+        '1' : 'java',
+        '3' : 'cpp',
+        '4' : 'csharp',
+        '5' : 'vb',
+        '6' : 'python'
+    },
     // the timeout of request
     REQUEST_TIME_OUT: 10 * 1000,
     // the interval between two sync time requests
@@ -211,13 +221,15 @@ module.exports = {
         ChallengeResults: 'Challenge Results',
         PhaseChange: 'Phase Change',
         Disconnected: 'Disconnected',
-        ForcedLogout: 'Client Connection Error'
+        ForcedLogout: 'Client Connection Error',
+        NotAssigned: 'Not Assigned'
     },
 
     // custom pop up messages
     POP_UP_MESSAGES: {
-        Reconnecting: "Waiting to reconnect...\nPress Close to log out and go to the log in screen.",
-        ForcedLogout: 'The connection to the server has been lost. Logging off.'
+        Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
+        ForcedLogout: 'The connection to the server has been lost. Logging off.',
+        NotAssigned: 'You are not assigned to this room'
     },
 
     // The mapper from time zone code (must be uppercase) to offset from UTC (in minutes).

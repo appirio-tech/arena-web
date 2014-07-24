@@ -11,8 +11,11 @@
  * - Added the navigation for viewing code.
  * - Removed unnecessary $state injection as it is exposed by $rootScope.
  *
- * @author amethystlei
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Color will be different for different language
+ *
+ * @author amethystlei, TCSASSEMBLER
+ * @version 1.3
  */
 'use strict';
 /*jshint -W097*/
@@ -31,7 +34,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location', function ($scope, $stateParams, $rootScope, $location) {
+var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location', 'appHelper', function ($scope, $stateParams, $rootScope, $location, appHelper) {
     /**
      * Check if the client suppports touch screen.
      *
@@ -280,11 +283,11 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     /**
      * Get the css class for the color of the component status.
      *
-     * @param status the status
+     * @param component the component
      * @returns {string} the css class name
      */
-    $scope.getStatusColor = function (status) {
-        return 'color' + helper.CODER_PROBLEM_STATUS_NAME[status];
+    $scope.getStatusColor = function (component) {
+        return 'color' + helper.CODER_PROBLEM_STATUS_NAME[component.status] + ' ' + helper.PROBLEM_LANGUAGE_CODE[component.language];
     };
 
     /**
@@ -494,10 +497,13 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         }
         if (panel === 'leaderboard') {
             $scope.getKeys(viewOn).lbFilterKey = key;
+            $scope.lbHandleString = '';
         } else if (panel === 'challenge') {
             $scope.getKeys(viewOn).challengeFilterKey = key;
+            $scope.challengeHandleString = '';
         } else if (panel === 'challenger') {
             $scope.getKeys(viewOn).challengerFilterKey = key;
+            $scope.challengerHandleString = '';
         }
     };
     $scope.filterBegin = function (viewOn, panel) {
@@ -553,13 +559,22 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
      */
     $scope.viewCode = function (coder, componentId) {
         if ($scope.contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.ChallengePhase) {
-            $scope.$state.go(helper.STATE_NAME.ViewCode, {
-                roundId: $stateParams.contestId,
-                divisionId: $scope.divisionID,
-                componentId: componentId,
-                roomId: $scope.roomID,
-                defendant: coder.userName
-            });
+            // Check whether user is assigned to this room or not
+            if (!appHelper.isCoderAssigned($rootScope.username(), $rootScope.currentRoomInfo.roomID)) {
+                $scope.openModal({
+                    title: helper.POP_UP_TITLES.NotAssigned,
+                    message: helper.POP_UP_MESSAGES.NotAssigned,
+                    enableClose: true
+                });
+            } else {
+                $scope.$state.go(helper.STATE_NAME.ViewCode, {
+                    roundId: $stateParams.contestId,
+                    divisionId: $scope.divisionID,
+                    componentId: componentId,
+                    roomId: $scope.roomID,
+                    defendant: coder.userName
+                });
+            }
         }
     };
 }];

@@ -6,8 +6,9 @@
             </div>
             <div class="col-lg-6 col-md-5 connection">
                 <div data-topcodertime></div><div data-connectionstatus></div>
+                <div class="col-lg-12 col-md-12"><a data-ng-click="goBack()" class="btn btnBack">Back to Contest</a></div>
             </div>
-            <div class="col-lg-12 col-md-12"><a data-ng-click="goBack()" class="btn btnBack">Back to Contest</a></div>
+
         </div>
         <div class="container-fluid row-fluid mainContent">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">
@@ -320,12 +321,13 @@
                                                         <td class="col1">{{viewOn=='room' ? coder.roomPlace : roomID}}</td>
                                                         <td class="col2"><!-- avoid blank
                                                             --><!-- avoid blank
-                                                            --><span class="name {{getRatingClass(coder.userRating)}}"><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span>{{coder.userName}}</span>&nbsp;<!-- avoid blank
-                                                            --><span class="rating">({{coder.userRating}})</span>
+                                                            --><a data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!--
+                                                                --><span class="name {{getRatingClass(coder.userRating)}}"><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span>{{coder.userName}}</span><!--
+                                                            --></a>
                                                         </td>
                                                         <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
-                                                            <a data-ng-show="isViewable(component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component.status)}}">{{showResult(component, $parent.showBy)}}</span></a>
-                                                            <span data-ng-hide="isViewable(component)" class="{{getStatusColor(component.status)}}">{{showResult(component, $parent.showBy)}}</span>
+                                                            <a data-ng-show="isViewable(component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component)}}">{{showResult(component, $parent.showBy)}}</span></a>
+                                                            <span data-ng-hide="isViewable(component)" class="{{getStatusColor(component)}}">{{showResult(component, $parent.showBy)}}</span>
                                                         </td>
                                                         <td class="col6">{{formatScore(coder.totalPoints)}}</td>
                                                     </tr>

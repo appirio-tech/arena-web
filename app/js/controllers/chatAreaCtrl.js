@@ -15,8 +15,12 @@
  * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix):
  * - Moved the function for calculating rating colors to baseCtrl.js to enable global usage.
  *
- * @author dexy, amethystlei
- * @version 1.3
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ *  - Added new variable talkToClass, to show correct user color in member selection dropdown after selecting
+ *  - Moved show coder info to base controller
+ *
+ * @author dexy, amethystlei, ananthhh
+ * @version 1.4
  */
 'use strict';
 /*global require, module, angular */
@@ -33,10 +37,8 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var chatAreaCtrl = ['$scope', '$rootScope', '$modal', 'socket', '$timeout', function ($scope, $rootScope, $modal, socket, $timeout) {
+var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootScope, socket) {
     var roundData,
-        waitingCoderInfo = false,
-        modalTimeoutPromise = null,
         rebuildAllScrollbar = function () {
             $scope.$broadcast('rebuild:methods');
             $scope.$broadcast('rebuild:members');
@@ -164,68 +166,6 @@ var chatAreaCtrl = ['$scope', '$rootScope', '$modal', 'socket', '$timeout', func
         $rootScope.chatContent = [];
         $scope.$broadcast('rebuild:chatboard');
     };
-
-    /**
-     * Set timeout modal.
-     */
-    function setTimeoutModal() {
-        $scope.openModal({
-            title: 'Timeout',
-            message: 'Sorry, the request is timeout.',
-            enableClose: true
-        });
-        modalTimeoutPromise = null;
-        waitingCoderInfo = false;
-    }
-
-    /**
-     * Requests to show coder info.
-     *
-     * @param {string} name the name of the user
-     * @param {string} userType the user type
-     */
-    $scope.showCoderInfo = function (name, userType) {
-        if (waitingCoderInfo) {
-            return;
-        }
-        waitingCoderInfo = true;
-        if (modalTimeoutPromise) {
-            $timeout.cancel(modalTimeoutPromise);
-        }
-        modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
-        socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
-    };
-
-    /*jslint unparam: true*/
-    // handles the PopUpGenericResponse to show coder info or error messages. 
-    $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
-        if (data.title === helper.POP_UP_TITLES.CoderInfo) {
-            if (modalTimeoutPromise) {
-                $timeout.cancel(modalTimeoutPromise);
-            }
-            waitingCoderInfo = false;
-            $modal.open({
-                templateUrl: 'partials/user.chat.area.coderinfo.html',
-                controller: function ($scope, $modalInstance, coderInfo) {
-                    $scope.coderInfo = coderInfo;
-                    $scope.ok = function () {
-                        $modalInstance.close();
-                    };
-                },
-                resolve: {
-                    coderInfo: function () {
-                        return data.message;
-                    }
-                }
-            });
-        } else if (data.title === helper.POP_UP_TITLES.IncorrectUsage) {
-            $scope.openModal({
-                title: helper.POP_UP_TITLES.IncorrectUsage,
-                message: data.message,
-                enableClose: true
-            });
-        }
-    });
     /*jslint unparam: false*/
 
     /**
@@ -299,6 +239,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', '$modal', 'socket', '$timeout', func
      */
     $scope.setTalkTo = function (index) {
         $scope.talkToUser = $scope.getMemberName(index);
+        $scope.talkToClass = $scope.getMemberRatingClass(index);
     };
 
     /**

@@ -200,6 +200,10 @@ footer .right .sponsorLogo {
 .modal .modal-content .modal-footer {
     border-width: 0;
 }
+
+.modal .modal-content .modal-body .argType {
+    color: #fff;
+}
 /********************* active contests part */
 .panel-custom {
     background: #151718;
@@ -517,25 +521,32 @@ footer .right .sponsorLogo {
     color: #687376;
 }
 /** rating style and role style **/
-.rating-red{
+.rating-red,
+.rating-red:hover{
     color: #ee0000;
 }
-.rating-yellow{
+.rating-yellow,
+.rating-yellow:hover{
     color: #ddcc00;
 }
-.rating-blue{
+.rating-blue,
+.rating-yellow:hover{
     color: #6666ff;
 }
-.rating-green{
+.rating-green,
+.rating-green:hover{
     color: #00a900;
 }
-.rating-grey{
+.rating-grey,
+.rating-grey:hover{
     color: #999;
 }
-.rating-none{
+.rating-none,
+.rating-note:hover{
     color: #fff;
 }
-.rating-admin{
+.rating-admin,
+.rating-admin:hover{
     color: #ff9900;
 }
 
@@ -603,10 +614,35 @@ footer .right .sponsorLogo {
 .detailPage .table>tbody>tr>td>.rating {
     color: #636d70;
 }
-.detailPage .leaderboardWrapper .colorPassed, 
-.detailPage .leaderboardWrapper .colorPending,
-.detailPage .leaderboardWrapper .colorSubmitted {
+.detailPage .leaderboardWrapper .colorPassed.default,
+.detailPage .leaderboardWrapper .colorPending.default,
+.detailPage .leaderboardWrapper .colorSubmitted.default{
     color: #2c8236;
+}
+.detailPage .leaderboardWrapper .colorPassed.java,
+.detailPage .leaderboardWrapper .colorPending.java,
+.detailPage .leaderboardWrapper .colorSubmitted.java{
+    color: #2c8236;
+}
+.detailPage .leaderboardWrapper .colorPassed.cpp,
+.detailPage .leaderboardWrapper .colorPending.cpp,
+.detailPage .leaderboardWrapper .colorSubmitted.cpp {
+    color: #ccff99;
+}
+.detailPage .leaderboardWrapper .colorPassed.csharp,
+.detailPage .leaderboardWrapper .colorPending.csharp,
+.detailPage .leaderboardWrapper .colorSubmitted.csharp {
+    color: #ccff99;
+}
+.detailPage .leaderboardWrapper .colorPassed.vb,
+.detailPage .leaderboardWrapper .colorPending.vb,
+.detailPage .leaderboardWrapper .colorSubmitted.vb {
+    color: #ccff99;
+}
+.detailPage .leaderboardWrapper .colorPassed.python,
+.detailPage .leaderboardWrapper .colorPending.python,
+.detailPage .leaderboardWrapper .colorSubmitted.python {
+    color: #ccff99;
 }
 .detailPage .leaderboardWrapper .colorCompiled {
     color: #f99800;

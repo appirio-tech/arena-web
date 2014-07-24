@@ -9,14 +9,13 @@
                 <span class="textWhite">{{ contest.contestName }}</span>
                 <span class="textRed" data-ng-show="contest.roundType == 2">{{ contest.roundName }}</span>
                 <span>{{ countdownPrefix(contest) }}</span>
-                <span class="textRed" data-ng-show="isCountingDown(contest)">{{ displayCountDown(contest) }}</span>
+                <span class="textRed" data-ng-show="isCountingDown(contest)">{{ displayCountDown(contest) }}.</span>
             </p>
             <!-- /.infoRow -->
             <div class="tabs">
                 <ul class="nav nav-tabs hidden-xs">
                     <li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0)">Contest Summary</li>
                     <li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1)">Contest Schedule</li>
-                    <li data-ng-class="{'textActive': contest.detailIndex == 2}" data-ng-click="setDetailIndex(contest, 2)" data-ng-show="!isRegistrantOpen(contest)">My Status</li>
                 </ul>
                 <!-- button and label will show when window is very narrow -->
                 <ul class="nav altNav visible-xs">
@@ -27,7 +26,6 @@
                         <ul class="dropdown-menu">
                             <li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0);">Contest Summary</li>
                             <li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1);">Contest Schedule</li>
-                            <li data-ng-class="{'textActive': contest.detailIndex == 2}" data-ng-click="setDetailIndex(contest, 2);" data-ng-show="!isRegistrantOpen(contest)">My Status</li>
                         </ul>
                     </li>
                 </ul>
@@ -51,28 +49,19 @@
                 </div>
             </div>
             <!-- /.schedulePanel -->
-            <div data-ng-show="contest.detailIndex == 2" class="statusPanel">
-                <div class="leftSide">
-                    <div data-ng-repeat="pair in contest.myStatus.info">
-                        <span class="title textWhite">{{ pair.key }}</span>
-                        <span>:&nbsp;{{ pair.value }}</span>
-                    </div>
-                </div>
-                <br class="visible-xs breakline"/>
-                <div class="rightSide">
-                    <div data-ng-repeat="phase in contest.myStatus.phases">
-                        <span class="title textWhite">{{ phase.title }}</span>
-                        <span><span class="hidden-xs">:&nbsp;</span><span data-ng-show="phase.status == 'Complete'">{{ phase.end }}&nbsp;</span>{{ phase.status }}</span>
-                    </div>
-                </div>
-            </div>
-            <!-- /.statusPanel -->
         </div>
         <!-- /.mainContent -->
         <div class="paginator" data-ng-show="getContests().length > 1">
             <span data-ng-repeat="n in range(getContests().length) track by $index" data-ng-class="{'textActive': $index == currentContest}" data-ng-click="setCurrentContest($index)">{{$index+1}}</span>
         </div>
         <!-- /.paginator -->
+    </div>
+    <div class="panel-body" data-ng-show="getContests().length == 0">
+        <div class="mainContent">
+            <p class="infoRow">
+                <span class="textWhite">There are no active contests. Please check the schedule and try again later.</span>
+            </p>
+        </div>
     </div>
     <!-- /.panel-body -->
 </div>

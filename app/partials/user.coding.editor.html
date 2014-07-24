@@ -44,13 +44,14 @@
                 --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode'">Compile</li><!--
                 --><li class="link submitLink" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode'">Submit</li>
                 </ul><!--  avoid unnecessary blank
+                --><div data-ng-show="currentStateName()==='user.viewCode'">{{languages[langIdx].name}}</div><!--
                 --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" placeholder="Find"/><a data-ng-click="" class="searchIcon"></a></div><!--  avoid unnecessary blank
                 --><div class="gotoInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><label for="goto">Go To</label><input type="text" name="goto" id="goto" value="" /><a class="arrow"></a></div>
             </div>
             <div class="rightPart">
                 <div data-ng-hide="currentStateName()==='user.viewCode'"><input type="checkbox" name="autoCompile" id="compileCheck" class="editorCheckbox" data-ng-model="autoCompile" /><label for="compileCheck" class="editorCheckLbl">Auto Compile</label></div><!-- avoid unnecessary blank
                 --><div data-ng-hide="currentStateName()==='user.viewCode'"><input type="checkbox" name="autoSave" id="saveCheck" class="editorCheckbox" data-ng-model="autoSave" /><label for="saveCheck" class="editorCheckLbl">Auto Save</label></div><!--  avoid unnecessary blank
-                --><div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged.</div><div data-ng-show="currentStateName()=='user.coding' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID)" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>
+                --><div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged. &nbsp;</div><div data-ng-show="currentStateName()=='user.coding' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID)" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>
                     <div class="testPanel" data-ng-show="testOpen">
                         <div>
                             <!-- Custom test case for Challenge Phase -->
@@ -82,7 +83,7 @@
                                 <header><!-- avoid unnecessary blank
                                  --><input type="checkbox" id="testCase-{{caseNum}}" name="testCase-{{caseNum}}" class="caseCheck" ng-disabled="isTesting" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" /><!-- avoid unnecessary blank
                                  --><a data-ng-click="toggle=!toggle" data-ng-class="{open:toggle,collapsed:!toggle}"></a><!-- avoid unnecessary blank
-                                 --><label for="testCase-{{caseNum}}" class="caseLbl">Example {{caseNum + 1}}</label><!--
+                                 --><label for="testCase-{{caseNum}}" class="caseLbl">Example {{caseNum}}</label><!--
                                  --><span data-ng-show="testCompleted && testCase.havingResult" data-ng-class="{green: testCase.passed, red: !testCase.passed}"></span>
                                 </header>
                                 <div class="content" data-ng-show="toggle">
@@ -115,7 +116,7 @@
             </div>
         </div>   
         <div data-ng-class="{showLineNumberPadding:showLineNumber,hideLineNumberPadding:!showLineNumber}" class="paddingRow"></div>
-        <textarea id="codeArea" name="codeArea" data-ui-codemirror="cmOption" data-ng-model="code"></textarea>
+        <textarea id="codeArea" name="codeArea" data-ui-codemirror="cmOption" data-ng-model="code" data-ng-class="{disableCursor:cm.options.readOnly}"></textarea>
         <script id="script"></script>
         <div class="errorBar">
             <div data-ng-repeat="i in range(lineNumbers) track by $index" data-ng-class="{error:getErrorMessage($index).length > 0}">

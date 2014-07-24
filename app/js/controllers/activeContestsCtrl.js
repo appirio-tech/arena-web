@@ -18,11 +18,14 @@
  * - Updated to use the global popup modal in baseCtrl.js.
  * - Updated the countdown message formats in Active Contest Widget.
  *
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix):
+ * - Removed mystatus tab related logic
+ *
  * @author amethystlei, dexy
  * @version 1.4
  */
 'use strict';
-/*global module, angular*/
+/*global module, angular, require*/
 
 /**
  * The helper.
@@ -36,7 +39,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', 'socket', 'appHelper', function ($scope, $rootScope, $state, $http, socket, appHelper) {
+var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper', function ($scope, $rootScope, $state, socket, appHelper) {
     var getPhase = function (contest, phaseTypeId) {
         var i;
         if (!contest.phases) {
@@ -183,13 +186,6 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', '$http', 'socket', '
                 (!$scope.isRegistrationOpen(contest) && index >= 3)) {
             // invalid index for detail tabs
             return;
-        }
-        if (index === 2 && !contest.myStatus) {
-            // if myStatus is not loaded, load it.
-            // in the real app, contest id and user id should be sent.
-            $http.get('data/my-status.json').success(function (data) {
-                contest.myStatus = data;
-            });
         }
         contest.detailIndex = index;
     };
