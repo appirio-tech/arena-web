@@ -33,7 +33,7 @@
  * - Helper to identify whether user belongs to room
  *
  * @author tangzx, dexy, amethystlei, ananthhh
- * @version 1.6
+ * @version 1.7
  */
 'use strict';
 /*jshint -W097*/

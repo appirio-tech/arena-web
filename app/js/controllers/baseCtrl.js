@@ -410,37 +410,6 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         }
         return "";
     };
-
-    /**
-     * Set timeout modal.
-     */
-    function setTimeoutModal() {
-        $scope.openModal({
-            title: 'Timeout',
-            message: 'Sorry, the request is timeout.',
-            enableClose: true
-        });
-        modalTimeoutPromise = null;
-        waitingCoderInfo = false;
-    }
-
-    /**
-     * Requests to show coder info.
-     *
-     * @param {string} name the name of the user
-     * @param {string} userType the user type
-     */
-    $scope.showCoderInfo = function (name, userType) {
-        if (waitingCoderInfo) {
-            return;
-        }
-        waitingCoderInfo = true;
-        if (modalTimeoutPromise) {
-            $timeout.cancel(modalTimeoutPromise);
-        }
-        modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
-        socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
-    };
 }];
 
 module.exports = baseCtrl;

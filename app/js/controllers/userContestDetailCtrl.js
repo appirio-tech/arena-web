@@ -773,22 +773,13 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     $scope.viewCode = function (coder, componentId) {
         var roomID = ($scope.viewOn === 'room') ? $scope.roomID : coder.roomID;
         if ($scope.contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.ChallengePhase) {
-            // Check whether user is assigned to this room or not
-            if (!appHelper.isCoderAssigned($rootScope.username(), $rootScope.currentRoomInfo.roomID)) {
-                $scope.openModal({
-                    title: helper.POP_UP_TITLES.NotAssigned,
-                    message: helper.POP_UP_MESSAGES.NotAssigned,
-                    enableClose: true
-                });
-            } else {
-                $scope.$state.go(helper.STATE_NAME.ViewCode, {
-                    roundId: $stateParams.contestId,
-                    divisionId: $scope.divisionID,
-                    componentId: componentId,
-                    roomId: $scope.roomID,
-                    defendant: coder.userName
-                });
-            }
+            $scope.$state.go(helper.STATE_NAME.ViewCode, {
+                roundId: $stateParams.contestId,
+                divisionId: $scope.divisionID,
+                componentId: componentId,
+                roomId: roomID,
+                defendant: coder.userName
+            });
         }
     };
 }];

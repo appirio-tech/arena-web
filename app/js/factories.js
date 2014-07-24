@@ -239,6 +239,7 @@ factories.appHelper = ['$rootScope', function ($rootScope) {
     retHelper.getRenderedHeight = function (el) {
         return retHelper.stripPx(angular.element(el).css('height'));
     };
+
     /**
      * Checks if a user is assigned to a room.
      *
@@ -246,7 +247,7 @@ factories.appHelper = ['$rootScope', function ($rootScope) {
      * @param  {number}  roomID the room ID
      * @returns {boolean} true if the user is assigned to the room
      */
-    helper.isCoderAssigned = function (handle, roomID) {
+    retHelper.isCoderAssigned = function (handle, roomID) {
         var result = false;
         if (roomID === undefined) {
             result = false;
