@@ -11,6 +11,11 @@
             "key": "LIGHT",
 			"label": "Light Theme",
 			"href": "css/bundle-light.css"
+         },{
+            "name": "Orange Theme",
+            "key": "ORANGE",
+            "label": "Orange Theme",
+            "href": "css/bundle-orange.css"
          }
     ]
 }

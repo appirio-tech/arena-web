@@ -11,11 +11,28 @@
  * - Added the navigation for viewing code.
  * - Removed unnecessary $state injection as it is exposed by $rootScope.
  *
- * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Division Summary):
+ * - Added $timeout, socket and $window.
+ * - Added closeDivSummary, closeLastDivSummary, openDivSummary, getDivSummary,
+ *   updateDivSummary, updateRoomSummary to handle retrieving and updating division summary.
+ * - Added listeners for UpdateCoderComponentResponse, UpdateCoderPointsResponse,
+ *   CreateChallengeTableResponse events to handle division summary update.
+ * - Added getLeaderRoomClass to $scope to handle room leader class.
+ * - Added isDivisionActive to scope to check if division is active (has problems).
+ * - Updated getCurrentLeaderboard to handle 'divOne' and 'divTwo' views.
+ * - Added $window.onbeforeunload and $scope.$on('destroy') listeners to close
+ *   division summary on page leaving
+ * - Updated divOneKeys and divTwoKeys to handle real data.
+ * - Updated setViewOn to open division summary and retrieve real data.
+ * - Updated getStatusColor to include language id for color selection.
+ * - Updated viewCode to include the room of the coder and not the current room
+ *   when opening the problem.
+ *
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
  * - Color will be different for different language
  *
- * @author amethystlei, TCSASSEMBLER
- * @version 1.3
+ * @author amethystlei, dexy, ananthhh
+ * @version 1.4
  */
 'use strict';
 /*jshint -W097*/
@@ -34,7 +51,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location', 'appHelper', function ($scope, $stateParams, $rootScope, $location, appHelper) {
+var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location', '$timeout', 'socket', '$window', 'appHelper', function ($scope, $stateParams, $rootScope, $location, $timeout, socket, $window, appHelper) {
     /**
      * Check if the client suppports touch screen.
      *
@@ -117,6 +134,185 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         return val;
     }
 
+    var // qtip here
+        // use qtip to create a filter panel
+        filter = $('.filterToggle'),
+        lbFilter = $('#leaderboardFilter'),
+        challengeFilter = $('#challengeFilter'),
+        challengerFilter = $('#challengerFilter'),
+        ldrbrdTimeoutPromise,
+        /**
+         * Close the division summary.
+         *
+         * @param roundID the round id
+         * @param divisionID the division id
+         */
+        closeDivSummary = function (roundID, divisionID) {
+            if (angular.isDefined($rootScope.lastDivSummary)) {
+                socket.emit(helper.EVENT_NAME.CloseDivSummaryRequest, {
+                    roundID: roundID,
+                    divisionID: divisionID
+                });
+            }
+        },
+        /**
+         * Close the last opened division summary.
+         */
+        closeLastDivSummary = function () {
+            if (angular.isDefined($rootScope.lastDivSummary)) {
+                closeDivSummary($rootScope.lastDivSummary.roundID, $rootScope.lastDivSummary.divisionID);
+            }
+            $rootScope.lastDivSummary = undefined;
+        },
+        /**
+         * Open the division summary.
+         *
+         * @param roundID the round id
+         * @param divisionID the division id
+         */
+        openDivSummary = function (roundID, divisionID) {
+            socket.emit(helper.EVENT_NAME.DivSummaryRequest, {
+                roundID: roundID,
+                divisionID : divisionID
+            });
+            $rootScope.lastDivSummary = {
+                roundID: roundID,
+                divisionID: divisionID
+            };
+        },
+        /**
+         * Get the division summary.
+         * It is first sending close div summary for the summary we want to open.
+         * NOTE: This is the behavior of the Arena applet.
+         *
+         * @param roundID the round id
+         * @param divisionID the division id
+         */
+        getDivSummary = function (roundID, divisionID) {
+            if (angular.isDefined($rootScope.lastDivSummary) && angular.isDefined(angular.isDefined($rootScope.lastDivSummary.roundID))
+                    && angular.isDefined($rootScope.lastDivSummary.divisionID)
+                    && $rootScope.lastDivSummary.roundID === roundID && $rootScope.lastDivSummary.divisionID === divisionID) {
+                return;
+            }
+            closeLastDivSummary();
+            $scope.currentlyLoaded = 0;
+            $scope.totalLoading = 0;
+            $scope.isDivLoading = true;
+            $scope.leaderboard = [];
+            angular.forEach($rootScope.roundData[roundID].coderRooms, function (coderRoom) {
+                if (coderRoom.divisionID === divisionID && coderRoom.roundID === roundID) {
+                    coderRoom.isLoading = true;
+                    $scope.totalLoading += 1;
+                }
+            });
+            if ($scope.totalLoading === 0) {
+                $scope.isDivLoading = false;
+            }
+            closeDivSummary(roundID, divisionID);
+            $timeout(function () {
+                openDivSummary(roundID, divisionID);
+            }, helper.DIVSUMMARYREQUEST_TIMEGAP);
+        },
+        /**
+         * Update the division summary
+         *
+         * @param roundID the round id
+         * @param divisionID the division id
+         */
+        updateDivSummary = function (roundID, divisionID) {
+            var il;
+            $scope.leaderboard = [];
+            if (angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roundData[roundID])
+                    && angular.isDefined($rootScope.roundData[roundID].coderRooms)) {
+                angular.forEach($rootScope.roundData[roundID].coderRooms, function (coderRoom) {
+                    if (coderRoom.divisionID === divisionID && coderRoom.roundID === roundID &&
+                            angular.isDefined($rootScope.roomData[coderRoom.roomID])) {
+                        coderRoom.isLoading = false;
+                        angular.forEach($rootScope.roomData[coderRoom.roomID].coders, function (coder) {
+                            coder.roomID = coderRoom.roomID;
+                        });
+                        $scope.leaderboard = $scope.leaderboard.concat($rootScope.roomData[coderRoom.roomID].coders);
+                    }
+                });
+            }
+            if ($scope.leaderboard.length > 0) {
+                $scope.leaderboard.sort(function (coderA, coderB) {
+                    return coderB.totalPoints - coderA.totalPoints;
+                });
+                $scope.leaderboard[0].divPlace = 1;
+                for (il = 1; il < $scope.leaderboard.length; il += 1) {
+                    if ($scope.leaderboard[il].totalPoints === $scope.leaderboard[il - 1].totalPoints) {
+                        $scope.leaderboard[il].divPlace = $scope.leaderboard[il - 1].divPlace;
+                    } else {
+                        $scope.leaderboard[il].divPlace = (il + 1);
+                    }
+                }
+            }
+            $scope.isDivLoading = false;
+            $scope.currentlyLoaded = 0;
+            angular.forEach($rootScope.roundData[roundID].coderRooms, function (coderRoom) {
+                if (coderRoom.divisionID === divisionID && coderRoom.roundID === roundID) {
+                    if (coderRoom.isLoading) {
+                        $scope.currentlyLoaded += 1;
+                        $scope.isDivLoading = true;
+                    }
+                }
+            });
+            $timeout.cancel(ldrbrdTimeoutPromise);
+            ldrbrdTimeoutPromise = $timeout(function () {
+                $scope.$broadcast('rebuild:leaderboardTable');
+            }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
+        },
+        /**
+         * Update the room summary.
+         * It only checks if the current opened division summary (if any) should be updated
+         * if the room with roomID is updated. It then calls updateDivSummary.
+         *
+         * @param roomID the room id
+         */
+        updateRoomSummary = function (roomID) {
+            var updatedDivSummary = false;
+            if ($scope.viewOn !== 'room') {
+                if (angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roundData[$stateParams.contestId])
+                        && angular.isDefined($rootScope.roundData[$stateParams.contestId].coderRooms)) {
+                    angular.forEach($rootScope.roundData[$stateParams.contestId].coderRooms, function (coderRoom) {
+                        if (coderRoom.roomID === roomID && coderRoom.divisionID === helper.VIEW_ID[$scope.viewOn] && coderRoom.roundID === Number($stateParams.contestId)) {
+                            updatedDivSummary = true;
+                        }
+                    });
+                }
+            }
+            if (updatedDivSummary) {
+                updateDivSummary(Number($stateParams.contestId), helper.VIEW_ID[$scope.viewOn]);
+            }
+        },
+        /**
+         * Close the last opened division summary on leaving the page.
+         */
+        onLeavingContestDetailPage = function () {
+            closeLastDivSummary();
+        };
+    /*jslint unparam:true*/
+    $scope.$on(helper.EVENT_NAME.UpdateCoderComponentResponse, function (event, data) {
+        updateRoomSummary(data.roomID);
+    });
+    $scope.$on(helper.EVENT_NAME.UpdateCoderPointsResponse, function (event, data) {
+        updateRoomSummary(data.roomID);
+    });
+    $scope.$on(helper.EVENT_NAME.CreateChallengeTableResponse, function (event, data) {
+        updateRoomSummary(data.roomID);
+    });
+    /*jslint unparam:false*/
+
+    /**
+     * Gets the leader room class.
+     *
+     * @param roomPlace the rank in the room of the competitor
+     * @return 'roomLeader' class if the competitor is the first in the room, otherwise returns ''
+     */
+    $scope.getLeaderRoomClass = function (roomPlace) {
+        return roomPlace === 1 ? 'roomLeader' : '';
+    };
     $scope.contest = $rootScope.roundData[$stateParams.contestId];
     $scope.divisionID = $stateParams.divisionId;
     $scope.roomID = $rootScope.currentRoomInfo.roomID;
@@ -141,7 +337,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     $scope.boards = [[], []];
     $scope.leaderboard = [];
     $scope.showBy = 'points';
-
+    $scope.isDivisionActive = appHelper.isDivisionActive;
     /**
      * Get the selected leader board.
      *
@@ -151,14 +347,18 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         if ($scope.viewOn === 'room') {
             return $rootScope.roomData[$scope.roomID].coders;
         }
-        // For now it is set to empty for division summary.
         if ($scope.viewOn === 'divOne') {
-            return [];
+            return $scope.leaderboard;
         }
         if ($scope.viewOn === 'divTwo') {
-            return [];
+            return $scope.leaderboard;
         }
     };
+
+    // Closes the opened division summary on page leaving.
+    $window.onbeforeunload = onLeavingContestDetailPage;
+    $scope.$on("$destroy", onLeavingContestDetailPage);
+    $scope.isDivLoading = false;
 
     $scope.roomKeys = {
         challengerKey: '-points',
@@ -183,7 +383,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     $scope.divOneKeys = {
         challengerKey: '-points',
         challengeKey: '-date',
-        leaderboardKey: '-results[0].score',
+        leaderboardKey: '-totalPoints',
         challengerFilterKey: 'all',
         challengeFilterKey: 'all',
         lbFilterKey: 'all',
@@ -196,13 +396,13 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             }
         },
         lbFilter : {
-            handle: ''
+            userName: ''
         }
     };
     $scope.divTwoKeys = {
         challengerKey: '-points',
         challengeKey: '-date',
-        leaderboardKey: '-results[0].score',
+        leaderboardKey: '-totalPoints',
         challengerFilterKey: 'all',
         challengeFilterKey: 'all',
         lbFilterKey: 'all',
@@ -215,7 +415,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             }
         },
         lbFilter : {
-            handle: ''
+            userName: ''
         }
     };
     // get sort Key according to view
@@ -243,6 +443,14 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
      * @param view can be 'room', 'divOne', 'divTwo'
      */
     $scope.setViewOn = function (view) {
+        var divID = helper.VIEW_ID[view];
+        if (view !== 'room') {
+            getDivSummary($scope.contest.roundID, divID);
+        } else {
+            closeLastDivSummary();
+            $scope.leaderboard = [];
+            $scope.isDivLoading = false;
+        }
         $scope.viewOn = view;
         rebuildScrollbars();
     };
@@ -284,10 +492,17 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
      * Get the css class for the color of the component status.
      *
      * @param component the component
+     * @param languageID the id of the language
      * @returns {string} the css class name
      */
-    $scope.getStatusColor = function (component) {
-        return 'color' + helper.CODER_PROBLEM_STATUS_NAME[component.status] + ' ' + helper.PROBLEM_LANGUAGE_CODE[component.language];
+    $scope.getStatusColor = function (status, languageID) {
+        var statusName = helper.CODER_PROBLEM_STATUS_NAME[status],
+            className = 'color' + statusName;
+        if (statusName === 'Submitted' || statusName === 'Challenged'
+                || statusName === 'Failed' || statusName === 'Passed') {
+            className += helper.LANGUAGE_NAME[languageID];
+        }
+        return className;
     };
 
     /**
@@ -334,7 +549,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
      * Check if the code of the component can be viewed by the user.
      *
      * @params component the component
-     * @returns {boolean} true if the component can be viewed 
+     * @returns {boolean} true if the component can be viewed
      */
     $scope.isViewable = function (component) {
         // cannot view when phase is not challenge or after.
@@ -404,12 +619,6 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         }
     };
 
-    // qtip here
-    // use qtip to create a filter panel
-    var filter = $('.filterToggle'),
-        lbFilter = $('#leaderboardFilter'),
-        challengeFilter = $('#challengeFilter'),
-        challengerFilter = $('#challengerFilter');
     filter.qtip({
         content: {
             text: ''
@@ -515,6 +724,10 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             } else {
                 $scope.getKeys(viewOn).lbFilter.userName = '';
             }
+            $timeout.cancel(ldrbrdTimeoutPromise);
+            ldrbrdTimeoutPromise = $timeout(function () {
+                $scope.$broadcast('rebuild:leaderboardTable');
+            }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
         } else if (panel === 'challenge') {
             challengeFilter.qtip('api').toggle(false);
             if ($scope.getKeys(viewOn).challengeFilterKey === 'specific') {
@@ -558,6 +771,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
      * @param {number} componentId
      */
     $scope.viewCode = function (coder, componentId) {
+        var roomID = ($scope.viewOn === 'room') ? $scope.roomID : coder.roomID;
         if ($scope.contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.ChallengePhase) {
             // Check whether user is assigned to this room or not
             if (!appHelper.isCoderAssigned($rootScope.username(), $rootScope.currentRoomInfo.roomID)) {

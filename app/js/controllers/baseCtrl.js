@@ -21,13 +21,19 @@
  * Changes in version 1.4 (Module Assembly - Web Arena UI - Rating Indicator):
  * - Updated rating-purple to rating-blue in $scope.getRatingClass.
  *
- * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Division Summary):
+ * - Added $timeout and socket.
+ * - Moved waitingCoderInfo, modalTimeoutPromise, setTimeoutModal and showCoderInfo
+ *   from chatAreaCtrl
+ * - Updated PopUpGenericResponse handler to cover CoderInfo and Incorrect Usage title.
+ *
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
  * - Now show coderinfo and its corresponding response is global
  * - Fixed tooltip overlapping theme problem
  * - Implemented Enter room messages
  *
- * @author dexy, amethystlei
- * @version 1.4
+ * @author dexy, amethystlei, ananthhh
+ * @version 1.6
  */
 'use strict';
 /*jshint -W097*/
@@ -403,6 +409,37 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return "rating-admin";
         }
         return "";
+    };
+
+    /**
+     * Set timeout modal.
+     */
+    function setTimeoutModal() {
+        $scope.openModal({
+            title: 'Timeout',
+            message: 'Sorry, the request is timeout.',
+            enableClose: true
+        });
+        modalTimeoutPromise = null;
+        waitingCoderInfo = false;
+    }
+
+    /**
+     * Requests to show coder info.
+     *
+     * @param {string} name the name of the user
+     * @param {string} userType the user type
+     */
+    $scope.showCoderInfo = function (name, userType) {
+        if (waitingCoderInfo) {
+            return;
+        }
+        waitingCoderInfo = true;
+        if (modalTimeoutPromise) {
+            $timeout.cancel(modalTimeoutPromise);
+        }
+        modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
+        socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
     };
 }];
 

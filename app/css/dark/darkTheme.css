@@ -1,5 +1,5 @@
 body{
-    background:url(../img/bg.png) repeat 0 0 #DDE7F2;
+    background:url(../img/dark/bg.png) repeat 0 0 #DDE7F2;
     color:#fff;
 }
 .btn-facebook:after,
@@ -11,12 +11,12 @@ body{
 .panel-custom .schedulePanel:after,
 .panel-custom .statusPanel:after,
 .panelSummary .summaryWrapper div:before{
-    background-image: url(../img/sprite.png);
+    background-image: url(../img/dark/sprite.png);
 }
 .dashboard .breadcrumb li:after,
 .contest .titleBar .shareLink a,
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
-    background-image: url(../img/sprite-2.png);
+    background-image: url(../img/dark/sprite-2.png);
 }
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
@@ -41,18 +41,18 @@ body{
 .panelChatArea .searchIcon,
 .detailPage section .heading .filterArea a:before,
 .filterPanel .closeLink:before  {
-    background-image: url(../img/sprite-codeArena.png);
+    background-image: url(../img/dark/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
 .panelCodeEditor .panel-body .settingsPanel {
-    background-image: url(../img/popup-bg.png);
+    background-image: url(../img/dark/popup-bg.png);
 }
 .anon-header .navbar .navbar-brand,
 .header .navbar-brand,
 .header .navIcons>li>.icon:before,
 .userInfo .notification,
 .userInfo .arrow,
-.header .navIcons .themePanel .closeBtn,
+.header .navIcons .themePanel .closeBtn:before,
 .header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl:before {
     background-image: url(../img/sprite-new-header.png);
 }
@@ -74,9 +74,17 @@ body{
 .detailPage .leaderboardWrapper .heading .viewFilter .showLBLbl:before,
 .filterPanel .contentWrapper .dropdown .arrow,
 .detailPage section .table>thead>tr>th .arrow {
-    background-image: url(../img/sprite-room-summary.png);
+    background-image: url(../img/dark/sprite-room-summary.png);
 }
-
+.filterPanel.qtip-default,
+.filterPanel.largeSize.qtip-default {
+    background-image: url(../img/dark/filter-bg.png);
+    background-repeat: no-repeat;
+}
+.panelCodeEditor .testPanel .bottom .loadIcon {
+    background-image: url(../img/dark/loadinfo.net.gif);
+    background-repeat: no-repeat;
+}
 /***************header style*/
 .header .navIcons .themePanel {
     border-color: #fff;
@@ -101,6 +109,9 @@ body{
 .header .navIcons .themePanel .btn {
     background: #0f9abd;
 }
+.header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl {
+    color: #0999d1;
+}
 
 /*******************login page*/
 
@@ -124,8 +135,8 @@ body{
 .hero .form .social .btn-github,.codeArea .socialLinks .btn-github{background-color: #444;}
 .hero .form .social .btn-github:hover,.codeArea .socialLinks .btn-github:hover {background-color: #515151;}
 /* custom checkbox */
-.hero .form .tcAccountBox .rememberCheckboxLabel {    
-    background: url(../img/checkbox.png) 0 0 no-repeat;
+.hero .form .tcAccountBox .rememberCheckboxLabel {
+    background: url(../img/dark/checkbox.png) 0 0 no-repeat;
 }
 
 /* social media login part */
@@ -159,7 +170,7 @@ body{
     padding: 15px 17px;
 }
 .hero .loginBox footer .sponsorLogo {
-    background: url(../img/company_logo.png) 0 0 no-repeat;
+    background: url(../img/dark/company_logo.png) 0 0 no-repeat;
 }
 
 /*************** dashboard page */
@@ -180,7 +191,7 @@ footer .line {
     border-color: #14191a;
 }
 footer .right .sponsorLogo {
-    background: url(../img/company_logo_small.png) 100% 100% no-repeat;
+    background: url(../img/dark/company_logo_small.png) 100% 100% no-repeat;
 }
 
 /********************* modal */
@@ -188,7 +199,7 @@ footer .right .sponsorLogo {
     background: #151718;
     border-color: #234760;
 }
-.modal .modal-content .modal-header { 
+.modal .modal-content .modal-header {
     background: #234760;
 }
 .modal .modal-content .modal-body {
@@ -264,7 +275,7 @@ footer .right .sponsorLogo {
     background: #162f36;
 }
 .panelCodeEditor .toolBar .middlePart .gotoInput .arrow:hover {
-    background: #0c191d; 
+    background: #0c191d;
 }
 .panelCodeEditor .toolBar .middlePart .arrow:before {
     left: 10px;
@@ -285,7 +296,7 @@ footer .right .sponsorLogo {
     color: #fff;
 }
 .panelCodeEditor .settingsPanel .settingDropDown .dropdown-menu>li>.current {
-    background: #999; 
+    background: #999;
     color: #fff;
 }
 .panelCodeEditor .settingsPanel .lineNumberRow .lineNumLbl:before {
@@ -381,7 +392,7 @@ footer .right .sponsorLogo {
 }
 
 /* profile overview and important messages widget */
-.panelOverview { 
+.panelOverview {
     background: transparent;
 }
 .panelOverview .panel-heading {
@@ -570,12 +581,6 @@ footer .right .sponsorLogo {
 .detailPage section h3 {
     color: #fff;
 }
-.filterPanel.qtip-default {
-    background: url(../img/filter-bg.png) 0 0 no-repeat;
-}
-.filterPanel.largeSize.qtip-default {
-    background: url(../img/filter-bg.png) 0 -162px no-repeat;
-}
 .filterPanel .closeLink {
     color: #fff;
 }
@@ -614,42 +619,101 @@ footer .right .sponsorLogo {
 .detailPage .table>tbody>tr>td>.rating {
     color: #636d70;
 }
-.detailPage .leaderboardWrapper .colorPassed.default,
-.detailPage .leaderboardWrapper .colorPending.default,
-.detailPage .leaderboardWrapper .colorSubmitted.default{
+/**** Default language ****/
+.detailPage .leaderboardWrapper .colorSubmittedDefault {
+    color: #ac4141;
+}
+.detailPage .leaderboardWrapper .colorChallengedDefault {
+    color: #ac4141;
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedDefault {
+    color: #ac4141;
+}
+.detailPage .leaderboardWrapper .colorFailedDefault {
+    color: #ac4141;
+    font-style: italic!important;
+}
+/**** Java language ****/
+.detailPage .leaderboardWrapper .colorSubmittedJava {
+    color: rgb(0, 255, 0);
+}
+.detailPage .leaderboardWrapper .colorChallengedJava {
+    color: rgb(0, 255, 0);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedJava {
+    color: rgb(0, 255, 0);
+}
+.detailPage .leaderboardWrapper .colorFailedJava {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
+/**** CPP language ****/
+.detailPage .leaderboardWrapper .colorSubmittedCpp {
+    color: rgb(255, 255, 153);
+}
+.detailPage .leaderboardWrapper .colorChallengedCpp {
+    color: rgb(255, 255, 153);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedCpp {
+    color: rgb(255, 255, 153);
+}
+.detailPage .leaderboardWrapper .colorFailedCpp {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
+/**** C# language ****/
+.detailPage .leaderboardWrapper .colorSubmittedCsharp {
+    color: rgb(102, 102, 255);
+}
+.detailPage .leaderboardWrapper .colorChallengedCsharp {
+    color: rgb(102, 102, 255);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedCsharp {
+    color: rgb(102, 102, 255);
+}
+.detailPage .leaderboardWrapper .colorFailedCsharp {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}/**** VB language ****/
+.detailPage .leaderboardWrapper .colorSubmittedVB {
+    color: rgb(129, 217, 255);
+}
+.detailPage .leaderboardWrapper .colorChallengedVB {
+    color: rgb(129, 217, 255);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedVB {
+    color: rgb(129, 217, 255);
+}
+.detailPage .leaderboardWrapper .colorFailedVB {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
+/**** Python language ****/
+.detailPage .leaderboardWrapper .colorSubmittedPython {
+    color: rgb(255, 102, 255);
+}
+.detailPage .leaderboardWrapper .colorChallengedPython {
+    color: rgb(255, 102, 255);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedPython {
+    color: rgb(255, 102, 255);
+}
+.detailPage .leaderboardWrapper .colorFailedPython {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
+
+.detailPage .leaderboardWrapper .colorPending {
     color: #2c8236;
-}
-.detailPage .leaderboardWrapper .colorPassed.java,
-.detailPage .leaderboardWrapper .colorPending.java,
-.detailPage .leaderboardWrapper .colorSubmitted.java{
-    color: #2c8236;
-}
-.detailPage .leaderboardWrapper .colorPassed.cpp,
-.detailPage .leaderboardWrapper .colorPending.cpp,
-.detailPage .leaderboardWrapper .colorSubmitted.cpp {
-    color: #ccff99;
-}
-.detailPage .leaderboardWrapper .colorPassed.csharp,
-.detailPage .leaderboardWrapper .colorPending.csharp,
-.detailPage .leaderboardWrapper .colorSubmitted.csharp {
-    color: #ccff99;
-}
-.detailPage .leaderboardWrapper .colorPassed.vb,
-.detailPage .leaderboardWrapper .colorPending.vb,
-.detailPage .leaderboardWrapper .colorSubmitted.vb {
-    color: #ccff99;
-}
-.detailPage .leaderboardWrapper .colorPassed.python,
-.detailPage .leaderboardWrapper .colorPending.python,
-.detailPage .leaderboardWrapper .colorSubmitted.python {
-    color: #ccff99;
 }
 .detailPage .leaderboardWrapper .colorCompiled {
     color: #f99800;
-}
-.detailPage .leaderboardWrapper .colorChallenged,
-.detailPage .leaderboardWrapper .colorFailed {
-    color: #ac4141;
 }
 .detailPage .leaderboardWrapper .colorOpened {
     color: #fff;
@@ -657,6 +721,7 @@ footer .right .sponsorLogo {
 .detailPage .leaderboardWrapper .colorUnopened {
     color: #5e676a;
 }
+
 .body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
     background: #2a2b2c;
 }
@@ -673,7 +738,7 @@ footer .right .sponsorLogo {
 /* boostrap extra small devices */
 @media only screen and (max-width: 767px) {
     .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/company_logo_small.png);
+        background-image: url(../img/dark/company_logo_small.png);
     }
 }
 /* special sizes which widget will overflow */

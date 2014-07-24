@@ -7,8 +7,8 @@
             <div class="tabs">
                 <ul class="nav nav-tabs hidden-xs">
                     <li data-ng-class="{'textActive': viewOn=='room'}" data-ng-click="setViewOn('room')">Room</li>
-                    <li data-ng-class="{'textActive': viewOn=='divOne'}" data-ng-click="setViewOn('divOne')">Division I</li>
-                    <li data-ng-class="{'textActive': viewOn=='divTwo'}" data-ng-click="setViewOn('divTwo')">Division II</li>
+                    <li data-ng-show="isDivisionActive(contest, 'divOne')" data-ng-class="{'textActive': viewOn=='divOne'}" data-ng-click="setViewOn('divOne')">Division I</li>
+                    <li data-ng-show="isDivisionActive(contest, 'divTwo')" data-ng-class="{'textActive': viewOn=='divTwo'}" data-ng-click="setViewOn('divTwo')">Division II</li>
                 </ul>
                 <!-- button and label will show when window is very narrow -->
                 <ul class="nav altNav visible-xs">
@@ -18,8 +18,8 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-ng-class="{'textActive': viewOn=='room'}" data-ng-click="setViewOn('room')">Room</li>
-                            <li data-ng-class="{'textActive': viewOn=='divOne'}" data-ng-click="setViewOn('divOne')">Division I</li>
-                            <li data-ng-class="{'textActive': viewOn=='divTwo'}" data-ng-click="setViewOn('divTwo')">Division II</li>
+                            <li data-ng-show="isDivisionActive(contest, 'divOne')" data-ng-class="{'textActive': viewOn=='divOne'}" data-ng-click="setViewOn('divOne')">Division I</li>
+                            <li data-ng-show="isDivisionActive(contest, 'divTwo')" data-ng-class="{'textActive': viewOn=='divTwo'}" data-ng-click="setViewOn('divTwo')">Division II</li>
                         </ul>
                     </li>
                 </ul>
@@ -33,7 +33,7 @@
                     <div class="scroll visible-lg visible-md" data-ng-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
                     <div class="default visible-sm visible-xs"><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
                 </div>
-                <div data-ng-show="viewOn=='divTwo'" class="divTwoDiv sumDiv">
+                <div data-ng-show="viewOn=='divTwo'" data-ng-class="{divOneDiv: !isDivisionActive(contest, 'divOne'), divTwoDiv: isDivisionActive(contest, 'divOne')}" class="sumDiv">
                     <div class="scroll visible-lg visible-md" data-ng-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
                     <div class="default visible-sm visible-xs"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
                 </div>
@@ -43,4 +43,3 @@
     </div>
     <!-- /.panel-body -->
 </div>
-    

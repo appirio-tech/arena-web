@@ -419,6 +419,22 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
             $rootScope.$broadcast(helper.EVENT_NAME.SocketError, {});
         });
     });
+
+    /**
+     * Check if the client suppports touch screen.
+     *
+     * @returns {boolean} true if the client supports touch screen.
+     */
+    function isTouchSupported() {
+        var msTouchEnabled = window.navigator.msMaxTouchPoints,
+            generalTouchEnabled = document.createElement('div').hasOwnProperty('ontouchstart');
+        if (msTouchEnabled || generalTouchEnabled) {
+            return true;
+        }
+        return false;
+    }
+    $rootScope.isTouchDevice = isTouchSupported();
+
     /**
      * Get the current state name, can be used in any scope without injecting the state service.
      *

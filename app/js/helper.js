@@ -37,11 +37,15 @@
  * Changes in version 1.8 (Module Assembly - Web Arena UI - Phase I Bug Fix):
  * - Updated PHASE_NAME for System Test.
  *
+ * Changes in version 1.9 (Module Assembly - Web Arena UI - Division Summary):
+ * - Added CloseDivSummaryRequest and DivSummaryRequest.
+ * - Added LANGUAGE_NAME, VIEW_ID, DIVSUMMARYREQUEST_TIMEGAP constants.
+ *
  * Changes in version 1.9 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
  * - Added language list
  *
  * @author tangzx, amethystlei, dexy, ananthhh
- * @version 1.9
+ * @version 1.10
  */
 
 module.exports = {
@@ -65,6 +69,7 @@ module.exports = {
         ChallengeRequest: 'ChallengeRequest',
         ChatRequest: 'ChatRequest',
         CloseProblemRequest: 'CloseProblemRequest',
+        CloseDivSummaryRequest: 'CloseDivSummaryRequest',
         CoderInfoRequest: 'CoderInfoRequest',
         CompileRequest: 'CompileRequest',
         EnterRequest: 'EnterRequest',
@@ -75,6 +80,7 @@ module.exports = {
         LogoutRequest: 'LogoutRequest',
         MoveRequest: 'MoveRequest',
         OpenComponentForCodingRequest: 'OpenComponentForCodingRequest',
+        DivSummaryRequest: 'DivSummaryRequest',
         RegisterInfoRequest: 'RegisterInfoRequest',
         RegisterRequest: 'RegisterRequest',
         RegisterUsersRequest: 'RegisterUsersRequest',
@@ -187,14 +193,17 @@ module.exports = {
         '160': 'Failed',
         '150': 'Passed'
     },
-    PROBLEM_LANGUAGE_CODE: {
-        '0' : 'default',
-        '1' : 'java',
-        '3' : 'cpp',
-        '4' : 'csharp',
-        '5' : 'vb',
-        '6' : 'python'
+    // Represents the language name.
+    LANGUAGE_NAME: {
+        '0': 'Default',
+        '1': 'Java',
+        '2': 'Default',
+        '3': 'Cpp',
+        '4': 'Csharp',
+        '5': 'VB',
+        '6': 'Python'
     },
+
     // the timeout of request
     REQUEST_TIME_OUT: 10 * 1000,
     // the interval between two sync time requests
@@ -205,9 +214,10 @@ module.exports = {
     INNACTIVITY_TIMEOUT: 90 * 1000,
     // default value for keep alive timeout
     KEEP_ALIVE_TIMEOUT: 30 * 1000,
-
     // maximum characters of a message can be sent in chat rooms.
     MAX_CHAT_LENGTH: 256,
+    // Time gap between two leaderboad table rebuildings
+    LEADERBOARD_TABLE_REBUILT_TIMEGAP: 3000,
 
     // pop up titles
     POP_UP_TITLES: {
@@ -283,5 +293,15 @@ module.exports = {
     COMPILE_RESULTS_TYPE_ID: {
         FAILED: 0,
         SUCCEEDED: 1
-    }
+    },
+
+    // Mapping from view name to its id.
+    VIEW_ID: {
+        'room': -1,
+        'divOne': 1,
+        'divTwo': 2
+    },
+
+    // The timeout between two consecutive CloseDivSummaryRequest and DivSummaryRequest.
+    DIVSUMMARYREQUEST_TIMEGAP: 100
 };

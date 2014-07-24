@@ -44,25 +44,37 @@
             </div>
             <div class="schedule">
                 <header class="textWhite">Contest Schedule</header>
-                <div data-ng-repeat="phase in contest.phases"
+                <div class="scheduleContent default" data-ng-show="isTouchDevice">
+                    <div data-ng-repeat="phase in contest.phases"
                      data-ng-init="time0=getPhaseTime(phase, 0, contest.phaseData); time1=getPhaseTime(phase, 1, contest.phaseData);" class="details"  data-ng-class="{singleLine: !time1.value}">
-                    <div class="column">
-                        <span class="title">{{ phase.title }}</span>
-                    </div><!-- 
-                    avoid unnecessary blank
-                    --><div class="column">
-                    <span data-ng-show="time0.key" class="startIn textWhite">{{ time0.key }} at</span><!--
-                        avoid unnecessary blank
-                        --><span class="startTime textWhite" data-ng-show="time0.value">:&nbsp;{{ time0.value }}</span><!-- 
-                        avoid unnecessary blank
-                        --><br data-ng-show="time1.value"/><!-- 
-                        avoid unnecessary blank
-                        --><span data-ng-show="time1.key" class="endIn textWhite">{{ time1.key }} at</span><!-- 
-                        avoid unnecessary blank
-                        --><span class="endTime textWhite" data-ng-show="time1.value">:&nbsp;{{ time1.value }}</span>
-                </div>
-                </div>
-            </div>
+                        <div class="column">
+                            <span class="title">{{ phase.title }}</span>
+                        </div><!-- avoid unnecessary blank
+                        --><div class="column">
+                            <span data-ng-show="time0.key" class="startIn textWhite">{{ time0.key }} at</span><!-- avoid unnecessary blank
+                            --><span class="startTime textWhite" data-ng-show="time0.value">:&nbsp;{{ time0.value }}</span><!-- avoid unnecessary blank
+                            --><br data-ng-show="time1.value"/><!-- avoid unnecessary blank
+                            --><span data-ng-show="time1.key" class="endIn textWhite">{{ time1.key }} at</span><!-- avoid unnecessary blank
+                            --><span class="endTime textWhite" data-ng-show="time1.value">:&nbsp;{{ time1.value }}</span>
+                        </div>
+                    </div>
+                </div><!--/.default-->
+                <div class="scheduleContent scroll" data-ng-show="!isTouchDevice" data-ng-scrollbar data-rebuild-on="rebuild:contestSchedule" data-rebuild-on-resize data-scroll-top>
+                    <div data-ng-repeat="phase in contest.phases"
+                     data-ng-init="time0=getPhaseTime(phase, 0, contest.phaseData); time1=getPhaseTime(phase, 1, contest.phaseData);" class="details"  data-ng-class="{singleLine: !time1.value}">
+                        <div class="column">
+                            <span class="title">{{ phase.title }}</span>
+                        </div><!-- avoid unnecessary blank
+                        --><div class="column">
+                            <span data-ng-show="time0.key" class="startIn textWhite">{{ time0.key }} at</span><!-- avoid unnecessary blank
+                            --><span class="startTime textWhite" data-ng-show="time0.value">:&nbsp;{{ time0.value }}</span><!-- avoid unnecessary blank
+                            --><br data-ng-show="time1.value"/><!-- avoid unnecessary blank
+                            --><span data-ng-show="time1.key" class="endIn textWhite">{{ time1.key }} at</span><!-- avoid unnecessary blank
+                            --><span class="endTime textWhite" data-ng-show="time1.value">:&nbsp;{{ time1.value }}</span>
+                        </div>
+                    </div>
+                </div><!--/.scroll-->            
+            </div><!--/.schedule-->
         </div>
     </div>
     <!-- end of content for non-ongoing contest -->

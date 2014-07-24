@@ -15,12 +15,17 @@
  * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix):
  * - Moved the function for calculating rating colors to baseCtrl.js to enable global usage.
  *
- * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Division Summary):
+ * - Removed $timeout and socket.
+ * - Moved waitingCoderInfo, modalTimeoutPromise, setTimeoutModal and showCoderInfo
+ *   to baseCtrl
+ *
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
  *  - Added new variable talkToClass, to show correct user color in member selection dropdown after selecting
  *  - Moved show coder info to base controller
  *
  * @author dexy, amethystlei, ananthhh
- * @version 1.4
+ * @version 1.5
  */
 'use strict';
 /*global require, module, angular */

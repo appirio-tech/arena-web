@@ -11,8 +11,11 @@
  * - Updated to retrieve divisionID based on roomID and roundID.
  * - Updated to remove divisionID from the state params.
  *
- * @author amethystlei
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Division Summary):
+ * - Added isDivisionActive to check if the division is active.
+ *
+ * @author amethystlei, dexy
+ * @version 1.3
  */
 'use strict';
 /*global module, angular*/
@@ -29,11 +32,23 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket',
-    function ($scope, $rootScope, $stateParams, $state, socket) {
+var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket', 'appHelper',
+    function ($scope, $rootScope, $stateParams, $state, socket, appHelper) {
+        function setContest(data) {
+            $scope.contest = data;
+            // rebuild the contest schedule when phase data updated
+            $scope.$broadcast('rebuild:contestSchedule');
+        }
+        /*jslint unparam:true*/
+        $scope.$on(helper.EVENT_NAME.PhaseDataResponse, function (event, data) {
+            // phase data already set in resolvers.js, no need to assign again.
+            $scope.$broadcast('rebuild:contestSchedule');
+        });
+        /*jslint unparam:false*/
+
         // load contest data with contest id
         $scope.roundID = +$stateParams.contestId;
-        $scope.contest = $rootScope.roundData[$scope.roundID];
+        setContest($rootScope.roundData[$scope.roundID]);
         $scope.divisionID = null;
         angular.forEach($scope.contest.coderRooms, function (room) {
             if (angular.isDefined($rootScope.currentRoomInfo) &&
@@ -41,7 +56,7 @@ var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket
                 $scope.divisionID = room.divisionID;
             }
         });
-
+        $scope.isDivisionActive = appHelper.isDivisionActive;
         /**
          * Init with contest.
          *
@@ -59,14 +74,14 @@ var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket
                 $rootScope.roundData[data.roundData.roundID] = data.roundData;
 
                 if (String($scope.roundID) === String(data.roundData.roundID)) {
-                    $scope.contest = $rootScope.roundData[$scope.roundID];
+                    setContest($rootScope.roundData[$scope.roundID]);
                     initWithContest($scope.contest);
                 }
             } else if (data.action === 2) {
                 delete $rootScope.roundData[data.roundData.roundID];
 
                 if (String($scope.roundID) === String(data.roundData.roundID)) {
-                    $scope.contest = null;
+                    setContest(null);
                 }
             }
         });

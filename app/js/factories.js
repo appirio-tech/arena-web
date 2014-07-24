@@ -19,11 +19,14 @@
  * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix):
  * - Updated present and past phrases for verbs in appHelper.getPhaseTime.
  *
- * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Division Summary)
+ * - Updated appHelper to include isDivisionActive.
+ *
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
  * - Added new method 'hyphenate' to apphelper factory, to break long word in chat widget
  *
  * @author tangzx, dexy, amethystlei, ananthhh
- * @version 1.4
+ * @version 1.5
  */
 'use strict';
 var config = require('./config');
@@ -133,15 +136,15 @@ factories.notificationService = ['$timeout', '$http', 'sessionHelper', function 
 }];
 
 factories.appHelper = ['$rootScope', function ($rootScope) {
-    var helper = {};
+    var retHelper = {};
 
     // return an empty array of fixed length
-    helper.range = function (num) {
+    retHelper.range = function (num) {
         return new [].constructor(num);
     };
 
     // Checks if a string is not null nor empty.
-    helper.isStringNotNullNorEmpty = function (s) {
+    retHelper.isStringNotNullNorEmpty = function (s) {
         return s && s.length > 0;
     };
 
@@ -149,7 +152,7 @@ factories.appHelper = ['$rootScope', function ($rootScope) {
     // Used in contest schedule displaying.
     // Usually we have start time and end time.
     // When start time is not available, end time should take its place.
-    helper.getPhaseTime = function (phase, id, currentPhase) {
+    retHelper.getPhaseTime = function (phase, id, currentPhase) {
         function displayStart() {
             return phase.phaseType <= currentPhase.phaseType ? 'Started' : 'Starts';
         }
@@ -157,21 +160,21 @@ factories.appHelper = ['$rootScope', function ($rootScope) {
             return phase.phaseType < currentPhase.phaseType ? 'Ended' : 'Ends';
         }
         if (id === 0) {
-            if (helper.isStringNotNullNorEmpty(phase.start)) {
+            if (retHelper.isStringNotNullNorEmpty(phase.start)) {
                 return {
                     key: displayStart(),
                     value: phase.start
                 };
             }
-            if (helper.isStringNotNullNorEmpty(phase.end)) {
+            if (retHelper.isStringNotNullNorEmpty(phase.end)) {
                 return {
                     key: displayEnd(),
                     value: phase.end
                 };
             }
         } else if (id === 1) {
-            if (helper.isStringNotNullNorEmpty(phase.start) &&
-                    helper.isStringNotNullNorEmpty(phase.end)) {
+            if (retHelper.isStringNotNullNorEmpty(phase.start) &&
+                    retHelper.isStringNotNullNorEmpty(phase.end)) {
                 return {
                     key: displayEnd(),
                     value: phase.end
@@ -182,7 +185,7 @@ factories.appHelper = ['$rootScope', function ($rootScope) {
     };
 
     // parse the string formatted as 'Fri Feb 6, 4:02 PM EST' to date object.
-    helper.parseDate = function (s) {
+    retHelper.parseDate = function (s) {
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             arr = s.split(' '),
             month = (function (monthAbbr) {
@@ -215,7 +218,7 @@ factories.appHelper = ['$rootScope', function ($rootScope) {
         return date;
     };
 
-    helper.clickOnTarget = function (clicked, id, stepLimit) {
+    retHelper.clickOnTarget = function (clicked, id, stepLimit) {
         if (!clicked) {
             return false;
         }
@@ -229,12 +232,12 @@ factories.appHelper = ['$rootScope', function ($rootScope) {
         return false;
     };
 
-    helper.stripPx = function (str) {
+    retHelper.stripPx = function (str) {
         return parseInt(str.substring(0, str.length - 2), 10);
     };
 
-    helper.getRenderedHeight = function (el) {
-        return helper.stripPx(angular.element(el).css('height'));
+    retHelper.getRenderedHeight = function (el) {
+        return retHelper.stripPx(angular.element(el).css('height'));
     };
     /**
      * Checks if a user is assigned to a room.
@@ -257,7 +260,22 @@ factories.appHelper = ['$rootScope', function ($rootScope) {
         return result;
     };
 
-    return helper;
+    /**
+     * Checks if the division is active (has non empty set of problems).
+     *
+     * @param view the current opened view
+     * @return true if the division is active, false otherwise
+     */
+    retHelper.isDivisionActive = function (contest, view) {
+        var divisionID = helper.VIEW_ID[view];
+        if (angular.isUndefined(contest.problems) || angular.isUndefined(contest.problems[divisionID])
+                || contest.problems[divisionID].length === 0) {
+            return false;
+        }
+        return true;
+    };
+
+    return retHelper;
 }];
 
 factories.tcTimeService = ['$rootScope', '$timeout', '$filter', 'socket', function ($rootScope, $timeout, $filter, socket) {

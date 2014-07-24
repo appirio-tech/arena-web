@@ -33,16 +33,22 @@
  * - Removed weekly information from date format (DATE_FORMAT).
  * - Updated the handler of RoundScheduleResponse to use $rootScope.timeZone instead of $rootScope.timezone.
  *
- * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - Division Summary):
+ * - Added $broadcast to the $rootScope of CreateChallengeTableResponse and
+ *   UpdateCoderComponentResponse events.
+ *
+ * Changes in version 1.8 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
  * - Hyphenated chat text to break correctly in chat widget
  *
  * @author amethystlei, dexy, ananthhh
- * @version 1.7
+ * @version 1.8
  */
 ///////////////
 // RESOLVERS //
 'use strict';
-/*global module, angular*/
+/*jshint -W097*/
+/*jshint strict:false*/
+/*global require, setTimeout, console, module, angular*/
 
 var config = require('./config');
 var helper = require('./helper');
@@ -359,6 +365,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         }
         $rootScope.roomData[data.roomID] = data;
         updateCoderPlacement($rootScope.roomData[data.roomID].coders);
+        $rootScope.$broadcast(helper.EVENT_NAME.CreateChallengeTableResponse, data);
     });
 
     // handle update coder points response
@@ -373,6 +380,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             }
         });
         updateCoderPlacement($rootScope.roomData[data.roomID].coders);
+        $rootScope.$broadcast(helper.EVENT_NAME.UpdateCoderPointsResponse, data);
     });
 
     // handle update coder component response
@@ -391,6 +399,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             }
         });
         updateCoderPlacement($rootScope.roomData[data.roomID].coders);
+        $rootScope.$broadcast(helper.EVENT_NAME.UpdateCoderComponentResponse, data);
     });
 
     // handle the end sync response for initialization when logging in

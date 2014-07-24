@@ -21,11 +21,11 @@
     "angular-sanitize": "~1.2.5",
     "angular-ui-router": "https://github.com/angular-ui/ui-router.git#master",
     "angular-ui-bootstrap": "https://github.com/angular-ui/bootstrap/archive/gh-pages.zip",
-    "angular-timer": "https://github.com/siddii/angular-timer/archive/master.zip",
+    "angular-timer": "~1.1.5",
     "angular-ui-codemirror": "0.1.1",
     "angular-ui-calendar": "~0.8.1",
-	"angular-themer" : "~0.2.2",
-	"angular-ui-angular": "https://github.com/angular-ui/angular.git"
+    "angular-themer" : "~0.2.2",
+    "angular-ui-angular": "https://github.com/angular-ui/angular.git"
   },
   "resolutions": {
     "jquery": "~2.x"

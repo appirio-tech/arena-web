@@ -108,7 +108,7 @@
                                 <label data-ng-show="testCompleted && !isTesting" class="message">Test is completed.</label>
                                 <a data-ng-click="runTests()" data-ng-if="currentStateName()=='user.coding'" data-ng-show="!isTesting" class="btn">{{ testCompleted ? "Re-Run" : "Run Test" }}</a>
                                 <a data-ng-click="runTests()" data-ng-if="currentStateName()=='user.viewCode'" data-ng-show="!isTesting" class="btn">Challenge</a>
-                                <img data-ng-show="isTesting" alt="busy..." src="img/loadinfo.net.gif" data-ng-src="img{{isLight}}/loadinfo.net.gif"/>
+                                <i data-ng-show="isTesting" class="loadIcon"></i>
                             </div>
                         </div>
                     </div>
