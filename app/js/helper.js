@@ -41,8 +41,11 @@
  * - Added CloseDivSummaryRequest and DivSummaryRequest.
  * - Added LANGUAGE_NAME, VIEW_ID, DIVSUMMARYREQUEST_TIMEGAP constants.
  *
- * @author tangzx, amethystlei, dexy
- * @version 1.9
+ * Changes in version 1.9 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Added language list
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh
+ * @version 1.10
  */
 
 module.exports = {
@@ -228,13 +231,15 @@ module.exports = {
         ChallengeResults: 'Challenge Results',
         PhaseChange: 'Phase Change',
         Disconnected: 'Disconnected',
-        ForcedLogout: 'Client Connection Error'
+        ForcedLogout: 'Client Connection Error',
+        NotAssigned: 'Not Assigned'
     },
 
     // custom pop up messages
     POP_UP_MESSAGES: {
-        Reconnecting: "Waiting to reconnect...\nPress Close to log out and go to the log in screen.",
-        ForcedLogout: 'The connection to the server has been lost. Logging off.'
+        Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
+        ForcedLogout: 'The connection to the server has been lost. Logging off.',
+        NotAssigned: 'You are not assigned to this room'
     },
 
     // The mapper from time zone code (must be uppercase) to offset from UTC (in minutes).

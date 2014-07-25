@@ -20,8 +20,12 @@
  * - Moved waitingCoderInfo, modalTimeoutPromise, setTimeoutModal and showCoderInfo
  *   to baseCtrl
  *
- * @author dexy, amethystlei
- * @version 1.4
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ *  - Added new variable talkToClass, to show correct user color in member selection dropdown after selecting
+ *  - Moved show coder info to base controller
+ *
+ * @author dexy, amethystlei, ananthhh
+ * @version 1.5
  */
 'use strict';
 /*global require, module, angular */
@@ -167,6 +171,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootSco
         $rootScope.chatContent = [];
         $scope.$broadcast('rebuild:chatboard');
     };
+    /*jslint unparam: false*/
 
     /**
      * Gets the chat method name.
@@ -239,6 +244,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootSco
      */
     $scope.setTalkTo = function (index) {
         $scope.talkToUser = $scope.getMemberName(index);
+        $scope.talkToClass = $scope.getMemberRatingClass(index);
     };
 
     /**

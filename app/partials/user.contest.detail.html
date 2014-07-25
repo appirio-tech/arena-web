@@ -6,8 +6,9 @@
             </div>
             <div class="col-lg-6 col-md-5 connection">
                 <div data-topcodertime></div><div data-connectionstatus></div>
+                <div class="col-lg-12 col-md-12"><a data-ng-click="goBack()" class="btn btnBack">Back to Contest</a></div>
             </div>
-            <div class="col-lg-12 col-md-12 btnRow"><a data-ng-click="goBack()" class="btn btnBack">Back to Contest</a></div>
+
         </div>
         <div class="container-fluid row-fluid mainContent">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">
@@ -323,7 +324,9 @@
                                                         <td class="col1">{{viewOn=='room' ? coder.roomPlace : coder.divPlace}}</td>
                                                         <td class="colR" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
                                                             --><!-- avoid blank
-                                                            --><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span>
+                                                            --><a data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!--
+                                                                --><span class="name {{getRatingClass(coder.userRating)}}"><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span></span><!--
+                                                            --></a>
                                                         </td>
                                                         <td class="col2" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
                                                             --><!-- avoid blank

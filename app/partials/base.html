@@ -43,7 +43,7 @@
                           <a class="icon iconPT">PROBLEM TRACKER</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Problem tracker"></a>
                         </li>
                         <li class="themeSwitcher" data-ng-class="">
-                          <a id="iconTS" class="icon iconTS" data-ng-click="openThemeSelector($event)">THEME SWITCHER</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Theme switcher" data-ng-click="openThemeSelector($event)"></a>
+                          <a id="iconTS" class="icon iconTS" data-ng-click="openThemeSelector($event)">THEME SWITCHER</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="{{themePanelOpen ? null : 'Theme switcher'}}" data-ng-click="openThemeSelector($event)" ></a>
                           <div class="themePanel" data-ng-show="themePanelOpen" id="themePanel">
                             <h4>Themes&nbsp;({{themesInfo.themes.length}})</h4>
                             <a class="closeBtn" data-ng-click="cancelTheme()"></a>
@@ -58,8 +58,8 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right userInfo">
                         <li>Welcome&nbsp;<span class="{{getRatingClass(userInfo().rating)}}">{{ username() }}</span></li>
-                        <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
-                        <li><a data-ui-sref="user.logout" class="arrow"></a></li>
+                        <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Messages"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
+                        <li><a data-ui-sref="user.logout" class="arrow" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Logout"></a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div><!-- /.container-fluid -->

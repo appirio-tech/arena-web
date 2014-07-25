@@ -1,23 +1,72 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This controller all logic related to home page, login and register functions.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Added variable to keep track of hasError specific to form.
+ *      So that error class can be removed when user clicks on any input field
+ *  - Added variable to say empty username and password
+ *  - Flags such as loginTimeout, isEmpty and hasError are handled to avoid text overlap in login page
+ *
+ * @author ananthhh
+ * @version 1.1
+ */
 'use strict';
 
-var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', function ($scope, $state, $window, sessionHelper, auth0) {
+var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$rootScope', function ($scope, $state, $window, sessionHelper, auth0, $rootScope) {
     // whether the login has error
     $scope.hasError = false;
+    $scope.hasErrorForm = false;
+    $scope.isUsernameEmpty = false;
+    $scope.isPasswordEmpty = false;
     $scope.username = '';
     $scope.password = '';
 
     $scope.accountLogin = function () {
         $scope.hasError = false;
+        $scope.hasErrorForm = false;
         var $usernameError = $scope.accountLoginForm.username.$error,
             $passwordError = $scope.accountLoginForm.password.$error;
-        if ($usernameError.required || $usernameError.pattern) {
+        if ($usernameError.required) {
             $scope.username = '';
-            $scope.hasError = true;
+            $scope.isUsernameEmpty = true;
+            $scope.isPasswordEmpty = false;
+            $scope.hasError = false;
+            $rootScope.loginTimeout = false;
+            $scope.hasErrorForm = true;
             return;
         }
-        if ($passwordError.required || $passwordError.pattern) {
+        if ($passwordError.required) {
+            $scope.password = '';
+            $scope.isPasswordEmpty = true;
+            $scope.isUsernameEmpty = false;
+            $scope.hasError = false;
+            $rootScope.loginTimeout = false;
+            $scope.hasErrorForm = true;
+            return;
+        }
+
+        // Its not empty but doesn't follow pattern
+        // So we cannot have $scope.isEmpty = true for this condition
+        if ($usernameError.pattern) {
+            $scope.username = '';
             $scope.password = '';
             $scope.hasError = true;
+            $scope.hasErrorForm = true;
+            $scope.isUsernameEmpty = false;
+            $scope.isPasswordEmpty = false;
+            $rootScope.loginTimeout = false;
+            return;
+        }
+        if ($passwordError.pattern) {
+            $scope.password = '';
+            $scope.hasError = true;
+            $scope.hasErrorForm = true;
+            $scope.isUsernameEmpty = false;
+            $scope.isPasswordEmpty = false;
+            $rootScope.loginTimeout = false;
             return;
         }
         sessionHelper.clear();
@@ -30,6 +79,10 @@ var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', fun
             state: $window.location.href
         }, function () {
             $scope.hasError = true;
+            $scope.hasErrorForm = true;
+            $scope.isUsernameEmpty = false;
+            $scope.isPasswordEmpty = false;
+            $rootScope.loginTimeout = false;
             $scope.$apply();
         });
     };

@@ -37,8 +37,11 @@
  * - Added $broadcast to the $rootScope of CreateChallengeTableResponse and
  *   UpdateCoderComponentResponse events.
  *
- * @author amethystlei, dexy
- * @version 1.7
+ * Changes in version 1.8 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Hyphenated chat text to break correctly in chat widget
+ *
+ * @author amethystlei, dexy, ananthhh
+ * @version 1.8
  */
 ///////////////
 // RESOLVERS //
@@ -66,7 +69,7 @@ var DATE_FORMAT = 'MMM d, h:mm a';
 //Here we put resolver logic into a container object so that the state declaration code section stays readable
 var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
-resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService) {
+resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', 'appHelper', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService, appHelper) {
     var deferred, sso = sessionHelper.getTcsso(), requestId,
         forceLogout = function () {
             $rootScope.isLoggedIn = false;
@@ -96,6 +99,16 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 });
             });
         };
+    // No need to start again if user already logged in
+    if ($rootScope.isLoggedIn) {
+        // go to dashboard page
+        deferred = $q.defer();
+        deferred.promise.then(function () {
+            $state.go(helper.STATE_NAME.Dashboard);
+        });
+        deferred.resolve();
+        return deferred.promise;
+    }
     $rootScope.loginTimeout = false;
     // if the listener is not ready, redirect
     setTimeout(function () {

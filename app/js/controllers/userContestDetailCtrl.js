@@ -28,8 +28,11 @@
  * - Updated viewCode to include the room of the coder and not the current room
  *   when opening the problem.
  *
- * @author amethystlei, dexy
- * @version 1.3
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Color will be different for different language
+ *
+ * @author amethystlei, dexy, ananthhh
+ * @version 1.4
  */
 'use strict';
 /*jshint -W097*/
@@ -488,7 +491,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     /**
      * Get the css class for the color of the component status.
      *
-     * @param status the status
+     * @param component the component
      * @param languageID the id of the language
      * @returns {string} the css class name
      */
@@ -703,10 +706,13 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         }
         if (panel === 'leaderboard') {
             $scope.getKeys(viewOn).lbFilterKey = key;
+            $scope.lbHandleString = '';
         } else if (panel === 'challenge') {
             $scope.getKeys(viewOn).challengeFilterKey = key;
+            $scope.challengeHandleString = '';
         } else if (panel === 'challenger') {
             $scope.getKeys(viewOn).challengerFilterKey = key;
+            $scope.challengerHandleString = '';
         }
     };
     $scope.filterBegin = function (viewOn, panel) {

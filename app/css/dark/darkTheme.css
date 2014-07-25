@@ -211,6 +211,10 @@ footer .right .sponsorLogo {
 .modal .modal-content .modal-footer {
     border-width: 0;
 }
+
+.modal .modal-content .modal-body .argType {
+    color: #fff;
+}
 /********************* active contests part */
 .panel-custom {
     background: #151718;
@@ -528,25 +532,32 @@ footer .right .sponsorLogo {
     color: #687376;
 }
 /** rating style and role style **/
-.rating-red{
+.rating-red,
+.rating-red:hover{
     color: #ee0000;
 }
-.rating-yellow{
+.rating-yellow,
+.rating-yellow:hover{
     color: #ddcc00;
 }
-.rating-blue{
+.rating-blue,
+.rating-yellow:hover{
     color: #6666ff;
 }
-.rating-green{
+.rating-green,
+.rating-green:hover{
     color: #00a900;
 }
-.rating-grey{
+.rating-grey,
+.rating-grey:hover{
     color: #999;
 }
-.rating-none{
+.rating-none,
+.rating-note:hover{
     color: #fff;
 }
-.rating-admin{
+.rating-admin,
+.rating-admin:hover{
     color: #ff9900;
 }
 

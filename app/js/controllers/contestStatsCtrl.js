@@ -28,7 +28,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', function ($scope, appHelper, $state, socket, $timeout) {
+var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', '$rootScope', function ($scope, appHelper, $state, socket, $timeout, $rootScope) {
     /**
      * The status.
      *
@@ -135,11 +135,20 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', f
      * @param problem the problem
      */
     $scope.openProblem = function (problem) {
-        $state.go(helper.STATE_NAME.Coding, {
-            problemId: problem.problemID,
-            roundId: $scope.roundID,
-            divisionId: $scope.divisionID
-        });
+        // Check whether user is assigned to this room or not
+        if (!appHelper.isCoderAssigned($rootScope.username(), $rootScope.currentRoomInfo.roomID)) {
+            $scope.openModal({
+                title: helper.POP_UP_TITLES.NotAssigned,
+                message: helper.POP_UP_MESSAGES.NotAssigned,
+                enableClose: true
+            });
+        } else {
+            $state.go(helper.STATE_NAME.Coding, {
+                problemId: problem.problemID,
+                roundId: $scope.roundID,
+                divisionId: $scope.divisionID
+            });
+        }
     };
 
     // handle register response

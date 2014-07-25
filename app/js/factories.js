@@ -22,8 +22,11 @@
  * Changes in version 1.4 (Module Assembly - Web Arena UI - Division Summary)
  * - Updated appHelper to include isDivisionActive.
  *
- * @author tangzx, dexy, amethystlei
- * @version 1.4
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Added new method 'hyphenate' to apphelper factory, to break long word in chat widget
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh
+ * @version 1.5
  */
 'use strict';
 var config = require('./config');
@@ -132,7 +135,7 @@ factories.notificationService = ['$timeout', '$http', 'sessionHelper', function 
     return service;
 }];
 
-factories.appHelper = [function () {
+factories.appHelper = ['$rootScope', function ($rootScope) {
     var retHelper = {};
 
     // return an empty array of fixed length
@@ -235,6 +238,27 @@ factories.appHelper = [function () {
 
     retHelper.getRenderedHeight = function (el) {
         return retHelper.stripPx(angular.element(el).css('height'));
+    };
+
+    /**
+     * Checks if a user is assigned to a room.
+     *
+     * @param  {string}  handle the handle to be checked
+     * @param  {number}  roomID the room ID
+     * @returns {boolean} true if the user is assigned to the room
+     */
+    retHelper.isCoderAssigned = function (handle, roomID) {
+        var result = false;
+        if (roomID === undefined) {
+            result = false;
+        }
+        angular.forEach($rootScope.roomData[roomID].coders, function (coder) {
+            if (coder.userName === handle) {
+                result = true;
+                return;
+            }
+        });
+        return result;
     };
 
     /**

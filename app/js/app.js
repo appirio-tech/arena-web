@@ -28,8 +28,12 @@
  * Changes in version 1.6 (Module Assembly - Web Arena UI - Rating Indicator):
  * - Updated to include the directive for rating indicator.
  *
- * @author tangzx, dexy, amethystlei
- * @version 1.6
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Added directory for fixing firefox auto fill problem
+ * - Helper to identify whether user belongs to room
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh
+ * @version 1.7
  */
 'use strict';
 /*jshint -W097*/
@@ -115,6 +119,7 @@ directives.contestPlan = require('./directives/contestPlan');
 directives.messageArena = require('./directives/messageArena');
 directives.contestSummary = require('./directives/contestSummary');
 directives.ratingIndicator = require('./directives/ratingIndicator');
+directives.autoFillFix = require('./directives/autoFillFix');
 
 /*global $ : false, angular : false */
 /*jslint nomen: true, browser: true */
@@ -186,6 +191,7 @@ main.directive('contestPlan', directives.contestPlan);
 main.directive('messageArena', directives.messageArena);
 main.directive('contestSummary', directives.contestSummary);
 main.directive('ratingIndicator', directives.ratingIndicator);
+main.directive('autoFillFix', directives.autoFillFix);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
@@ -437,4 +443,5 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     $rootScope.currentStateName = function () {
         return $state.current.name;
     };
+
 }]);

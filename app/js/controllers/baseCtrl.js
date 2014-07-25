@@ -27,13 +27,18 @@
  *   from chatAreaCtrl
  * - Updated PopUpGenericResponse handler to cover CoderInfo and Incorrect Usage title.
  *
- * @author dexy, amethystlei
- * @version 1.5
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * - Now show coderinfo and its corresponding response is global
+ * - Fixed tooltip overlapping theme problem
+ * - Implemented Enter room messages
+ *
+ * @author dexy, amethystlei, ananthhh
+ * @version 1.6
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
-/*global document, angular:false, $:false, module, window*/
+/*global document, angular:false, $:false, module, window, require*/
 
 /**
  * The helper.
@@ -47,7 +52,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', 'connectionService', '$modal', '$state', 'themer', '$cookies', '$filter', '$timeout', 'socket', function ($rootScope, $scope, $http, appHelper, notificationService, connectionService, $modal, $state, themer, $cookies, $filter, $timeout, socket) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', 'connectionService', '$modal', '$state', 'themer', '$cookies', '$filter', 'socket', '$timeout', function ($rootScope, $scope, $http, appHelper, notificationService, connectionService, $modal, $state, themer, $cookies, $filter, socket, $timeout) {
     var /**
          * The modal controller.
          *
@@ -58,6 +63,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.message = data.message.replace(/(\r\n|\n|\r)/gm, "<br/>");
             $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
             $scope.enableClose = data.enableClose;
+            $scope.coderInfo = data.message;
 
             /**
              * OK handler.
@@ -88,7 +94,8 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         },
         selTheme,
         waitingCoderInfo = false,
-        modalTimeoutPromise = null;
+        modalTimeoutPromise = null,
+        phaseChangeRoundId;
 
     // modal defined in the root scope can be used by other scopes.
     $rootScope.currentModal = null;
@@ -100,14 +107,16 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
      * @param handle the handler
      * @param finish the finish function
      */
-    $scope.openModal = function (data, handle, finish) {
+    $scope.openModal = function (data, handle, finish, templateUrl) {
         if ($rootScope.currentModal) {
             $rootScope.currentModal.dismiss('cancel');
             $rootScope.currentModal = undefined;
         }
-
+        if (!templateUrl) {
+            templateUrl =  'popupModalBase.html';
+        }
         $rootScope.currentModal = $modal.open({
-            templateUrl: 'popupModalBase.html',
+            templateUrl: templateUrl,
             controller: popupModalCtrl,
             backdrop: 'static',
             resolve: {
@@ -132,6 +141,44 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 }
             }
         });
+    };
+
+
+    /**
+     * Set timeout modal.
+     */
+    function setTimeoutModal() {
+        $scope.openModal({
+            title: 'Timeout',
+            message: 'Sorry, the request is timeout.',
+            enableClose: true
+        });
+        modalTimeoutPromise = null;
+        waitingCoderInfo = false;
+    }
+
+    /**
+     * Requests to show coder info.
+     *
+     * @param {string} name the name of the user
+     * @param {string} userType the user type
+     */
+    $scope.showCoderInfo = function (name, userType) {
+        if (waitingCoderInfo) {
+            return;
+        }
+        waitingCoderInfo = true;
+        if (modalTimeoutPromise) {
+            $timeout.cancel(modalTimeoutPromise);
+        }
+        $scope.openModal({
+            title: 'Getting coder info',
+            message: 'Please wait while we retrieve coder information',
+            enableClose: false
+        });
+
+        modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
+        socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
     };
     /*jslint unparam: true*/
     $scope.$on(helper.EVENT_NAME.ForcedLogoutResponse, function (event, data) {
@@ -170,34 +217,43 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
         // handle phase change messages
         if (data.title === helper.POP_UP_TITLES.PhaseChange) {
-            // handle Phase Change confirmation messages for now.
-            // Entering room messages will be handled in the future.
             if (!data.buttons) {
                 $scope.openModal({
                     title: helper.POP_UP_TITLES.PhaseChange,
                     message: data.message,
                     enableClose: true
                 });
+            } else {
+                data.enableClose = true;
+                angular.forEach($rootScope.roundData, function (round) {
+                    angular.forEach(round.coderRooms, function (room) {
+                        if (room.roomID === data.moveData[1]) {
+                            phaseChangeRoundId = round.roundID;
+                        }
+                    });
+                });
+                $state.go(helper.STATE_NAME.Dashboard);
+                var ok = function () {
+                    // requests will be sent by the resolvers
+                    if (phaseChangeRoundId) {
+                        $rootScope.competingRoomID = -1;
+                        $state.go(helper.STATE_NAME.Contest, {
+                            contestId: phaseChangeRoundId
+                        });
+                    }
+                };
+                $scope.openModal(data, ok);
             }
         } else if (data.title === helper.POP_UP_TITLES.CoderInfo) {
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
             }
             waitingCoderInfo = false;
-            $modal.open({
-                templateUrl: 'partials/user.chat.area.coderinfo.html',
-                controller: function ($scope, $modalInstance, coderInfo) {
-                    $scope.coderInfo = coderInfo;
-                    $scope.ok = function () {
-                        $modalInstance.close();
-                    };
-                },
-                resolve: {
-                    coderInfo: function () {
-                        return data.message;
-                    }
-                }
-            });
+            $scope.openModal({
+                title: helper.POP_UP_TITLES.CoderInfo,
+                message: data.message,
+                enableClose: true
+            }, null, null, 'partials/user.chat.area.coderinfo.html');
         } else if (data.title === helper.POP_UP_TITLES.IncorrectUsage) {
             $scope.openModal({
                 title: helper.POP_UP_TITLES.IncorrectUsage,
@@ -264,6 +320,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         $scope.closeThemeSelector();
     };
     $scope.openThemeSelector = function (event) {
+        $scope.closeQtip();
         if ($scope.themePanelOpen) {
             $scope.cancelTheme();
             return;
@@ -352,37 +409,6 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return "rating-admin";
         }
         return "";
-    };
-
-    /**
-     * Set timeout modal.
-     */
-    function setTimeoutModal() {
-        $scope.openModal({
-            title: 'Timeout',
-            message: 'Sorry, the request is timeout.',
-            enableClose: true
-        });
-        modalTimeoutPromise = null;
-        waitingCoderInfo = false;
-    }
-
-    /**
-     * Requests to show coder info.
-     *
-     * @param {string} name the name of the user
-     * @param {string} userType the user type
-     */
-    $scope.showCoderInfo = function (name, userType) {
-        if (waitingCoderInfo) {
-            return;
-        }
-        waitingCoderInfo = true;
-        if (modalTimeoutPromise) {
-            $timeout.cancel(modalTimeoutPromise);
-        }
-        modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
-        socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
     };
 }];
 
