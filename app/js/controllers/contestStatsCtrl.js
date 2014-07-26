@@ -10,12 +10,15 @@
  * Changes in version 1.2 (Module Assembly - Web Arena UI - Phase I Bug Fix):
  * - Updated phase messages for System Test.
  *
- * @author amethystlei
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
+ * - Added dialog to show registrants.
+ *
+ * @author amethystlei, flytoj2ee
+ * @version 1.3
  */
 'use strict';
 /*global module, angular*/
-
+/*jslint plusplus: true*/
 /**
  * The helper.
  *
@@ -155,8 +158,28 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', '
     socket.on(helper.EVENT_NAME.RegisteredUsersResponse, function (data) {
         if (String(data.roundID) === String($scope.roundID)) {
             $scope.registrants = data.userListItems.length;
+            $scope.registrantsList = data.userListItems;
         }
     });
+    $scope.registrantsList = [];
+
+    /**
+     * Show all registrants.
+     */
+    $scope.viewRegistrants = function () {
+        var coders = $scope.registrantsList,
+            msg = "",
+            i;
+        for (i = 0; i < coders.length; i++) {
+            msg = msg + "<span class='" + $scope.getRatingClass(coders[i].userRating) + "'>" + coders[i].userName + "</span><br/>";
+        }
+
+        $scope.openModal({
+            title: 'Registrants',
+            message: msg,
+            enableClose: true
+        });
+    };
 
     // request register users
     socket.emit(helper.EVENT_NAME.RegisterUsersRequest, { roundID: $scope.roundID });

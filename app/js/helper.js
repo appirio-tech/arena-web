@@ -41,11 +41,15 @@
  * - Added CloseDivSummaryRequest and DivSummaryRequest.
  * - Added LANGUAGE_NAME, VIEW_ID, DIVSUMMARYREQUEST_TIMEGAP constants.
  *
- * Changes in version 1.9 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * Changes in version 1.10 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
  * - Added language list
  *
- * @author tangzx, amethystlei, dexy, ananthhh
- * @version 1.10
+ * Changes in version 1.11 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
+ * - Added coder history event names.
+ * - Updated for re-connect logic.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
+ * @version 1.11
  */
 
 module.exports = {
@@ -122,6 +126,8 @@ module.exports = {
         UpdateUserListResponse: 'UpdateUserListResponse',
         UpdateRoundListResponse: 'UpdateRoundListResponse',
         UserInfoResponse: 'UserInfoResponse',
+        CoderHistoryRequest: 'CoderHistoryRequest',
+        CoderHistoryResponse: 'CoderHistoryResponse',
         // internal events
         Connected: 'Connected',
         Disconnected: 'Disconnected',
@@ -129,6 +135,7 @@ module.exports = {
         SocketConnected: 'connect',
         SocketConnectionFailed: 'connect_failed',
         SocketDisconnected: 'disconnect',
+        SocketReconnect: 'reconnect',
         SocketError: 'error'
     },
 
@@ -238,7 +245,7 @@ module.exports = {
     // custom pop up messages
     POP_UP_MESSAGES: {
         Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
-        ForcedLogout: 'The connection to the server has been lost. Logging off.',
+        ForcedLogout: 'The connection to the server has been lost. Please log off and log in again.',
         NotAssigned: 'You are not assigned to this room'
     },
 

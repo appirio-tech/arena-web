@@ -32,7 +32,10 @@
  * - Fixed tooltip overlapping theme problem
  * - Implemented Enter room messages
  *
- * @author dexy, amethystlei, ananthhh
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
+ * - Handle the disconnect logic.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee
  * @version 1.6
  */
 'use strict';
@@ -52,7 +55,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', 'connectionService', '$modal', '$state', 'themer', '$cookies', '$filter', 'socket', '$timeout', function ($rootScope, $scope, $http, appHelper, notificationService, connectionService, $modal, $state, themer, $cookies, $filter, socket, $timeout) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', '$filter', 'socket', '$timeout', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, $filter, socket, $timeout) {
     var /**
          * The modal controller.
          *
@@ -195,23 +198,20 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             isDisconnecting = true;
             $scope.openModal({
                 title: helper.POP_UP_TITLES.Disconnected,
-                message: helper.POP_UP_MESSAGES.Reconnecting,
+                message: helper.POP_UP_MESSAGES.ForcedLogout,
                 enableClose: true
-            }, null, function () {
-                isDisconnecting = false;
-                if (connectionService.cStatus.status === 'lost') {
-                    $state.go(helper.STATE_NAME.Logout);
-                }
             });
         }
     });
     $scope.$on(helper.EVENT_NAME.Connected, function (event, data) {
         if (isDisconnecting) {
             isDisconnecting = false;
-            if ($rootScope.currentModal !== undefined) {
+            if ($rootScope.currentModal !== undefined && $rootScope.currentModal !== null) {
                 $rootScope.currentModal.dismiss('cancel');
             }
-            $state.go(helper.STATE_NAME.AnonymousHome);
+            if (!$rootScope.reconnected) {
+                $state.go(helper.STATE_NAME.AnonymousHome);
+            }
         }
     });
     $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {

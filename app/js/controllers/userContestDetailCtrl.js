@@ -31,12 +31,16 @@
  * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
  * - Color will be different for different language
  *
- * @author amethystlei, dexy, ananthhh
- * @version 1.4
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
+ * - Added show coder history logic.
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee
+ * @version 1.5
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
+/*jslint plusplus: true*/
 /*global module, require, angular, $, document, window, console*/
 
 /**
@@ -782,6 +786,40 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             });
         }
     };
+
+    /**
+     * Get coder history.
+     *
+     * @param userName - the user handle.
+     */
+    $scope.getCoderHistory = function (userName) {
+        socket.emit(helper.EVENT_NAME.CoderHistoryRequest, {handle: userName, userType: 1, historyType: -1,
+            roomID: $rootScope.currentRoomInfo.roomID});
+    };
+
+    // Show the coder history.
+    socket.on(helper.EVENT_NAME.CoderHistoryResponse, function (data) {
+        var msg = "", i, tmpDate;
+        msg = msg + "<span class='coderHistoryTimeField'>Time</span>" +
+            "<span class='coderHistoryTimeField'>Action</span><span class='coderHistoryHandleField'>Handle</span>" +
+            "<span class='coderHistoryHandleField'>Problem</span><span class='coderHistoryHandleField'>Score</span><br/>";
+
+        for (i = 0; i < data.historyData.length; i++) {
+            tmpDate = new Date(data.historyData[i].time);
+            msg = msg + "<span class='coderHistoryTimeField'>" + (tmpDate.getMonth() + 1) + "-" + tmpDate.getDate() + "-" + tmpDate.getFullYear()
+                + " " + tmpDate.getHours() + ":" + tmpDate.getMinutes() + ":" + tmpDate.getSeconds()
+                + "</span><span class='coderHistoryTimeField'>"
+                + data.historyData[i].actionDescription + "</span><span class='coderHistoryHandleField'>"
+                + data.historyData[i].coder.userName + "</span><span class='coderHistoryHandleField'>" + data.historyData[i].componentValue
+                + "</span><span class='coderHistoryHandleField'>" + data.historyData[i].points + "</span><br/>";
+        }
+
+        $scope.openModal({
+            title: 'Coder History',
+            message: msg,
+            enableClose: true
+        });
+    });
 }];
 
 module.exports = userContestDetailCtrl;

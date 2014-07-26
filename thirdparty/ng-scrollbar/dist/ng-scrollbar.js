@@ -46,7 +46,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
         var redraw = function () {
           thumb.css('top', dragger.top + 'px');
           var draggerOffset = dragger.top / page.height;
-          page.top = -Math.round(page.scrollHeight * draggerOffset);
+          page.top = -Math.ceil(page.scrollHeight * draggerOffset * 1.0013);
           transculdedContainer.css('top', page.top + 'px');
         };
         var trackClick = function (event) {
@@ -58,6 +58,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
         };
         var wheelHandler = function (event) {
           var deltaY = event.wheelDeltaY !== undefined ? event.wheelDeltaY / 20 : event.wheelDelta !== undefined ? event.wheelDelta / 20 : -event.detail * 2;
+          deltaY = deltaY * 3;
           dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
           redraw();
           if (!!event.preventDefault) {
@@ -66,6 +67,27 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
             return false;
           }
         };
+          var keyDownHandler = function (event) {
+              var deltaY = 0;
+              if (event.keyCode === 38) {
+                  //up
+                  deltaY = 60;
+                  dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
+                  redraw();
+              }
+              if (event.keyCode === 40) {
+                  //down
+                  deltaY = -60;
+                  dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
+                  redraw();
+              }
+
+              if (!!event.preventDefault) {
+                  event.preventDefault();
+              } else {
+                  return false;
+              }
+          };
         var lastOffsetY;
         var thumbDrag = function (event, offsetX, offsetY) {
           var newTop = Math.max(0, Math.min(parseInt(dragger.trackHeight, 10) - parseInt(dragger.height, 10), offsetY));
@@ -102,6 +124,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
             track.bind('click', trackClick);
             var wheelEvent = win[0].onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
             transculdedContainer[0].addEventListener(wheelEvent, wheelHandler, false);
+            transculdedContainer[0].addEventListener('keydown', keyDownHandler, false);
             thumb.bind('mousedown', function (event) {
               lastOffsetY = event.pageY - thumb[0].offsetTop;
               win.bind('mouseup', function () {
@@ -154,7 +177,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           win.on('resize', rebuild);
         }
       },
-      template: '<div>' + '<div class="ngsb-wrap">' + '<div class="ngsb-container" ng-transclude></div>' + '<div class="ngsb-scrollbar" style="position: absolute; display: block;" ng-show="showYScrollbar">' + '<div class="ngsb-thumb-container">' + '<div class="ngsb-thumb-pos" oncontextmenu="return false;">' + '<div class="ngsb-thumb" ></div>' + '</div>' + '<div class="ngsb-track"></div>' + '</div>' + '</div>' + '</div>' + '</div>'
+        template: '<div>' + '<div class="ngsb-wrap">' + '<div class="ngsb-container" ng-transclude tabindex="100"></div>' + '<div class="ngsb-scrollbar" style="position: absolute; display: block;" ng-show="showYScrollbar">' + '<div class="ngsb-thumb-container">' + '<div class="ngsb-thumb-pos" oncontextmenu="return false;">' + '<div class="ngsb-thumb" ></div>' + '</div>' + '<div class="ngsb-track"></div>' + '</div>' + '</div>' + '</div>' + '</div>'
     };
   }
 ]);
