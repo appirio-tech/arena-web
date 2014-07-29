@@ -71,6 +71,8 @@ require('./../../bower_components/fullcalendar/fullcalendar.js');
 require('./../../thirdparty/jquery.qtip/jquery.qtip.min.js');
 require('./../../thirdparty/ng-scrollbar/dist/ng-scrollbar.js');
 
+var config = require('./config.js');
+
 var resolvers = require('./resolvers'),
     factories = require('./factories'),
     filters = require('./filters'),
@@ -208,7 +210,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
     var styles = [{
             key : 'DARK',
             label : 'Dark Theme',
-            href : 'css/bundle.css'
+            href : config.staticFileHost + '/css/bundle.css'
         }];
 
     themerProvider.setStyles(styles);

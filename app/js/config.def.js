@@ -7,5 +7,6 @@ module.exports = {
     callbackURL: '@@CALLBACK_URL',
     webSocketURL: '@@WEB_SOCKET_URL',
     ssoKey: '@@SSO_KEY',
-    connectionTimeout: @@CONNECTION_TIMEOUT
+    connectionTimeout: @@CONNECTION_TIMEOUT,
+    staticFileHost: '@@STATIC_FILE_HOST'
 };

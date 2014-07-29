@@ -50,6 +50,7 @@ module.exports = function (grunt) {
                         { match : 'WEB_SOCKET_URL', replacement: process.env.WEB_SOCKET_URL },
                         { match : 'API_DOMAIN', replacement: process.env.API_DOMAIN },
                         { match : 'SSO_KEY', replacement: process.env.SSO_KEY },
+                        { match : 'STATIC_FILE_HOST', replacement: process.env.STATIC_FILE_HOST },
                         { match : 'CONNECTION_TIMEOUT', replacement: process.env.CONNECTION_TIMEOUT }
                     ]
                 },
