@@ -1,6 +1,19 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This file provides the contest plan controller.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
+ *  - Updated the code to show current date in calendar.
+ *
+ * @author TCASSEMBLER
+ * @version 1.1
+ */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
+/*jslint unparam: true*/
 /*global $:false, angular:false, module*/
 // contest plan widget
 var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
@@ -40,6 +53,7 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
             }, 0);
         });
 
+        var tmpDate = new Date();
         // config calendar plugin
         $scope.uiConfig = {
             calendar: {
@@ -58,9 +72,9 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
                     month: 'Back'
                 },
                 timeFormat: 'H(:mm)',
-                year: data.today.year,  //the initial year when the calendar loads
-                month: data.today.month,//the initial month when the calendar loads
-                day: data.today.day,    //the initial day when the calendar loads
+                year: tmpDate.getFullYear(), //the initial year when the calendar loads
+                month: tmpDate.getMonth(), //the initial month when the calendar loads
+                day: tmpDate.getDate(),    //the initial day when the calendar loads
                 eventRender: $scope.eventRender, // add color tag and events number qtip to day number when events are loading
                 dayClick: $scope.changeView, // change to day view when clicking day number
                 viewRender: $scope.viewRender, // when view loads, implement some style issues
@@ -71,7 +85,7 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
         $scope.currentDate = data.today;
         // it will get current date information from calendar when list view is loaded
         $scope.getCurrentMonth = function () {
-            if ($scope.viewNow === 'list') {return false;}
+            if ($scope.viewNow === 'list') { return false; }
             var d = $scope.contestPlan.fullCalendar('getDate');
             $scope.currentDate = {
                 year: d.getFullYear(),
@@ -126,7 +140,7 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
         // get current date information from list view, 
         // go to that date and refresh the whole calendar
         $scope.renderCalendar = function () {
-            if ($scope.viewNow === 'calendar') {return false;}
+            if ($scope.viewNow === 'calendar') { return false; }
             $scope.contestPlan.fullCalendar('gotoDate', $scope.currentDate.year, $scope.currentDate.month);
             $scope.contestPlan.fullCalendar('render');
         };
@@ -134,9 +148,9 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
     // add color info to day number
     $scope.eventRender = function (event, element, monthView) {
         var date = event.start.getFullYear() + '-' +
-            (event.start.getMonth() > 8 ? '' : '0') + (event.start.getMonth() + 1) + '-' +
-            (event.start.getDate() > 9 ? '' : '0') + event.start.getDate();
-        var target = $('#calendar .fc-view-month').find('[data-date=' + date + ']');
+                (event.start.getMonth() > 8 ? '' : '0') + (event.start.getMonth() + 1) + '-' +
+                (event.start.getDate() > 9 ? '' : '0') + event.start.getDate(),
+            target = $('#calendar .fc-view-month').find('[data-date=' + date + ']');
         target.addClass('eventColor');
         $scope.$broadcast('rebuild:list');
     };
@@ -161,7 +175,7 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
     };
     //debug
     function eventsADay(data) {
-        var nums = [], dates = [], obj, dateString, index, i, event;
+        var nums = [], dates = [], dateString, index, i, event;
         if (angular.isArray(data)) {
             for (i = 0; i < data[0].length; i += 1) {
                 event = data[0][i];

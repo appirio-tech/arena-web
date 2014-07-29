@@ -24,12 +24,16 @@
  *  - Added new variable talkToClass, to show correct user color in member selection dropdown after selecting
  *  - Moved show coder info to base controller
  *
- * @author dexy, amethystlei, ananthhh
- * @version 1.5
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
+ * - Fixed the issues in chat area.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee
+ * @version 1.6
  */
 'use strict';
 /*global require, module, angular */
-
+/*jshint strict:false*/
+/*jslint plusplus: true*/
 /**
  * The helper.
  *
@@ -112,6 +116,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootSco
 
     if ($rootScope.isEnteringRoom) {
         $rootScope.chatContent = [];
+        $rootScope.$broadcast('rebuild:chatboard');
         socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
     }
 
@@ -197,9 +202,13 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootSco
             $rootScope.memberIdx = null;
             $scope.disableSelect = true;
             $scope.disableInput = true;
+            angular.element('#chatInputDiv').width(460);
+            angular.element('#chatInputText').width(460);
         } else {
             $scope.disableSelect = false;
             $scope.disableInput = false;
+            angular.element('#chatInputDiv').width(350);
+            angular.element('#chatInputText').width(350);
         }
     };
 
@@ -210,11 +219,54 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootSco
      * @returns {string} the member name
      */
     $scope.getMemberName = function (memberIdx) {
+        var msg = " ", i;
         if (memberIdx === null) {
             return " ";
         }
-        return $scope.whosHereArray[memberIdx].name;
+
+        for (i = 0; i < $scope.whosHereArray.length; i++) {
+            if ($scope.whosHereArray[i].name === memberIdx) {
+                msg = $scope.whosHereArray[i].name;
+                break;
+            }
+        }
+        return msg;
     };
+
+    /**
+     * Input the user by text field.
+     */
+    $scope.inputUser = function () {
+        var isOpen = angular.element('#usersDropdownLi').hasClass('open'), tmp, i;
+
+        if (!isOpen) {
+            $timeout(function () {
+                angular.element('#usersDropdownList').trigger('click');
+            }, 10);
+        }
+
+        if ($scope.talkToUser !== '') {
+            // filter it
+            tmp = [];
+            for (i = 0; i < $scope.whosHereArrayFullList.length; i++) {
+                if ($scope.whosHereArrayFullList[i].name.toLowerCase().indexOf($scope.talkToUser.toLowerCase()) === 0) {
+                    tmp.push($scope.whosHereArrayFullList[i]);
+                }
+            }
+            $scope.whosHereArray = tmp;
+        } else {
+            $scope.whosHereArray = $scope.whosHereArrayFullList;
+        }
+        $scope.$broadcast('rebuild:whosHere');
+        $scope.$broadcast('rebuild:members');
+    };
+
+
+    $scope.rebuildMembersScrollbar = function () {
+        $scope.$broadcast('rebuild:whosHere');
+        $scope.$broadcast('rebuild:members');
+    };
+
     /**
      * Gets the CSS class of the member's rating.
      *
@@ -225,7 +277,14 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootSco
         if (memberIdx === null) {
             return "";
         }
-        return $scope.getRatingClass($scope.whosHereArray[memberIdx].rating);
+        var result = 0, i;
+        for (i = 0; i < $scope.whosHereArray.length; i++) {
+            if ($scope.whosHereArray[i].name === memberIdx) {
+                result = $scope.whosHereArray[i].rating;
+                break;
+            }
+        }
+        return $scope.getRatingClass(result);
     };
 
     /**
@@ -287,6 +346,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootSco
      * Submits the text content according to the chat method selected.
      */
     $scope.chatSubmit = function () {
+        var msg, tmpName = '', i;
         if ($scope.chatText === '') {
             return;
         }
@@ -300,8 +360,16 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootSco
             return;
         }
         if ($scope.methodIdx >= 4) {
+            if ($scope.talkToUser !== '') {
+                for (i = 0; i < $scope.whosHereArray.length; i++) {
+                    if ($scope.whosHereArray[i].name === $scope.talkToUser) {
+                        tmpName = $scope.talkToUser;
+                        break;
+                    }
+                }
+            }
             // Reply-To / Whisper chat must have a recipient.
-            if ($scope.talkToUser === undefined || $scope.talkToUser === '') {
+            if ($scope.talkToUser === undefined || $scope.talkToUser === '' || tmpName === '') {
                 $scope.openModal({
                     title: 'Error',
                     message: 'You need to enter who the message is going to',
@@ -311,7 +379,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootSco
                 return;
             }
         }
-        var msg;
+
         switch ($scope.methodIdx) {
         case 0:
             msg = 'admins: ' + $scope.chatText + '\n';

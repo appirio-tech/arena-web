@@ -25,12 +25,15 @@
  * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix):
  * - User cannot focus on coding area in readonly mode
  *
- * @author tangzx, amethystlei
- * @version 1.5
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
+ * - Fixed issues in coding editor.
+ *
+ * @author tangzx, amethystlei, flytoj2ee
+ * @version 1.6
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $ */
-
+/*jslint plusplus: true*/
 /**
  * The helper.
  *
@@ -90,6 +93,73 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             ],
             userInputDisabled = false,
             modalTimeoutPromise = null;
+
+        $scope.gotoLine = "";
+        $scope.markedSearched = [];
+        $scope.searchText = "";
+        /**
+         * Search by text.
+         */
+        $scope.searchByText = function () {
+            var i, cursor;
+            if ($scope.cm) {
+                // clear the mark
+                for (i = 0; i < $scope.markedSearched.length; ++i) {
+                    $scope.markedSearched[i].clear();
+                }
+
+                $scope.markedSearched.length = 0;
+                cursor = $scope.cm.getSearchCursor($scope.searchText);
+                while (cursor.findNext()) {
+                    $scope.markedSearched.push($scope.cm.markText(cursor.from(), cursor.to(), {className: "searched"}));
+                }
+
+            }
+        };
+
+        /**
+         * Go to line.
+         */
+        $scope.jumpToLine = function () {
+            var tmp = parseInt($scope.gotoLine, 10), t, middleHeight;
+            if ((tmp < 1) || isNaN(tmp)) {
+                $scope.openModal({
+                    title: 'Warning',
+                    message: 'Please input number great than 0 in go to line field.',
+                    enableClose: true
+                });
+            } else {
+                if ($scope.cm) {
+                    t = $scope.cm.charCoords({line: tmp, ch: 0}, "local").top;
+                    middleHeight = $scope.cm.getScrollerElement().offsetHeight / 2;
+                    $scope.cm.scrollTo(null, t - middleHeight - 5);
+                }
+            }
+        };
+
+        /**
+         * Handle the input search text event.
+         * @param keyEvent - the key event.
+         */
+        $scope.inputSearchText = function (keyEvent) {
+            if (keyEvent.which === 13) {
+                $timeout(function () {
+                    angular.element('#searchByText').trigger('click');
+                }, 10);
+            }
+        };
+
+        /**
+         * Handle the input goto line event.
+         * @param keyEvent - the key event.
+         */
+        $scope.inputGotoText = function (keyEvent) {
+            if (keyEvent.which === 13) {
+                $timeout(function () {
+                    angular.element('#gotoByText').trigger('click');
+                }, 10);
+            }
+        };
 
         /**
          * Enable editor.
@@ -424,12 +494,19 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             if (userInputDisabled) {
                 return;
             }
-            disableUserInput();
+            $scope.openModal({
+                title: 'Warning',
+                message: 'Are you sure you want to delete your source code?',
+                buttons: ['Yes', 'No'],
+                enableClose: true
+            }, function () {
+                disableUserInput();
 
-            $scope.code = '';
-            $scope.cm.setValue('');
+                $scope.code = '';
+                $scope.cm.setValue('');
 
-            enableUserInput();
+                enableUserInput();
+            });
         };
 
         /**
@@ -641,6 +718,15 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 $scope.userData.tests.forEach(function (testCase) {
                     testCase.checked = action;
                 });
+            };
+
+            /**
+             * Gets the connected flag.
+             *
+             * @returns {$rootScope.connected|*} connected flag.
+             */
+            $scope.isConnected = function () {
+                return $rootScope.connected;
             };
 
             /**

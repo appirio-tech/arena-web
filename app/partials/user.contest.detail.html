@@ -281,8 +281,8 @@
                                     </div>
                                     <div class="viewFilter" data-ng-show="registrationFinished()">
                                         <label>View</label><!-- avoid unnecessary white space
-                                        --><div><input type="radio" data-ng-model="showBy" value="status" class="showLBRadio" id="showByStatus"/><label for="showByStatus" class="showLBLbl">Status</label></div><!-- avoid unnecessary white space
-                                        --><div><input type="radio" data-ng-model="showBy" value="points" class="showLBRadio" id="showByPoints"/><label for="showByPoints" class="showLBLbl">Points</label></div>
+                                        --><div><input type="radio" data-ng-model="showBy" value="status" class="showLBRadio" id="showByStatus" ng-disabled="!challengeAvailable()"/><label for="showByStatus" class="showLBLbl {{ !challengeAvailable() ? 'showDisableLBLbl' : ''}}">Status</label></div><!-- avoid unnecessary white space
+                                        --><div><input type="radio" data-ng-model="showBy" value="points" class="showLBRadio" id="showByPoints" ng-disabled="!challengeAvailable()"/><label for="showByPoints" class="showLBLbl {{ !challengeAvailable() ? 'showDisableLBLbl' : ''}}">Points</label></div>
                                     </div>
                                     <a data-ng-click="toggleExpand('leaderboardPanel', 'rSec', 'lSec')" class="expandIcon"></a>
                                 </div><!--/.heading-->
@@ -331,6 +331,7 @@
                                                         <td class="col2" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
                                                             --><!-- avoid blank
                                                             --><span class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
+                                                            <a class="rating" data-ng-click="getCoderHistory(coder.userName)">History</a>
                                                         </td>
                                                         <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
                                                             <a data-ng-show="isViewable(component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span></a>

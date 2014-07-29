@@ -5,7 +5,7 @@
     <div class="panel-body row" id="bottom-content">
         <div class="toolBar">
             <div data-ng-class="{active:settingsOpen,inactive:!settingsOpen}">
-                <a class="settingsToggle" data-ng-click="toggleSettings()">settings</a>
+                <a class="settingsToggle" data-ng-click="toggleSettings()" data-ng-hide="currentStateName()==='user.viewCode'">settings</a>
                 <div class="settingsPanel" data-ng-show="settingsOpen && currentStateName()=='user.coding'">
                     <a data-ng-click="toggleSettings()" class="closeIcon"></a>
                     <div class="editorRow">
@@ -39,14 +39,14 @@
             </div>
             <div class="middlePart">
                 <ul class="actionIcons"><!-- avoid unnecessary blank
-                --><li class="link saveLink"  data-ng-hide="currentStateName()==='user.viewCode'">Save</li><!--  avoid unnecessary blank
-                --><li class="link clearLink" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode'">Clear</li><!--  avoid unnecessary blank
-                --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode'">Compile</li><!--
-                --><li class="link submitLink" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode'">Submit</li>
+                --><li class="link saveLink"  data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Save</li><!--  avoid unnecessary blank
+                --><li class="link clearLink" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Clear</li><!--  avoid unnecessary blank
+                --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Compile</li><!--
+                --><li class="link submitLink" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Submit</li>
                 </ul><!--  avoid unnecessary blank
                 --><div data-ng-show="currentStateName()==='user.viewCode'">{{languages[langIdx].name}}</div><!--
-                --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" placeholder="Find"/><a data-ng-click="" class="searchIcon"></a></div><!--  avoid unnecessary blank
-                --><div class="gotoInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><label for="goto">Go To</label><input type="text" name="goto" id="goto" value="" /><a class="arrow"></a></div>
+                --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" data-ng-model="searchText" data-ng-keypress="inputSearchText($event)"/><a id="searchByText" data-ng-click="searchByText()" class="searchIcon"></a></div><!--  avoid unnecessary blank
+                --><div class="gotoInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><label for="goto">Go To</label><input type="text" name="goto" id="goto" data-ng-model="gotoLine" data-ng-keypress="inputGotoText($event)"/><a id="gotoByText" data-ng-click="jumpToLine()" class="arrow"></a></div>
             </div>
             <div class="rightPart">
                 <div data-ng-hide="currentStateName()==='user.viewCode'"><input type="checkbox" name="autoCompile" id="compileCheck" class="editorCheckbox" data-ng-model="autoCompile" /><label for="compileCheck" class="editorCheckLbl">Auto Compile</label></div><!-- avoid unnecessary blank
