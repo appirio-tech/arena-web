@@ -65,7 +65,8 @@ module.exports = function (grunt) {
                     ]
                 },
                 files: [
-                    { expand: true, cwd: 'app/', src: '**/*.html', dest: 'build/' }
+                    { expand: true, cwd: 'app/', src: '**/*.html', dest: 'build/' },
+                    { expand: true, cwd: 'app/data', src: '**/*.json', dest: 'build/data' }
                 ]
             }
         },

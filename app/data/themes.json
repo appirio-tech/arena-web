@@ -5,17 +5,17 @@
             "name": "Dark Theme",
             "key": "DARK",
 			"label": "Dark Theme",
-			"href": "css/bundle.css"
+			"href": "@@STATIC_FILE_HOST/css/bundle.css"
          },{
             "name": "Light Theme",
             "key": "LIGHT",
 			"label": "Light Theme",
-			"href": "css/bundle-light.css"
+			"href": "@@STATIC_FILE_HOST/css/bundle-light.css"
          },{
             "name": "Orange Theme",
             "key": "ORANGE",
             "label": "Orange Theme",
-            "href": "css/bundle-orange.css"
+            "href": "@@STATIC_FILE_HOST/css/bundle-orange.css"
          }
     ]
 }
