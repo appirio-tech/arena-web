@@ -34,4 +34,4 @@ export AWS_BUCKET=
 export AWS_FOLDER='arena/md/web-v<%= pkg.version %>/'
 
 # the connection timeout to web socket
-export CONNECTION_TIMEOUT=30000
+export CONNECTION_TIMEOUT=120000
