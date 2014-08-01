@@ -1035,6 +1035,7 @@ footer .right>span:nth-child(2) {
 }
 .panel-custom .summaryPanel,
 .panel-custom .schedulePanel,
+.panel-custom .roomsPanel,
 .panel-custom .statusPanel {
     height: 141px;
     padding: 12px 0;
@@ -1045,6 +1046,7 @@ footer .right>span:nth-child(2) {
 }
 .panel-custom .summaryPanel:after,
 .panel-custom .schedulePanel:after,
+.panel-custom .roomsPanel:after,
 .panel-custom .statusPanel:after {
     content: '';
     position: absolute;
@@ -1062,6 +1064,9 @@ footer .right>span:nth-child(2) {
 }
 .statusPanel:after {
     left: 355px;
+}
+.roomsPanel:after {
+    left: 495px;
 }
 .panel-custom .schedulePanel span {
     display: inline-block;
@@ -2716,14 +2721,14 @@ footer .right>span:nth-child(2) {
 }
 .panelSummary .panel-body .summaryWrapper {
     border-top: 1px solid #0bbbe7;
-    height: 94px;
+    height: 115px;
     line-height: 20px;
     margin-bottom: 17px;
     position: relative;
     margin-right: 16px;
 }
 .panelSummary .summaryWrapper .sumDiv {
-    height: 94px;
+    height: 115px;
     padding-top: 13px;
     margin-right: -16px;
 }
@@ -2748,6 +2753,15 @@ footer .right>span:nth-child(2) {
 }
 .panelSummary .summaryWrapper .roomDiv:before {
     left: 33px;
+}
+.panelSummary .summaryWrapper .roomsDiv:before {
+    left: 122px;
+}
+.panelSummary .summaryWrapper .divOneDiv1:before {
+    left: 230px !important;
+}
+.panelSummary .summaryWrapper .divTwoDiv1:before {
+    left: 310px !important;
 }
 .panelSummary .summaryWrapper .divOneDiv:before {
     left: 122px;
@@ -3666,6 +3680,7 @@ footer .right>span:nth-child(2) {
     .panel-custom .summaryPanel,
     .panel-custom .schedulePanel,
     .panel-custom .statusPanel,
+    .panel-custom .roomsPanel,
     .panelSummary .summaryWrapper,
     .panelSummary .summaryWrapper section {
         height: auto;
@@ -3673,12 +3688,14 @@ footer .right>span:nth-child(2) {
     }
     .panel-custom .summaryPanel,
     .panel-custom .schedulePanel,
+    .panel-custom .roomsPanel,
     .panel-custom .statusPanel {
-        min-height: 115px;
+        min-height: 150px;
     }
     .panel-custom .mainContent .tabs,
     .panel-custom .schedulePanel,
     .panel-custom .summaryPanel,
+    .panel-custom .roomsPanel,
     .panel-custom .statusPanel {
         width: 100%;
     }
@@ -4098,4 +4115,37 @@ footer .right>span:nth-child(2) {
 .coderHistoryHandleField {
     width: 80px;
     float: left;
+}
+.roomsDiv {
+    text-align: center;
+}
+.roomsDiv ul {
+    padding-left: 0px;
+    margin-bottom: 1px;
+}
+.roomsDiv li {
+    display:inline;
+    width: 70px;
+    float: left;
+}
+.panelSummary .summaryWrapper .sumDiv,
+.roomsPanel .roomsDivScroll {
+    margin-right: -5px !important;
+}
+.roomsDivScroll {
+    height: 115px;
+}
+.roomsDiv .pagination {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-top: 5px;
+    text-align: center;
+}
+.roomsPanel .pagination {
+    margin-top: 10px !important;
+}
+.panelSummary .panel-body .summaryWrapper,
+.panelSummary .summaryWrapper .sumDiv {
+    height: auto !important;
 }

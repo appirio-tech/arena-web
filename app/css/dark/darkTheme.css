@@ -10,6 +10,7 @@ body{
 .panel-custom .summaryPanel:after,
 .panel-custom .schedulePanel:after,
 .panel-custom .statusPanel:after,
+.panel-custom .roomsPanel:after,
 .panelSummary .summaryWrapper div:before{
     background-image: url(../img/dark/sprite.png);
 }

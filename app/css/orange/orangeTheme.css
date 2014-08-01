@@ -10,6 +10,7 @@ body{
 .panel-custom .summaryPanel:after,
 .panel-custom .schedulePanel:after,
 .panel-custom .statusPanel:after,
+.panel-custom .roomsPanel:after,
 .panelSummary .summaryWrapper div:before{
     background-image: url(../img/orange/sprite.png);
 }
@@ -285,6 +286,7 @@ footer .left>span {
 /* tabs */
 .panel-custom .schedulePanel,
 .panel-custom .statusPanel,
+.panel-custom .roomsPanel,
 .panel-custom .summaryPanel {
     border-color: #ff8a00;
     color: #333;
@@ -927,4 +929,10 @@ footer .left>span {
 
 .chatWidget-modal-header .modal-title{
     line-height: 24px;
+}
+.roomsDiv a {
+    color: #656565;
+}
+.roomsDiv a:hover {
+    color: #ff8a00;
 }

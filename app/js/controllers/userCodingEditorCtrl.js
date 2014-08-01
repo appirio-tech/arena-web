@@ -28,8 +28,11 @@
  * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
  * - Fixed issues in coding editor.
  *
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - Rooms Tab):
+ * - Added checking condition for rooms in challenge phase.
+ *
  * @author tangzx, amethystlei, flytoj2ee
- * @version 1.6
+ * @version 1.7
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $ */
@@ -257,6 +260,31 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
                 updateArgTypeAndMethod($scope.lang($scope.langIdx).id);
             }
+        };
+
+        /**
+         * Checks whether the user and the defendant in the same room.
+         *
+         * @returns {boolean} - the checking result.
+         */
+        $scope.isInSameRoom = function () {
+            var flag1 = false,
+                flag2 = false;
+
+            // cannot challenge user himself
+            if ($scope.defendant === $rootScope.username()) {
+                return false;
+            }
+
+            angular.forEach($rootScope.roomData[$scope.defendantRoomID].coders, function (member) {
+                if (member.userName === $rootScope.username()) {
+                    flag1 = true;
+                }
+                if (member.userName === $scope.defendant) {
+                    flag2 = true;
+                }
+            });
+            return flag1 && flag2;
         };
 
         /**

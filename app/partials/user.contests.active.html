@@ -16,6 +16,7 @@
                 <ul class="nav nav-tabs hidden-xs">
                     <li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0)">Contest Summary</li>
                     <li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1)">Contest Schedule</li>
+                    <li data-ng-class="{'textActive': contest.detailIndex == 3}" data-ng-click="setDetailIndex(contest, 3)" data-ng-show="isShownRooms(contest)">Rooms</li>
                 </ul>
                 <!-- button and label will show when window is very narrow -->
                 <ul class="nav altNav visible-xs">
@@ -26,6 +27,7 @@
                         <ul class="dropdown-menu">
                             <li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0);">Contest Summary</li>
                             <li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1);">Contest Schedule</li>
+                            <li data-ng-class="{'textActive': contest.detailIndex == 3}" data-ng-click="setDetailIndex(contest, 3);" data-ng-show="isShownRooms(contest)">Rooms</li>
                         </ul>
                     </li>
                 </ul>
@@ -49,6 +51,14 @@
                 </div>
             </div>
             <!-- /.schedulePanel -->
+            <div data-ng-show="contest.detailIndex == 3 && isShownRooms(contest)" class="roomsPanel roomsDiv">
+                <div class="roomsDivScroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:roomslist">
+                    <ul>
+                        <li data-ng-repeat="room in getRoomsList(contest) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize"><a data-ng-click="moveToRoom(contest, room.roomID)">{{room.roomTitle}}</a></li>
+                    </ul>
+                </div>
+                <div class="pagination" data-ng-hide="numberOfPages(contest) === 1"><a data-ng-hide="currentPage === 1" data-ng-click="prevPage()">Prev</a><span> {{currentPage}} / {{numberOfPages(contest)}} </span><a data-ng-hide="numberOfPages(contest) === currentPage" data-ng-click="nextPage()">Next</a></div>
+            </div>
         </div>
         <!-- /.mainContent -->
         <div class="paginator" data-ng-show="getContests().length > 1">

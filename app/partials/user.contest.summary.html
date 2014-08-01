@@ -7,6 +7,7 @@
             <div class="tabs">
                 <ul class="nav nav-tabs hidden-xs">
                     <li data-ng-class="{'textActive': viewOn=='room'}" data-ng-click="setViewOn('room')">Room</li>
+                    <li data-ng-class="{'textActive': viewOn=='rooms'}" data-ng-click="setViewOn('rooms')" data-ng-show="isShownRooms()">Rooms</li>
                     <li data-ng-show="isDivisionActive(contest, 'divOne')" data-ng-class="{'textActive': viewOn=='divOne'}" data-ng-click="setViewOn('divOne')">Division I</li>
                     <li data-ng-show="isDivisionActive(contest, 'divTwo')" data-ng-class="{'textActive': viewOn=='divTwo'}" data-ng-click="setViewOn('divTwo')">Division II</li>
                 </ul>
@@ -18,6 +19,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-ng-class="{'textActive': viewOn=='room'}" data-ng-click="setViewOn('room')">Room</li>
+                            <li data-ng-class="{'textActive': viewOn=='rooms'}" data-ng-click="setViewOn('rooms')" data-ng-show="isShownRooms()">Rooms</li>
                             <li data-ng-show="isDivisionActive(contest, 'divOne')" data-ng-class="{'textActive': viewOn=='divOne'}" data-ng-click="setViewOn('divOne')">Division I</li>
                             <li data-ng-show="isDivisionActive(contest, 'divTwo')" data-ng-class="{'textActive': viewOn=='divTwo'}" data-ng-click="setViewOn('divTwo')">Division II</li>
                         </ul>
@@ -29,16 +31,24 @@
                     <div class="scroll visible-lg visible-md" data-ng-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.roomSummary}}</div></div>
                     <div class="default visible-sm visible-xs"><div class="innerWrapper">{{contest.roomSummary}}</div></div>
                 </div>
-                <div data-ng-show="viewOn=='divOne'" class="divOneDiv sumDiv">
+                <div data-ng-show="viewOn=='rooms' && isShownRooms()" class="roomsDiv sumDiv">
+                    <div class="roomsDivScroll" data-rebuild-on="rebuild:roomslist" data-ng-scrollbar data-scroll-top data-rebuild-on-resize>
+                        <ul data-rebuild-on="rebuild:roomslist">
+                            <li data-ng-repeat="room in roomsList | startFrom:(currentPage-1)*pageSize | limitTo:pageSize"><a data-ng-click="moveToRoom(room.roomID)">{{room.roomTitle}}</a></li>
+                        </ul>
+                    </div>
+                    <div class="pagination" data-ng-hide="numberOfPages() === 1"><a data-ng-hide="currentPage === 1" data-ng-click="prevPage()">Prev</a><span> {{currentPage}} / {{numberOfPages()}} </span><a data-ng-hide="numberOfPages() === currentPage" data-ng-click="nextPage()">Next</a></div>
+                </div>
+                <div data-ng-show="viewOn=='divOne'" class="divOneDiv divOneDiv1 sumDiv">
                     <div class="scroll visible-lg visible-md" data-ng-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
                     <div class="default visible-sm visible-xs"><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
                 </div>
-                <div data-ng-show="viewOn=='divTwo'" data-ng-class="{divOneDiv: !isDivisionActive(contest, 'divOne'), divTwoDiv: isDivisionActive(contest, 'divOne')}" class="sumDiv">
+                <div data-ng-show="viewOn=='divTwo'" data-ng-class="{divOneDiv1: !isDivisionActive(contest, 'divOne'), divTwoDiv1: isDivisionActive(contest, 'divOne')}" class="sumDiv">
                     <div class="scroll visible-lg visible-md" data-ng-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
                     <div class="default visible-sm visible-xs"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
                 </div>
             </div>
-            <a class="detailLink" data-ng-click="viewDetail(contest)">View Details</a>
+            <a class="detailLink" data-ng-hide="viewOn=='rooms'" data-ng-click="viewDetail(contest)">View Detail</a>
         </div><!-- /.mainContent -->
     </div>
     <!-- /.panel-body -->
