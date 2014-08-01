@@ -354,7 +354,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootSco
             $scope.openModal({
                 title: 'Error',
                 message: 'You have entered ' + $scope.chatText.length +
-                    ' Characters. Please limit your message size to ' + helper.MAX_CHAT_LENGTH + ' characters.',
+                    ' characters. Please limit your message size to ' + helper.MAX_CHAT_LENGTH + ' characters.',
                 enableClose: true
             });
             return;
