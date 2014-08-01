@@ -23,7 +23,7 @@
             </ul>
         </div>
         <div class="infoSection" data-ng-show="showRegistrant">
-            <header><a data-ng-click="collapseRegistrant=!collapseRegistrant; rebuildScrollbar('info');" data-ng-class="{collapsed: collapseRegistrant}">Registrants<span>({{registrantsArray.length}})</span></a></header>
+            <header><a data-ng-click="collapseRegistrant=!collapseRegistrant; rebuildScrollbar('info');" data-ng-class="{collapsed: collapseRegistrant}">Registrants <span>({{registrantsArray.length}})</span></a></header>
             <ul class="scrollable users {{registrantsScrollHeight}}" data-ng-hide="collapseRegistrant" data-ng-scrollbar data-rebuild-on="rebuild:registrants" data-rebuild-on-resize data-scroll-top>
                 <li data-ng-repeat="member in registrantsArray | orderBy:registrantOrderPredicate"><!-- avoid blank
                     --><a data-ng-click="showCoderInfo(member.userName, member.userType);"><!--avoid blank
