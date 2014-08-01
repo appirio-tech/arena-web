@@ -36,6 +36,9 @@
  * - Updated to include the code mirror add-on.
  * - Updated to set reconnect logic.
  *
+ * Changes in version 1.9 (Module Assembly - Web Arena UI - Rooms Tab):
+ * - Updated to include the start from filter.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
  * @version 1.8
  */
@@ -158,6 +161,7 @@ main.factory('notificationService', factories.notificationService);
 /////////////
 // FILTERS //
 main.filter('showByMonth', filters.showByMonth);
+main.filter('startFrom', filters.startFrom);
 
 /////////////////
 // CONTROLLERS //

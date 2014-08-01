@@ -24,12 +24,15 @@
  * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
  * - Hide the register button if user already registered.
  *
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Rooms Tab):
+ * - Added logic for rooms tab.
+ *
  * @author amethystlei, dexy, flytoj2ee
- * @version 1.4
+ * @version 1.6
  */
 'use strict';
 /*global module, angular, require*/
-
+/*jslint plusplus: true*/
 /**
  * The helper.
  *
@@ -61,7 +64,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                             && contest.coderRooms && contest.coderRooms.length > 0) ? 'Enter' : '';
         },
         // show the active tab name when active contest widget is narrow
-        tabNames = ['Contest Summary', 'Contest Schedule', 'My Status'];
+        tabNames = ['Contest Summary', 'Contest Schedule', 'My Status', 'Rooms'];
 
     $scope.getPhaseTime = appHelper.getPhaseTime;
     $scope.range = appHelper.range;
@@ -147,6 +150,17 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
         return contest.action !== '';
     };
 
+    /**
+     * Returns the flag whether to show the rooms tab.
+     *
+     * @param contest - the contest
+     * @returns {boolean|$rootScope.roundData.coderRooms|*} the flag.
+     */
+    $scope.isShownRooms = function (contest) {
+        return contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.AlmostContestPhase
+            && contest.coderRooms && contest.coderRooms.length > 0;
+    };
+
     // sets the current contest for viewing
     $scope.setCurrentContest = function (newContest) {
         $scope.currentContest = newContest;
@@ -164,6 +178,64 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
             }
         });
     });
+
+    // default to 50
+    $scope.pageSize = 50;
+
+    $scope.currentPage = 1;
+
+    /**
+     * Moves to the room.
+     *
+     * @param contest - the contest
+     * @param roomId - the room id.
+     */
+    $scope.moveToRoom = function (contest, roomId) {
+        $rootScope.competingRoomID = roomId;
+        // requests will be sent by the resolvers
+        $state.go(helper.STATE_NAME.Contest, {
+            contestId: contest.roundID
+        }, {reload: true});
+    };
+    /**
+     * Returns the number of pages.
+     *
+     * @param contest - the contest instance
+     * @returns {number} - the page number
+     */
+    $scope.numberOfPages = function (contest) {
+        return Math.ceil($scope.getRoomsList(contest).length / $scope.pageSize);
+    };
+
+    /**
+     * Moves to next page.
+     */
+    $scope.nextPage = function () {
+        $scope.currentPage = $scope.currentPage + 1;
+        $scope.$broadcast('rebuild:roomslist');
+    };
+
+    /**
+     * Moves to previous page.
+     */
+    $scope.prevPage = function () {
+        $scope.currentPage = $scope.currentPage - 1;
+        $scope.$broadcast('rebuild:roomslist');
+    };
+
+    /**
+     * Returns the rooms list.
+     *
+     * @param contest - the contest instance.
+     * @returns {$rootScope.roundData.coderRooms|*} the room list
+     */
+    $scope.getRoomsList = function (contest) {
+        if (contest) {
+            return contest.coderRooms;
+        } else {
+            return [];
+        }
+    };
 
     // action for 'Register' or 'Enter'
     $scope.doAction = function (contest) {
@@ -212,10 +284,15 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.setDetailIndex = function (contest, index) {
         if (index < 0 ||
                 ($scope.isRegistrationOpen(contest) && index >= 2) ||
-                (!$scope.isRegistrationOpen(contest) && index >= 3)) {
+                (!$scope.isRegistrationOpen(contest) && index >= 4)) {
             // invalid index for detail tabs
             return;
         }
+
+        if (index === 3) {
+            $scope.$broadcast('rebuild:roomslist');
+        }
+
         contest.detailIndex = index;
     };
 

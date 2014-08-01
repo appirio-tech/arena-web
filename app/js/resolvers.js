@@ -44,8 +44,12 @@
  * - Handled re-connect logic.
  * - Sorted the chat user list.
  *
+ * Changes in version 1.10 (Module Assembly - Web Arena UI - Rooms Tab):
+ *  - Sets rooms data for rooms tab.
+ *  - Sets the currentRoomInfo while changed the room.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.9
+ * @version 1.10
  */
 ///////////////
 // RESOLVERS //
@@ -391,6 +395,13 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 $rootScope.roundData[data.roundID].adminRoom = data.adminRoom;
             }
             $rootScope.roundData[data.roundID].coderRooms = data.coderRooms;
+
+            if (!angular.isDefined($rootScope.roomData)) {
+                $rootScope.roomData = {};
+            }
+            angular.forEach(data.coderRooms, function (room) {
+                $rootScope.roomData[room.roomID] = room;
+            });
         }
         $rootScope.$broadcast(helper.EVENT_NAME.CreateRoomListResponse, data);
     });
@@ -566,16 +577,11 @@ resolvers.enterCompetingRoom = ['$q', 'socket', '$rootScope', '$stateParams', fu
     });
 
     if (angular.isDefined($rootScope.competingRoomID) && $rootScope.competingRoomID > -1) {
-        if (!angular.isDefined($rootScope.currentRoomInfo) || $rootScope.currentRoomInfo.roomID !== $rootScope.competingRoomID) {
-            socket.emit(helper.EVENT_NAME.MoveRequest, {
-                moveType: $rootScope.roomData[$rootScope.competingRoomID].roomType,
-                roomID: $rootScope.competingRoomID
-            });
-        } else {
-            // no need to change room, enter room directly
-            $rootScope.isEnteringRoom = false;
-            deferred.resolve();
-        }
+        $rootScope.currentRoomInfo = $rootScope.competingRoomID;
+        socket.emit(helper.EVENT_NAME.MoveRequest, {
+            moveType: $rootScope.roomData[$rootScope.competingRoomID].roomType,
+            roomID: $rootScope.competingRoomID
+        });
     } else {
         socket.emit(helper.EVENT_NAME.EnterRoundRequest, {roundID: Number($stateParams.contestId)});
     }

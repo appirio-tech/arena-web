@@ -13,8 +13,11 @@
  * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
  * - Added dialog to show registrants.
  *
+ * Changes in version 1.4 (Module Assembly - Web Arena UI - Rooms Tab):
+ * - Added rooms checking condition while user opening the problem to code.
+ *
  * @author amethystlei, flytoj2ee
- * @version 1.3
+ * @version 1.4
  */
 'use strict';
 /*global module, angular*/

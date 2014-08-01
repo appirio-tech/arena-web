@@ -15,6 +15,7 @@ body{
 .panel-custom .summaryPanel:after,
 .panel-custom .schedulePanel:after,
 .panel-custom .statusPanel:after,
+.panel-custom .roomsPanel:after,
 .panelSummary .summaryWrapper div:before{
     background-image: url(../img/light/sprite.png);
 }
@@ -793,4 +794,7 @@ footer .right .sponsorLogo {
 
 .chatWidget-modal-header .modal-title{
     line-height: 24px;
+}
+.panel-custom .panel-body .textActive {
+    color: #0000ff;
 }
