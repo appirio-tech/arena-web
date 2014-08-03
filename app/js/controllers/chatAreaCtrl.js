@@ -46,7 +46,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var chatAreaCtrl = ['$scope', '$rootScope', 'socket', function ($scope, $rootScope, socket) {
+var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($scope, $rootScope, socket, $timeout) {
     var roundData,
         rebuildAllScrollbar = function () {
             $scope.$broadcast('rebuild:methods');
