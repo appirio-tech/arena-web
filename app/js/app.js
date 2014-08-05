@@ -71,6 +71,8 @@ require('./../../bower_components/angular-timer/dist/angular-timer');
 require('./../../bower_components/jquery-ui/ui/jquery-ui.js');
 require('./../../bower_components/angular-ui-calendar/src/calendar.js');
 require('./../../bower_components/fullcalendar/fullcalendar.js');
+require('./../../bower_components/angulartics/dist/angulartics.min');
+require('./../../bower_components/angulartics/dist/angulartics-ga.min');
 require('./../../thirdparty/jquery.qtip/jquery.qtip.min.js');
 require('./../../thirdparty/ng-scrollbar/dist/ng-scrollbar.js');
 
@@ -143,7 +145,7 @@ directives.autoFillFix = require('./directives/autoFillFix');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'angular-themer', 'ngCookies']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics']);
 
 ///////////////
 // FACTORIES //

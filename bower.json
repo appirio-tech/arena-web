@@ -25,7 +25,8 @@
     "angular-ui-codemirror": "0.1.1",
     "angular-ui-calendar": "~0.8.1",
     "angular-themer" : "~0.2.2",
-    "angular-ui-angular": "https://github.com/angular-ui/angular.git"
+    "angular-ui-angular": "https://github.com/angular-ui/angular.git",
+    "angulartics": "~0.15.20"
   },
   "resolutions": {
     "jquery": "~2.x"

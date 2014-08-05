@@ -8,5 +8,6 @@ module.exports = {
     webSocketURL: '@@WEB_SOCKET_URL',
     ssoKey: '@@SSO_KEY',
     connectionTimeout: @@CONNECTION_TIMEOUT,
+    googleAnalyticsTrackingId: '@@GOOGLE_ANALYTICS_TRACKING_ID',
     staticFileHost: '@@STATIC_FILE_HOST'
 };

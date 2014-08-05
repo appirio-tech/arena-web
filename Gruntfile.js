@@ -51,6 +51,7 @@ module.exports = function (grunt) {
                         { match : 'API_DOMAIN', replacement: process.env.API_DOMAIN },
                         { match : 'SSO_KEY', replacement: process.env.SSO_KEY },
                         { match : 'STATIC_FILE_HOST', replacement: process.env.STATIC_FILE_HOST },
+                        { match : 'GOOGLE_ANALYTICS_TRACKING_ID', replacement: process.env.GOOGLE_ANALYTICS_TRACKING_ID },
                         { match : 'CONNECTION_TIMEOUT', replacement: process.env.CONNECTION_TIMEOUT }
                     ]
                 },
@@ -61,7 +62,8 @@ module.exports = function (grunt) {
             cdn: {
                 options: {
                     patterns: [
-                        { match : 'STATIC_FILE_HOST', replacement: process.env.STATIC_FILE_HOST }
+                        { match : 'STATIC_FILE_HOST', replacement: process.env.STATIC_FILE_HOST },
+                        { match : 'GOOGLE_ANALYTICS_TRACKING_ID', replacement: process.env.GOOGLE_ANALYTICS_TRACKING_ID }
                     ]
                 },
                 files: [
