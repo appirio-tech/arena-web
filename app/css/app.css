@@ -4149,3 +4149,6 @@ footer .right>span:nth-child(2) {
 .panelSummary .summaryWrapper .sumDiv {
     height: auto !important;
 }
+*:focus {
+    outline: none;
+}
