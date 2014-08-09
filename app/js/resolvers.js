@@ -48,8 +48,14 @@
  *  - Sets rooms data for rooms tab.
  *  - Sets the currentRoomInfo while changed the room.
  *
+ * Changes in version 1.11 (Module Assembly - Web Arena UI - Notifications):
+ * - Added notificationService to finishLogin.
+ * - Update PhaseDataResponse handling to add notifications.
+ * - Removed out previous SingleBroadcastResponse handling and added new one.
+ * - Added handlers for GetAdminBroadcastResponse and ImportantMessageResponse.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.10
+ * @version 1.11
  */
 ///////////////
 // RESOLVERS //
@@ -77,7 +83,7 @@ var DATE_FORMAT = 'MMM d, h:mm a';
 //Here we put resolver logic into a container object so that the state declaration code section stays readable
 var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
-resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', 'appHelper', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService, appHelper) {
+resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', 'notificationService', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService, notificationService) {
     var deferred, sso = sessionHelper.getTcsso(), requestId,
         forceLogout = function () {
             $rootScope.isLoggedIn = false;
@@ -472,6 +478,18 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         if ($rootScope.roundData[data.phaseData.roundID]) {
             $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
             $rootScope.$broadcast(helper.EVENT_NAME.PhaseDataResponse, data);
+            notificationService.addNotificationMessage({
+                type: 'round',
+                time: Date.now(),
+                roundName: $rootScope.roundData[data.phaseData.roundID].contestName,
+                message: $rootScope.roundData[data.phaseData.roundID].contestName + ': '
+                        + helper.PHASE_NAME[data.phaseData.phaseType] + ' starts at '
+                        + $filter('date')(data.phaseData.startTime, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone,
+                popUpContent: $rootScope.roundData[data.phaseData.roundID].contestName + ': '
+                        + helper.PHASE_NAME[data.phaseData.phaseType] + ' starts at '
+                        + $filter('date')(data.phaseData.startTime, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone
+                        + ' and ends at ' + $filter('date')(data.phaseData.endTime, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone + '.'
+            });
         }
     });
 
@@ -495,10 +513,10 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         $rootScope.$broadcast(helper.EVENT_NAME.PopUpGenericResponse, data);
     });
 
-    // handle single broadcast response
-    socket.remove(helper.EVENT_NAME.SingleBroadcastResponse);
+    // handle single broadcast
     socket.on(helper.EVENT_NAME.SingleBroadcastResponse, function (data) {
-        $rootScope.$broadcast(helper.EVENT_NAME.SingleBroadcastResponse, data);
+        data.broadcast.popUpContent = data.broadcast.message;
+        notificationService.addNotificationMessage(data.broadcast);
     });
 
     // request login
@@ -507,6 +525,24 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     // handle forced logout
     socket.on(helper.EVENT_NAME.ForcedLogoutResponse, function (data) {
         $rootScope.$broadcast(helper.EVENT_NAME.ForcedLogoutResponse, data);
+    });
+
+    /// handle admin broadcasts
+    socket.on(helper.EVENT_NAME.GetAdminBroadcastResponse, function (data) {
+        angular.forEach(data.broadcasts, function (broadcast) {
+            broadcast.popUpContent = broadcast.message;
+            notificationService.addNotificationMessage(broadcast);
+        });
+    });
+
+    // handle important messages
+    socket.on(helper.EVENT_NAME.ImportantMessageResponse, function (data) {
+        notificationService.addNotificationMessage({
+            type: 'general',
+            time: Date.now(),
+            message: data.text,
+            popUpContent: data.text
+        });
     });
 }];
 

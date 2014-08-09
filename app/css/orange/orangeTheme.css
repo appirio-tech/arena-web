@@ -258,6 +258,17 @@ footer .left>span {
 .modal .modal-content .modal-footer {
     border-width: 0;
 }
+
+.notificationPopup {
+    color: #3BA35E;
+}
+.notificationPopup p {
+    color: #B93C42;
+}
+.notificationPopup p span {
+    color: #707070;
+}
+
 /* ng-scrollbar style */
 .body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
     background: #ff8a00;

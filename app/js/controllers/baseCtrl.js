@@ -35,8 +35,15 @@
  * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
  * - Handle the disconnect logic.
  *
+ * Changes in version 1.8 (Module Assembly - Web Arena UI - Notifications):
+ * - Send GetAdminBroadcastsRequest on the start to get all the broadcast messages.
+ * - Add notification messages on the phase change, removed pop-up opening.
+ * - Removed SingleBroadcastResponse handling since it is handled in resolver to
+ *   create notifications instead of pop-ups.
+ * - Added showNotificationDetails to the scope to show notification details in the pop-up.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.6
+ * @version 1.8
  */
 'use strict';
 /*jshint -W097*/
@@ -55,7 +62,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', '$filter', 'socket', '$timeout', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, $filter, socket, $timeout) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window) {
     var /**
          * The modal controller.
          *
@@ -102,6 +109,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
 
     // modal defined in the root scope can be used by other scopes.
     $rootScope.currentModal = null;
+    socket.emit(helper.EVENT_NAME.GetAdminBroadcastsRequest, {});
 
     /**
      * Open modal function.
@@ -215,16 +223,37 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         }
     });
     $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
+        var roundName, idx;
         // handle phase change messages
         if (data.title === helper.POP_UP_TITLES.PhaseChange) {
             if (!data.buttons) {
-                $scope.openModal({
-                    title: helper.POP_UP_TITLES.PhaseChange,
+                idx = data.message.indexOf(helper.PHASE_DATA.START_MESSAGE);
+                if (idx === -1) {
+                    idx = data.message.indexOf(helper.PHASE_DATA.END_MESSAGE);
+                    if (idx === -1) {
+                        roundName = '';
+                    } else {
+                        roundName = data.message.substr(idx + helper.PHASE_DATA.END_MESSAGE.length);
+                    }
+                } else {
+                    roundName = data.message.substr(idx + helper.PHASE_DATA.START_MESSAGE.length);
+                }
+                if (roundName[roundName.length - 1] === '.') {
+                    roundName = roundName.substr(0, roundName.length - 1);
+                }
+                notificationService.addNotificationMessage({
+                    type: 'round',
+                    roundName: roundName,
+                    time: Date.now(),
                     message: data.message,
-                    enableClose: true
+                    popUpContent: data.message
                 });
             } else {
                 data.enableClose = true;
+                roundName = angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roomData)
+                            && angular.isDefined($rootScope.roomData[data.moveData[1]])
+                            && angular.isDefined($rootScope.roundData[$rootScope.roomData[data.moveData[1]].roundID])
+                            ? $rootScope.roundData[$rootScope.roomData[data.moveData[1]].roundID].contestName : '';
                 angular.forEach($rootScope.roundData, function (round) {
                     angular.forEach(round.coderRooms, function (room) {
                         if (room.roomID === data.moveData[1]) {
@@ -232,17 +261,17 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                         }
                     });
                 });
-                $state.go(helper.STATE_NAME.Dashboard);
-                var ok = function () {
-                    // requests will be sent by the resolvers
-                    if (phaseChangeRoundId) {
-                        $rootScope.competingRoomID = -1;
-                        $state.go(helper.STATE_NAME.Contest, {
-                            contestId: phaseChangeRoundId
-                        });
+                notificationService.addNotificationMessage({
+                    type: 'round',
+                    roundName: roundName,
+                    time: Date.now(),
+                    message: '',
+                    popUpContent: data.message,
+                    action : {
+                        question: data.message,
+                        target: '#/u/contests/' + phaseChangeRoundId
                     }
-                };
-                $scope.openModal(data, ok);
+                });
             }
         } else if (data.title === helper.POP_UP_TITLES.CoderInfo) {
             if (modalTimeoutPromise) {
@@ -261,23 +290,6 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 enableClose: true
             });
         }
-    });
-    $scope.$on(helper.EVENT_NAME.SingleBroadcastResponse, function (event, data) {
-        var html =
-            '<section>' +
-            '  <h4>Broadcast Information</h4>' +
-            '  <p>Time: ' + $filter('date')(new Date(data.broadcast.time), 'MM/dd/yy HH:mm a') + ' ' + $scope.timeZone + '</p>' +
-            '  <p>Round: ' + data.broadcast.roundName + '</p>' +
-            '</section>' +
-            '<section>' +
-            '  <h4>Broadcast Message</h4>' +
-            '  <p>' + data.broadcast.message + '</p>' +
-            '</section>';
-        $scope.openModal({
-            title: 'Round Broadcast',
-            message: html,
-            enableClose: true
-        });
     });
     /*jslint unparam: false*/
     // theme selector
@@ -409,6 +421,28 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return "rating-admin";
         }
         return "";
+    };
+
+    /**
+     * Opens pop up with notificatino details.
+     *
+     * @param notification the notification being opened
+     */
+    $scope.showNotificationDetails = function (notification) {
+        var okClicked = function () {
+                if (angular.isDefined(notification.action) && angular.isDefined(notification.action.target)
+                        && notification.action.target.length > 0) {
+                    $window.location.href = notification.action.target;
+                }
+            },
+            buttons = ((angular.isDefined(notification.action) && angular.isDefined(notification.action.target)
+                    && notification.action.target.length > 0)) ? ['Yes', 'No'] : [];
+        $scope.openModal({
+            title: helper.NOTIFICATION_TITLES[notification.type],
+            message: notification.messageHTML,
+            buttons: buttons,
+            enableClose: true
+        }, okClicked);
     };
 }];
 

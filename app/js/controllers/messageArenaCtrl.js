@@ -1,8 +1,26 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This file provides the message arena controller.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena UI - Notifications):
+ * - Added $window and goTo function to the scope to handle going to other page.
+ * - Removed previous notification demo code.
+ *
+ * @author dexy
+ * @version 1.1
+ */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
 /*global document, angular:false, $:false, module*/
-var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', function ($scope, $timeout, notificationService) {
+/**
+ * The message arena controller.
+ *
+ * @type {*[]}
+ */
+var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', '$window', function ($scope, $timeout, notificationService, $window) {
     $scope.$watch('notificationService.getUnRead()', function (newVal, oldVal) {
         $scope.$broadcast('rebuild:messages');
         if (newVal > oldVal) {
@@ -15,18 +33,13 @@ var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', function ($
                 angular.element(target).addClass('animationaAlert');
                 $timeout(function () {
                     angular.element(target).removeClass('animationaAlert');
-                }, 1000);                
+                }, 1000);
             }
         }
-    });
+        $scope.goTo = function (link) {
+            $window.location.href = link;
+        };
 
-    // load notifications after logged in.
-    $scope.$watch('loggedIn()', function (newVal, oldVal) {
-        if (newVal) {
-            notificationService.startLoadMessages();
-        } else {
-            notificationService.resetLoadMessages();
-        }
     });
 }];
 

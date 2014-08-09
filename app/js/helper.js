@@ -48,8 +48,14 @@
  * - Added coder history event names.
  * - Updated for re-connect logic.
  *
+ * Changes in version 1.12 (Module Assembly - Web Arena UI - Notifications):
+ * - Added GetAdminBroadcastsRequest, GetAdminBroadcastResponse, ImportantMessageResponse,
+ *   ImportantMessageResponse, ReadMessageRequest events.
+ * - Added BROADCAST_TYPE_NAME, DATE_NOTIFICATION_FORMAT, NOTIFICATION_TITLES, PHASE_DATA constants
+ *   to handle notifications.
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.11
+ * @version 1.12
  */
 
 module.exports = {
@@ -79,12 +85,14 @@ module.exports = {
         EnterRequest: 'EnterRequest',
         EnterRoundRequest: 'EnterRoundRequest',
         GenericPopupRequest: 'GenericPopupRequest',
+        GetAdminBroadcastsRequest: 'GetAdminBroadcastsRequest',
         GetChallengeProblemRequest: 'GetChallengeProblemRequest',
         KeepAliveRequest: 'KeepAliveRequest',
         LogoutRequest: 'LogoutRequest',
         MoveRequest: 'MoveRequest',
         OpenComponentForCodingRequest: 'OpenComponentForCodingRequest',
         DivSummaryRequest: 'DivSummaryRequest',
+        ReadMessageRequest: 'ReadMessageRequest',
         RegisterInfoRequest: 'RegisterInfoRequest',
         RegisterRequest: 'RegisterRequest',
         RegisterUsersRequest: 'RegisterUsersRequest',
@@ -103,7 +111,9 @@ module.exports = {
         EnableRoundResponse: 'EnableRoundResponse',
         EndSyncResponse: 'EndSyncResponse',
         ForcedLogoutResponse: 'ForcedLogoutResponse',
+        GetAdminBroadcastResponse: 'GetAdminBroadcastResponse',
         GetProblemResponse: 'GetProblemResponse',
+        ImportantMessageResponse: 'ImportantMessageResponse',
         KeepAliveInitializationDataResponse: 'KeepAliveInitializationDataResponse',
         KeepAliveResponse: 'KeepAliveResponse',
         LoginResponse: 'LoginResponse',
@@ -310,5 +320,28 @@ module.exports = {
     },
 
     // The timeout between two consecutive CloseDivSummaryRequest and DivSummaryRequest.
-    DIVSUMMARYREQUEST_TIMEGAP: 100
+    DIVSUMMARYREQUEST_TIMEGAP: 100,
+
+    // Types of the broadcasts
+    BROADCAST_TYPE_NAME: {
+        '0': 'general',
+        '1': 'round',
+        '2': 'problem'
+    },
+
+    // Date format used in notifications
+    DATE_NOTIFICATION_FORMAT: 'MM/dd/yy h:mm a',
+
+    // Pop-up titles used for notification details
+    NOTIFICATION_TITLES: {
+        'general': 'Admin Broadcast',
+        'round': 'Round Broadcast',
+        'problem': 'Problem Broadcast'
+    },
+
+    // Content of the phase date change messages to determine the cut and extract the round name
+    PHASE_DATA: {
+        START_MESSAGE: 'is starting for ',
+        END_MESSAGE: 'is ending for '
+    }
 };
