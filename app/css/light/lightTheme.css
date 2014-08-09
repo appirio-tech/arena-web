@@ -231,6 +231,15 @@ footer .right .sponsorLogo {
 .modal .modal-content .modal-body .argType {
     color: #000;
 }
+.notificationPopup {
+    color: #3BA35E;
+}
+.notificationPopup p {
+    color: #B93C42;
+}
+.notificationPopup p span {
+    color: #707070;
+}
 /********************* active contests part */
 .panel-custom {
     background: #f5f8fa;
@@ -486,7 +495,9 @@ footer .right .sponsorLogo {
 .messageArena .messageBox .mItem {
     border-bottom: 1px solid #b7c9d7;
 }
-
+.messageArena .messageBox .mItem .bottomRow {
+    color: #5e92ad !important;
+}
 /*room summary widget in contest page*/
 .panelSummary {
     border-color: #b7c9d7;

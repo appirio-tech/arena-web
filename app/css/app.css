@@ -974,6 +974,16 @@ footer .right>span:nth-child(2) {
     opacity: .8;
     filter: alpha(opacity=80);
 }
+
+.notificationPopup {
+    color: #A8FAC4;
+}
+.notificationPopup p {
+    color: #FFAAAE;
+}
+.notificationPopup p span {
+    color: #FDFDFD;
+}
 /********************* active contests part */
 .panel-custom {
     width: 759px;
@@ -2308,6 +2318,7 @@ footer .right>span:nth-child(2) {
     width: 286px;
     border-bottom: 1px solid #1f444e;
     position: relative;
+    cursor: pointer;
 }
 .messageArena .messageBox .mItem:last-child {
     border-bottom-width: 0;
@@ -2320,7 +2331,7 @@ footer .right>span:nth-child(2) {
     line-height: 17px;
 }
 .messageArena .messageBox .mItem .bottomRow {
-    color: #636d70;
+    color: #8BA0A6;
 }
 .messageArena .messageBox .mItem .bottomRow a {
     text-decoration: underline;

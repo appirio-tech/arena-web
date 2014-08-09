@@ -25,8 +25,12 @@
  * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
  * - Added new method 'hyphenate' to apphelper factory, to break long word in chat widget
  *
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Notifications):
+ * - Removed $timeout, $http from notificationService.
+ * - Removed the demo code and put real data handling in notificationService.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh
- * @version 1.5
+ * @version 1.6
  */
 'use strict';
 var config = require('./config');
@@ -41,27 +45,91 @@ var helper = require('./helper');
 
 var factories = {};
 
-factories.notificationService = ['$timeout', '$http', 'sessionHelper', function ($timeout, $http, sessionHelper) {
+factories.notificationService = ['$rootScope', '$filter', function ($rootScope, $filter) {
     var service = {
         notifications: [],
         unRead: 0
     },
-        repeatTimer = null;
+        sameMessage = function (msgA, msgB) {
+            return msgA.date === msgB.date && msgA.type === msgB.type && msgA.message === msgB.message
+                && ((!angular.isDefined(msgA.action) && !angular.isDefined(msgB.action))
+                    || (angular.isDefined(msgA.action) && angular.isDefined(msgB.action)
+                        && msgA.action.question === msgB.action.question && msgA.action.target === msgB.action.target));
+        },
+        /**
+         * Formats the broadcat message into HTML format suitable for pop-up.
+         *
+         * @param message the notification which needs to be formatted into HTML
+         * @return {string} the HTML content of the formatted message
+         */
+        formatMessage = function (message) {
+            if (message.type === 'general') {
+                return "<div class = 'notificationPopup'>"
+                        + "<div>Broadcast information</div>"
+                        + "<table>"
+                        + "<tr><td><p>Time: <span>" + message.date + "</span></p></td></tr>"
+                        + "</table>"
+                        + "<div>Broadcast Message</div>"
+                        + "<p><span>" + message.popUpContent + "</span></p>"
+                        + "</div>";
+            }
+            if (message.type === 'round') {
+                return "<div class = 'notificationPopup'>"
+                        + "<div>Broadcast information</div>"
+                        + "<table>"
+                        + "<tr><td><p>Time: <span>" + message.date + "</span></p></td></tr>"
+                        + "<tr><td><p>Round: <span>" + message.roundName + "</span></p></td></tr>"
+                        + "</table>"
+                        + "<div>Broadcast Message</div>"
+                        + "<p><span>" + message.popUpContent + "</span></p>"
+                        + "</div>";
+            }
+            if (message.type === 'problem') {
+                return "<div class = 'notificationPopup'>"
+                        + "<div>Broadcast information</div>"
+                        + "<table>"
+                        + "<tr><td><p>Time: <span>" + message.date + "</span></p></td>"
+                        + "<td><p>Class: <span>" + message.className + "</span></p></td></tr>"
+                        + "<tr><td><p>Round: <span>" + message.roundName + "</span></p></td>"
+                        + "<td><p>Method: <span>" + message.methodSignature + "</span></p></td></tr>"
+                        + "<tr><td><p>Division: <span>" + message.division + "</span></p></td>"
+                        + "<td><p>Returns: <span>" + message.returnType + "</span></p></td></tr>"
+                        + "<tr><td><p>Point value: <span>" + message.pointValue + "</span></p></td></tr>"
+                        + "</table>"
+                        + "<div>Broadcast Message</div>"
+                        + "<p><span>" + message.popUpContent + "</span></p>"
+                        + "</div>";
+            }
+            return message.message;
+        };
     service.getUnRead = function () {
         return service.unRead;
     };
     service.clearUnRead = function () {
         service.notifications.forEach(function (message) {
             message.read = true;
+            message.status = '[...]'; // consider putting 'Read'/'Unread'
         });
         service.unRead = 0;
     };
     service.clearNotifications = function () {
         service.clearUnRead();
         service.notifications.length = 0;
-        if (repeatTimer) {
-            $timeout.cancel(repeatTimer);
+    };
+    /**
+     * Checks if the message is already added to the list of notifications.
+     * NOTE: This is to prevent to insert duplicates, which backend sometimes send
+     */
+    service.existMessage = function (message) {
+        var exist = false, inotification;
+        if (angular.isDefined(service) && angular.isDefined(service.notifications) && service.notifications.length > 0) {
+            for (inotification = 0; inotification < service.notifications.length && !exist; inotification += 1) {
+                if (sameMessage(message, service.notifications[inotification])) {
+                    exist = true;
+                }
+            }
         }
+        return exist;
     };
 
     // the central way to add message
@@ -80,58 +148,36 @@ factories.notificationService = ['$timeout', '$http', 'sessionHelper', function 
         // }
         var i, unreadDelta = 0;
         for (i = messages.length - 1; i >= 0; i -= 1) {
-            service.notifications.unshift(messages[i]);
-            if (!messages[i].read) {
-                unreadDelta += 1;
+            if (!service.existMessage(messages[i])) {
+                service.notifications.unshift(messages[i]);
+                if (!messages[i].read) {
+                    unreadDelta += 1;
+                }
             }
         }
         // the change of service.unRead is watched in messageArenaCtrl.js
         service.unRead += unreadDelta;
     };
 
+    /**
+     * Notification message to be added to the list of notifications.
+     *
+     * @param message the notification message
+     */
+    service.addNotificationMessage = function (message) {
+        message.read = false;
+        if (angular.isDefined(helper.BROADCAST_TYPE_NAME[message.type])) {
+            message.type = helper.BROADCAST_TYPE_NAME[message.type];
+        }
+        message.date = $filter('date')(new Date(message.time), helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone;
+        message.status = '[...]';
+        message.messageHTML = formatMessage(message);
+        service.addMessages([message]);
+    };
     // demo starts in messageArenaCtrl.js
     service.startLoadMessages = function () {
-        function loadMessages(url) {
-            $http.get(url).success(function (data) {
-                service.addMessages(data);
-            });
-        }
-        // periodically load messages
-        function repeatLoadMessages() {
-            // demo only
-            if (service.repeatLoading) {
-                if (service.demoing) {
-                    if (service.demoId > service.demoCount) {
-                        service.demoing = false;
-                    } else if (sessionHelper.isLoggedIn()) {
-                        loadMessages('data/notifications-' + service.demoId + '.json');
-                        service.demoId += 1;
-                    }
-                }
-                // request for messages after 4 seconds
-                repeatTimer = $timeout(repeatLoadMessages, 4000);
-            }
-        }
-        service.clearNotifications();
-        service.repeatLoading = true;
-        repeatLoadMessages();
-        // demo only
-        $timeout(function () {
-            service.demoing = true;
-            service.demoId = 0;
-            service.demoCount = 3;
-        }, 1500);
-    };
-    service.resetLoadMessages = function () {
-        service.demoId = 0;
-        service.demoCount = 0;
-        service.demoing = false;
-        service.repeatLoading = false;
         service.clearNotifications();
     };
-    service.resetLoadMessages();
-    //demo end
-
     return service;
 }];
 
