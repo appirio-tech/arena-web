@@ -134,6 +134,11 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
 
     // the central way to add message
     service.addMessages = function (messages) {
+        var player = document.getElementById('player');
+        if (player) {
+            player.load();
+            player.play();
+        }
         // messages: array of message
         // message: {
         //   read: boolean - indicate the message is read or not
