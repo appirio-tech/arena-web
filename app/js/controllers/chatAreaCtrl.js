@@ -421,7 +421,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
             k;
 
         for (i = 0; i < angular.element('.allChatText').length; i++) {
-            text = $scope.htmlEncode($(angular.element('.allChatText')[i]).text());
+            text = $(angular.element('.allChatText')[i]).text();
             resultText = '';
             index = 0;
             if ($scope.matchCheck !== true) {
@@ -431,9 +431,9 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
             }
 
             for (k = 0; k < splitBySearch.length; k++) {
-                resultText = resultText + text.substring(index, index + splitBySearch[k].length);
+                resultText = resultText + $scope.htmlEncode(text.substring(index, index + splitBySearch[k].length));
                 index = index + splitBySearch[k].length;
-                resultText = resultText + wrapStart + text.substring(index, index + findText.length) + wrapEnd;
+                resultText = resultText + wrapStart + $scope.htmlEncode(text.substring(index, index + findText.length)) + wrapEnd;
                 index = index + findText.length;
             }
 
@@ -449,7 +449,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         }
 
         if ($scope.findText !== '') {
-            $scope.replaceText($scope.htmlEncode($scope.findText));
+            $scope.replaceText($scope.findText);
         }
 
         $scope.previousSearchText = $scope.findText;
