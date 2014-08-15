@@ -34,8 +34,11 @@
  * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
  * - Added show coder history logic.
  *
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
+ * - Rebuild the scroll bar at page load.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.5
+ * @version 1.6
  */
 'use strict';
 /*jshint -W097*/
@@ -458,6 +461,11 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         $scope.viewOn = view;
         rebuildScrollbars();
     };
+
+    setTimeout(function () {
+        rebuildScrollbars();
+    }, 100);
+
     $scope.getViewOnTitle = function () {
         if ($scope.viewOn === 'room') {
             return 'Room';

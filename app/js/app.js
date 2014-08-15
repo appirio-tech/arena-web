@@ -134,6 +134,7 @@ directives.messageArena = require('./directives/messageArena');
 directives.contestSummary = require('./directives/contestSummary');
 directives.ratingIndicator = require('./directives/ratingIndicator');
 directives.autoFillFix = require('./directives/autoFillFix');
+directives.sglclick = require('./directives/sglclick');
 
 /*global $ : false, angular : false */
 /*jslint nomen: true, browser: true */
@@ -207,6 +208,7 @@ main.directive('messageArena', directives.messageArena);
 main.directive('contestSummary', directives.contestSummary);
 main.directive('ratingIndicator', directives.ratingIndicator);
 main.directive('autoFillFix', directives.autoFillFix);
+main.directive('sglclick', directives.sglclick);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //

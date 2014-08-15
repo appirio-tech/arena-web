@@ -42,8 +42,11 @@
  *   create notifications instead of pop-ups.
  * - Added showNotificationDetails to the scope to show notification details in the pop-up.
  *
+ * Changes in version 1.9 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
+ * - Change the disconnect message.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.8
+ * @version 1.9
  */
 'use strict';
 /*jshint -W097*/
@@ -206,7 +209,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             isDisconnecting = true;
             $scope.openModal({
                 title: helper.POP_UP_TITLES.Disconnected,
-                message: helper.POP_UP_MESSAGES.ForcedLogout,
+                message: helper.POP_UP_MESSAGES.LostConnection,
                 enableClose: true
             });
         }

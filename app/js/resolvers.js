@@ -54,14 +54,18 @@
  * - Removed out previous SingleBroadcastResponse handling and added new one.
  * - Added handlers for GetAdminBroadcastResponse and ImportantMessageResponse.
  *
+ * Changes in version 1.12 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
+ * - Handled the html links in chat content.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.11
+ * @version 1.12
  */
 ///////////////
 // RESOLVERS //
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
+/*jslint plusplus: true*/
 /*global require, setTimeout, console, module, angular*/
 
 var config = require('./config');
@@ -251,7 +255,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 rating: data.ratings[i]});
         }
 
-        tmpArray.sort(
+        tmpArray = tmpArray.sort(
             function (a, b) {
                 var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
                 if (nameA < nameB) {//sort string ascending
@@ -328,7 +332,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                     rating: data.userListItem.userRating
                 });
 
-                tmpArray.sort(
+                tmpArray = tmpArray.sort(
                     function (a, b) {
                         var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
                         if (nameA < nameB) {//sort string ascending
@@ -375,19 +379,64 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         }
 
         $rootScope.chatScope = data.scope;
-        var user = data.data.split(':')[0];
+
+        var str = '', roomId = data.roomID + str, links = [], user = '', splitData = '', index = data.data.indexOf(': '),
+            allLinks, linksArray, i, j, flag;
+        if (!$rootScope.chatContent) {
+            $rootScope.chatContent = {};
+        }
+        if (!$rootScope.chatContent[roomId]) {
+            $rootScope.chatContent[roomId] = [];
+        }
+
+        if (index !== -1) {
+            user = data.data.substring(0, index);
+            splitData = data.data.substring(index + 1);
+        } else {
+            splitData = data.data;
+        }
+
+        if (splitData.length > 1) {
+            allLinks = splitData;
+            if (allLinks.length > 1) {
+                allLinks = allLinks.substring(0, allLinks.length - 1);
+            }
+            linksArray = allLinks.split(' ');
+
+            for (i = 0; i < linksArray.length; i++) {
+                if (linksArray[i].toLowerCase().indexOf('http://') === 0
+                    || linksArray[i].toLowerCase().indexOf('https://') === 0) {
+                    flag = false;
+                    for (j = 0; j < links.length; j++) {
+                        if (links[j] === linksArray[i]) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag) {
+                        links.push(linksArray[i]);
+                    }
+
+                }
+            }
+        }
+
         if (user === $rootScope.username()) {
-            $rootScope.chatContent.push({
+            $rootScope.chatContent[roomId].push({
                 userRating: data.rating,
                 prefix: data.prefix,
                 text: data.data,
+                hasLink: links.length !== 0,
+                links: links,
                 type: 'toMe'
             });
         } else {
-            $rootScope.chatContent.push({
+            $rootScope.chatContent[roomId].push({
                 userRating: data.rating,
                 prefix: data.prefix,
                 text: data.data,
+                hasLink: links.length !== 0,
+                links: links,
                 type: getChatType(data.type)
             });
         }

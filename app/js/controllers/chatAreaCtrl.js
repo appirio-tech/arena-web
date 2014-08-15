@@ -27,11 +27,14 @@
  * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
  * - Fixed the issues in chat area.
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.6
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
+ * - Fixed the issues in chat area.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
+ * @version 1.7
  */
 'use strict';
-/*global require, module, angular */
+/*global require, module, angular, $, window, document */
 /*jshint strict:false*/
 /*jslint plusplus: true*/
 /**
@@ -75,9 +78,8 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
     $scope.findMode = false;
     $scope.findText = "";
     $scope.matchCheck = false;
-    $scope.highlightCheck = true;
-    $scope.whosHereOrderPredicate = '-name.toLowerCase()';
-    $scope.registrantOrderPredicate = '-userName.toLowerCase()';
+    $scope.whosHereOrderPredicate = 'name.toLowerCase()';
+    $scope.registrantOrderPredicate = 'userName.toLowerCase()';
     $scope.methodIdx = 1;
     $rootScope.memberIdx = null;
     $scope.chatText = "";
@@ -92,6 +94,21 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
     $scope.ratingKeyScrollHeight = '';
     $scope.registrantsScrollHeight = '';
     $scope.whosHereScrollHeight = '';
+
+    $scope.fontSizes = [
+        "Small",
+        "Medium",
+        "Large"
+    ];
+    $scope.currentFontSize = "Medium";
+
+    /**
+     * Sets the font size.
+     * @param size - the font size.
+     */
+    $scope.setFontSize = function (size) {
+        $scope.currentFontSize = size;
+    };
 
     if ($rootScope.currentRoomInfo.roomType === helper.ROOM_TYPE_ID.LobbyRoom) {
         // set lobby room menu
@@ -115,7 +132,6 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
     }
 
     if ($rootScope.isEnteringRoom) {
-        $rootScope.chatContent = [];
         $rootScope.$broadcast('rebuild:chatboard');
         socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
     }
@@ -173,7 +189,6 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         }
         socket.emit(helper.EVENT_NAME.MoveRequest, {moveType: $rootScope.roomMenu[roomID].roomType, roomID: roomID});
         socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
-        $rootScope.chatContent = [];
         $scope.$broadcast('rebuild:chatboard');
     };
     /*jslint unparam: false*/
@@ -210,6 +225,14 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
             angular.element('#chatInputDiv').width(350);
             angular.element('#chatInputText').width(350);
         }
+    };
+
+    /**
+     * Sets the find mode.
+     * @param flag - the find mode flag.
+     */
+    $scope.setFindMode = function (flag) {
+        $scope.findMode = flag;
     };
 
     /**
@@ -263,8 +286,26 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
 
 
     $scope.rebuildMembersScrollbar = function () {
+        if ($(window).scrollTop() + $(window).height() !== $(document).height()) {
+            angular.element('#usersList').addClass('dropdown-menu-up');
+        } else {
+            angular.element('#usersList').removeClass('dropdown-menu-up');
+        }
         $scope.$broadcast('rebuild:whosHere');
         $scope.$broadcast('rebuild:members');
+    };
+
+    /**
+     * Rebuild chat methods scroll bar.
+     */
+    $scope.rebuildMethodsScrollbar = function () {
+        if ($(window).scrollTop() + $(window).height() !== $(document).height()) {
+            angular.element('#methodsList').addClass('dropdown-menu-up');
+        } else {
+            angular.element('#methodsList').removeClass('dropdown-menu-up');
+        }
+
+        $scope.$broadcast('rebuild:methods');
     };
 
     /**
@@ -340,6 +381,95 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         } else if (bar === 'members') {
             $scope.$broadcast('rebuild:members');
         }
+    };
+
+    /**
+     * Set the reply to coder.
+     * @param name - the coder handle.
+     */
+    $scope.setReplyToCoder = function (name) {
+        $scope.setChatMethod(4);
+        $scope.talkTo(name);
+        $scope.setTalkTo(name);
+    };
+
+    $scope.previousSearchText = '';
+
+    $scope.htmlEncode = function (text) {
+        return $(angular.element('<div/>')).text(text).html();
+    };
+
+    $scope.revertText = function (findText, replace) {
+        var i, text, resultText;
+        findText = findText.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+        for (i = 0; i < angular.element('.allChatText').length; i++) {
+            text = $scope.htmlEncode($(angular.element('.allChatText')[i]).text());
+            resultText = text.replace(new RegExp(findText,"ig"), replace);
+
+            $(angular.element('.allChatText')[i]).html(resultText);
+        }
+    };
+
+    $scope.replaceText = function (findText) {
+        var wrapStart = '<span class="chat-highlight">',
+            wrapEnd = '</span>',
+            text,
+            resultText,
+            splitBySearch,
+            index,
+            i,
+            k;
+
+        for (i = 0; i < angular.element('.allChatText').length; i++) {
+            text = $scope.htmlEncode($(angular.element('.allChatText')[i]).text());
+            resultText = '';
+            index = 0;
+            if ($scope.matchCheck !== true) {
+                splitBySearch = text.toLowerCase().split(findText.toLowerCase());
+            } else {
+                splitBySearch = text.split(findText);
+            }
+
+            for (k = 0; k < splitBySearch.length; k++) {
+                resultText = resultText + text.substring(index, index + splitBySearch[k].length);
+                index = index + splitBySearch[k].length;
+                resultText = resultText + wrapStart + text.substring(index, index + findText.length) + wrapEnd;
+                index = index + findText.length;
+            }
+
+            $(angular.element('.allChatText')[i]).html(resultText);
+        }
+    };
+
+    $scope.inputSearchText = function () {
+
+        if ($scope.previousSearchText !== '') {
+            $scope.revertText('<span class="chat-highlight">'+$scope.htmlEncode($scope.previousSearchText)+'</span>',
+                $scope.htmlEncode($scope.previousSearchText));
+        }
+
+        if ($scope.findText !== '') {
+            $scope.replaceText($scope.htmlEncode($scope.findText));
+        }
+
+        $scope.previousSearchText = $scope.findText;
+
+    };
+
+    $scope.changeMatchCheck = function () {
+        $scope.inputSearchText();
+    };
+
+    /**
+     * Get chat content by room id.
+     * @returns {*} the chat content.
+     */
+    $scope.getChatContent = function () {
+        var str =  '';
+        if (!$rootScope.chatContent) {
+            return [];
+        }
+        return $rootScope.chatContent[$rootScope.currentRoomInfo.roomID + str];
     };
 
     /**

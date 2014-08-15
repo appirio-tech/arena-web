@@ -3,6 +3,7 @@
     <!--begin of heading-->
     <div class="panel-heading">
         Now chatting in: <span>{{getRoomTitle()}}</span>
+        <span class="inlineSpan">
         <ul class="lobbyDropdown">
             <li class="dropdown">
                 <a class="dropdown-toggle">{{getRoomTitle()}}</a>
@@ -11,6 +12,15 @@
                 </ul>
             </li>
         </ul>
+        <ul class="lobbyDropdown">
+            <li class="dropdown">
+                <a class="dropdown-toggle">{{currentFontSize}}</a>
+                <ul class="dropdown-menu">
+                    <li data-ng-repeat="size in fontSizes"><a data-ng-click="setFontSize(size);" data-ng-class="{current: currentFontSize===size}">{{size}}</a></li>
+                </ul>
+            </li>
+        </ul>
+        </span>
     </div>
     <!--end of heading-->
 
@@ -37,7 +47,7 @@
             <header><a data-ng-click="collapseMemberHere=!collapseMemberHere; rebuildScrollbar('info');" data-ng-class="{collapsed: collapseMemberHere}">Who's here <span>({{whosHereArrayFullList.length}})</span></a></header>
             <ul class="scrollable users {{whosHereScrollHeight}}" data-ng-hide="collapseMemberHere" data-ng-scrollbar data-rebuild-on="rebuild:whosHere" data-rebuild-on-resize data-scroll-top>
                 <li data-ng-repeat="member in whosHereArrayFullList | orderBy:whosHereOrderPredicate"><!-- avoid blank
-                    --><a data-ng-click="showCoderInfo(member.name, member.userListItem.userType);"><!-- avoid blank 
+                    --><a sglclick="showCoderInfo(member.name, member.userListItem.userType);" data-ng-dblclick="setReplyToCoder(member.name)"><!-- avoid blank
                         --><span data-rating-indicator="{{member.rating}}" data-username="{{member.name}}Who" class="ratingIcon"></span><!-- avoid blank 
                         --><span class="user {{getRatingClass(member.rating)}}" data-ng-class="{current: member.name == username()}">{{member.name}}</span>
                     </a>
@@ -49,17 +59,17 @@
 
     <!-- begin of chat area -->
     <div class="content">
-        <div class="chatBoard" data-ng-scrollbar data-keep-bottom data-scroll-top data-rebuild-on="rebuild:chatboard" data-rebuild-on-resize>
+        <div class="chatBoard" data-ng-scrollbar data-keep-bottom data-rebuild-on="rebuild:chatboard" data-rebuild-on-resize data-ng-class="{smallFont: currentFontSize === 'Small', mediumFont: currentFontSize === 'Medium', largeFont: currentFontSize ==='Large'}">
             <ul>
-                <li data-ng-repeat="chat in chatContent"><span class="{{getRatingClass(chat.userRating)}}" data-ng-show="chat.prefix">{{chat.prefix}} </span><pre lang="en" data-ng-class="chat.type" data-ng-bind="chat.text"></pre></li>
+                <li data-ng-repeat="chat in getChatContent()"><span class="{{getRatingClass(chat.userRating)}}" data-ng-show="chat.prefix">{{chat.prefix}} </span><span lang="en" class="allChatText" data-ng-class="chat.type" data-ng-bind="chat.text"></span><span data-ng-show="chat.hasLink === true" data-ng-repeat="chatLink in chat.links"><a href="{{chatLink}}" target="_blank">{{chatLink}} </a></span></li>
             </ul>
         </div>
         <!-- chat control bar -->
         <div class="panel-heading control-bar" data-ng-show="!findMode">
             <ul class="methodDropdown">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-ng-click="rebuildScrollbar('methods');">{{getMethodName(methodIdx)}}</a>
-                    <ul class="dropdown-menu" data-ng-scrollbar data-rebuild-on="rebuild:methods" data-rebuild-on-resize>
+                    <a class="dropdown-toggle" data-ng-click="rebuildMethodsScrollbar();">{{getMethodName(methodIdx)}}</a>
+                    <ul class="dropdown-menu" data-ng-scrollbar data-rebuild-on="rebuild:methods" data-rebuild-on-resize id="methodsList">
                         <li data-ng-repeat="method in methodsArray"><a data-ng-click="setChatMethod($index);" data-ng-class="{current: methodIdx===$index}">{{method}}</a></li>
                     </ul>
                 </li>
@@ -70,27 +80,24 @@
                     <a class="dropdown-toggle" data-ng-show="!disableSelect && disableInput" data-ng-click="rebuildMembersScrollbar()" data-ng-class="getMemberRatingClass(memberIdx)">{{getMemberName(memberIdx)}}</a>
                     <input class="memberInput" data-ng-model="talkToUser" data-ng-change="inputUser()" data-ng-show="!disableSelect && !disableInput" />
                     <a id="usersDropdownList" class="dropdown-toggle onlyTri" data-ng-show="!disableSelect && !disableInput" data-ng-class="getMemberRatingClass(memberIdx)" data-ng-click="rebuildMembersScrollbar()"></a>
-                    <ul class="dropdown-menu" data-ng-scrollbar data-rebuild-on="rebuild:members" data-rebuild-on-resize>
+                    <ul class="dropdown-menu" data-ng-scrollbar data-rebuild-on="rebuild:members" data-rebuild-on-resize id="usersList">
                         <li data-ng-repeat="user in whosHereArray"><a data-ng-click="talkTo(user.name);setTalkTo(user.name);" data-ng-class="{current: memberIdx===user.name}" class="{{getRatingClass(user.rating)}}">{{user.name}}</a></li>
                     </ul>
                 </li>
             </ul>
             <form name="chatForm" data-ng-submit="chatSubmit();">
                 <div class="chatInput" id="chatInputDiv"><input type="text" name="chat" placeholder="Type chat..." data-ng-model="chatText" id="chatInputText"></div>
-                <a data-ng-click="findMode=true;" class="searchIcon"></a>
+                <a data-ng-click="setFindMode(true)" class="searchIcon"></a>
                 <button data-ng-hide="true" type="submit"></button>
             </form>
         </div>
 
         <div class="panel-heading control-bar" data-ng-show="findMode">
             <form name="findForm" data-ng-submit="">
-                <div class="chatInput"><input type="text" name="find" placeholder="find text..." data-ng-model="findText" /></div>
-                <a data-ng-click="findMode=false;" class="findIcon"></a>
-                <input type="checkbox" name="matchCase" id="matchCase" class="findCheckbox" data-ng-model="matchCheck"/>
+                <div class="chatInput" style="width: 460px"><input type="text" name="find" placeholder="find text..." data-ng-model="findText" data-ng-change="inputSearchText()" style="width: 460px"/></div>
+                <a data-ng-click="setFindMode(false)" class="findIcon"></a>
+                <input type="checkbox" name="matchCase" id="matchCase" class="findCheckbox" data-ng-model="matchCheck" data-ng-change="changeMatchCheck()"/>
                 <label for="matchCase" class="findCheckLbl">Match Case</label>
-                <input type="checkbox" name="highlight" id="highlight" class="findCheckbox" data-ng-model="highlightCheck"/>
-                <label for="highlight" class="findCheckLbl">Highlight</label>
-                <button data-ng-hide="true" type="submit"></button>
             </form>
         </div>
     </div>

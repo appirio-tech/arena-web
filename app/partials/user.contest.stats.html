@@ -116,7 +116,7 @@
                         <td>{{ $index + 1 }}</td>
                         <td class="textGreen textBold">{{ problem.primaryComponent.pointValue }}</td>
                         <td class="textWhite">{{ problem.name }}</td>
-                        <td><a data-ng-click="openProblem(problem)">Open</a></td>
+                        <td><a data-ng-click="openProblem(problem)">{{ getOpenTitle(problem) }}</a></td>
                     </tr>
                     </tbody>
                 </table>

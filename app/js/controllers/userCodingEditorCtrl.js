@@ -31,11 +31,14 @@
  * Changes in version 1.7 (Module Assembly - Web Arena UI - Rooms Tab):
  * - Added checking condition for rooms in challenge phase.
  *
- * @author tangzx, amethystlei, flytoj2ee
- * @version 1.7
+ * Changes in version 1.8 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
+ * - Fixed issues in coding editor.
+ *
+ * @author tangzx, amethystlei, flytoj2ee, TCASSEMBLER
+ * @version 1.8
  */
 'use strict';
-/*global module, CodeMirror, angular, document, $ */
+/*global module, CodeMirror, angular, document, $, window */
 /*jslint plusplus: true*/
 /**
  * The helper.
@@ -49,8 +52,8 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'socket', '$timeout', 'themer',
-    function ($rootScope, $scope, $window, appHelper, socket, $timeout, themer) {
+var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'socket', '$timeout', 'themer', 'sessionHelper',
+    function ($rootScope, $scope, $window, appHelper, socket, $timeout, themer, sessionHelper) {
         var indentRangeFinder = {
                 rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.indent, CodeMirror.fold.comment)
             },
@@ -139,6 +142,10 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 }
             }
         };
+
+        setTimeout(function () {
+            $(window).scrollTop(0);
+        }, 0);
 
         /**
          * Handle the input search text event.
@@ -463,6 +470,17 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         }
 
         /**
+         * Save the setting.
+         */
+        $scope.saveSetting = function () {
+            $scope.settingChanged();
+            socket.emit(helper.EVENT_NAME.SetLanguageRequest, {
+                languageID: $scope.lang($scope.langIdx).id
+            });
+            sessionHelper.setUserLanguagePreference($scope.lang($scope.langIdx).id);
+        };
+
+        /**
          * The code mirror config.
          *
          * @type {{
@@ -538,6 +556,14 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         };
 
         /**
+         * Return the disable submit link flag.
+         * @returns {boolean} - the disable flag.
+         */
+        $scope.disableSubmit = function () {
+            return (!$scope.cm) || $scope.cm.getValue().trim() === '';
+        };
+
+        /**
          * Compile solution.
          */
         $scope.compileSolution = function () {
@@ -586,7 +612,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * Submit the solution.
          */
         $scope.submitSolution = function () {
-            if (userInputDisabled || !$scope.problemLoaded) {
+            if (userInputDisabled || !$scope.problemLoaded || $scope.disableSubmit()) {
                 return;
             }
             /**
