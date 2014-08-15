@@ -29,8 +29,11 @@
  * - Removed $timeout, $http from notificationService.
  * - Removed the demo code and put real data handling in notificationService.
  *
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
+ * - Added setUserLanguagePreference() method.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh
- * @version 1.6
+ * @version 1.7
  */
 'use strict';
 var config = require('./config');
@@ -505,6 +508,18 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
     helper.getUserPreferences = function () {
         var userInfo = angular.fromJson($window.localStorage.userInfo);
         return userInfo ? userInfo.preferences : null;
+    };
+
+    /**
+     * Set user language preference.
+     * @param languageId - the language id.
+     */
+    helper.setUserLanguagePreference = function (languageId) {
+        var userInfo = angular.fromJson($window.localStorage.userInfo);
+        if (userInfo) {
+            userInfo.preferences[0] = languageId;
+        }
+        $window.localStorage.userInfo = angular.toJson(userInfo);
     };
 
     helper.getRemember = function () {

@@ -33,6 +33,7 @@
                 </ul>
                 <!-- button to 'Register' and 'Enter' a contest -->
                 <a data-ng-click="doAction(contest)" data-ng-show="isShown(contest)" data-ng-disabled="okDisabled" class="btn">{{ getAction(contest) }}</a>
+                <span data-ng-show="isShownRegistered(contest)" data-ng-disabled="okDisabled" class="btntext">Registered</span>
             </div>
             <div  data-ng-show="contest.detailIndex == 0" class="summaryPanel">
                 <div data-ng-bind-html="contest.summary" class="summaries textWhite"></div>

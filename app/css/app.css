@@ -1021,6 +1021,13 @@ footer .right>span:nth-child(2) {
     float: right;
     border: 0;
 }
+.panel-custom .mainContent .btntext {
+    width: 94px;
+    line-height: 27px;
+    float: right;
+    border: 0;
+    padding: 6px 12px;
+}
 .panel-custom .mainContent .btn:hover {background: #3aadda;}
 /* tabs */
 .panel-custom .mainContent .tabs {
@@ -1701,7 +1708,7 @@ footer .right>span:nth-child(2) {
 #resizer {
     position: relative;
     background: transparent;
-    height: 4px;
+    height: 0px;
     cursor: ns-resize;
 }
 /******************* count down widget */
@@ -2352,6 +2359,7 @@ footer .right>span:nth-child(2) {
 
 .panelChatArea {
     height: 393px;
+    min-height: 393px;
 }
 .panelChatArea .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos:active{
     background: rgba(255,255,255,0);
@@ -3879,6 +3887,15 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .panel-body .middlePart .findInput input {width: 46px;}
     .panelCodeEditor .panel-body .middlePart .gotoInput input {width: 38px;}
 }
+@media only screen and (max-width: 570px) {
+    .panelChatArea .panel-heading{
+        height: 70px;
+    }
+    .panelChatArea .inlineSpan{
+        display: block;
+        padding-top: 5px;
+    }
+}
 @media only screen and (max-width: 540px) {
     .panelChatArea .control-bar{
         height: 78px;
@@ -4162,4 +4179,27 @@ footer .right>span:nth-child(2) {
 }
 *:focus {
     outline: none;
+}
+.disableLink {
+    color : grey;
+    cursor: default !important;
+}
+.disableLink:hover {
+    color : grey !important;
+}
+.smallFont {
+    font-size: small;
+}
+.mediumFont {
+    font-size: medium;
+}
+.largeFont {
+    font-size: large;
+}
+.dropdown-menu-up {
+    margin: -134px 0 0;
+}
+.chat-highlight {
+    color:black;
+    background:yellow;
 }

@@ -16,6 +16,8 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
       link: function (scope, element, attrs) {
         var mainElm, transculdedContainer, tools, thumb, thumbLine, track;
         var win = angular.element($window);
+        var maxDraggerTop = 0;
+        scope.rebuildScroll = true;
         var dragger = { top: 0 }, page = { top: 0 };
         var scrollboxStyle, draggerStyle, draggerLineStyle, pageStyle;
         var calcStyles = function () {
@@ -47,7 +49,14 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           thumb.css('top', dragger.top + 'px');
           var draggerOffset = dragger.top / page.height;
           page.top = -Math.ceil(page.scrollHeight * draggerOffset * 1.0013);
-          transculdedContainer.css('top', page.top + 'px');
+            if ((attrs.hasOwnProperty('scrollTop') && dragger.top === 0) || dragger.top >= maxDraggerTop) {
+                maxDraggerTop = dragger.top;
+                scope.rebuildScroll = true;
+                rebuild();
+            } else {
+                scope.rebuildScroll = false;
+            }
+            transculdedContainer.css('top', page.top + 'px');
         };
         var trackClick = function (event) {
           var offsetY = event.hasOwnProperty('offsetY') ? event.offsetY : event.layerY;
@@ -156,15 +165,21 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
             clearTimeout(rebuildTimer);
           }
           rebuildTimer = setTimeout(function () {
-            page.height = null;
-            if (attrs.hasOwnProperty('scrollTop')) {
-              page.top = 0;
-              dragger.top = 0;
-            }
-            buildScrollbar(attrs.hasOwnProperty('keepBottom'));
-            if (!scope.$$phase) {
-              scope.$digest();
-            }
+              if (scope.rebuildScroll) {
+                page.height = null;
+
+//                 if (attrs.hasOwnProperty('scrollTop')) {
+//                  page.top = 0;
+//                  dragger.top = 0;
+//                }
+
+                buildScrollbar(attrs.hasOwnProperty('keepBottom'));
+
+                if (!scope.$$phase) {
+                  scope.$digest();
+                }
+              }
+
           }, 72);
         };
         buildScrollbar();

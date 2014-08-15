@@ -16,8 +16,11 @@
  * Changes in version 1.4 (Module Assembly - Web Arena UI - Rooms Tab):
  * - Added rooms checking condition while user opening the problem to code.
  *
- * @author amethystlei, flytoj2ee
- * @version 1.4
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
+ * - Show the problem status in open link.
+ *
+ * @author amethystlei, flytoj2ee, TCASSEMBLER
+ * @version 1.5
  */
 'use strict';
 /*global module, angular*/
@@ -155,6 +158,45 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', '
                 divisionId: $scope.divisionID
             });
         }
+    };
+
+    /**
+     * Get the problem open title.
+     * @param problem - the problem
+     * @returns {string} - the title
+     */
+    $scope.getOpenTitle = function (problem) {
+        var componentId = problem.primaryComponent.componentID,
+            coder,
+            result = 'Open',
+            problemStatus,
+            i,
+            j;
+        if ($rootScope.currentRoomInfo && $rootScope.currentRoomInfo.roomID
+                && $rootScope.roomData[$rootScope.currentRoomInfo.roomID]
+                && $rootScope.roomData[$rootScope.currentRoomInfo.roomID].coders) {
+            for (i = 0; i < $rootScope.roomData[$rootScope.currentRoomInfo.roomID].coders.length; i++) {
+                if ($rootScope.roomData[$rootScope.currentRoomInfo.roomID].coders[i].userName === $rootScope.username()) {
+                    coder = $rootScope.roomData[$rootScope.currentRoomInfo.roomID].coders[i];
+                    break;
+                }
+            }
+
+            if (coder) {
+                for (j = 0; j < coder.components.length; j++) {
+                    if (coder.components[j].componentID === componentId) {
+                        problemStatus = coder.components[j].status;
+                        break;
+                    }
+                }
+            }
+
+            if (problemStatus) {
+                result = helper.CODER_PROBLEM_STATUS_NAME[problemStatus];
+            }
+        }
+
+        return result;
     };
 
     // handle register response

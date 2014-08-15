@@ -27,8 +27,11 @@
  * Changes in version 1.6 (Module Assembly - Web Arena UI - Rooms Tab):
  * - Added logic for rooms tab.
  *
- * @author amethystlei, dexy, flytoj2ee
- * @version 1.6
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
+ * - Show the registered text if user already registered.
+ *
+ * @author amethystlei, dexy, flytoj2ee, TCASSEMBLER
+ * @version 1.7
  */
 'use strict';
 /*global module, angular, require*/
@@ -84,6 +87,8 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                     $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
                     if (data.message.indexOf('You are already registered') === -1) {
                         contest.isRegisterable = true;
+                    } else {
+                        contest.isRegistered = true;
                     }
                 });
                 socket.emit(helper.EVENT_NAME.RegisterInfoRequest, {roundID: contest.roundID});
@@ -113,6 +118,8 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                 $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
                 if (data.message.indexOf('You are already registered') === -1) {
                     contest.isRegisterable = true;
+                } else {
+                    contest.isRegistered = true;
                 }
             });
             socket.emit(helper.EVENT_NAME.RegisterInfoRequest, {roundID: contest.roundID});
@@ -148,6 +155,15 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
             contest.action = ($scope.isRegistrationOpen(contest) && contest.isRegisterable === true) ? 'Register' : '';
         }
         return contest.action !== '';
+    };
+
+    /**
+     * Returns the shown registered text condition.
+     * @param contest - the contest
+     * @returns {*|boolean} the result.
+     */
+    $scope.isShownRegistered = function (contest) {
+        return ($scope.isRegistrationOpen(contest) && contest.isRegistered === true);
     };
 
     /**
@@ -232,9 +248,10 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.getRoomsList = function (contest) {
         if (contest) {
             return contest.coderRooms;
-        } else {
-            return [];
         }
+
+        return [];
+
     };
 
     // action for 'Register' or 'Enter'
@@ -266,12 +283,14 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                         angular.extend(data, {enableClose: true});
                         $scope.openModal(data);
                         contest.isRegisterable = false;
+                        contest.isRegistered = true;
                         $scope.setDetailIndex(contest, 2);
                     });
                     /*jslint unparam: false*/
                     socket.emit(helper.EVENT_NAME.RegisterRequest, {roundID: roundID});
                 }, function () {
                     contest.isRegisterable = true;
+                    contest.isRegistered = false;
                 });
                 $scope.okDisabled = false;
             });

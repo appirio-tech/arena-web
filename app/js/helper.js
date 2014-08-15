@@ -54,8 +54,11 @@
  * - Added BROADCAST_TYPE_NAME, DATE_NOTIFICATION_FORMAT, NOTIFICATION_TITLES, PHASE_DATA constants
  *   to handle notifications.
  *
+ * Changes in version 1.13 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
+ * - Added SetLanguageRequest event name and updated messages.
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.12
+ * @version 1.13
  */
 
 module.exports = {
@@ -101,6 +104,7 @@ module.exports = {
         SynchTimeRequest: 'SynchTimeRequest',
         TestInfoRequest: 'TestInfoRequest',
         TestRequest: 'TestRequest',
+        SetLanguageRequest: 'SetLanguageRequest',
         // backend responses
         CreateChallengeTableResponse: 'CreateChallengeTableResponse',
         CreateMenuResponse: 'CreateMenuResponse',
@@ -255,7 +259,8 @@ module.exports = {
     // custom pop up messages
     POP_UP_MESSAGES: {
         Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
-        ForcedLogout: 'The connection to the server has been lost. Please log off and log in again.',
+        ForcedLogout: 'Logging off as you logged in to another session or browser.',
+        LostConnection: 'The connection to the server has been lost. Please log off and log in again.',
         NotAssigned: 'You are not assigned to this room'
     },
 

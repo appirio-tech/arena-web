@@ -33,25 +33,23 @@
                         --><div><input type="radio" name="lineNumber" data-ng-value="false" id="hideLineNumber" class="lineNumRadio" data-ng-model="showLineNumber" /><label for="hideLineNumber" class="lineNumLbl">Hide</label></div>
                     </div>
                     <div class="btnWrapper">
-                        <a data-ng-click="settingChanged()" class="btn btn-settings">OK</a>
+                        <a data-ng-click="saveSetting()" class="btn btn-settings">OK</a>
                     </div>
                 </div>
             </div>
             <div class="middlePart">
                 <ul class="actionIcons"><!-- avoid unnecessary blank
-                --><li class="link saveLink"  data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Save</li><!--  avoid unnecessary blank
+                <li class="link saveLink"  data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Save</li>  avoid unnecessary blank
                 --><li class="link clearLink" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Clear</li><!--  avoid unnecessary blank
                 --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Compile</li><!--
-                --><li class="link submitLink" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Submit</li>
+                --><li class="link submitLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Submit</li>
                 </ul><!--  avoid unnecessary blank
                 --><div data-ng-show="currentStateName()==='user.viewCode'">{{languages[langIdx].name}}</div><!--
                 --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" data-ng-model="searchText" data-ng-keypress="inputSearchText($event)"/><a id="searchByText" data-ng-click="searchByText()" class="searchIcon"></a></div><!--  avoid unnecessary blank
                 --><div class="gotoInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><label for="goto">Go To</label><input type="text" name="goto" id="goto" data-ng-model="gotoLine" data-ng-keypress="inputGotoText($event)"/><a id="gotoByText" data-ng-click="jumpToLine()" class="arrow"></a></div>
             </div>
             <div class="rightPart">
-                <div data-ng-hide="currentStateName()==='user.viewCode'"><input type="checkbox" name="autoCompile" id="compileCheck" class="editorCheckbox" data-ng-model="autoCompile" /><label for="compileCheck" class="editorCheckLbl">Auto Compile</label></div><!-- avoid unnecessary blank
-                --><div data-ng-hide="currentStateName()==='user.viewCode'"><input type="checkbox" name="autoSave" id="saveCheck" class="editorCheckbox" data-ng-model="autoSave" /><label for="saveCheck" class="editorCheckLbl">Auto Save</label></div><!--  avoid unnecessary blank
-                --><div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged. &nbsp;</div><div data-ng-show="currentStateName()=='user.coding' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isInSameRoom()" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>
+                <div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged. &nbsp;</div><div data-ng-show="currentStateName()=='user.coding' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isInSameRoom()" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>
                     <div class="testPanel" data-ng-show="testOpen">
                         <div>
                             <!-- Custom test case for Challenge Phase -->
