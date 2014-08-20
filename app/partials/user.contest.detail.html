@@ -331,7 +331,7 @@
                                                         <td class="col2"><!-- avoid blank
                                                             --><!-- avoid blank
                                                             --><span data-ng-click="showCoderInfo(coder.userName, coder.userType);" class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
-                                                            <a class="rating" data-ng-click="getCoderHistory(coder.userName)">History</a>
+                                                            <a class="rating" data-ng-click="getCoderHistory(coder.userName)"><img src="../img/history.png"/></a>
                                                         </td>
                                                         <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
                                                             <a data-ng-show="isViewable(component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span></a>

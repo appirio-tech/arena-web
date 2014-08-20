@@ -96,3 +96,16 @@
         <button class="btn right-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 1">{{ buttons[0] }}</button>
     </div>
 </script>
+
+<script type="text/ng-template" id="popupModalDetailBase.html">
+    <div class="modal-header coder-history-modal-header">
+        {{ title }}
+        <span class="cancel-x" data-ng-click="ok()" ng-if="enableClose">X</span>
+    </div>
+    <div class="modal-body textAlign textColor">
+        <p ng-bind-html="message" class="coder-history-textMargin"></p>
+    </div>
+    <div class="modal-footer textAlign">
+        <button class="btn" data-ng-click="ok()">Close</button>
+    </div>
+</script>

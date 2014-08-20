@@ -45,8 +45,11 @@
  * Changes in version 1.9 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
  * - Change the disconnect message.
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.9
+ * Changes in version 1.10 (Module Assembly - Web Arena UI - Coder History):
+ * - Updated the open modal logic to show coder history info.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
+ * @version 1.10
  */
 'use strict';
 /*jshint -W097*/
@@ -71,21 +74,20 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
          *
          * @type {*[]}
          */
-        popupModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', 'cancel', function ($scope, $modalInstance, data, ok, cancel) {
+        popupModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', 'cancel', '$timeout', function ($scope, $modalInstance, data, ok, cancel, $timeout) {
             $scope.title = data.title;
             $scope.message = data.message.replace(/(\r\n|\n|\r)/gm, "<br/>");
             $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
             $scope.enableClose = data.enableClose;
             $scope.coderInfo = data.message;
+            $scope.coderHistoryData = data.coderHistoryData;
 
-            /**
-             * rebuild code info bar
-             */
-            $modalInstance.opened.then(function() {
-                $timeout(function() {
-                    $scope.$broadcast('rebuild:codeInfo');
-                });
-            });
+            if ($scope.title === 'Coder History') {
+                $timeout(function () {
+                    $scope.$broadcast('rebuild:coderHistory');
+                }, 100);
+            }
+
             /**
              * OK handler.
              */
@@ -100,6 +102,50 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.cancel = function () {
                 cancel();
                 $modalInstance.dismiss('cancel');
+            };
+
+            var popupDetailModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', function ($scope, $modalInstance, data, ok) {
+                    $scope.title = data.title;
+                    $scope.message = data.detail;
+                    $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
+                    $scope.enableClose = true;
+
+                    $scope.ok = function () {
+                        ok();
+                        $modalInstance.close();
+                    };
+                }];
+            /**
+             * Open the user history detail modal.
+             * @param data - the data value
+             * @param handle - the handle function
+             * @param finish - the finish function
+             */
+            $scope.openDetailModal = function (data, handle, finish) {
+                $modal.open({
+                    templateUrl: 'popupModalDetailBase.html',
+                    controller: popupDetailModalCtrl,
+                    backdrop: 'static',
+                    resolve: {
+                        data: function () {
+                            return data;
+                        },
+                        ok: function () {
+                            return function () {
+                                if (angular.isFunction(handle)) {
+                                    handle();
+                                }
+                            };
+                        },
+                        cancel: function () {
+                            return function () {
+                                if (angular.isFunction(finish)) {
+                                    finish();
+                                }
+                            };
+                        }
+                    }
+                });
             };
         }],
         isDisconnecting = false,
@@ -401,37 +447,6 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     $scope.onClickMessageArena = function () {
         notificationService.clearUnRead();
         checkPosition();
-    };
-
-    /**
-     * This function returns the css class of rating value.
-     *
-     * @param {number} rating the rating
-     * @returns {string} the CSS class to show different colors
-     */
-    $scope.getRatingClass = function (rating) {
-        if (rating >= 2200) {
-            return "rating-red";
-        }
-        if (rating >= 1500) {
-            return "rating-yellow";
-        }
-        if (rating >= 1200) {
-            return "rating-blue";
-        }
-        if (rating >= 900) {
-            return "rating-green";
-        }
-        if (rating >= 1) {
-            return "rating-grey";
-        }
-        if (rating === 0) {
-            return "rating-none";
-        }
-        if (rating < 0) {
-            return "rating-admin";
-        }
-        return "";
     };
 
     /**

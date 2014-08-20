@@ -37,8 +37,11 @@
  * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
  * - Rebuild the scroll bar at page load.
  *
- * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.6
+ * Changes in version 1.7 (Module Assembly - Web Arena UI - Coder History):
+ * - Refractor the code for coder history modal.
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
+ * @version 1.7
  */
 'use strict';
 /*jshint -W097*/
@@ -807,26 +810,24 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
 
     // Show the coder history.
     socket.on(helper.EVENT_NAME.CoderHistoryResponse, function (data) {
-        var msg = "", i, tmpDate;
-        msg = msg + "<span class='coderHistoryTimeField'>Time</span>" +
-            "<span class='coderHistoryTimeField'>Action</span><span class='coderHistoryHandleField'>Handle</span>" +
-            "<span class='coderHistoryHandleField'>Problem</span><span class='coderHistoryHandleField'>Score</span><br/>";
+        var i, tmpDate, coderHistoryData = [];
 
         for (i = 0; i < data.historyData.length; i++) {
             tmpDate = new Date(data.historyData[i].time);
-            msg = msg + "<span class='coderHistoryTimeField'>" + (tmpDate.getMonth() + 1) + "-" + tmpDate.getDate() + "-" + tmpDate.getFullYear()
-                + " " + tmpDate.getHours() + ":" + tmpDate.getMinutes() + ":" + tmpDate.getSeconds()
-                + "</span><span class='coderHistoryTimeField'>"
-                + data.historyData[i].actionDescription + "</span><span class='coderHistoryHandleField'>"
-                + data.historyData[i].coder.userName + "</span><span class='coderHistoryHandleField'>" + data.historyData[i].componentValue
-                + "</span><span class='coderHistoryHandleField'>" + data.historyData[i].points + "</span><br/>";
+
+            coderHistoryData.push({"time": (tmpDate.getMonth() + 1) + "-" + tmpDate.getDate() + "-" + tmpDate.getFullYear()
+                + " " + tmpDate.getHours() + ":" + tmpDate.getMinutes() + ":" + tmpDate.getSeconds(),
+                "actionDescription": data.historyData[i].actionDescription, "userName": data.historyData[i].coder.userName,
+                "userRating": data.historyData[i].coder.userRating,
+                "componentValue": data.historyData[i].componentValue, "points": data.historyData[i].points, "detail": data.historyData[i].detail});
         }
 
         $scope.openModal({
             title: 'Coder History',
-            message: msg,
-            enableClose: true
-        });
+            coderHistoryData: coderHistoryData,
+            message: ''
+        }, null, null, 'partials/user.code.history.html');
+
     });
 }];
 

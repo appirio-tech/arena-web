@@ -58,11 +58,12 @@ var ratingIndicator = [function () {
                 stop2 = angular.element(grad.children()[1]);
                 circle = angular.element(svg.children()[1]);
                 svg.attr('class', 'ratingSvg').css('height', 2 * (r + 1)).css('width', 2 * (r + 1));
-                grad.attr('id', 'grad' + username)
+                var time = new Date().getTime();
+                grad.attr('id', 'grad' + username + time)
                     .attr('x1', '0%').attr('x2', '0%').attr('y1', '100%').attr('y2', '0%');
                 stop1.attr('offset', perc).css('stop-color', color);
                 stop2.attr('offset', perc).css('stop-color', 'transparent').attr("stop-opacity", 0);
-                circle.attr('cx', r + 1).attr('cy', r + 1).attr('r', r).attr('stroke', color).attr('fill', 'url(#grad' + username + ')');
+                circle.attr('cx', r + 1).attr('cy', r + 1).attr('r', r).attr('stroke', color).attr('fill', 'url(#grad' + username + time + ')');
             }
 
             /**

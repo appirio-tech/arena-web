@@ -469,4 +469,35 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         return $state.current.name;
     };
 
+    /**
+     * This function returns the css class of rating value.
+     *
+     * @param {number} rating the rating
+     * @returns {string} the CSS class to show different colors
+     */
+    $rootScope.getRatingClass = function (rating) {
+        if (rating >= 2200) {
+            return "rating-red";
+        }
+        if (rating >= 1500) {
+            return "rating-yellow";
+        }
+        if (rating >= 1200) {
+            return "rating-blue";
+        }
+        if (rating >= 900) {
+            return "rating-green";
+        }
+        if (rating >= 1) {
+            return "rating-grey";
+        }
+        if (rating === 0) {
+            return "rating-none";
+        }
+        if (rating < 0) {
+            return "rating-admin";
+        }
+        return "";
+    };
+
 }]);
