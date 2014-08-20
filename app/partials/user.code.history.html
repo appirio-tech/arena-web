@@ -1,0 +1,27 @@
+<div class="modal-header chatWidget-modal-header coder-history-modal-header">
+    {{title}}
+    <span class="cancel-x" data-ng-click="ok()">X</span>
+</div>
+<div class="modal-body chatWidget-modal-body coder-history-height" style="padding: 0px" data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:coderHistory">
+    <ul class="textAlign">
+        <li class="coder-history-li">
+            <div>
+            <span class="coderHistoryTimeField">Time</span><span class="coderHistoryActionField">Action</span>
+            <span class="coderHistoryHandleField">Handle</span><span class="coderHistoryScoreField">Problem</span>
+            <span class="coderHistoryScoreField">Score</span>
+            </div>
+        </li>
+        <li class="coder-history-li" data-ng-repeat="history in coderHistoryData" data-ng-click="openDetailModal({'title':'Coder History Info', 'detail': history.detail})">
+            <div>
+            <span class="coderHistoryTimeField coder-history-span">{{history.time}}</span>
+            <span class="coderHistoryActionField coder-history-span">{{history.actionDescription}}</span>
+            <span class="coderHistoryHandleField coder-history-span"><span data-rating-indicator="{{history.userRating}}" data-username="{{history.userName}}" class="ratingIcon"></span><span class="user {{getRatingClass(history.userRating)}}">{{history.userName}}</span></span>
+            <span class="coderHistoryScoreField coder-history-span">{{history.componentValue}}</span>
+            <span class="coderHistoryScoreField coder-history-span {{ (history.points >= 0) ? 'coder-history-span-green' : 'coder-history-span-red'}} {{(history.points <= 0) ? 'coder-history-span-italic' : ''}}">{{history.points | number:2}}</span>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="modal-footer textAlign">
+    <button class="btn chatWidget-modal-button textAlign" data-ng-click="ok()">Close</button>
+</div>

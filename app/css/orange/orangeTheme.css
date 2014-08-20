@@ -947,3 +947,8 @@ footer .left>span {
 .roomsDiv a:hover {
     color: #ff8a00;
 }
+.coder-history-span {
+    border-color: #ffe6c7;
+    border-top-width: 1px;
+    border-top-style: solid;
+}

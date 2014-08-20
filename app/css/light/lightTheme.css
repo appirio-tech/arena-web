@@ -807,5 +807,10 @@ footer .right .sponsorLogo {
     line-height: 24px;
 }
 .panel-custom .panel-body .textActive {
-    color: #0000ff;
+    color: grey;
+}
+.coder-history-span {
+    border-color: #b7c9d7;
+    border-top-width: 1px;
+    border-top-style: solid;
 }

@@ -4136,12 +4136,28 @@ footer .right>span:nth-child(2) {
 }
 .searched {background: yellow;}
 .coderHistoryTimeField {
-    width: 112px;
+    width: 130px;
     float: left;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.coderHistoryActionField {
+    width: 95px;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .coderHistoryHandleField {
-    width: 80px;
+    width: 140px;
     float: left;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.coderHistoryScoreField {
+    width: 85px;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .roomsDiv {
     text-align: center;
@@ -4201,4 +4217,26 @@ footer .right>span:nth-child(2) {
 .chat-highlight {
     color:black;
     background:yellow;
+}
+.textAlign {
+    text-align: center;
+}
+.coder-history-height {
+    min-height: 400px;
+    height: 400px
+}
+.coder-history-li {
+    list-style: none;
+}
+.coder-history-textMargin {
+    margin-top: 50px!important;
+}
+.coder-history-span-red {
+    color: rgb(255, 0, 51)!important;
+}
+.coder-history-span-green {
+    color: #0f0!important;
+}
+.coder-history-span-italic {
+    font-style: italic!important;
 }

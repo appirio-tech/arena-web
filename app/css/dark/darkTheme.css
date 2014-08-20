@@ -751,3 +751,15 @@ footer .right .sponsorLogo {
 @media only screen and (max-width: 421px) {
     .panelContestStat .breadcrumbHead {height: 63px; }
 }
+.coder-history-modal-header {
+    background-color:#1f444e!important;
+}
+.coder-history-span {
+    color: #ffffff;
+    border-color: #1f444e;
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+.textColor {
+    color: #ffffff!important;
+}
