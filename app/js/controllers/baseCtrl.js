@@ -87,6 +87,15 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     $scope.$broadcast('rebuild:coderHistory');
                 }, 100);
             }
+            
+            /**
+             * rebuild code info bar
+             */
+            $modalInstance.opened.then(function() {
+                $timeout(function() {
+                    $scope.$broadcast('rebuild:codeInfo');
+                });
+            });
 
             /**
              * OK handler.
