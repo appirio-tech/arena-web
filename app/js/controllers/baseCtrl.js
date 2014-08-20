@@ -79,6 +79,14 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.coderInfo = data.message;
 
             /**
+             * rebuild code info bar
+             */
+            $modalInstance.opened.then(function() {
+                $timeout(function() {
+                    $scope.$broadcast('rebuild:codeInfo');
+                });
+            });
+            /**
              * OK handler.
              */
             $scope.ok = function () {
