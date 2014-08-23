@@ -773,8 +773,8 @@ body a {cursor: pointer;}
     position: absolute;
     bottom: 2px;
 }
-.codeArea .voteUp:before {left: 0; background-position: 0 -25px;}
-.codeArea .voteDown:before {left: 1px; background-position: -25px -25px;}
+.codeArea .voteUp:before {left: -1px; background-position: 0 -25px;}
+.codeArea .voteDown:before {left: -1px; background-position: -25px -25px;}
 .codeArea .shareLink{
     height: 205px;
     width: 186px;
@@ -1019,6 +1019,9 @@ footer .right>span:nth-child(2) {
     line-height: 27px;
     float: right;
     border: 0;
+}
+.panel-custom .mainContent .btnWidth {
+    width: 130px!important;
 }
 .panel-custom .mainContent .btntext {
     width: 94px;
@@ -2776,10 +2779,10 @@ footer .right>span:nth-child(2) {
     left: 122px;
 }
 .panelSummary .summaryWrapper .divOneDiv1:before {
-    left: 230px !important;
+    left: 215px !important;
 }
 .panelSummary .summaryWrapper .divTwoDiv1:before {
-    left: 310px !important;
+    left: 318px !important;
 }
 .panelSummary .summaryWrapper .divOneDiv:before {
     left: 122px;
@@ -3101,12 +3104,14 @@ footer .right>span:nth-child(2) {
 }
 .detailPage .challengerWrapper .tableDiv {
     max-height: 156px;
+    height: 156px;
 }
 .detailPage .challengeWrapper .tableDiv {
     max-height: 157px;
 }
 .detailPage .leaderboardWrapper .tableDiv {
     max-height: 495px;
+    min-height: 495px;
     width: 100%;
 }
 .detailPage section .tableDiv .innerWrapper,
@@ -3553,6 +3558,9 @@ footer .right>span:nth-child(2) {
     .codeArea .connectionStatus {
         text-align: left;
     }
+    .panel-custom .panel-heading .search-input {
+        width: 420px!important;
+    }
 }
 @media only screen and (max-width: 1082px) {
     .header .navbar-brand { padding-left:60px;}
@@ -3732,6 +3740,16 @@ footer .right>span:nth-child(2) {
     .codeArea .mainContent,
     .detailPage .mainContent {max-width: 766px;}
     .dashboard .mainContent .placeholder {overflow: hidden; }
+    .panel-custom .mainContent .btnWidth {
+        width: 130px!important;
+        margin-right: 20px;
+    }
+    .panelSummary .panel-body .summaryWrapper {
+        min-height: 80px;
+    }
+    .panel-custom .panel-heading .search-input {
+        width: 350px!important;
+    }
 }
 /* boostrap extra small devices */
 @media only screen and (max-width: 767px) {
@@ -3832,6 +3850,10 @@ footer .right>span:nth-child(2) {
     .detailPage .connectionStatus {
         text-align: left;
     }
+    .panelSummary .panel-body {
+        padding: 7px 14px 20px 30px;
+        min-height: 200px;
+    }
 }
 /* special sizes which widget will overflow */
 @media only screen and (max-width: 741px) {
@@ -3874,6 +3896,9 @@ footer .right>span:nth-child(2) {
     .detailPage .titleBar .btnBack,
     .codeArea .btnBack {
         margin-bottom: 5px;
+    }
+    .panel-custom .panel-heading .search-input {
+        width: 250px!important;
     }
 }
 @media only screen and (max-width: 598px) {
@@ -4190,7 +4215,7 @@ footer .right>span:nth-child(2) {
 }
 .panelSummary .panel-body .summaryWrapper,
 .panelSummary .summaryWrapper .sumDiv {
-    height: auto !important;
+    height: 20px !important;
 }
 *:focus {
     outline: none;
@@ -4239,4 +4264,7 @@ footer .right>span:nth-child(2) {
 }
 .coder-history-span-italic {
     font-style: italic!important;
+}
+.panel-custom .panel-heading .search-input {
+    width: 450px;
 }

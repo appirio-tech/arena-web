@@ -480,7 +480,7 @@ footer .left>span {
     border-bottom: 1px solid #ffe6c7;
 }
 .panelContestStat .panel-body a {
-    color: #333;
+    color: #ff8a00;
 }
 .panelContestStat .panel-body a:hover {
     color: #ff8a00;
@@ -513,7 +513,8 @@ footer .left>span {
     border: 1px solid #e7e7e7;
     border-bottom-width: 0;
     height: 230px;
-    margin: 0;
+    margin-top: 4px;
+    margin-bottom: 3px;
 }
 .panelOverview>section:last-child .panel-body .contentWrapper {
     height: 229px;

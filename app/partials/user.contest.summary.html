@@ -25,6 +25,7 @@
                         </ul>
                     </li>
                 </ul>
+                <span data-ng-hide="isInMyRoom()"><a data-ng-click="moveToRoom(-1)" class="btn btnBack btnWidth">Back To My Room</a></span>
             </div><!--/.tabs-->
             <div class="summaryWrapper">
                 <div data-ng-show="viewOn=='room'" class="roomDiv sumDiv">
@@ -48,7 +49,7 @@
                     <div class="default visible-sm visible-xs"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
                 </div>
             </div>
-            <a class="detailLink" data-ng-hide="viewOn=='rooms'" data-ng-click="viewDetail(contest)">View Detail</a>
+            <a class="detailLink" data-ng-hide="viewOn=='rooms'" data-ng-click="viewDetail(contest)">View Details</a>
         </div><!-- /.mainContent -->
     </div>
     <!-- /.panel-body -->
