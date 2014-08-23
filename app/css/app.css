@@ -4161,12 +4161,28 @@ footer .right>span:nth-child(2) {
 }
 .searched {background: yellow;}
 .coderHistoryTimeField {
-    width: 112px;
+    width: 130px;
     float: left;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.coderHistoryActionField {
+    width: 95px;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .coderHistoryHandleField {
-    width: 80px;
+    width: 140px;
     float: left;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.coderHistoryScoreField {
+    width: 85px;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .roomsDiv {
     text-align: center;
