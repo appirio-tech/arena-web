@@ -8,7 +8,7 @@
             <li class="dropdown">
                 <a class="dropdown-toggle">{{getRoomTitle()}}</a>
                 <ul class="dropdown-menu">
-                    <li data-ng-repeat="lobby in roomMenu"><a data-ng-click="setRoom(lobby.roomID);" data-ng-class="{current: getCurrentRoomID()===lobby.roomID}">{{lobby.roomTitle}}</a></li>
+                    <li data-ng-repeat="lobby in roomMenu" style="box-sizing: border-box;list-style: none;"><a data-ng-click="setRoom(lobby.roomID);" data-ng-class="{current: getCurrentRoomID()===lobby.roomID}">{{lobby.roomTitle}}</a></li>
                 </ul>
             </li>
         </ul>
@@ -16,7 +16,7 @@
             <li class="dropdown">
                 <a class="dropdown-toggle">{{currentFontSize}}</a>
                 <ul class="dropdown-menu">
-                    <li data-ng-repeat="size in fontSizes"><a data-ng-click="setFontSize(size);" data-ng-class="{current: currentFontSize===size}">{{size}}</a></li>
+                    <li data-ng-repeat="size in fontSizes" style="box-sizing: border-box;list-style: none;"><a data-ng-click="setFontSize(size);" data-ng-class="{current: currentFontSize===size}">{{size}}</a></li>
                 </ul>
             </li>
         </ul>
@@ -94,7 +94,7 @@
 
         <div class="panel-heading control-bar" data-ng-show="findMode">
             <form name="findForm" data-ng-submit="">
-                <div class="chatInput" style="width: 460px"><input type="text" name="find" placeholder="find text..." data-ng-model="findText" data-ng-change="inputSearchText()" style="width: 460px"/></div>
+                <div class="chatInput search-input"><input type="text" name="find" placeholder="find text..." data-ng-model="findText" data-ng-change="inputSearchText()" class="search-input"/></div>
                 <a data-ng-click="setFindMode(false)" class="findIcon"></a>
                 <input type="checkbox" name="matchCase" id="matchCase" class="findCheckbox" data-ng-model="matchCheck" data-ng-change="changeMatchCheck()"/>
                 <label for="matchCase" class="findCheckLbl">Match Case</label>

@@ -34,8 +34,11 @@
  * Changes in version 1.8 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
  * - Fixed issues in coding editor.
  *
+ * Changes in version 1.9 (Module Assembly - Web Arena UI - Phase I Bug Fix 5):
+ * - Updated goto line logic.
+ *
  * @author tangzx, amethystlei, flytoj2ee, TCASSEMBLER
- * @version 1.8
+ * @version 1.9
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -139,6 +142,8 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     t = $scope.cm.charCoords({line: tmp, ch: 0}, "local").top;
                     middleHeight = $scope.cm.getScrollerElement().offsetHeight / 2;
                     $scope.cm.scrollTo(null, t - middleHeight - 5);
+                    $scope.cm.setCursor(tmp - 1, 0);
+                    $scope.cm.focus();
                 }
             }
         };

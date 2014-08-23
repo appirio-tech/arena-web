@@ -22,11 +22,14 @@
  * - Fixed the issue that changing the testcases in Test Panel will also change
  *   the content in the problem area.
  *
- * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 2):
  * - Initialize noCountdown to true, so that user won't see 00:00:01 when page loads
  *
- * @author dexy, amethystlei
- * @version 1.4
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix 5):
+ * - Update goBack() logic.
+ *
+ * @author dexy, amethystlei, TCASSEMBLER
+ * @version 1.6
  */
 'use strict';
 /*global module, angular, document, $*/
@@ -422,7 +425,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 $scope.$state.go(helper.STATE_NAME.ContestSummary, {
                     contestId : $scope.roundID,
                     divisionId : $scope.divisionID,
-                    viewOn : 'room'
+                    viewOn : $rootScope.currentViewOn
                 });
             }
         };
