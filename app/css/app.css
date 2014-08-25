@@ -931,6 +931,7 @@ footer .right>span:nth-child(2) {
     padding: 14px 0 0;
     margin: 0;
     height: 200px;
+    overflow: auto;
 }
 .modal .modal-content .modal-body p {
     margin: auto 20px;
