@@ -52,7 +52,8 @@ module.exports = function (grunt) {
                         { match : 'SSO_KEY', replacement: process.env.SSO_KEY },
                         { match : 'STATIC_FILE_HOST', replacement: process.env.STATIC_FILE_HOST },
                         { match : 'GOOGLE_ANALYTICS_TRACKING_ID', replacement: process.env.GOOGLE_ANALYTICS_TRACKING_ID },
-                        { match : 'CONNECTION_TIMEOUT', replacement: process.env.CONNECTION_TIMEOUT }
+                        { match : 'CONNECTION_TIMEOUT', replacement: process.env.CONNECTION_TIMEOUT },
+                        { match : 'MEMBER_PHOTO_HOST', replacement: process.env.MEMBER_PHOTO_HOST }
                     ]
                 },
                 files : [

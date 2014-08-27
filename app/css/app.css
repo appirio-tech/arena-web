@@ -930,8 +930,7 @@ footer .right>span:nth-child(2) {
     border-width: 0;
     padding: 14px 0 0;
     margin: 0;
-    height: 200px;
-    overflow: auto;
+    height: 190px;
 }
 .modal .modal-content .modal-body p {
     margin: auto 20px;
@@ -1940,7 +1939,8 @@ footer .right>span:nth-child(2) {
 .panelOverview .overviewAndMessage .profile img {
     position: absolute;
     top: 5px;
-    left: 1px;
+    left: -10px;
+    width: 88px;
 }
 .panelOverview .overviewAndMessage .profile p {
     color: #fff;

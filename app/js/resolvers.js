@@ -76,7 +76,12 @@ var helper = require('./helper');
  * @type {number}
  */
 var connectionTimeout = config.connectionTimeout || 25000;
-
+/**
+ * Represents the member photo host.
+ *
+ * @type {string}
+ */
+var memberPhotoHost = config.memberPhotoHost || 'http://apps.topcoder.com';
 /**
  * Represents the date format for TC TIME
  *
@@ -165,6 +170,12 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
     // handle the user info response
     socket.on(helper.EVENT_NAME.UserInfoResponse, function (data) {
+        //set member photo
+        if (angular.isUndefined(data.userInfo.avatar) || data.userInfo.avatar === '') {
+            data.userInfo.avatar = memberPhotoHost + '/i/m/nophoto_login.gif';
+        } else {
+            data.userInfo.avatar = memberPhotoHost + data.userInfo.avatar;
+        }
         // persist userInfo in session
         sessionHelper.persist({userInfo: data.userInfo});
     });
