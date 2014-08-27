@@ -305,10 +305,10 @@
                                                         <th class="col2 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'userName')">
                                                             Handle<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='userName' || getKeys(viewOn).leaderboardKey=='-userName'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-userName',ascArrow:getKeys(viewOn).leaderboardKey=='userName'}" class="arrow"></span></span>
                                                         </th>
-                                                        <th data-ng-repeat="problem in contest.problems[divisionID] track by $index" class="colProblem sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', '-components['+$index+'].points')">
+                                                        <th data-ng-repeat="problem in contest.problems[divisionID] track by $index" class="colProblem sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'components['+$index+'].points')">
                                                             {{ problem.primaryComponent.pointValue }}<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='components['+$index+'].points' || getKeys(viewOn).leaderboardKey=='-components['+$index+'].points'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-components['+$index+'].points',ascArrow:getKeys(viewOn).leaderboardKey=='components['+$index+'].points'}" class="arrow"></span></span>
                                                         </th>
-                                                        <th class="col6 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', '-totalPoints')">
+                                                        <th class="col6 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'totalPoints')">
                                                             Score<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='totalPoints' || getKeys(viewOn).leaderboardKey=='-totalPoints'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-totalPoints',ascArrow:getKeys(viewOn).leaderboardKey=='totalPoints'}" class="arrow"></span></span>
                                                         </th>
                                                     </tr>

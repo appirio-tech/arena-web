@@ -40,8 +40,11 @@
  * Changes in version 1.7 (Module Assembly - Web Arena UI - Coder History):
  * - Refractor the code for coder history modal.
  *
+ * Changes in version 1.8 (Module Assembly - Web Arena UI - Phase I Bug Fix 5):
+ * - Set current view value to cache.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.7
+ * @version 1.8
  */
 'use strict';
 /*jshint -W097*/
@@ -453,6 +456,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
      * @param view can be 'room', 'divOne', 'divTwo'
      */
     $scope.setViewOn = function (view) {
+        $rootScope.currentViewOn = view;
         var divID = helper.VIEW_ID[view];
         if (view !== 'room') {
             getDivSummary($scope.contest.roundID, divID);
@@ -462,6 +466,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             $scope.isDivLoading = false;
         }
         $scope.viewOn = view;
+
         rebuildScrollbars();
     };
 
