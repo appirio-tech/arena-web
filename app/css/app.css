@@ -573,13 +573,13 @@ body a {cursor: pointer;}
     height: 0;
     width: 0;
     overflow: hidden;
-    margin-left: 172px;
+    margin-left: 255px;
 }
 .hero .loginBox footer>p:last-child {
     margin-top: 16px;
     font: 400 15px "Source Code Pro","Helvetica Neue",Helvetica,Arial,sans-serif; /*SourceCodePro Regular*/
     color: #828282;
-    padding-left: 224px;
+    padding-left: 169px;
     letter-spacing: -0.08em;
 }
 .hero .loginBox footer>p:last-child span {
