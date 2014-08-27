@@ -9,5 +9,6 @@ module.exports = {
     ssoKey: '@@SSO_KEY',
     connectionTimeout: @@CONNECTION_TIMEOUT,
     googleAnalyticsTrackingId: '@@GOOGLE_ANALYTICS_TRACKING_ID',
-    staticFileHost: '@@STATIC_FILE_HOST'
+    staticFileHost: '@@STATIC_FILE_HOST',
+    memberPhotoHost: '@@MEMBER_PHOTO_HOST'
 };

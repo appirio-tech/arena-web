@@ -30,3 +30,6 @@ set AWS_FOLDER=arena\md\web-v0.0.2\
 
 :: the connection timeout to web socket
 set CONNECTION_TIMEOUT=30000
+
+:: the member photo host
+set MEMBER_PHOTO_HOST=http://apps.topcoder.com

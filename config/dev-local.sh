@@ -37,3 +37,6 @@ export GOOGLE_ANALYTICS_TRACKING_ID=
 
 # the connection timeout to web socket
 export CONNECTION_TIMEOUT=30000
+
+# the member photo host
+export MEMBER_PHOTO_HOST=http://apps.topcoder.com
