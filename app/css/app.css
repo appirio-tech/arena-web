@@ -167,6 +167,10 @@ body a {cursor: pointer;}
 .navIcons .iconTS:before{
     background-position: -175px 0;
 }
+.navIcons .iconBug:before{
+    background-image: url(../img/dark/icon-bug.png) !important;
+    background-position: 0 0;
+}
 .navIcons .active .icon:after {
     content: '';
     display: block;
@@ -568,12 +572,12 @@ body a {cursor: pointer;}
 }
 .hero .loginBox footer .sponsorLogo {
     display: block;
-    padding-top: 37px;
-    padding-right: 321px;
+    padding-top: 58px;
+    padding-right: 346px;
     height: 0;
     width: 0;
     overflow: hidden;
-    margin-left: 255px;
+    margin-left: -13px;
 }
 .hero .loginBox footer>p:last-child {
     margin-top: 16px;

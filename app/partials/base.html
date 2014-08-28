@@ -24,6 +24,7 @@
                         <li data-ng-class="{ active: $state.includes('user.dashboard') }">
                           <a data-ui-sref="user.dashboard" class="icon iconLobby">LOBBY</a><a data-ui-sref="user.dashboard" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Lobby" data-ng-click="returnLobby()"></a>
                         </li>
+			<!--
                         <li data-ng-class="{ active: $state.includes('user.contests') || $state.includes('user.contest') || $state.includes('user.coding') || $state.includes('user.contestSummary')}">
                           <a class="icon iconContests">CONTESTS</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Contests"></a>
                         </li>
@@ -42,6 +43,7 @@
                         <li data-ng-class="">
                           <a class="icon iconPT">PROBLEM TRACKER</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Problem tracker"></a>
                         </li>
+			-->
                         <li class="themeSwitcher" data-ng-class="">
                           <a id="iconTS" class="icon iconTS" data-ng-click="openThemeSelector($event)">THEME SWITCHER</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="{{themePanelOpen ? null : 'Theme switcher'}}" data-ng-click="openThemeSelector($event)" ></a>
                           <div class="themePanel" data-ng-show="themePanelOpen" id="themePanel">
@@ -54,6 +56,9 @@
                             </div><!--/.themesBox-->
                             <a class="btn" data-ng-click="applyTheme()">APPLY</a>
                           </div>
+                        </li>
+                         <li data-ng-class="">
+                          <a class="icon iconBug">REPORT ISSUE</a><a href="https://github.com/cloudspokes/arena-web/issues" target="_blank" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Report Issue"></a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right userInfo">
@@ -75,7 +80,6 @@
                 </div>
                 <div class="right col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <span class="sponsorLogo">Logo</span>
-                    <span>Born in the Cloud, Powered by a Community</span>
                 </div>
             </div>
         </div>
