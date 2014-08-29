@@ -348,5 +348,13 @@ module.exports = {
     PHASE_DATA: {
         START_MESSAGE: 'is starting for ',
         END_MESSAGE: 'is ending for '
+    },
+
+    // The survey question types.
+    QUESTION_TYPE: {
+        SINGLE_CHOICE: 1,
+        MULTI_CHOICE: 2,
+        LONG_TEXT: 3,
+        SHORT_TEXT: 4
     }
 };

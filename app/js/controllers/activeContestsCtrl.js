@@ -30,8 +30,11 @@
  * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
  * - Show the registered text if user already registered.
  *
+ * Changes in version 1.8 (Module Assembly - Web Arena UI - Suvery and Questions Support For Contest Registration):
+ * - Updated the logic to support registration survey and questions.
+ *
  * @author amethystlei, dexy, flytoj2ee, TCASSEMBLER
- * @version 1.7
+ * @version 1.8
  */
 'use strict';
 /*global module, angular, require*/
@@ -48,7 +51,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper', function ($scope, $rootScope, $state, socket, appHelper) {
+var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper', '$modal', function ($scope, $rootScope, $state, socket, appHelper, $modal) {
     var getPhase = function (contest, phaseTypeId) {
         var i;
         if (!contest.phases) {
@@ -67,7 +70,8 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                             && contest.coderRooms && contest.coderRooms.length > 0) ? 'Enter' : '';
         },
         // show the active tab name when active contest widget is narrow
-        tabNames = ['Contest Summary', 'Contest Schedule', 'My Status', 'Rooms'];
+        tabNames = ['Contest Summary', 'Contest Schedule', 'My Status', 'Rooms'],
+        popupDetailModalCtrl;
 
     $scope.getPhaseTime = appHelper.getPhaseTime;
     $scope.range = appHelper.range;
@@ -254,6 +258,72 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
 
     };
 
+    popupDetailModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', 'cancel', '$timeout', function ($scope, $modalInstance, data, ok, cancel, $timeout) {
+        $scope.title = data.title;
+        $scope.message = data.detail;
+        $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
+        $scope.enableClose = true;
+
+        $timeout(function () {
+            $scope.$broadcast('rebuild:inputValidation');
+        }, 100);
+
+        /**
+         * Close the dialog.
+         */
+        $scope.ok = function () {
+            ok();
+            $modalInstance.close();
+        };
+
+        /**
+         * Cancel handler.
+         */
+        $scope.cancel = function () {
+            cancel();
+            $modalInstance.dismiss('cancel');
+        };
+    }];
+    /**
+     * Open the registration detail modal.
+     * @param data - the data value
+     * @param handle - the handle function
+     * @param finish - the finish function
+     */
+    $scope.openDetailModal = function (data, handle, finish) {
+        if ($rootScope.currentDetailModal) {
+            $rootScope.currentDetailModal.dismiss('cancel');
+            $rootScope.currentDetailModal = undefined;
+        }
+
+        $rootScope.currentDetailModal = $modal.open({
+            templateUrl: 'popupValidationDetail.html',
+            controller: popupDetailModalCtrl,
+            backdrop: 'static',
+            resolve: {
+                data: function () {
+                    return data;
+                },
+                ok: function () {
+                    return function () {
+                        if (angular.isFunction(handle)) {
+                            handle();
+                        }
+                        $rootScope.currentDetailModal = undefined;
+                    };
+                },
+                cancel: function () {
+                    return function () {
+                        if (angular.isFunction(finish)) {
+                            finish();
+                        }
+                        $rootScope.currentDetailModal = undefined;
+                    };
+                }
+            }
+        });
+    };
+
     // action for 'Register' or 'Enter'
     $scope.doAction = function (contest) {
         var roundID = contest.roundID;
@@ -274,24 +344,121 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                 // remove the listener
                 $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
                 angular.extend(data, {enableClose: true});
+                $rootScope.currentDetailModal = undefined;
                 $scope.openModal(data, function () {
-                    /*jslint unparam: true*/
-                    // Agreed to register, listen to registration results.
-                    $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
-                        // Remove the listener.
-                        $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
-                        angular.extend(data, {enableClose: true});
-                        $scope.openModal(data);
-                        contest.isRegisterable = false;
-                        contest.isRegistered = true;
-                        $scope.setDetailIndex(contest, 2);
-                    });
-                    /*jslint unparam: false*/
-                    socket.emit(helper.EVENT_NAME.RegisterRequest, {roundID: roundID});
+                    var surveyData = [], i, j, item = {}, flag, validationError = [], detail;
+                    for (i = 0; i < $rootScope.eligibilityQuestions.length; i++) {
+                        item = {questionID: $rootScope.eligibilityQuestions[i].questionID, eligible: "true", type: $rootScope.eligibilityQuestions[i].questionType,
+                            answers: [], choices: []};
+                        if ($rootScope.eligibilityQuestions[i].questionType === helper.QUESTION_TYPE.LONG_TEXT ||
+                                $rootScope.eligibilityQuestions[i].questionType === helper.QUESTION_TYPE.SHORT_TEXT) {
+                            if ($rootScope.eligibilityQuestions[i].answer !== '') {
+                                item.answers.push($rootScope.eligibilityQuestions[i].answer);
+                            } else {
+                                validationError.push($rootScope.eligibilityQuestions[i].questionText);
+                            }
+                        }
+
+                        if ($rootScope.eligibilityQuestions[i].questionType === helper.QUESTION_TYPE.SINGLE_CHOICE) {
+                            if ($rootScope.eligibilityQuestions[i].answer !== '') {
+                                item.choices.push({text: $rootScope.eligibilityQuestions[i].answer});
+                                item.answers.push($rootScope.eligibilityQuestions[i].answer);
+                            } else {
+                                validationError.push($rootScope.eligibilityQuestions[i].questionText);
+                            }
+
+                        }
+                        if ($rootScope.eligibilityQuestions[i].questionType === helper.QUESTION_TYPE.MULTI_CHOICE) {
+                            flag = false;
+                            for (j = 0; j < $rootScope.eligibilityQuestions[i].answers.length; j++) {
+                                if ($rootScope.eligibilityQuestions[i].answers[j] === true) {
+                                    item.choices.push({text: $rootScope.eligibilityQuestions[i].answerText[j]});
+                                    item.answers.push($rootScope.eligibilityQuestions[i].answerText[j]);
+                                    flag = true;
+                                }
+                            }
+
+                            if (flag === false) {
+                                validationError.push($rootScope.eligibilityQuestions[i].questionText);
+                            }
+
+                        }
+                        surveyData.push(item);
+                    }
+
+                    for (i = 0; i < $rootScope.generalQuestions.length; i++) {
+                        item = {questionID: $rootScope.generalQuestions[i].questionID, type: $rootScope.generalQuestions[i].questionType,
+                            answers: [], choices: []};
+                        if ($rootScope.generalQuestions[i].questionType === helper.QUESTION_TYPE.LONG_TEXT ||
+                                $rootScope.generalQuestions[i].questionType === helper.QUESTION_TYPE.SHORT_TEXT) {
+                            if ($rootScope.generalQuestions[i].answer !== '') {
+                                item.answers.push($rootScope.generalQuestions[i].answer);
+                            } else {
+                                validationError.push($rootScope.generalQuestions[i].questionText);
+                            }
+                        }
+
+                        if ($rootScope.generalQuestions[i].questionType === helper.QUESTION_TYPE.SINGLE_CHOICE) {
+                            if ($rootScope.generalQuestions[i].answer !== '') {
+                                item.choices.push({text: $rootScope.generalQuestions[i].answer});
+                                item.answers.push($rootScope.generalQuestions[i].answer);
+                            } else {
+                                validationError.push($rootScope.generalQuestions[i].questionText);
+                            }
+
+                        }
+                        if ($rootScope.generalQuestions[i].questionType === helper.QUESTION_TYPE.MULTI_CHOICE) {
+                            flag = false;
+                            for (j = 0; j < $rootScope.generalQuestions[i].answers.length; j++) {
+                                if ($rootScope.generalQuestions[i].answers[j] === true) {
+                                    item.choices.push({text: $rootScope.generalQuestions[i].answerText[j]});
+                                    item.answers.push($rootScope.generalQuestions[i].answerText[j]);
+                                    flag = true;
+                                }
+                            }
+
+                            if (flag === false) {
+                                validationError.push($rootScope.generalQuestions[i].questionText);
+                            }
+
+                        }
+                        surveyData.push(item);
+                    }
+
+                    if (validationError.length > 0) {
+                        detail = '<p class="textColor">You must provide an answer to the question:</p>';
+                        for (i = 0; i < validationError.length; i++) {
+                            detail = detail + '<p> --- ' + validationError[i] + "</p>";
+                        }
+                        $rootScope.currentDetailModal = undefined;
+                        $scope.openDetailModal({'title': 'Error', 'detail': detail});
+                    } else {
+                        /*jslint unparam: true*/
+                        // Agreed to register, listen to registration results.
+                        $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
+                            // Remove the listener.
+                            $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
+                            angular.extend(data, {enableClose: true, registrantCallBack: true});
+                            $scope.openModal(data);
+                            if (data.message.indexOf('You have successfully registered for the match.') !== -1) {
+                                contest.isRegisterable = false;
+                                contest.isRegistered = true;
+                                if ($rootScope.currentModal !== undefined && $rootScope.currentModal !== null) {
+                                    $rootScope.currentModal = undefined;
+                                }
+                                $scope.setDetailIndex(contest, 2);
+                            }
+                        });
+
+                        /*jslint unparam: false*/
+                        socket.emit(helper.EVENT_NAME.RegisterRequest, {"roundID": roundID, "surveyData": surveyData});
+                    }
                 }, function () {
                     contest.isRegisterable = true;
                     contest.isRegistered = false;
-                });
+                    $rootScope.currentModal = undefined;
+                    $rootScope.currentDetailModal = undefined;
+                }, 'partials/user.contest.registration.html');
                 $scope.okDisabled = false;
             });
             /*jslint unparam: false*/

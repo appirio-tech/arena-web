@@ -908,7 +908,7 @@ footer .right>span:nth-child(2) {
 /* ** /.Fix to page move right ** */
 
 .modal .modal-dialog {
-    padding-top: 15%;
+    padding-top: 10%;
 }
 .modal .modal-content {
     border: 1px solid #234760;
@@ -4273,4 +4273,43 @@ footer .right>span:nth-child(2) {
 }
 .panel-custom .panel-heading .search-input {
     width: 450px;
+}
+.registration-modal-body {
+    min-height: 400px;
+    padding: 0!important;
+}
+.registration-modal-body .questionText{
+    margin: 5px!important;
+}
+.registration-modal-body .surveyDiv{
+    padding-top: 10px;
+    padding-left: 20px;
+}
+.registration-modal-body .surveyDiv p {
+    margin:5px !important;
+}
+.registration-modal-body .surveyDiv .answerText {
+    padding-left: 45px;
+}
+.registration-modal-body .surveyDiv .answerText .radio {
+    margin-right: 5px;
+    display: inline;
+    min-height: 10px;
+    vertical-align: middle;
+    margin-bottom: 6px;
+}
+.registration-modal-body .surveyDiv .answerText .longText {
+    margin-top: 10px;
+    width: 515px;
+    height: 80px;
+}
+.registration-modal-body .surveyDiv .answerText .shortText {
+    margin-top: 10px;
+    width: 515px;
+}
+.registration-modal-body .bottomQuestionDiv{
+    margin-top: 50px;
+}
+.validation-modal-body {
+    padding: 0!important;
 }

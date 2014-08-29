@@ -48,12 +48,16 @@
  * Changes in version 1.10 (Module Assembly - Web Arena UI - Coder History):
  * - Updated the open modal logic to show coder history info.
  *
+ * Changes in version 1.11 (Module Assembly - Web Arena UI - Suvery and Questions Support For Contest Registration):
+ * - Updated the logic to support registration survey and questions.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.10
+ * @version 1.11
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
+/*jslint plusplus: true*/
 /*global document, angular:false, $:false, module, window, require*/
 
 /**
@@ -87,12 +91,46 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     $scope.$broadcast('rebuild:coderHistory');
                 }, 100);
             }
-            
+            var i, j, popupDetailModalCtrl;
+            if ($scope.title === 'Event Registration' && !(data.registrantCallBack && data.registrantCallBack === true)) {
+
+                $scope.surveyMessage = data.surveyMessage ? data.surveyMessage.replace(/(\r\n|\n|\r)/gm, "<br/>") : '';
+                $timeout(function () {
+                    $scope.$broadcast('rebuild:userRegistration');
+                }, 100);
+
+                $scope.answerText = "";
+                $scope.surveyQuestions = data.surveyQuestions;
+
+                $rootScope.generalQuestions = [];
+                $rootScope.eligibilityQuestions = [];
+                if (data.surveyQuestions) {
+                    for (i = 0; i < data.surveyQuestions.length; i++) {
+                        if (data.surveyQuestions[i].questionType === 2) {
+                            data.surveyQuestions[i].answers = [];
+                            for (j = 0; j < data.surveyQuestions[i].answerText.length; j++) {
+                                data.surveyQuestions[i].answers.push('');
+                            }
+                        } else {
+                            data.surveyQuestions[i].answer = "";
+                        }
+
+                        if (data.surveyQuestions[i].answerText.length !== 0) {
+                            if (data.surveyQuestions[i].eligibleQuestion && data.surveyQuestions[i].eligibleQuestion === true) {
+                                $rootScope.eligibilityQuestions.push(data.surveyQuestions[i]);
+                            } else {
+                                $rootScope.generalQuestions.push(data.surveyQuestions[i]);
+                            }
+                        }
+                    }
+                }
+            }
+
             /**
              * rebuild code info bar
              */
-            $modalInstance.opened.then(function() {
-                $timeout(function() {
+            $modalInstance.opened.then(function () {
+                $timeout(function () {
                     $scope.$broadcast('rebuild:codeInfo');
                 });
             });
@@ -102,7 +140,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
              */
             $scope.ok = function () {
                 ok();
-                $modalInstance.close();
+                if ($scope.title !== 'Event Registration') {
+                    $modalInstance.close();
+                }
             };
 
             /**
@@ -113,17 +153,17 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 $modalInstance.dismiss('cancel');
             };
 
-            var popupDetailModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', function ($scope, $modalInstance, data, ok) {
-                    $scope.title = data.title;
-                    $scope.message = data.detail;
-                    $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
-                    $scope.enableClose = true;
+            popupDetailModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', function ($scope, $modalInstance, data, ok) {
+                $scope.title = data.title;
+                $scope.message = data.detail;
+                $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
+                $scope.enableClose = true;
 
-                    $scope.ok = function () {
-                        ok();
-                        $modalInstance.close();
-                    };
-                }];
+                $scope.ok = function () {
+                    ok();
+                    $modalInstance.close();
+                };
+            }];
             /**
              * Open the user history detail modal.
              * @param data - the data value
@@ -205,7 +245,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                         if (angular.isFunction(handle)) {
                             handle();
                         }
-                        $rootScope.currentModal = undefined;
+                        if (templateUrl !== 'partials/user.contest.registration.html') {
+                            $rootScope.currentModal = undefined;
+                        }
                     };
                 },
                 cancel: function () {
