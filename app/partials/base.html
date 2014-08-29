@@ -112,3 +112,16 @@
         <button class="btn" data-ng-click="ok()">Close</button>
     </div>
 </script>
+
+<script type="text/ng-template" id="popupValidationDetail.html">
+    <div class="modal-header">
+        {{ title }}
+        <span class="cancel-x" data-ng-click="ok()" ng-if="enableClose">X</span>
+    </div>
+    <div class="modal-body validation-modal-body" data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:inputValidation">
+        <p ng-bind-html="message"></p>
+    </div>
+    <div class="modal-footer textAlign">
+        <button class="btn" data-ng-click="ok()">Close</button>
+    </div>
+</script>

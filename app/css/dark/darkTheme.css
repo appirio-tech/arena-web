@@ -763,3 +763,30 @@ footer .right .sponsorLogo {
 .textColor {
     color: #ffffff!important;
 }
+.registration-modal-body .title{
+    padding-top: 10px;
+    color: white;
+}
+.registration-modal-body .questionDiv{
+    border: 1px solid;
+    padding: 5px;
+    margin-left: 36px;
+    margin-right: 18px;
+    border-color: #1f444e;
+    min-height: 250px;
+}
+.registration-modal-body .surveyDiv .index{
+    color:white;
+    margin:5px 5px 5px 20px !important;
+}
+.registration-modal-body .questionTitle{
+    padding-top: 20px;
+    color: white;
+}
+.registration-modal-body .surveyDiv .questionTextDiv{
+    border: 1px solid;
+    border-color: #1f444e;
+    margin-right: 18px;
+    margin-left: 18px;
+    min-height: 80px;
+}
