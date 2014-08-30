@@ -57,8 +57,11 @@
  * Changes in version 1.13 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
  * - Added SetLanguageRequest event name and updated messages.
  *
+ * Changes in version 1.14 (Module Assembly - Web Arena UI - Challenges and Challengers):
+ * - Added ChallengesListResponse / ChallengeResponse event names.
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.13
+ * @version 1.14
  */
 
 module.exports = {
@@ -142,6 +145,8 @@ module.exports = {
         UserInfoResponse: 'UserInfoResponse',
         CoderHistoryRequest: 'CoderHistoryRequest',
         CoderHistoryResponse: 'CoderHistoryResponse',
+        ChallengesListResponse: 'ChallengesListResponse',
+        ChallengeResponse: 'ChallengeResponse',
         // internal events
         Connected: 'Connected',
         Disconnected: 'Disconnected',

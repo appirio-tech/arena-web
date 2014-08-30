@@ -57,8 +57,11 @@
  * Changes in version 1.12 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
  * - Handled the html links in chat content.
  *
+ * Changes in version 1.13 (Module Assembly - Web Arena UI - Challenges and Challengers):
+ * - Added logic to support challenges and challengers table.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.12
+ * @version 1.13
  */
 ///////////////
 // RESOLVERS //
@@ -309,6 +312,96 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
      */
     socket.on(helper.EVENT_NAME.RegisteredUsersResponse, function (data) {
         $rootScope.roundData[data.roundID].registrants = data.userListItems;
+    });
+
+    /**
+     * Calculate the challengers data.
+     * @param roomID - the room id.
+     */
+    function calculateChallengers(roomID) {
+        $rootScope.calculatedChallengers = [];
+        var index = 0, tmp, success, foundIndex, i, j;
+
+        for (i = 0; i < $rootScope.challenges[roomID].length; i++) {
+            $rootScope.challenges[roomID][i].id = i + 1;
+
+            tmp = null;
+            foundIndex = 0;
+            for (j = 0; j < $rootScope.calculatedChallengers.length; j++) {
+                if ($rootScope.calculatedChallengers[j].challengerHandle === $rootScope.challenges[roomID][i].challengerHandle) {
+                    tmp = $rootScope.calculatedChallengers[j];
+                    foundIndex = j;
+                    break;
+                }
+            }
+            if (tmp === null) {
+                success = $rootScope.challenges[roomID][i].success === true ? 1 : 0;
+                tmp = {
+                    id: index + 1,
+                    challengerHandle: $rootScope.challenges[roomID][i].challengerHandle,
+                    challengerUserType: $rootScope.challenges[roomID][i].challengerUserType,
+                    challengerRating: $rootScope.challenges[roomID][i].challengerRating,
+                    success: success,
+                    total: 1,
+                    points: $rootScope.challenges[roomID][i].points,
+                    rate: parseInt((success * 100.0).toFixed(0))
+                };
+                index = index + 1;
+                $rootScope.calculatedChallengers.push(tmp);
+            } else {
+                success = ($rootScope.challenges[roomID][i].success === true ? 1 : 0) + tmp.success;
+                tmp.success = success;
+                tmp.total = tmp.total + 1;
+                tmp.rate = parseInt(((success * 100.0 / tmp.total).toFixed(0)));
+                tmp.points = tmp.points + $rootScope.challenges[roomID][i].points;
+                $rootScope.calculatedChallengers[foundIndex] = tmp;
+            }
+        }
+    }
+
+    // Handle the ChallengesListResponse.
+    socket.on(helper.EVENT_NAME.ChallengesListResponse, function (data) {
+        var i, j;
+        if (!$rootScope.challenges) {
+            $rootScope.challenges = [];
+        }
+
+        if ($rootScope.roomData && $rootScope.roomData[data.roomID] && $rootScope.roomData[data.roomID].coders) {
+            for (i = 0; i < data.challenges.length; i++) {
+                data.challenges[i].language = helper.LANGUAGE_NAME[data.challenges[i].language];
+                for (j = 0; j < $rootScope.roomData[data.roomID].coders.length; j++) {
+                    if (data.challenges[i].challengerHandle === $rootScope.roomData[data.roomID].coders[j].userName) {
+                        data.challenges[i].challengerRating = $rootScope.roomData[data.roomID].coders[j].userRating;
+                        data.challenges[i].challengerUserType = $rootScope.roomData[data.roomID].coders[j].userType;
+                    }
+                    if (data.challenges[i].defenderHandle === $rootScope.roomData[data.roomID].coders[j].userName) {
+                        data.challenges[i].defenderRating = $rootScope.roomData[data.roomID].coders[j].userRating;
+                        data.challenges[i].defenderUserType = $rootScope.roomData[data.roomID].coders[j].userType;
+                    }
+                }
+            }
+        }
+
+        $rootScope.challenges[data.roomID] = data.challenges;
+        calculateChallengers(data.roomID);
+        $rootScope.$broadcast('rebuild:challengeTable');
+        $rootScope.$broadcast('rebuild:challengerTable');
+    });
+
+
+    // Handle ChallengeResponse
+    socket.on(helper.EVENT_NAME.ChallengeResponse, function (data) {
+        if (!$rootScope.challenges) {
+            $rootScope.challenges = [];
+        }
+
+        data.challenge.language = helper.LANGUAGE_NAME[data.challenge.language];
+
+        $rootScope.challenges[data.roomID].push(data.challenge);
+        calculateChallengers(data.roomID);
+        $rootScope.$broadcast('rebuild:challengeTable');
+        $rootScope.$broadcast('rebuild:challengerTable');
+
     });
 
     /**

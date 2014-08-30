@@ -1456,7 +1456,7 @@ footer .right>span:nth-child(2) {
     background-position: -75px -150px;
 }
 .panelCodeEditor .toolBar .rightPart>div.challenged {
-    width: auto;
+    width: auto!important;
     color: #f40000;
     font-style: italic;
     font-weight: bold;
@@ -3114,6 +3114,7 @@ footer .right>span:nth-child(2) {
 }
 .detailPage .challengeWrapper .tableDiv {
     max-height: 157px;
+    min-height: 157px;
 }
 .detailPage .leaderboardWrapper .tableDiv {
     max-height: 495px;
@@ -3229,7 +3230,7 @@ footer .right>span:nth-child(2) {
     width: 20%;
 }
 .challengerWrapper .table .col2 {
-    width: 29%;
+    width: 25%;
 }
 .leaderboardWrapper .table .colR {
     width: 30px;
@@ -3247,13 +3248,16 @@ footer .right>span:nth-child(2) {
 }
 .challengerWrapper .table .col3,
 .challengeWrapper .table .col6 {
-    width: 13%;
+    width: 10%;
 }
 .challengerWrapper .table .col5,
 .challengeWrapper .table .col4,
 .challengeWrapper .table .col5,
 .leaderboardWrapper .table .colProblem{
     width: 12.5%;
+}
+.challengeWrapper .table .col5 {
+    width: 16.5%;
 }
 .leaderboardWrapper .table .colProblem {
     min-width: 76px;
@@ -4312,4 +4316,32 @@ footer .right>span:nth-child(2) {
 }
 .validation-modal-body {
     padding: 0!important;
+}
+.challengerWrapper .table .colR,
+.challengeWrapper .table .colR {
+    width: 30px;
+    font-weight: 100;
+}
+.challengerWrapper .table .colRHeader {
+    width: 30px;
+    font-weight: 100;
+}
+.challengeWrapper .table .colRHeader {
+    width: 31px;
+    font-weight: 100;
+    padding-left: 0;
+    padding-right: 0;
+}
+.challengeWrapper .table .col1 {
+    width: 29px !important;
+}
+.challengeWrapper .table .col4
+{
+    width: 11%;
+}
+.challengeWrapper .table .col1 {
+    width: 23px;
+}
+.challengeWrapper .table .col1 .arrow {
+    margin-left: 3px!important;
 }

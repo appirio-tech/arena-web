@@ -43,8 +43,11 @@
  * Changes in version 1.8 (Module Assembly - Web Arena UI - Phase I Bug Fix 5):
  * - Set current view value to cache.
  *
+ * Changes in version 1.9 (Module Assembly - Web Arena UI - Challenges and Challengers):
+ * - Added logic to support challenges and challengers table.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.8
+ * @version 1.9
  */
 'use strict';
 /*jshint -W097*/
@@ -83,44 +86,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         $('.sumDiv .scroll, .tableDiv.scroll').hide();
         $('.sumDiv .default, .tableDiv.default').show();
     }
-    // Challengers
-    function getChallengers(viewOn) {
-        if ($scope.challengersDivs.length < 2 || (viewOn === 'room' && ($scope.userDivision < 1 || $scope.userRoomId < 1))) {
-            return [];
-        }
-        if (viewOn === 'room') {
-            // return $filter('filter')($scope.challengersDivs[$scope.userDivision - 1], {roomId: $scope.userRoomId});
-            return $scope.roomChallengers;
-        }
-        return viewOn === 'divOne' ? $scope.challengersDivs[0] : $scope.challengersDivs[1];
-    }
-    function populateChallengers(viewOn) {
-        var data = getChallengers(viewOn);
-        $scope.challengers.length = 0;
-        data.forEach(function (item) {
-            $scope.challengers.push(item);
-        });
-        $scope.$broadcast('rebuild:challengerTable');
-    }
-    // Challenges
-    function getChallenges(viewOn) {
-        if ($scope.challengesDivs.length < 2 || (viewOn === 'room' && ($scope.userDivision < 1 || $scope.userRoomId < 1))) {
-            return [];
-        }
-        if (viewOn === 'room') {
-            // return $filter('filter')($scope.challengesDivs[$scope.userDivision - 1], {roomId: $scope.userRoomId});
-            return $scope.roomChallenges;
-        }
-        return viewOn === 'divOne' ? $scope.challengesDivs[0] : $scope.challengesDivs[1];
-    }
-    function populateChallenges(viewOn) {
-        var data = getChallenges(viewOn);
-        $scope.challenges.length = 0;
-        data.forEach(function (item) {
-            $scope.challenges.push(item);
-        });
-        $scope.$broadcast('rebuild:challengeTable');
-    }
+
     /**
      * This function broadcasts the rebuild scrollbar message.
      */
@@ -326,6 +292,34 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     $scope.getLeaderRoomClass = function (roomPlace) {
         return roomPlace === 1 ? 'roomLeader' : '';
     };
+
+    /**
+     * Get all challenges.
+     * @returns {*} the challenges.
+     */
+    $scope.getAllChallenges = function () {
+        return $rootScope.challenges[$scope.roomID];
+
+    };
+
+    /**
+     * Get all challengers.
+     * @returns {Array} the challengers.
+     */
+    $scope.getAllChallengers = function () {
+        return $rootScope.calculatedChallengers;
+
+    };
+
+    /**
+     * Get language name.
+     *
+     * @param languageID - the language id.
+     * @returns {*} the language name
+     */
+    $scope.getLanguageName = function (languageID) {
+        return helper.LANGUAGE_NAME[languageID];
+    };
     $scope.contest = $rootScope.roundData[$stateParams.contestId];
     $scope.divisionID = $stateParams.divisionId;
     $scope.roomID = $rootScope.currentRoomInfo.roomID;
@@ -341,11 +335,8 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     // challengers
     $scope.challengers = [];
     $scope.challengersDivs = [[], []];
-    $scope.showChallengers = 5;
     // challenges
-    $scope.challenges = [];
     $scope.challengesDivs = [[], []];
-    $scope.showChallenges = 5;
     // leaderboards
     $scope.boards = [[], []];
     $scope.leaderboard = [];
@@ -381,12 +372,10 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         challengeFilterKey: 'all',
         lbFilterKey: 'all',
         challengerFilter : {
-            handle: ''
+            challengerHandle: ''
         },
         challengeFilter : {
-            challenger: {
-                handle: ''
-            }
+            challengerHandle: ''
         },
         lbFilter : {
             // filter on the field 'userName' of a coder
@@ -607,12 +596,8 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
                 .addClass('col-md-12')
                 .addClass('expand');
             if (element === 'challengersPanel') {
-                $scope.showChallengers = $scope.challengers.length;
-                populateChallengers($scope.viewOn);
                 $scope.$broadcast('rebuild:challengerTable');
             } else if (element === 'challengesPanel') {
-                $scope.showChallenges = $scope.challenges.length;
-                populateChallenges($scope.viewOn);
                 $scope.$broadcast('rebuild:challengeTable');
             } else {
                 $scope.$broadcast('rebuild:leaderboardTable');
@@ -626,12 +611,8 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
                 .removeClass('col-md-12')
                 .removeClass('expand');
             if (element === 'challengersPanel') {
-                $scope.showChallengers = 5;
-                populateChallengers($scope.viewOn);
                 $scope.$broadcast('rebuild:challengerTable');
             } else if (element === 'challengesPanel') {
-                $scope.showChallenges = 5;
-                populateChallenges($scope.viewOn);
                 $scope.$broadcast('rebuild:challengeTable');
             } else {
                 $scope.$broadcast('rebuild:leaderboardTable');
@@ -751,16 +732,16 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         } else if (panel === 'challenge') {
             challengeFilter.qtip('api').toggle(false);
             if ($scope.getKeys(viewOn).challengeFilterKey === 'specific') {
-                $scope.getKeys(viewOn).challengeFilter.challenger.handle = $scope.challengeHandleString;
+                $scope.getKeys(viewOn).challengeFilter.challengerHandle = $scope.challengeHandleString;
             } else {
-                $scope.getKeys(viewOn).challengeFilter.challenger.handle = '';
+                $scope.getKeys(viewOn).challengeFilter.challengerHandle = '';
             }
         } else if (panel === 'challenger') {
             challengerFilter.qtip('api').toggle(false);
             if ($scope.getKeys(viewOn).challengerFilterKey === 'specific') {
-                $scope.getKeys(viewOn).challengerFilter.handle = $scope.challengerHandleString;
+                $scope.getKeys(viewOn).challengerFilter.challengerHandle = $scope.challengerHandleString;
             } else {
-                $scope.getKeys(viewOn).challengerFilter.handle = '';
+                $scope.getKeys(viewOn).challengerFilter.challengerHandle = '';
             }
         }
     };
@@ -769,6 +750,36 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         if (ev.which === 13) {
             $scope.filterBegin(viewOn, panel);
         }
+    };
+
+    $scope.previousChallengeHandle = '';
+
+    /**
+     * Filter the challenges by user handle.
+     *
+     * @param viewOn - the view which current user using
+     * @param handle - the user handle
+     */
+    $scope.filterChallenges = function (viewOn, handle) {
+        if ($scope.previousChallengeHandle === handle) {
+            $scope.getKeys(viewOn).challengeFilter.challengerHandle = '';
+            $scope.previousChallengeHandle = '';
+            $scope.challengeHandleString = '';
+            $timeout(function () {
+                angular.element('#closeChallengeFilter').trigger('click');
+            }, 10);
+        } else {
+            $('.filterPanel').addClass('largeSize');
+            $scope.previousChallengeHandle = handle;
+            $scope.getKeys(viewOn).challengeFilterKey='specific';
+            $scope.getKeys(viewOn).challengeFilter.challengerHandle = handle;
+            $scope.challengeHandleString = handle;
+            $timeout(function () {
+                angular.element('#challengeFilter').trigger('click');
+            }, 1);
+            challengeFilter.qtip('api').render();
+        }
+        $rootScope.$broadcast('rebuild:challengeTable');
     };
 
     /**
