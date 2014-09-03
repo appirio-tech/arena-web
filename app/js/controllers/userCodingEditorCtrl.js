@@ -633,7 +633,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     socket.emit(helper.EVENT_NAME.SubmitRequest, {componentID: $scope.componentID});
                     $scope.testOpen = false;
 		    // Temporary change to allow tracking client of user submissions
-		    $.ajax("https://arena.topcoder.com:8080/?handle=" + $scope.username());
+		    $.ajax("https://arena.topcoder.com/track-web-arena-user/whatever/handle=" + encodeURIComponent($scope.username()));
                 });
             };
             if ($scope.contentDirty) {
