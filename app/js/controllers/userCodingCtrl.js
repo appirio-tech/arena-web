@@ -371,7 +371,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             if (component.constraints && component.constraints.length > 0) {
                 $scope.problem.constraints = [];
                 component.constraints.forEach(function (constraint) {
-                    $scope.problem.constraints.push(getHtmlContent(constraint));
+                    $scope.problem.constraints.push(getHtmlContent(constraint.userConstraint));
                 });
             }
             $scope.tests.forEach(function (test) {
