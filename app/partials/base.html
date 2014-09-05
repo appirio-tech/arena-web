@@ -91,8 +91,9 @@
         {{ title }}
         <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
         <p ng-bind-html="message"></p>
+        <br/>
     </div>
     <div class="modal-footer" ng-if="enableClose">
         <button class="btn right-btn" data-ng-click="ok()" data-ng-show="buttons.length == 2">{{ buttons[0] }}</button>

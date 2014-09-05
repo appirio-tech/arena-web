@@ -90,6 +90,12 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
                   dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
                   redraw();
               }
+
+//              if (!!event.preventDefault) {
+//                  event.preventDefault();
+//              } else {
+//                  return false;
+//              }
           };
         var lastOffsetY;
         var thumbDrag = function (event, offsetX, offsetY) {

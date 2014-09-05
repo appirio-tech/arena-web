@@ -31,7 +31,7 @@ body{
 .panelCodeEditor .panel-body .settingsPanel .closeIcon,
 .panelCodeEditor .testPanel header>a,
 .panelCodeEditor .testPanel .caseLbl:before,
-.panelCodeEditor .testPanel .bottom label:before,
+.panelCodeEditor .testPanel .btnRow label:before,
 .panelOverview .panel-heading .showSectionLbl:before,
 .messageArena .panelHeader .btnClose:before,
 .messageArena .panelHeader .legends label:before,
@@ -41,7 +41,9 @@ body{
 .panelChatArea .findIcon,
 .panelChatArea .searchIcon,
 .detailPage section .heading .filterArea a:before,
-.filterPanel .closeLink:before  {
+.filterPanel .closeLink:before,
+.testReportPanel .caseName>a,
+.testReportPanel .modalHeader .cancel-x:before {
     background-image: url(../img/orange/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
@@ -82,8 +84,17 @@ body{
     background-image: url(../img/orange/filter-bg.png);
     background-repeat: no-repeat;
 }
-.panelCodeEditor .testPanel .bottom .loadIcon {
+.panelCodeEditor .testPanel .btnRow .loadIcon {
     background-image: url(../img/orange/loadinfo.net.gif);
+    background-repeat: no-repeat;
+}
+.panelCodeEditor .testPanel header .runIcon:before,
+.panelCodeEditor .testPanel header .deleteIcon:before,
+.testReportPanel .correctInfo .dot,
+.testReportPanel .infoBar .time:before,
+.testReportPanel .infoBar .memory:before,
+.reportQtip.qtip-default:after {
+    background-image: url(../img/orange/sprite-test.png);
     background-repeat: no-repeat;
 }
 /***************header style*/
@@ -403,16 +414,39 @@ footer .left>span {
     background: #f0f0f0;
     color: #333;
 }
+.panelCodeEditor .testPanel header .runIcon,
+.panelCodeEditor .testPanel header .deleteIcon {
+    color: #ff8a00;
+}
+.panelCodeEditor .testPanel header .nameInput {
+    background: #fff;
+    color: #333;
+    font-weight: 400;
+}
+.panelCodeEditor .testPanel header .nameInput::-webkit-input-placeholder{
+    color: #333;
+}
+.panelCodeEditor .testPanel header .nameInput:-moz-placeholder{
+    color: #333;
+}
+.panelCodeEditor .testPanel header .nameInput::-moz-placeholder{
+    color: #333;
+}
+.panelCodeEditor .testPanel header .nameInput:-ms-input-placeholder{
+    color: #333;
+}
 .panelCodeEditor .testPanel .btn{
     background: #ff8a00;
 }
 .panelCodeEditor .testPanel .content input[type="text"] {
     background: #fff;
+}
+.panelCodeEditor .testPanel .content .inputBorder {
     border-color: #e7e7e7;
 }
 .panelCodeEditor .settingsPanel .btn-settings:hover,
 .panelCodeEditor .testPanel .content .btn:hover,
-.panelCodeEditor .testPanel .bottom .btn:hover {
+.panelCodeEditor .testPanel .btnRow .btn:hover {
     background: #ffa133;
 }
 .panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
@@ -431,6 +465,37 @@ footer .left>span {
 /*#resizer:hover {
     background: #1f444e;
 }*/
+.panelCodeEditor .testReportPanel,
+.reportQtip.qtip-default {
+    border-color: #e7e7e7;
+    background: #fff;
+}
+.testReportPanel .modalHeader>span {
+    color: #636d70;
+}
+.testReportPanel .infoBar {
+    background: #F0F0F0;
+    color: #333;
+}
+.testReportPanel .infoBar td+td {
+    border-color: #e7e7e7;
+}
+.testReportPanel .correctInfo {
+    color: #00ff2a;
+}
+.testReportPanel .correctInfo.wrong {
+    color: #ff0000;
+}
+.testReportPanel .correctInfo.custom {
+    color: #7e7e7e;
+}
+.reportQtip.qtip-default {
+    color: #333;
+    font-weight: 400;
+}
+.testReportPanel .modalFooter .btn {
+    background: #ff8a00;
+}
 /******************* count down widget */
 .panelCountDown {
     background: #fff;

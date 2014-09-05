@@ -39,8 +39,11 @@
  * Changes in version 1.9 (Module Assembly - Web Arena UI - Rooms Tab):
  * - Updated to include the start from filter.
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.8
+ * Changes in version 1.10 (Module Assembly - Web Arena UI - Test Panel Update for Batch Testing):
+ * - Updated to include resources for test panel and test report.
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
+ * @version 1.10
  */
 'use strict';
 /*jshint -W097*/
@@ -116,6 +119,7 @@ controllers.contestPlanCtrl = require('./controllers/contestPlanCtrl');
 controllers.messageArenaCtrl = require('./controllers/messageArenaCtrl');
 controllers.contestSummaryCtrl = require('./controllers/contestSummaryCtrl');
 controllers.userContestDetailCtrl = require('./controllers/userContestDetailCtrl');
+controllers.testPanelCtrl = require('./controllers/testPanelCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -134,6 +138,9 @@ directives.messageArena = require('./directives/messageArena');
 directives.contestSummary = require('./directives/contestSummary');
 directives.ratingIndicator = require('./directives/ratingIndicator');
 directives.autoFillFix = require('./directives/autoFillFix');
+directives.testPanel = require('./directives/testPanel');
+directives.testReport = require('./directives/testReport');
+directives.qTip = require('./directives/qTip.js');
 directives.sglclick = require('./directives/sglclick');
 
 /*global $ : false, angular : false */
@@ -188,6 +195,7 @@ main.controller('baseCtrl', controllers.baseCtrl);
 main.controller('messageArenaCtrl', controllers.messageArenaCtrl);
 main.controller('contestSummaryCtrl', controllers.contestSummaryCtrl);
 main.controller('userContestDetailCtrl', controllers.userContestDetailCtrl);
+main.controller('testPanelCtrl', controllers.testPanelCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -208,6 +216,9 @@ main.directive('messageArena', directives.messageArena);
 main.directive('contestSummary', directives.contestSummary);
 main.directive('ratingIndicator', directives.ratingIndicator);
 main.directive('autoFillFix', directives.autoFillFix);
+main.directive('testPanel', directives.testPanel);
+main.directive('testReport', directives.testReport);
+main.directive('qTip', directives.qTip);
 main.directive('sglclick', directives.sglclick);
 
 //////////////////////////////////////

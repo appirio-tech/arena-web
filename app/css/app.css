@@ -934,7 +934,7 @@ footer .right>span:nth-child(2) {
     border-width: 0;
     padding: 14px 0 0;
     margin: 0;
-    overflow: auto;
+    overflow: hidden;
     height: 190px;
 }
 .modal .modal-content .modal-body p {
@@ -1196,8 +1196,6 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeProblem .panel-body{
     height: 169px;
-    overflow-x: hidden;
-    overflow-y: scroll;
 }
 .panelCodeProblem .panel-body .statement {
     padding: 14px 31px 14px;
@@ -1498,24 +1496,21 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .toolBar .testPanel {
     position: absolute;
     top: 34px;
-    right: 30px;
-    height: 480px;
-    width: 348px;
-    padding-right: 18px;
+    right: 0;
+    width: 368px;
     overflow: hidden;
     z-index: -1;
     border: 1px solid #fff;
 }
 .panelCodeEditor .toolBar .testPanel>div {
     height: 480px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    margin-bottom: -7px;
 }
 .panelCodeEditor .testPanel header {
     width: 346px;
     height: 42px;
     line-height: 10px;
-    padding-top: 15px;
+    padding-top: 14px;
     padding-bottom: 16px;
     padding-left: 60px;
     position: relative;
@@ -1526,8 +1521,62 @@ footer .right>span:nth-child(2) {
     width: 15px;
     background-position: -75px 0;
     position: absolute;
-    top: 13px;
-    left: 37px;
+    top: 12px;
+    left: 38px;
+}
+.panelCodeEditor .testPanel header .runIcon,
+.panelCodeEditor .testPanel header .deleteIcon {
+    width: 54px;
+    top: 12px;
+    left: 211px;
+    font-size: 14px;
+    padding-left: 10px;
+    padding-top: 2px;
+    background: transparent;
+}
+.panelCodeEditor .testPanel header .deleteIcon {
+    width: 70px;
+    left: 265px;
+    padding-left: 15px;
+}
+.panelCodeEditor .testPanel header .runIcon:hover,
+.panelCodeEditor .testPanel header .deleteIcon:hover {
+    text-decoration: none;
+    opacity: 0.5;
+}
+.panelCodeEditor .testPanel header .runIcon:before,
+.panelCodeEditor .testPanel header .deleteIcon:before {
+    content: "";
+    display: block;
+    height: 8px;
+    width: 9px;
+    position: absolute;
+    left: 0;
+    top: 3px;
+    background-position: -20px -20px;
+}
+.panelCodeEditor .testPanel header .deleteIcon:before {
+    background-position: -40px -20px;
+}
+.panelCodeEditor .testPanel header .nameLbl {
+    height: 27px;
+    width: 143px;
+}
+.panelCodeEditor .testPanel input[type="text"].nameInput {
+    height: 27px;
+    width: 143px;
+    border-width: 0;
+    padding: 5px 0 8px 3px;
+    line-height: normal;
+    vertical-align: middle;
+    position: absolute;
+    left: 57px;
+    top: 7px;
+    font-weight: 300;
+}
+.panelCodeEditor .testPanel .hide,
+.panelCodeEditor .hide {
+    display: none;
 }
 .panelCodeEditor .testPanel header .open {background-position: -50px 0;}
 .panelCodeEditor .testPanel header > span {
@@ -1550,13 +1599,13 @@ footer .right>span:nth-child(2) {
     width: 19px;
     position: absolute;
     left: 8px;
-    top: 11px;
+    top: 10px;
     background-position: -50px -150px;
 }
 .panelCodeEditor .testPanel .caseCheck:checked ~ .caseLbl:before {background-position: -75px -150px;}
 .panelCodeEditor .testPanel input[type="checkbox"] {display: none;}
 .panelCodeEditor .testPanel .content {
-    padding: 6px 0 20px 36px;
+    padding: 6px 0 0 36px;
     position: relative;
 }
 .panelCodeEditor .testPanel .content label {
@@ -1566,10 +1615,14 @@ footer .right>span:nth-child(2) {
     line-height: 36px;
     margin-bottom: 0;
 }
-.panelCodeEditor .testPanel .btn,.panelCodeEditor .testPanel input[type="text"] {
+.panelCodeEditor .testPanel .btn {
     height: 36px;
     width: 178px;
     margin-bottom: 10px;
+}
+.panelCodeEditor .testPanel input[type="text"] {
+    height: 34px;
+    width: 176px;
 }
 .panelCodeEditor .testPanel .btn{
     font-size: 16px;
@@ -1580,12 +1633,15 @@ footer .right>span:nth-child(2) {
     display: inline-block;
 }
 .panelCodeEditor .testPanel .content .btnAlt + .btnAlt {margin-left: 16px; }
-.panelCodeEditor .testPanel .content input[type="text"] {
+.panelCodeEditor .testPanel .content .inputBorder {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    border-color: #fff;
-    border-width: 1px;
+    border: 1px solid #fff;
+    margin-bottom: 10px;
+}
+.panelCodeEditor .testPanel .content input[type="text"] {
+    border-width: 0;
     padding-left: 10px;
     font-weight: 300;
 }
@@ -1615,33 +1671,51 @@ footer .right>span:nth-child(2) {
     top: 0;
     left: 36px;
 }
-.panelCodeEditor .testPanel .bottom {
-    padding: 21px 0 31px 36px;
+.panelCodeEditor .testPanel .btnRow {
+    padding: 13px 0 14px 36px;
     position: relative;
 }
-.panelCodeEditor .testPanel .bottom label {display: inline-block; width: 102px;height: 36px;padding-top: 10px;margin-bottom: 6px;}
-.panelCodeEditor .testPanel .bottom .btn {margin-bottom: 0;}
-.panelCodeEditor .testPanel .bottom .caseLbl:before{
+.panelCodeEditor .testPanel .btnRow label {
+    display: inline-block;
+    width: 102px;
+    height: 36px;
+    padding-top: 15px;
+    margin-bottom: 6px;
+    vertical-align: bottom;
+}
+.panelCodeEditor .testPanel .btnRow .btn {margin-bottom: 0;}
+.panelCodeEditor .testPanel .btnRow .testBtn,
+.panelCodeEditor .testPanel .btnRow .addBtn {
+    width: 76px;
+    padding: 5px 6px 7px 10px;
+    font-weight: 300;
+    text-align: left;
+}
+.panelCodeEditor .testPanel .btnRow .addBtn {
+    padding-left: 15px;
+    margin-left: 25px;
+}
+.panelCodeEditor .testPanel .btnRow .caseLbl:before{
     content: '';
     display: block;
     height: 19px;
     width: 19px;
     position: absolute;
     left: 8px;
-    top: 33px;
+    top: 31px;
     background-position: -50px -150px;
 }
-.panelCodeEditor .testPanel .bottom .message {position: absolute; top: 0; width: 178px; padding-top: 0; margin-bottom: 0;}
-.panelCodeEditor .testPanel .bottom .loadIcon {
+.panelCodeEditor .testPanel .btnRow .message {position: absolute; top: 0; width: 178px; padding-top: 0; margin-bottom: 0;}
+.panelCodeEditor .testPanel .btnRow .loadIcon {
     position: absolute;
-    top: 33px;
+    top: 28px;
     left: 100px;
     display: block;
     height: 24px;
     width: 24px;
     background-position: 0 0;
 }
-.panelCodeEditor .testPanel .bottom .caseCheck:checked ~ .caseLbl:before {background-position: -75px -150px;}
+.panelCodeEditor .testPanel .btnRow .caseCheck:checked ~ .caseLbl:before {background-position: -75px -150px;}
 .panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
 .panelCodeEditor .paddingRow {height: 7px;background: #151718;position: relative;}
 .panelCodeEditor .paddingRow:before {
@@ -1717,6 +1791,171 @@ footer .right>span:nth-child(2) {
     background: transparent;
     height: 0px;
     cursor: ns-resize;
+}
+/* test report*/
+.panelCodeEditor .testReportPanel {
+    width: 530px;
+    min-height: 306px;
+    max-height: 516px;
+    position: absolute;
+    top: 43px;
+    left: 50%;
+    margin-left: -260px;
+    border: 1px solid #2d2f30;
+    z-index: 100;
+}
+.testReportPanel a:hover {
+    text-decoration: none;
+}
+.testReportPanel .modalHeader {
+    height: 35px;
+    padding: 4px 0 6px 12px;
+}
+.testReportPanel .modalHeader .cancel-x {
+    display: block;
+    width: 27px;
+    height: 24px;
+    position: absolute;
+    right: 3px;
+    top: 2px;
+}
+.testReportPanel .modalHeader .cancel-x:before {
+    content: '';
+    display: block;
+    width: 9px;
+    height: 8px;
+    background-position: -25px -75px;
+    position: absolute;
+    top: 9px;
+    right: 9px;
+}
+.testReportPanel .modalBody {
+    height: 405px;
+}
+.testReportPanel .modalBody .return {
+    padding: 12px 36px;
+    line-height: normal;
+}
+.testReportPanel .infoBar {
+    min-height: 40px;
+    margin-bottom: 1px;
+    margin-left: 0;
+    padding-left: 0;
+}
+.testReportPanel .infoBar td {
+    padding: 9px 0 8px;
+    vertical-align: top;
+    position: relative;
+    border-top-width: 0;
+    border-left: 1px solid transparent;
+}
+.testReportPanel .infoBar td+td {
+    border-left: 1px solid #313334;
+}
+.testReportPanel .infoBar .caseName {
+    padding-left: 35px;
+    width: 169px;
+}
+.testReportPanel .caseName>a {
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    left: 13px;
+    top: 12px;
+    background-position: -75px 0;
+}
+.testReportPanel .caseName .open {
+    background-position: -50px 0;
+}
+.testReportPanel .infoBar .correctInfo {
+    padding-left: 9px;
+    width: 80px;
+}
+.testReportPanel .correctInfo .dot {
+    display: inline-block;
+    vertical-align: middle;
+    height: 17px;
+    width: 20px;
+    background-position: 0 0;
+    position: relative;
+}
+.reportQtip.qtip-default {
+    font-size: 14px;
+    line-height: 1.8em;
+}
+.reportQtip .qtip-content {
+    padding: 7px 12px 9px;
+}
+.reportQtip.qtip-default:after {
+    content: '';
+    display: block;
+    width: 23px;
+    height: 16px;
+    position: absolute;
+    bottom: -15px;
+    left: 29px;
+    background-position: -20px -40px;
+}
+.testReportPanel .correctInfo.wrong .dot {
+    background-position: -20px 0;
+}
+.testReportPanel .correctInfo.custom .dot {
+    background-position: -40px 0;
+}
+.testReportPanel .infoBar .time {
+    padding-left: 30px;
+    width: 80px;
+}
+.testReportPanel .infoBar .time:before,
+.testReportPanel .infoBar .memory:before {
+    content: '';
+    display: block;
+    height: 15px;
+    width: 15px;
+    position: absolute;
+    left: 9px;
+    top: 11px;
+    background-position: 0 -20px;
+}
+.testReportPanel .infoBar .memory:before {
+    left: 10px;
+    top: 12px;
+    background-position: 0 -40px;
+}
+.testReportPanel .infoBar .memory {
+    padding-left: 30px;
+    width: 97px;
+}
+.testReportPanel .infoBar .errorInfo {
+    font-weight: 600;
+}
+.testReportPanel .infoBar .statusIcon {
+    display: inline-block;
+    /*vertical-align: middle;*/
+    padding-left: 8px;
+    padding-right: 6px;
+    cursor: pointer;
+    position: relative;
+    width: 26px;
+    height: 15px;
+}
+.testReportPanel .infoBar .statusIcon svg {
+    height: 12px;
+    width: 12px;
+    position: absolute;
+    top: 4px;
+    left: 8px;
+}
+.testReportPanel .modalFooter {
+    height: 74px;
+    padding: 19px 0 19px 17px;
+}
+.testReportPanel .modalFooter .btn {
+    width: 150px;
+    font-weight: 300;
+}
+.testReportPanel .modalFooter .btn:hover {
+    opacity: 0.5;
 }
 /******************* count down widget */
 .panelCountDown {
@@ -3864,6 +4103,35 @@ footer .right>span:nth-child(2) {
         padding: 7px 14px 20px 30px;
         min-height: 200px;
     }
+    .panelCodeEditor .testReportPanel {
+        width: 310px;
+        margin-left: -155px;
+    }
+    .testReportPanel .infoBar .memory:before,
+    .testReportPanel .infoBar .time:before,
+    .testReportPanel .correctInfo .dot:hover:before,
+    .testReportPanel .correctInfo.wrong .dot:hover:before,
+    .testReportPanel .correctInfo.custom .dot:hover:before,
+    .testReportPanel .infoBar .statusIcon:hover:before,
+    .testReportPanel .infoBar .statusIcon.error:hover:before,
+    .testReportPanel .correctInfo .dot:hover:after,
+    .testReportPanel .infoBar .statusIcon:hover:after {
+        content: none;
+    }
+    .testReportPanel .infoBar .caseName {
+        width: 80px;
+    }
+    .testReportPanel .infoBar .correctInfo {
+        width: 33px;
+    }
+    .testReportPanel .infoBar .time,
+    .testReportPanel .infoBar .memory {
+        padding-left: 10px;
+        width: 60px;
+    }
+    .testReportPanel .infoBar .memory {
+        width: 90px;
+    }
 }
 /* special sizes which widget will overflow */
 @media only screen and (max-width: 741px) {
@@ -4038,7 +4306,7 @@ footer .right>span:nth-child(2) {
     .panelCodeEditor .testPanel .content {padding-left: 16px;}
     .panelCodeEditor .testPanel .editParam {padding-left: 118px;}
     .panelCodeEditor .testPanel .editParam label {left: 16px;}
-    .panelCodeEditor .testPanel .bottom label {width: 82px;}
+    .panelCodeEditor .testPanel .btnRow label {width: 82px;}
     .panelOverview .overviewAndMessage .profile {padding-left: 88px;}
     .panelOverview .overviewAndMessage .profile img {left: 6px;}
     .panelOverview .overviewAndMessage .messagesBox {padding: 0 4px 0 5px;}

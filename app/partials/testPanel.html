@@ -1,0 +1,93 @@
+<div data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="test-panel-loaded">
+    <div class="btnRow">
+        <input type="checkbox" id="testCase-all" class="caseCheck" data-ng-disabled="false" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()" /><label for="testCase-all" data-ng-if="currentStateName()=='user.coding'" class="caseLbl">Check All</label><!--
+        --><a data-ng-click="runTests()" data-ng-if="currentStateName()=='user.viewCode'" data-ng-show="!isTesting" class="btn challengeBtn">Challenge</a><!-- avoid whitespace
+        --><a data-ng-click="runCheckedTests()" data-ng-if="currentStateName()=='user.coding'" data-ng-show="!isTesting" class="btn testBtn">Run Test</a><!-- avoid whitespace
+        --><a data-ng-click="addTestCase();toggleTextCase();" data-ng-if="currentStateName()=='user.coding'" data-ng-show="!isTesting" class="btn addBtn"><b>+</b> Add</a>
+        <i data-ng-show="isTesting" class="loadIcon"></i>
+    </div>
+    <!-- Custom test case for Challenge Phase -->
+    <div class='testCase' data-ng-if="isChallengePhase() && currentStateName()=='user.viewCode'" data-ng-init="caseNum='custom'; toggle=false">
+        <header><!-- avoid unnecessary blank
+         --><input type="checkbox" id="testCase-{{caseNum}}" name="testCase-{{caseNum}}" class="caseCheck" data-ng-disabled="isTesting" data-ng-model="$parent.customChecked" /><!-- avoid unnecessary blank
+         --><a data-ng-click="toggle=!toggle;toggleTextCase()" data-ng-class="{open:toggle,collapsed:!toggle}"></a><!-- avoid unnecessary blank
+         --><label for="testCase-{{caseNum}}" class="caseLbl">Test Case</label>
+        </header>
+        <div class="content" data-ng-show="toggle">
+            <div class="testParam" data-ng-repeat="param in $parent.customTest track by $index" data-ng-init="paramNum=$index; editting=false">
+                <div data-ng-hide="editting">
+                    <label for="param-{{caseNum}}-{{paramNum}}">{{problem.allArgTypes[paramNum].typeMapping[lang(langIdx).id]}} {{problem.paramNames[paramNum]}}</label>
+                    <div class="inputBorder"><input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType" /></div>
+                    <a data-ng-show="!!param.complexType && param.complexType.length > 0" data-ng-click="editting=true; editParam($caseNum, $paramNum)" class="btn">
+                        <span data-ng-show="!param.created">Create</span>
+                        <span data-ng-show="param.created">Modify</span>
+                    </a>
+                </div>
+                <div class="editParam" data-ng-show="editting">
+                    <label>{{param.type}}  -- {{param.complexType}}</label>
+                    <textarea>{{param.value}}</textarea>
+                    <a data-ng-click="param.created=true; editting=false" class="btn btnAlt">OK</a>
+                    <a data-ng-click="param.created=false; editting=false" class="btn btnAlt">Cancel</a>
+                </div>                                    
+            </div>
+        </div>
+    </div>
+    <!-- Custom test cases -->
+    <div class='testCase' data-ng-repeat="testCase in userTests track by $index" data-ng-init="caseNum=$index;">
+        <header data-ng-hide="testCase.example"><!-- avoid unnecessary blank
+        --><input type="checkbox" id="customTestCase-{{caseNum}}" name="customTestCase-{{caseNum}}" class="caseCheck" data-ng-disabled="isTesting" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" /><!-- avoid unnecessary blank
+        --><a data-ng-click="testCase.toggle=!testCase.toggle; $parent.toggleTextCase()" data-ng-class="{open:testCase.toggle,collapsed:!testCase.toggle}" class="collapseIcon"></a><!-- avoid unnecessary blank
+        --><label for="customTestCase-{{caseNum}}" class="caseLbl"></label><!--
+        --><label class="nameLbl" data-ng-click="editName($event)">{{testCase.name}}</label><!--
+        --><input type="text" placeholder="{{testCase.name}}" data-ng-model="$parent.caseName" data-ng-blur="updateName($index, $event);" class="nameInput hide" maxlength="18"/>
+            <a data-ng-click="runSingleTest(testCase)" class="runIcon">Run</a>
+            <a data-ng-click="deleteTestCase($index)" class="deleteIcon">Delete</a>
+        </header>
+        <div class="content" data-ng-show="testCase.toggle">
+            <div class="testParam" data-ng-repeat="param in testCase.params track by $index" data-ng-init="paramNum=$index; editting=false">
+                <div data-ng-hide="editting">
+                    <label for="param-{{caseNum}}-{{paramNum}}">{{problem.allArgTypes[paramNum].typeMapping[lang(langIdx).id]}} {{problem.paramNames[paramNum]}}</label>
+                    <div class="inputBorder"><input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType"/></div>
+                    <a data-ng-show="(!!param.complexType && param.complexType.length > 0)" data-ng-click="editting=true; editParam($caseNum, $paramNum)" class="btn">
+                        <span data-ng-show="!param.created">Create</span>
+                        <span data-ng-show="param.created">Modify</span>
+                    </a>
+                </div>
+                <div class="editParam" data-ng-show="editting">
+                    <label>{{param.type}}  -- {{param.complexType}}</label>
+                    <textarea>{{param.value}}</textarea>
+                    <a data-ng-click="param.created=true; editting=false" class="btn btnAlt">OK</a>
+                    <a data-ng-click="param.created=false; editting=false" class="btn btnAlt">Cancel</a>
+                </div>                                    
+            </div>
+        </div>
+    </div>
+    <!-- Example test cases (readonly)-->
+    <div class='testCase' data-ng-repeat="testCase in userData.tests track by $index" data-ng-init="caseNum=$index; testCase.name='Test Case '+ ($index+1);">
+        <header><!-- avoid unnecessary blank
+         --><input type="checkbox" id="testCase-{{caseNum}}" name="testCase-{{caseNum}}" class="caseCheck" data-ng-disabled="isTesting" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" /><!-- avoid unnecessary blank
+         --><a data-ng-click="testCase.toggle=!testCase.toggle; $parent.toggleTextCase()" data-ng-class="{open:testCase.toggle,collapsed:!testCase.toggle}" class="collapseIcon"></a><!-- avoid unnecessary blank
+         --><label for="testCase-{{caseNum}}" class="caseLbl">Example {{testCase.name}}</label><!--
+         --><!--span data-ng-show="testCompleted && testCase.havingResult" data-ng-class="{green: testCase.passed, red: !testCase.passed}"></span-->
+         <a data-ng-click="runSingleTest(testCase)" class="runIcon">Run</a>
+        </header>
+        <div class="content" data-ng-show="testCase.toggle">
+            <div class="testParam" data-ng-repeat="param in testCase.params track by $index" data-ng-init="paramNum=$index; editting=false">
+                <div data-ng-hide="editting">
+                    <label for="param-{{caseNum}}-{{paramNum}}">{{problem.allArgTypes[paramNum].typeMapping[lang(langIdx).id]}} {{problem.paramNames[paramNum]}}</label><!-- avoid whitespace
+                    --><div class="inputBorder"><input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType" readonly/></div>
+                    <a data-ng-show="(!!param.complexType && param.complexType.length > 0)" data-ng-click="editting=true; editParam($caseNum, $paramNum)" class="btn">
+                        <span data-ng-show="!param.created">Create</span>
+                        <span data-ng-show="param.created">Modify</span>
+                    </a>
+                </div>
+                <div class="editParam" data-ng-show="editting">
+                    <label>{{param.type}}  -- {{param.complexType}}</label>
+                    <textarea>{{param.value}}</textarea>
+                    <a data-ng-click="param.created=true; editting=false" class="btn btnAlt">OK</a>
+                    <a data-ng-click="param.created=false; editting=false" class="btn btnAlt">Cancel</a>
+                </div>                                    
+            </div>
+        </div>
+    </div>
+</div>
