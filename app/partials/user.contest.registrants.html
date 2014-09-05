@@ -1,0 +1,59 @@
+<div class="modal-header">
+    {{ title }}
+    <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
+</div>
+<div class="modal-body registrants-modal">
+    <div class="registrants-count">
+        <b>Total registered: [{{registrants.count.total}}] <br>
+        Div1: [{{registrants.count.div1}}] &nbsp; Div2: [{{registrants.count.div2}}] &nbsp; New: [{{registrants.count.newR}}]</b>
+    </div>
+    <div class="tableWrapper" data-rebuild-on="rebuild:registrantsList">
+        <div class="tHeadDiv">
+            <div class="innerWrapper">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="colR sortableHeading" data-ng-click="registrantPredicate = 'userRating'; reverse=!reverse">
+                            <span>R<span data-ng-show="registrantPredicate == 'userRating'" data-ng-class="{descArrow:reverse,ascArrow:!reverse}" class="arrow"></span></span>
+                        </th>
+                        <th class="col1 sortableHeading" data-ng-click="registrantPredicate = 'userName'; reverse=!reverse">
+                            Handle<span><span data-ng-show="registrantPredicate == 'userName'" data-ng-class="{descArrow:reverse,ascArrow:!reverse}" class="arrow"></span></span>
+                        </th>
+                        <th class="col2 sortableHeading" data-ng-click="registrantPredicate = 'countryName'; reverse=!reverse">
+                            Country<span><span data-ng-show="registrantPredicate == 'countryName'" data-ng-class="{descArrow:reverse,ascArrow:!reverse}" class="arrow"></span></span>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div><!--/.innerWrapper-->
+        </div><!--/.tHeadDiv-->
+        <div class="tableDiv scroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:registrantsList">
+            <div class="innerWrapper">
+                <table class="table table-condensed">
+                    <tbody>
+                    <tr data-ng-repeat="coder in registrants | orderBy: registrantPredicate: reverse">
+                        <td class="colR" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
+                            --><!-- avoid blank
+                            --><a data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!--
+                                --><span class="name {{getRatingClass(coder.userRating)}}"><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span></span><!--
+                            --></a>
+                        </td>
+                        <td class="col1">
+                            <span data-ng-click="showCoderInfo(coder.userName, coder.userType);" class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
+                        </td>
+                        <td class="col2"><!-- avoid blank
+                        --><!-- avoid blank
+                        --><span>{{coder.countryName}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><!-- /.tableDiv .scroll -->
+    </div>
+</div>
+<div class="modal-footer" ng-if="enableClose">
+    <button class="btn right-btn" data-ng-click="ok()" data-ng-show="buttons.length == 2">{{ buttons[0] }}</button>
+    <button class="btn left-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 2">{{ buttons[1] }}</button>
+    <button class="btn right-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 1">{{ buttons[0] }}</button>
+</div>

@@ -41,7 +41,7 @@ body{
 .panelChatArea .findIcon,
 .panelChatArea .searchIcon,
 .detailPage section .heading .filterArea a:before,
-.filterPanel .closeLink:before  {
+.filterPanel .closeLink:before {
     background-image: url(../img/dark/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
@@ -74,7 +74,8 @@ body{
 .detailPage .table>thead>tr>th .sort,
 .detailPage .leaderboardWrapper .heading .viewFilter .showLBLbl:before,
 .filterPanel .contentWrapper .dropdown .arrow,
-.detailPage section .table>thead>tr>th .arrow {
+.detailPage section .table>thead>tr>th .arrow,
+.modal-body .table>thead>tr>th .arrow{
     background-image: url(../img/dark/sprite-room-summary.png);
 }
 .filterPanel.qtip-default,

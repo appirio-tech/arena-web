@@ -39,7 +39,8 @@ body a {cursor: pointer;}
 .detailPage .table>thead>tr>th .sort,
 .detailPage .leaderboardWrapper .heading .viewFilter .showLBLbl:before,
 .filterPanel .contentWrapper .dropdown .arrow,
-.detailPage section .table>thead>tr>th .arrow {
+.detailPage section .table>thead>tr>th .arrow
+.modal-body .table>thead>tr>th .arrow {
     background-repeat: no-repeat;
 }
 /*common button style*/
@@ -936,6 +937,16 @@ footer .right>span:nth-child(2) {
     margin: 0;
     overflow: auto;
     height: 190px;
+}
+.modal .modal-content .modal-body.registrants-modal {
+    height: 300px;
+    padding: 0 0;
+}
+.modal .modal-content .modal-body.registrants-modal .registrants-count {
+    padding-left: 24px;
+}
+.registrants-modal .tableDiv.scroll {
+    max-height: 200px;
 }
 .modal .modal-content .modal-body p {
     margin: auto 20px;
@@ -3122,7 +3133,9 @@ footer .right>span:nth-child(2) {
     width: 100%;
 }
 .detailPage section .tableDiv .innerWrapper,
-.detailPage section .tHeadDiv .innerWrapper {
+.detailPage section .tHeadDiv .innerWrapper,
+.modal-body .tHeadDiv .innerWrapper,
+.modal-body .tableDiv .innerWrapper {
     padding-right: 16px;
 }
 .detailPage .panel-body section.expand .tableDiv {
@@ -3158,10 +3171,13 @@ footer .right>span:nth-child(2) {
 }
 /*common style of table in detail page */
 .detailPage .tHeadDiv .table,
-.detailPage .tableDiv .table {
+.detailPage .tableDiv .table,
+.modal-body .tHeadDiv .table,
+.modal-body .tableDiv .table{
     margin-bottom: 0;
 }
-.detailPage .table>thead>tr>th {
+.detailPage .table>thead>tr>th,
+.modal-body .table>thead>tr>th {
     font-weight: 400;
     border-width: 1px;
     border-color: #1f444e;
@@ -3169,7 +3185,8 @@ footer .right>span:nth-child(2) {
     padding-bottom: 10px;
     position: relative;
 }
-.detailPage section .table>thead>tr>th .arrow {
+.detailPage section .table>thead>tr>th .arrow,
+.modal-body .table>thead>tr>th .arrow {
     display: inline-block;
     height: 7px;
     width: 9px;
@@ -3177,10 +3194,17 @@ footer .right>span:nth-child(2) {
     position: relative;
     margin-left: 3px;
 }
+.modal-body .table td.col1 span {
+    cursor: pointer;
+}
 .detailPage section .table>thead>tr>th .ascArrow {
     background-position: -33px -59px;
 }
-.detailPage .table>thead>tr>.sortableHeading {
+.modal-body .table>thead>tr>th .ascArrow {
+    background-position: -33px -58px;
+}
+.detailPage .table>thead>tr>.sortableHeading,
+.modal-body .table>thead>tr>.sortableHeading {
     cursor: pointer;
     /*prevent text be selected*/
     -webkit-touch-callout: none;
@@ -3199,9 +3223,23 @@ footer .right>span:nth-child(2) {
     vertical-align: middle;
     height: 31px;
 }
+.modal-body .table>tbody>tr>td {
+    padding: 4px 5px;
+    border-top-width: 0;
+    border-bottom: 1px solid #1f444e;
+    position: relative;
+    vertical-align: middle;
+    height: 31px;
+}
 .detailPage .table>thead>tr>th:last-child,
-.detailPage .table>tbody>tr>td:last-child {
+.detailPage .table>tbody>tr>td:last-child{
     text-align: right;
+}
+.modal-body .table .col1 {
+    width: 40%;
+}
+.modal-body .table .col2 {
+    width: 50%;
 }
 .detailPage .leftSec .table .col1 {
     width: 29px;
@@ -3232,7 +3270,8 @@ footer .right>span:nth-child(2) {
 .challengerWrapper .table .col2 {
     width: 25%;
 }
-.leaderboardWrapper .table .colR {
+.leaderboardWrapper .table .colR,
+.modal-body .table .colR {
     width: 30px;
     font-weight: 100;
 }
@@ -3482,7 +3521,9 @@ footer .right>span:nth-child(2) {
 }
 @media only screen and (max-width: 1277px) {
     .detailPage .tableDiv .table-responsive,
-    .detailPage .tHeadDiv .table-responsive {
+    .detailPage .tHeadDiv .table-responsive,
+    .modal-body .tableDiv .table-responsive,
+    .modal-body .tHeadDiv .table-responsive{
         border-width: 0;
     }
     .detailPage .moreProblemTbl .table th,

@@ -51,8 +51,11 @@
  * Changes in version 1.11 (Module Assembly - Web Arena UI - Suvery and Questions Support For Contest Registration):
  * - Updated the logic to support registration survey and questions.
  *
+ * Changes in version 1.12 (Web Arena UI - Registrants Dialog Improvement):
+ * - Updated popupModalController to handle Registrants Modal
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.11
+ * @version 1.12
  */
 'use strict';
 /*jshint -W097*/
@@ -85,6 +88,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.enableClose = data.enableClose;
             $scope.coderInfo = data.message;
             $scope.coderHistoryData = data.coderHistoryData;
+            $scope.registrants = data.registrants;
+
+            // define initial sorting order for registrants list
+            $scope.registrantPredicate = 'userRating';
 
             if ($scope.title === 'Coder History') {
                 $timeout(function () {
@@ -132,6 +139,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $modalInstance.opened.then(function () {
                 $timeout(function () {
                     $scope.$broadcast('rebuild:codeInfo');
+                    $scope.$broadcast('rebuild:registrantsList');
                 });
             });
 
@@ -282,7 +290,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
      * @param {string} name the name of the user
      * @param {string} userType the user type
      */
-    $scope.showCoderInfo = function (name, userType) {
+    $rootScope.showCoderInfo = function (name, userType) {
         if (waitingCoderInfo) {
             return;
         }
