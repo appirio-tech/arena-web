@@ -76,7 +76,8 @@ body{
 .detailPage .table>thead>tr>th .sort,
 .detailPage .leaderboardWrapper .heading .viewFilter .showLBLbl:before,
 .filterPanel .contentWrapper .dropdown .arrow,
-.detailPage section .table>thead>tr>th .arrow {
+.detailPage section .table>thead>tr>th .arrow,
+.modal-body .table>thead>tr>th .arrow{
     background-image: url(../img/orange/sprite-room-summary.png);
 }
 .filterPanel.qtip-default,
