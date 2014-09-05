@@ -36,7 +36,7 @@ body{
 .panelCodeEditor .panel-body .settingsPanel .closeIcon,
 .panelCodeEditor .testPanel header>a,
 .panelCodeEditor .testPanel .caseLbl:before,
-.panelCodeEditor .testPanel .bottom label:before,
+.panelCodeEditor .testPanel .btnRow label:before,
 .panelOverview .panel-heading .showSectionLbl:before,
 .messageArena .panelHeader .btnClose:before,
 .messageArena .panelHeader .legends label:before,
@@ -46,7 +46,9 @@ body{
 .panelChatArea .findIcon,
 .panelChatArea .searchIcon,
 .detailPage section .heading .filterArea a:before,
-.filterPanel .closeLink:before  {
+.filterPanel .closeLink:before,
+.testReportPanel .caseName>a,
+.testReportPanel .modalHeader .cancel-x:before {
     background-image: url(../img/light/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
@@ -88,8 +90,17 @@ body{
     background-repeat: no-repeat;
 }
 
-.panelCodeEditor .testPanel .bottom .loadIcon {
+.panelCodeEditor .testPanel .btnRow .loadIcon {
     background-image: url(../img/light/loadinfo.net.gif);
+    background-repeat: no-repeat;
+}
+.panelCodeEditor .testPanel header .runIcon:before,
+.panelCodeEditor .testPanel header .deleteIcon:before,
+.testReportPanel .correctInfo .dot,
+.testReportPanel .infoBar .time:before,
+.testReportPanel .infoBar .memory:before,
+.reportQtip.qtip-default:after {
+    background-image: url(../img/light/sprite-test.png);
     background-repeat: no-repeat;
 }
 /***************header style*/
@@ -358,16 +369,38 @@ footer .right .sponsorLogo {
     color: #316f99;
     border-bottom: 1px solid #b7c9d7;
 }
+.panelCodeEditor .testPanel header .runIcon,
+.panelCodeEditor .testPanel header .deleteIcon {
+    color: #316f99;
+}
+.panelCodeEditor .testPanel header .nameInput {
+    background: #52738c;
+    color: #fff;
+}
+.panelCodeEditor .testPanel header .nameInput::-webkit-input-placeholder{
+    color: #93a5b3;
+}
+.panelCodeEditor .testPanel header .nameInput:-moz-placeholder{
+    color: #93a5b3;
+}
+.panelCodeEditor .testPanel header .nameInput::-moz-placeholder{
+    color: #93a5b3;
+}
+.panelCodeEditor .testPanel header .nameInput:-ms-input-placeholder{
+    color: #93a5b3;
+}
 .panelCodeEditor .testPanel .btn{
     background: #0999d1;
 }
 .panelCodeEditor .testPanel .content input[type="text"] {
     background: #fff;
+}
+.panelCodeEditor .testPanel .content .inputBorder {
     border-color: #b7c9d7;
 }
 .panelCodeEditor .settingsPanel .btn-settings:hover,
 .panelCodeEditor .testPanel .content .btn:hover,
-.panelCodeEditor .testPanel .bottom .btn:hover {
+.panelCodeEditor .testPanel .btnRow .btn:hover {
     background: #3aadda;
 }
 .panelCodeEditor .toolBar .active .testPanel {z-index: 22;}
@@ -386,6 +419,39 @@ footer .right .sponsorLogo {
 /*#resizer:hover {
     background: #b7c9d7;
 }*/
+
+.panelCodeEditor .testReportPanel,
+.reportQtip.qtip-default {
+    border-color: #b7c9d7;
+    background: #fff;
+    background: rgba(255,255,255,0.98);
+}
+.testReportPanel .modalHeader>span {
+    color: #636d70;
+}
+.testReportPanel .infoBar {
+    background: #75A5C8;
+    color: #316F99;
+}
+.testReportPanel .infoBar td+td{
+    border-color: #b7c9d7;
+}
+.testReportPanel .correctInfo {
+    color: #00ff2a;
+}
+.testReportPanel .correctInfo.wrong {
+    color: #ff0000;
+}
+.testReportPanel .correctInfo.custom {
+    color: #7e7e7e;
+}
+.reportQtip.qtip-default {
+    color: #316F99;
+    font-weight: 400;
+}
+.testReportPanel .modalFooter .btn {
+    background: #0999D1;
+}
 /******************* count down widget */
 .panelCountDown {
     background: #eef2f5;

@@ -1,0 +1,33 @@
+<div class="modalHeader">
+    Test Report
+    <a class="cancel-x" data-ng-click="closeReport()"></a>
+</div>
+<div class="modalBody" data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="test-report-loaded">
+    <div data-ng-repeat="item in report track by $index" class="reportItem">
+        <table class="table infoBar">
+            <tr>
+                <td class="caseName">
+                    <a data-ng-click="item.toggle=!item.toggle; toggleTextReport()" data-ng-class="{open:item.toggle, unOpen:!item.toggle}"></a><span class="hidden-xs">{{item.name}} :</span><span data-ng-repeat="p in item.params" data-ng-if="p"> {{ p.value }}<span data-ng-hide="$last">,</span></span>
+                </td><!-- avoid whitespace
+                --><td data-ng-class="{correct: item.success&&(item.correctExample && item.correctExample ==='true'), wrong: item.success&&(item.correctExample && item.correctExample ==='false'), custom: !item.correctExample}" class="correctInfo">
+                    <a data-ng-show="item.success&&(item.correctExample && item.correctExample ==='true')" class="dot reportQtip" data-q-tip data-content="Code output is correct." data-x="-32" data-y="-11"></a><a data-ng-show="item.success&&item.correctExample && item.correctExample ==='false'" class="dot reportQtip" data-q-tip data-content="Code output is wrong." data-x="-34" data-y="-11"></a><a data-ng-show="!item.correctExample" class="dot reportQtip" data-q-tip data-content="This is custom test." data-x="-34" data-y="-11"></a><span data-ng-show="item.correctExample && item.correctExample !==''" class="hidden-xs">{{(item.correctExample && item.correctExample ==='true') ? "Correct" : "Wrong"}}</span><span data-ng-show="!item.correctExample" class="hidden-xs">N/A</span>
+                </td><!-- avoid whitespace
+                --><td class="time"><span>{{item.executionTime}} ms</span></td><!-- avoid whitespace
+                --><td class="memory"><span data-ng-show="item.peakMemoryUsed === -1">N/A</span><span data-ng-show="item.peakMemoryUsed !== -1">{{item.peakMemoryUsed/1000}} MB</span></td><!-- avoid whitespace
+                --><td data-ng-show="(!item.message) || item.message === ''" class="errorInfo"><span class="statusIcon reportQtip noError" data-q-tip data-content="Compilation and execution succeeded." data-x="-27" data-y="-12"><svg><circle cx="6" cy="6" r="6" fill="#80ff00"/></svg></span><span class="hidden-xs">Executed</span></td><!-- avoid whitespace
+                --><td data-ng-show="item.message && item.message !== ''" class="errorInfo"><span class="statusIcon reportQtip error" data-q-tip data-content="{{item.message}}" data-x="-28" data-y="-10"><svg><circle cx="6" cy="6" r="6" fill="#ff0000"/></svg></span></td>
+            </tr>
+        </table>
+        <div data-ng-show="item.toggle" class="return">
+            <p data-ng-show="item.errorMessage && item.errorMessage !== ''"><span class="textGray">Error Message:</span> {{item.errorMessage}}</p>
+            <p data-ng-show="item.message && item.message !== ''"><span class="textGray">Message:</span> {{item.message}}</p>
+            <p data-ng-show="item.stdOut && item.stdOut !== ''"><span class="textGray">Standard Output:</span> {{item.stdOut}}</p>
+            <p data-ng-show="item.stdErr && item.stdErr !== ''"><span class="textGray">Standard Error:</span> {{item.stdErr}}</p>
+            <p data-ng-show="item.stacktrace && item.stacktrace !== ''"><span class="textGray">Stack Trace:</span> {{item.stacktrace}}</p>
+            <p data-ng-show="item.returnValue && item.returnValue !== ''"><span class="textGray">Return value:</span> {{item.returnValue}}</p>
+        </div>
+    </div>
+</div>
+<div class="modalFooter">
+    <button class="btn left-btn" data-ng-click="closeReport()">OK</button>
+</div>

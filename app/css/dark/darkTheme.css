@@ -31,7 +31,7 @@ body{
 .panelCodeEditor .panel-body .settingsPanel .closeIcon,
 .panelCodeEditor .testPanel header>a,
 .panelCodeEditor .testPanel .caseLbl:before,
-.panelCodeEditor .testPanel .bottom label:before,
+.panelCodeEditor .testPanel .btnRow label:before,
 .panelOverview .panel-heading .showSectionLbl:before,
 .messageArena .panelHeader .btnClose:before,
 .messageArena .panelHeader .legends label:before,
@@ -41,7 +41,9 @@ body{
 .panelChatArea .findIcon,
 .panelChatArea .searchIcon,
 .detailPage section .heading .filterArea a:before,
-.filterPanel .closeLink:before  {
+.filterPanel .closeLink:before,
+.testReportPanel .caseName>a,
+.testReportPanel .modalHeader .cancel-x:before {
     background-image: url(../img/dark/sprite-codeArena.png);
 }
 .codeArea .shareLink .dropdown-menu,
@@ -82,8 +84,17 @@ body{
     background-image: url(../img/dark/filter-bg.png);
     background-repeat: no-repeat;
 }
-.panelCodeEditor .testPanel .bottom .loadIcon {
+.panelCodeEditor .testPanel .btnRow .loadIcon {
     background-image: url(../img/dark/loadinfo.net.gif);
+    background-repeat: no-repeat;
+}
+.panelCodeEditor .testPanel header .runIcon:before,
+.panelCodeEditor .testPanel header .deleteIcon:before,
+.testReportPanel .correctInfo .dot,
+.testReportPanel .infoBar .time:before,
+.testReportPanel .infoBar .memory:before,
+.reportQtip.qtip-default:after {
+    background-image: url(../img/dark/sprite-test.png);
     background-repeat: no-repeat;
 }
 /***************header style*/
@@ -327,20 +338,44 @@ footer .right .sponsorLogo {
 }
 .panelCodeEditor .testPanel header {
     border: 1px solid #151718;
+    border-color: #151718;
     border-color: rgba(21,23,34,0.98);
     background: #1a1c1d;
     color: #687376;
+}
+.panelCodeEditor .testPanel header .runIcon,
+.panelCodeEditor .testPanel header .deleteIcon {
+    color: #0f9abd;
+}
+.panelCodeEditor .testPanel header .nameInput {
+    background: #212426;
+    color: #fff;
+}
+.panelCodeEditor .testPanel header .nameInput::-webkit-input-placeholder{
+    color: #313538;
+}
+.panelCodeEditor .testPanel header .nameInput:-moz-placeholder{
+    color: #313538;
+}
+.panelCodeEditor .testPanel header .nameInput::-moz-placeholder{
+    color: #313538;
+}
+.panelCodeEditor .testPanel header .nameInput:-ms-input-placeholder{
+    color: #313538;
 }
 .panelCodeEditor .testPanel .btn{
     background: #0f9abd;
 }
 .panelCodeEditor .testPanel .content input[type="text"] {
     background: #151718;
+}
+.panelCodeEditor .testPanel .content .inputBorder {
+    border-color: #fff;
     border-color: rgba(255,255,255,0.16);
 }
 .panelCodeEditor .settingsPanel .btn-settings:hover,
 .panelCodeEditor .testPanel .content .btn:hover,
-.panelCodeEditor .testPanel .bottom .btn:hover {
+.panelCodeEditor .testPanel .btnRow .btn:hover {
     background: #27A4C4;
 }
 .panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
@@ -359,6 +394,42 @@ footer .right .sponsorLogo {
 /*#resizer:hover {
     background: #1f444e;
 }*/
+
+.panelCodeEditor .testReportPanel,
+.reportQtip.qtip-default {
+    border-color: #2d2f30;
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    background: #151718;
+    background: rgba(21,23,24,0.98);
+}
+.testReportPanel .modalHeader>span {
+    color: #636d70;
+}
+.testReportPanel .infoBar {
+    background: #1a1c1d;
+    color: #687376;
+}
+.testReportPanel .infoBar td+td {
+    border-color: #313334;
+    border-color: rgba(255,255,255,0.1);
+}
+.testReportPanel .correctInfo {
+    color: #00ff2a;
+}
+.testReportPanel .correctInfo.wrong {
+    color: #ff0000;
+}
+.testReportPanel .correctInfo.custom {
+    color: #7e7e7e;
+}
+.reportQtip.qtip-default{
+    color: #fff;
+    color: rgba(255,255,255,0.4);
+}
+.testReportPanel .modalFooter .btn {
+    background: #0f9abd;
+}
 /******************* count down widget */
 .panelCountDown {
     background: #1b2920;
@@ -790,3 +861,4 @@ footer .right .sponsorLogo {
     margin-left: 18px;
     min-height: 80px;
 }
+.testReportPanel .reportItem .textGray {color: #687376; }

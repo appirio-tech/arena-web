@@ -60,6 +60,9 @@
  * Changes in version 1.14 (Module Assembly - Web Arena UI - Challenges and Challengers):
  * - Added ChallengesListResponse / ChallengeResponse event names.
  *
+ * Changes in version 1.15 (Module Assembly - Web Arena UI - Test Panel Update for Batch Testing):
+ * - Added BatchTestRequest and BatchTestResponse event name.
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
  * @version 1.14
  */
@@ -107,6 +110,8 @@ module.exports = {
         SynchTimeRequest: 'SynchTimeRequest',
         TestInfoRequest: 'TestInfoRequest',
         TestRequest: 'TestRequest',
+        BatchTestRequest: 'BatchTestRequest',
+        BatchTestResponse: 'BatchTestResponse',
         SetLanguageRequest: 'SetLanguageRequest',
         // backend responses
         CreateChallengeTableResponse: 'CreateChallengeTableResponse',

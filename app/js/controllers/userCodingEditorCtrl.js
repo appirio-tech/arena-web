@@ -37,8 +37,12 @@
  * Changes in version 1.9 (Module Assembly - Web Arena UI - Phase I Bug Fix 5):
  * - Updated goto line logic.
  *
+ * Changes in version 1.10 (Module Assembly - Web Arena UI - Test Panel Update for Batch Testing):
+ * - Updated for test panel and test report logic.
+ *
+ *
  * @author tangzx, amethystlei, flytoj2ee, TCASSEMBLER
- * @version 1.9
+ * @version 1.10
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -55,8 +59,8 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'socket', '$timeout', 'themer', 'sessionHelper',
-    function ($rootScope, $scope, $window, appHelper, socket, $timeout, themer, sessionHelper) {
+var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'socket', '$timeout', 'sessionHelper',
+    function ($rootScope, $scope, $window, appHelper, socket, $timeout, sessionHelper) {
         var indentRangeFinder = {
                 rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.indent, CodeMirror.fold.comment)
             },
@@ -745,6 +749,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     $rootScope.currentModal = undefined;
                 }
                 $scope.testOpen = true;
+                $rootScope.$broadcast('test-panel-loaded');
             }
         });
 
@@ -753,6 +758,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             // init test case checkboxes
             $scope.userData.tests.forEach(function (testCase) {
                 testCase.checked = false;
+                testCase.toggle = false;
                 testCase.params.forEach(function (param) {
                     if (param.complexType) {
                         param.created = false;
@@ -779,6 +785,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 $scope.userData.tests.forEach(function (testCase) {
                     testCase.checked = action;
                 });
+                $rootScope.userTests.forEach(function (testCase) {
+                    testCase.checked = action;
+                });
             };
 
             /**
@@ -802,126 +811,12 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                         return false;
                     }
                 }
+                for (i = 0; i < $rootScope.userTests.length; i += 1) {
+                    if (!$rootScope.userTests[i].checked) {
+                        return false;
+                    }
+                }
                 return $scope.currentStateName() === helper.STATE_NAME.Coding || !!$scope.customChecked;
-            };
-
-            /**
-             * Generates the confirmation for the challenge parameters.
-             *
-             * @return {string} the html source in the confirmation popup
-             */
-            function getChallengeConfirmationPopup() {
-                var paramNum,
-                    allArgTypes = $scope.problem.allArgTypes,
-                    testCase = $scope.customChecked ? $scope.customTest : $scope.userData.tests[$scope.caseIndex],
-                    html = '';
-
-                for (paramNum = 0; paramNum < allArgTypes.length; paramNum += 1) {
-                    html += '<li>(' + (paramNum + 1) + ') <span class="argType">' + allArgTypes[paramNum].typeMapping[$scope.lang($scope.langIdx).id] + '</span>';
-                    html += '&nbsp;<span>' + ($scope.customChecked ? $scope.customTest[paramNum].value : testCase.params[paramNum].value) + '</span>';
-                    html += '</li>';
-                }
-                return '<ul>' + html + '</ul>';
-            }
-
-            /**
-             * Run selected test case, or show error modal.
-             */
-            $scope.runTests = function () {
-
-                $scope.isLight = themer.getSelected().key === 'LIGHT' ? '/light' : '';
-                var count = 0, i, j, params = [], args = [], param, testcase;
-                for (i = 0; i < $scope.userData.tests.length; i += 1) {
-                    count += $scope.userData.tests[i].checked ? 1 : 0;
-                }
-                count += $scope.customChecked ? 1 : 0;
-
-                if (count !== 1) {
-                    $scope.openModal({
-                        title: 'Error',
-                        message: 'You are required to select exactly one test case.',
-                        enableClose: true
-                    });
-                    return;
-                }
-
-                if ($scope.customChecked) {
-                    testcase = $scope.customTest;
-                } else {
-                    for (i = 0; i < $scope.userData.tests.length; i += 1) {
-                        if ($scope.userData.tests[i].checked) {
-                            $scope.caseIndex = i;
-                            testcase = $scope.userData.tests[i].params;
-                            break;
-                        }
-                    }
-                }
-
-                for (j = 0; j < testcase.length; j += 1) {
-                    param = $.trim(testcase[j].value);
-
-                    if (param.length > 1 && param[0] === '{' && param[param.length - 1] === '}') {
-                        param = '[' + param.substr(1, param.length - 2) + ']';
-                    }
-
-                    try {
-                        param = JSON.parse(param);
-                    } catch (e) {
-                        $scope.openModal({
-                            title: 'Error',
-                            message: 'The param ' + param + ' is invalid.',
-                            enableClose: true
-                        });
-                        return;
-                    }
-                    params.push(param);
-                }
-
-                for (i = 0; i < params.length; i += 1) {
-                    param = angular.copy(params[i]);
-
-                    if (param instanceof Array) {
-                        for (j = 0; j < param.length; j += 1) {
-                            param[j] = String(param[j]);
-                        }
-                        args.push(param);
-                    } else if (param instanceof Object) {
-                        $scope.openModal({
-                            title: 'Error',
-                            message: 'The param ' + param + ' is invalid.',
-                            enableClose: true
-                        });
-                    } else {
-                        param = String(param);
-                        args.push(param);
-                    }
-                }
-
-                if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
-                    // test my code
-                    socket.emit(helper.EVENT_NAME.TestRequest, {
-                        componentID: $scope.componentID,
-                        args: args
-                    });
-                    $scope.testCompleted = false;
-                    $scope.isTesting = true;
-                } else if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
-                    // challenge others' code
-                    $scope.openModal({
-                        title: 'Confirm Parameters',
-                        message: getChallengeConfirmationPopup(),
-                        buttons: ['OK', 'Cancel'],
-                        enableClose: true
-                    }, function () {
-                        socket.emit(helper.EVENT_NAME.ChallengeRequest, {
-                            componentID: $scope.componentID,
-                            defender: $scope.defendant,
-                            test: args
-                        });
-                        $scope.testCompleted = false;
-                        $scope.isTesting = true;
-                    });
-                }
             };
 
             // set the code written by the user

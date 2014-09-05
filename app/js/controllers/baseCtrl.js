@@ -91,6 +91,11 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     $scope.$broadcast('rebuild:coderHistory');
                 }, 100);
             }
+
+            $timeout(function () {
+                $scope.$broadcast('popup-message-loaded');
+            }, 100);
+
             var i, j, popupDetailModalCtrl;
             if ($scope.title === 'Event Registration' && !(data.registrantCallBack && data.registrantCallBack === true)) {
 
