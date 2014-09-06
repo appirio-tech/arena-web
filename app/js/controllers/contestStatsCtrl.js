@@ -19,8 +19,11 @@
  * Changes in version 1.5 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
  * - Show the problem status in open link.
  *
+ * Changes in version 1.6 (Web Arena UI - Registrants Dialog Improvement):
+ * - Update viewRegistrants method to improve Registrants dialog
+ *
  * @author amethystlei, flytoj2ee, TCASSEMBLER
- * @version 1.5
+ * @version 1.6
  */
 'use strict';
 /*global module, angular*/
@@ -214,16 +217,33 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', '
     $scope.viewRegistrants = function () {
         var coders = $scope.registrantsList,
             msg = "",
-            i;
+            i = 0,
+            coder;
+        coders.count = {
+            div1: 0,
+            div2: 0,
+            newR: 0,
+            total: coders.length
+        };
         for (i = 0; i < coders.length; i++) {
-            msg = msg + "<span class='" + $scope.getRatingClass(coders[i].userRating) + "'>" + coders[i].userName + "</span><br/>";
+            coder = coders[i];
+            if (coder.userRating >= 1200) {
+                coders.count.div1 += 1;
+            } else if (coder.userRating < 1200 && coder.userRating > 0) {
+                coders.count.div2 += 1;
+            } else {
+                coders.count.newR += 1;
+            }
         }
-
         $scope.openModal({
             title: 'Registrants',
+            registrants: coders,
             message: msg,
             enableClose: true
-        });
+        }, null, function () {
+            $rootScope.currentModal = undefined;
+            $rootScope.currentDetailModal = undefined;
+        }, 'partials/user.contest.registrants.html');
     };
 
     // request register users
