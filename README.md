@@ -58,6 +58,13 @@ grunt release
 ```
 Release is similar to build, but it works out of the `build` directory and minifies all the javascript. It copies everything to `release`.
 
+To use jslint validate the js files:
+```
+grunt jslint
+```
+This will validate all js files by grunt-contrib-jshint .
+
+
 ## Run the App ##
 
 [http-server](https://npmjs.org/package/http-server), a simple static webserver, is one of the dev dependencies. To serve the app from the `build` directory on port 3000 on localhost simply use:

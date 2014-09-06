@@ -173,6 +173,12 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+        jshint: {
+            all: ['Gruntfile.js', 'app/js/*.js'],
+            options: {
+                force: true
+            }
         }
     });
 
@@ -186,6 +192,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-aws');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
     // The default tasks to run when you type: grunt
     grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
@@ -197,4 +204,6 @@ module.exports = function (grunt) {
     grunt.registerTask('deploy-cdn', ['s3:deploy']);
 
     grunt.registerTask('deploy-compress', ['compress:deploy']);
+
+    grunt.registerTask('jslint', ['jshint:all']);
 };
