@@ -3559,6 +3559,7 @@ footer .right>span:nth-child(2) {
     -ms-word-break:break-all;
     word-break:break-all;
     font-weight: 300;
+    cursor: pointer;
 }
 .detailPage section .table td .roomLeader{
     display: inline-block;
@@ -4603,6 +4604,7 @@ footer .right>span:nth-child(2) {
 }
 .registration-modal-body .surveyDiv .answerText {
     padding-left: 45px;
+    margin-right: 18px;
 }
 .registration-modal-body .surveyDiv .answerText .radio {
     margin-right: 5px;

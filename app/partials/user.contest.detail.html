@@ -122,7 +122,7 @@
                                                     <tbody>
                                                         <tr data-ng-repeat="challenger in getAllChallengers() | filter: getKeys(viewOn).challengerFilter | orderBy: getKeys(viewOn).challengerKey">
                                                             <td class="col1">{{challenger.id}}</td>
-                                                            <td class="colR"><span class="name {{getRatingClass(challenger.challengerRating)}}"><span data-rating-indicator="{{challenger.challengerRating}}" data-username="{{challenger.challengerHandle}}" class="ratingIcon"></span></span></td>
+                                                            <td class="colR" data-ng-click="showCoderInfo(challenger.challengerHandle, challenger.challengerUserType);"><span class="name {{getRatingClass(challenger.challengerRating)}}"><span data-rating-indicator="{{challenger.challengerRating}}" data-username="{{challenger.challengerHandle}}" class="ratingIcon"></span></span></td>
                                                             <td class="col2" data-ng-click="showCoderInfo(challenger.challengerHandle, challenger.challengerUserType);"><span class="name {{getRatingClass(challenger.challengerRating)}}">{{challenger.challengerHandle}}</span></td>
                                                             <td class="col3">{{challenger.points}}</td>
                                                             <td class="col4">{{challenger.success}}</td>
@@ -140,7 +140,7 @@
                                                     <tbody>
                                                         <tr data-ng-repeat="challenger in getAllChallengers() | filter: getKeys(viewOn).challengerFilter | orderBy: getKeys(viewOn).challengerKey">
                                                             <td class="col1">{{challenger.id}}</td>
-                                                            <td class="colR"><span class="name {{getRatingClass(challenger.challengerRating)}}"><span data-rating-indicator="{{challenger.challengerRating}}" data-username="{{challenger.challengerHandle}}" class="ratingIcon"></span></span></td>
+                                                            <td class="colR" data-ng-click="showCoderInfo(challenger.challengerHandle, challenger.challengerUserType);"><span class="name {{getRatingClass(challenger.challengerRating)}}"><span data-rating-indicator="{{challenger.challengerRating}}" data-username="{{challenger.challengerHandle}}" class="ratingIcon"></span></span></td>
                                                             <td class="col2" data-ng-click="showCoderInfo(challenger.challengerHandle, challenger.challengerUserType);"><span class="name {{getRatingClass(challenger.challengerRating)}}">{{challenger.challengerHandle}}</span></td>
                                                             <td class="col3">{{challenger.points}}</td>
                                                             <td class="col4">{{challenger.success}}</td>
@@ -227,10 +227,10 @@
                                                     <tbody>
                                                         <tr data-ng-repeat="challenge in getAllChallenges() | filter: getKeys(viewOn).challengeFilter | orderBy: getKeys(viewOn).challengeKey">
                                                             <td class="col1">{{challenge.id}}</td>
-                                                            <td class="colR"><span class="name {{getRatingClass(challenge.challengerRating)}}"><span data-rating-indicator="{{challenge.challengerRating}}" data-username="{{challenge.challengerHandle}}" class="ratingIcon"></span></span></td>
+                                                            <td class="colR" data-ng-click="showCoderInfo(challenge.challengerHandle, challenge.challengerUserType);"><span class="name {{getRatingClass(challenge.challengerRating)}}"><span data-rating-indicator="{{challenge.challengerRating}}" data-username="{{challenge.challengerHandle}}" class="ratingIcon"></span></span></td>
                                                             <td class="col2" data-ng-click="showCoderInfo(challenge.challengerHandle, challenge.challengerUserType);"><span class="name {{getRatingClass(challenge.challengerRating)}}">{{challenge.challengerHandle}}</span></td>
                                                             <td class="colVs">vs</td>
-                                                            <td class="colR"><span class="name {{getRatingClass(challenge.defenderRating)}}"><span data-rating-indicator="{{challenge.defenderRating}}" data-username="{{challenge.defenderHandle}}" class="ratingIcon"></span></span></td>
+                                                            <td class="colR" data-ng-click="showCoderInfo(challenge.defenderHandle, challenge.defenderUserType);"><span class="name {{getRatingClass(challenge.defenderRating)}}"><span data-rating-indicator="{{challenge.defenderRating}}" data-username="{{challenge.defenderHandle}}" class="ratingIcon"></span></span></td>
                                                             <td class="col3" data-ng-click="showCoderInfo(challenge.defenderHandle, challenge.defenderUserType);"><span class="name {{getRatingClass(challenge.defenderRating)}}">{{challenge.defenderHandle}}</span></td>
                                                             <td class="col4">{{challenge.language}}</td>
                                                             <td class="col5"><span>{{challenge.date | date: 'dd-MM-yyyy'}}</span></td>
@@ -247,10 +247,10 @@
                                                     <tbody>
                                                     <tr data-ng-repeat="challenge in getAllChallenges() | filter: getKeys(viewOn).challengeFilter | orderBy: getKeys(viewOn).challengeKey">
                                                         <td class="col1">{{challenge.id}}</td>
-                                                        <td class="colR"><span class="name {{getRatingClass(challenge.challengerRating)}}"><span data-rating-indicator="{{challenge.challengerRating}}" data-username="{{challenge.challengerHandle}}" class="ratingIcon"></span></span></td>
+                                                        <td class="colR" data-ng-click="showCoderInfo(challenge.challengerHandle, challenge.challengerUserType);"><span class="name {{getRatingClass(challenge.challengerRating)}}"><span data-rating-indicator="{{challenge.challengerRating}}" data-username="{{challenge.challengerHandle}}" class="ratingIcon"></span></span></td>
                                                         <td class="col2" data-ng-click="showCoderInfo(challenge.challengerHandle, challenge.challengerUserType);"><span class="name {{getRatingClass(challenge.challengerRating)}}">{{challenge.challengerHandle}}</span></td>
                                                         <td class="colVs">vs</td>
-                                                        <td class="colR"><span class="name {{getRatingClass(challenge.defenderRating)}}"><span data-rating-indicator="{{challenge.defenderRating}}" data-username="{{challenge.defenderHandle}}" class="ratingIcon"></span></span></td>
+                                                        <td class="colR" data-ng-click="showCoderInfo(challenge.defenderHandle, challenge.defenderUserType);"><span class="name {{getRatingClass(challenge.defenderRating)}}"><span data-rating-indicator="{{challenge.defenderRating}}" data-username="{{challenge.defenderHandle}}" class="ratingIcon"></span></span></td>
                                                         <td class="col3" data-ng-click="showCoderInfo(challenge.defenderHandle, challenge.defenderUserType);"><span class="name {{getRatingClass(challenge.defenderRating)}}">{{challenge.defenderHandle}}</span></td>
                                                         <td class="col4">{{challenge.language}}</td>
                                                         <td class="col5"><span>{{challenge.date | date: 'dd-MM-yyyy'}}</span></td>
