@@ -765,18 +765,12 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             $scope.getKeys(viewOn).challengeFilter.challengerHandle = '';
             $scope.previousChallengeHandle = '';
             $scope.challengeHandleString = '';
-            $timeout(function () {
-                angular.element('#closeChallengeFilter').trigger('click');
-            }, 10);
         } else {
             $('.filterPanel').addClass('largeSize');
             $scope.previousChallengeHandle = handle;
             $scope.getKeys(viewOn).challengeFilterKey='specific';
             $scope.getKeys(viewOn).challengeFilter.challengerHandle = handle;
             $scope.challengeHandleString = handle;
-            $timeout(function () {
-                angular.element('#challengeFilter').trigger('click');
-            }, 1);
             challengeFilter.qtip('api').render();
         }
         $rootScope.$broadcast('rebuild:challengeTable');
