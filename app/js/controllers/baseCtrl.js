@@ -54,8 +54,11 @@
  * Changes in version 1.12 (Web Arena UI - Registrants Dialog Improvement):
  * - Updated popupModalController to handle Registrants Modal
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.12
+ * Changes in version 1.13 (Module Assembly - Web Arena UI - Contest Creation Wizard):
+ * - Added create contest logic.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee
+ * @version 1.13
  */
 'use strict';
 /*jshint -W097*/
@@ -68,7 +71,8 @@
  *
  * @type {exports}
  */
-var helper = require('../helper');
+var helper = require('../helper'),
+    contestCreationCtrl = require('./contestCreationCtrl');
 
 /**
  * The base controller.
@@ -533,6 +537,30 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             buttons: buttons,
             enableClose: true
         }, okClicked);
+    };
+
+    /**
+     * Open contest creation wizard
+     */
+    $scope.createContest = function () {
+        $rootScope.currentModal = $modal.open({
+            templateUrl: '../../../partials/contestCreationWizard.html',
+            controller: contestCreationCtrl,
+            backdrop: 'static',
+            size: 'lg',
+            resolve: {
+                ok: function () {
+                    return function () {
+                        $rootScope.currentModal = undefined;
+                    };
+                },
+                cancel: function () {
+                    return function () {
+                        $rootScope.currentModal = undefined;
+                    };
+                }
+            }
+        });
     };
 }];
 

@@ -1,0 +1,263 @@
+<div class="modal-header wizardHeader">Contest Wizard<a class="cancel" data-ng-click="cancel();"></a></div>
+<div class="modal-body wizardBody">
+    <ul class="nav indicator" role="tablist">
+        <li data-ng-class="{active: index==1, clickable: index==4}" class="item-1" data-ng-click="navTo(1)"><span>Step 1. Overview</span></li><!-- avoid whitespace
+        --><li data-ng-class="{active: index==2, clickable: index==4}" class="item-2" data-ng-click="navTo(2)"><span>Step 2. Sponsorship</span></li><!-- avoid whitespace
+        --><li data-ng-class="{active: index==3, clickable: index==4}" class="item-3" data-ng-click="navTo(3)"><span>Step 3. Advance Setting</span></li><!-- avoid whitespace
+        --><li data-ng-class="{active: index==4}" class="item-4"><span>Summary Screen</span></li>
+    </ul>
+    <form name="contestForm" class="contestForm">
+        <!-- step 1. Overview-->
+        <div class="tabContent step-1 row" data-ng-show="index==1">
+                <!-- information -->
+                <section class="information col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                    <h2 class="hide">Basic Information</h2>
+                    <fieldset class="contestName" data-ng-class="{error: !formValid.contestName}">
+                        <label for="contestName">Contest Name</label>
+                        <div class="inputBorder contestNameInput">
+                            <input type="text" name="contestName" id="contestName" class="nameInput" data-ng-model="$parent.contestName" required maxlength="50"/>
+                        </div>
+                    </fieldset>
+                    <fieldset class="languageRow" data-ng-class="{error: !formValid.language}">
+                        <label>Allowed Languages</label><!-- avoid whitespace
+                        --><div class="langSelector inputBorder langSelectorDivWidth">
+                            <a class="dropdown-toggle selectorToggle" data-ng-click="toggleLangPanel($event)">{{getChoice()}}</a>
+                            <ul class="selectorMenu inputBorder" data-ng-show="langToggle" id="langPanel">
+                                <li><ul><li>
+                                    <input type="checkbox" name="selectAll" id="selectAll" class="checkboxInput" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()"/>
+                                    <label for="selectAll" class="checkboxLbl">Select <strong>All</strong> ({{languages.all.length}})</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="selectSet" id="selectSet" class="checkboxInput" data-ng-click="selectSet($event)" data-ng-checked="isSelectedSet()"/>
+                                    <label for="selectSet" class="checkboxLbl">Select <strong>Common Set</strong> ({{languages.commonSet.length}})</label>
+                                </li></ul></li><li><ul class="lastUl">
+                                <li data-ng-repeat="item in languageChoice">
+                                    <input type="checkbox" name="language-{{$index}}" id="language-{{$index}}" class="checkboxInput" data-ng-model="item.checked"/>
+                                    <label for="language-{{$index}}" class="checkboxLbl">{{item.language}}</label>
+                                </li></ul></li>
+                            </ul>
+                        </div>
+                    </fieldset>
+                    <fieldset class="typeRow" data-ng-class="{error: !formValid.type}">
+                        <label>Type</label><!-- avoid whitespace
+                        --><div class="publicItem"><input type="radio" name="type" id="typePublic" data-ng-model="$parent.type" value="Public" class="radioInput" required/>
+                        <label for="typePublic" class="radioLbl">Public</label></div><!-- avoid whitespace
+                        --><div><input type="radio" name="type" id="typeInvitational" data-ng-model="$parent.type" value="Invitational" class="radioInput" required/>
+                        <label for="typeInvitational" class="radioLbl">Normal</label></div>
+                    </fieldset>
+                    <fieldset class="regLimitRow" data-ng-class="{error: !formValid.regLimit}">
+                        <label for="regLimit">Registration Limit</label><!-- avoid whitespace
+                        --><div class="inputBorder numberInput">
+                            <input type="text" name="regLimit" id="regLimit" data-ng-model="$parent.regLimit" required data-ng-pattern="/^\+?[1-9][0-9]*$/" maxlength="5"/>
+                            <div>
+                                <a data-ng-click="add('regLimit')" class="addTri"></a>
+                                <a data-ng-click="minus('regLimit')" class="subTri"></a>
+                            </div>
+                        </div>
+                    </fieldset>
+                </section>
+                <!-- calendar -->
+                <section class="calendarSec col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                    <h2 class="hide">calendar</h2>
+                    <fieldset class="startDate" data-ng-class="{error: !formValid.startDate}">
+                        <label for="startDate">Select Contest Start Date</label><div class="inputBorder"><input type="text" name="startDate" id="startDate" data-ng-model="$parent.startDate" readonly required/></div>
+                    </fieldset>
+                    <div data-ui-calendar="contestCalConfig.calendar" data-ng-model="contestCalendarEventSources" data-calendar="contestCalendar" class="calendar" id="contestCalendar"></div>
+                    <fieldset class="startTime" data-ng-class="{error: !formValid.startHh || !formValid.startMm}">
+                        <label>Start Time</label><div class="inputBorder startHh"><input type="text" data-ng-model="$parent.startHh" data-ng-pattern="/^\d{1,2}$/" required></div>:<div class="inputBorder startMm"><input type="text" data-ng-model="$parent.startMm" required="" data-ng-pattern="/^\d{1,2}$/"></div><div class="dropdown inputBorder startMark">
+                            <a class="dropdown-toggle">{{getMarker()}}</a>
+                            <ul class="dropdown-menu">
+                                <li data-ng-class="{selectedLi: getMarker()==='AM'}" data-ng-click="setMarker('AM')"><label>AM</label></li>
+                                <li data-ng-class="{selectedLi: getMarker()==='PM'}" data-ng-click="setMarker('PM')"><label>PM</label></li>
+                            </ul>
+                        </div>
+                    </fieldset>
+                </section>
+        </div>
+        <!-- step 2. Sponsorship -->
+        <div class="tabContent step-2" data-ng-show="index==2">
+            <fieldset class="officialRated"><input type="checkbox" name="officialRated" id="officialRated" data-ng-model="officialRated" class="checkboxInput"><label for="officialRated" class="checkboxLbl">Official rated contest</label></fieldset>
+            <div class="panel sponsorInfo">
+                <a data-ng-click="toggle('openSponsorInfo')" class="panel-heading" data-ng-class="{open:openSponsorInfo}"><span>Add Sponsorship Info</span></a>
+                <div class="panel-body" data-ng-show="openSponsorInfo">
+                    <p class="info">Please specify logo or tagline, or both.</p>
+                    <fieldset class="logoUpload">
+                        <label>Upload sponsor logo</label><!--
+                        --><div>
+                            <a class="thumbnail"><img alt="logo" data-ng-src="{{logoData}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="/></a>
+                            <div class="inputBorder">{{logoFile.name}}</div><!--
+                            --><div class="btnRow"><input type="file" id="logoFile" class="hide"/><label for="logoFile" class="btn">Browse and Upload</label></div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="tagline">
+                        <label for="tagline">Sponsor tagline</label><!--
+                        --><div class="inputBorder">
+                            <input type="text" name="tagline" id="tagline" data-ng-model="tagline">
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <!-- step 3. Advance Setting-->
+        <div class="tabContent step-3" data-ng-show="index==3">
+            <p class="info">On this step you can customize exactly how your contest will run. These are preset to [topcoder] standard SRM settings; <br/>leave them unchanged to adhere to [topcoder]'s tried and true contest style.</p>
+            <!-- customized phase schedule -->
+            <div class="panel phaseSchedule">
+                <a data-ng-click="toggle('openPhaseSchedule')" class="panel-heading" data-ng-class="{open:openPhaseSchedule}"><span>Customize Phase Schedule</span></a>
+                <div class="panel-body" data-ng-show="openPhaseSchedule">
+                    <fieldset>
+                        <div class="regStart">
+                            <label>Registration Start</label><!--
+                            --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.regStartH}">
+                                <input type="text" name="regStartH" id="regStartH" data-ng-model="$parent.regStartH" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3">
+                                <div>
+                                    <a data-ng-click="add('regStartH')" class="addTri"></a>
+                                    <a data-ng-click="minus('regStartH')" class="subTri"></a>
+                                </div>
+                            </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.regStartMm}">
+                                <input type="text" name="regStartMm" id="regStartMm" data-ng-model="$parent.regStartMm" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2">
+                                <div>
+                                    <a data-ng-click="addStr('regStartMm')" class="addTri"></a>
+                                    <a data-ng-click="minusStr('regStartMm')" class="subTri"></a>
+                                </div>
+                            </div><span>prior to contest</span>
+                        </div>
+                        <div class="codeLength">
+                            <label>Coding Length</label><!--
+                            --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.codeLengthH}">
+                                <input type="text" name="codeLengthH" id="codeLengthH" data-ng-model="$parent.codeLengthH" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3">
+                                <div>
+                                    <a data-ng-click="add('codeLengthH')" class="addTri"></a>
+                                    <a data-ng-click="minus('codeLengthH')" class="subTri"></a>
+                                </div>
+                            </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.codeLengthMm}">
+                                <input type="text" name="codeLengthMm" id="codeLengthMm" data-ng-model="$parent.codeLengthMm" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2">
+                                <div>
+                                    <a data-ng-click="addStr('codeLengthMm')" class="addTri"></a>
+                                    <a data-ng-click="minusStr('codeLengthMm')" class="subTri"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset><!--
+                    --><div class="info spec">Registration will open specified amount of time prior to contest . Also Registration will always close five minutes before the contest start.</div>
+                    <hr data-ng-class="{disabled:removeInter}"/>
+                    <fieldset data-ng-class="{disabled:removeInter}">
+                        <div class="intermissionLength">
+                            <label>Intermission Length</label><!--
+                            --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.intermissionLengthH}">
+                                <input type="text" name="intermissionLengthH" id="intermissionLengthH" data-ng-model="$parent.intermissionLengthH" data-ng-disable="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3">
+                                <div>
+                                    <a data-ng-click="add('intermissionLengthH')" class="addTri"></a>
+                                    <a data-ng-click="minus('intermissionLengthH')" class="subTri"></a>
+                                </div>
+                            </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.intermissionLengthMm}">
+                                <input type="text" name="intermissionLengthMm" id="intermissionLengthMm" data-ng-model="$parent.intermissionLengthMm" data-ng-disable="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2">
+                                <div>
+                                    <a data-ng-click="addStr('intermissionLengthMm')" class="addTri"></a>
+                                    <a data-ng-click="minusStr('intermissionLengthMm')" class="subTri"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="challengeLength">
+                            <label>Challenge Length</label><!--
+                            --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.challengeLengthH}">
+                                <input type="text" name="challengeLengthH" id="challengeLengthH" data-ng-model="$parent.challengeLengthH" data-ng-disable="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3">
+                                <div>
+                                    <a data-ng-click="add('challengeLengthH')" class="addTri"></a>
+                                    <a data-ng-click="minus('challengeLengthH')" class="subTri"></a>
+                                </div>
+                            </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.challengeLengthMm}">
+                                <input type="text" name="challengeLengthMm" id="challengeLengthMm" data-ng-model="$parent.challengeLengthMm" data-ng-disable="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2">
+                                <div>
+                                    <a data-ng-click="addStr('challengeLengthMm')" class="addTri"></a>
+                                    <a data-ng-click="minusStr('challengeLengthMm')" class="subTri"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset><!--
+                    --><div class="removeInter"><input type="checkbox" id="removeInter" name="removeInter" data-ng-model="$parent.removeInter" class="checkboxInput"><label for="removeInter" class="checkboxLbl">Remove Intermission and Challenge</label></div>
+                </div>
+            </div>
+            <hr class="line" data-ng-hide="openPhaseSchedule"/>
+            <!-- customized room assignment -->
+            <div class="panel roomAssignment">
+                <a data-ng-click="toggle('openRoomAssignment')" class="panel-heading" data-ng-class="{open:openRoomAssignment}"><span>Customized Room Assignment</span></a>
+                <div class="panel-body" data-ng-show="openRoomAssignment">
+                    <fieldset class="coderPerRoom" data-ng-class="{error: !formValid.coderPerRoom}">
+                        <label>Coders per room</label><!--
+                        --><div class="inputBorder numberInput">
+                            <input type="text" name="coderPerRoom" id="coderPerRoom" data-ng-model="$parent.coderPerRoom" data-ng-pattern="/^\+?[1-9][0-9]*$/">
+                            <div><a href="" data-ng-click="add('coderPerRoom')" class="addTri"></a><a href="" data-ng-click="minus('coderPerRoom')" class="subTri"></a></div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="assignMethod">
+                        <label>Assignment method</label><!--
+                        --><div class="dropdown inputBorder methodDD">
+                            <a class="dropdown-toggle"><span data-ng-hide="getMethod()==='None'">{{getMethod()}}</span></a>
+                            <ul class="dropdown-menu">
+                                <li data-ng-repeat="method in assignMethods" data-ng-click="setMethod(method)" data-ng-class="{selectedLi: method.text === getMethod()}">{{method.text}}</li>
+                            </ul>
+                        </div>
+                    </fieldset>
+                    <fieldset class="assignByDiv">
+                        <label>Assign by division</label><!--
+                        --><input type="checkbox" id="assignByDiv" name="assignByDiv" data-ng-model="$parent.assignByDiv" class="checkboxInput"><label for="assignByDiv" class="checkboxLbl"></label>
+                    </fieldset>
+                    <fieldset class="assignByRegion">
+                        <label>Assign by region</label><!--
+                        --><input type="checkbox" id="assignByRegion" name="assignByRegion" data-ng-model="$parent.assignByRegion" class="checkboxInput"><label for="assignByRegion" class="checkboxLbl"></label>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <!-- step 4. Summary -->
+        <div class="tabContent step-4 row" data-ng-show="index==4">
+            <div class="leftPart col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <section class="schedule">
+                    <h3>Phase Schedule</h3>
+                    <p><label>Registration Start</label><span><span data-ng-hide="$parent.regStartH==0">{{$parent.regStartH}} hour<span data-ng-hide="$parent.regStartH==1">s</span> </span><span data-ng-hide="$parent.regStartMm=='0' || $parent.regStartMm==0">{{trimLeadingZero($parent.regStartMm)}} minute<span data-ng-hide="$parent.regStartMm=='1'">s</span></span></span></p>
+                    <p><label>Coding Length</label><span><span data-ng-hide="$parent.codeLengthH==0">{{$parent.codeLengthH}} hour </span><span data-ng-hide="$parent.codeLengthMm=='0' || $parent.codeLengthMm==0">{{trimLeadingZero(codeLengthMm)}} minute<span data-ng-hide="$parent.codeLengthMm=='1'">s</span></span></span></p>
+                    <p><label>Intermission Length</label><span data-ng-hide="removeInter"><span data-ng-hide="$parent.intermissionLengthH==0">{{intermissionLengthH}} hour </span><span data-ng-hide="$parent.intermissionLengthMm=='0' || $parent.intermissionLengthMm==0">{{trimLeadingZero(intermissionLengthMm)}} minute<span data-ng-hide="$parent.intermissionLengthMm=='1'">s</span></span></span></p>
+                    <p><label>Challenge Length</label><span data-ng-hide="removeInter"><span data-ng-hide="$parent.challengeLengthH==0">{{challengeLengthH}} hour </span><span data-ng-hide="$parent.challengeLengthMm=='0' || $parent.challengeLengthMm==0">{{trimLeadingZero(challengeLengthMm)}} minute<span data-ng-hide="$parent.challengeLengthMm=='1'">s</span></span></span></p>
+                </section>
+                <section class="roomAssign">
+                    <h3>Room Assignment</h3>
+                    <p><label>Coder per room</label><span>{{coderPerRoom}}</span></p>
+                    <div class="roomAssignDiv"><label>Assignment method</label><p class="roomAssignMethod">{{getMethod()}}</p></div>
+                    <p><label>Assign by division</label><span>{{assignByDiv ? 'Yes' : 'No';}}</span></p>
+                    <p><label>Assign by region</label><span>{{assignByRegion ? 'Yes' : 'No';}}</span></p>
+                </section>
+            </div>
+            <div class="rightPart col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <p class="contestName">{{contestName}}</p>
+                <div class="infoPart">
+                    <div class="row">
+                        <p class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                            <label>Start Date</label><span>{{startDateSum}}, {{startHh.length < 2 ? ('0' + startHh) : startHh}}:{{startMm.length < 2 ? ('0' + startMm) : startMm}} {{getMarker()}} {{timeZone}}</span>
+                        </p>
+                        <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 typePart">
+                            <label>Type: </label><span>{{type}}</span>
+                        </p>
+                    </div>
+                    <p><label>Allowed Language</label><span>{{getChoice()}}</span></p>
+                    <p class="regLimitRow"><label>Registration Limit</label><span>{{regLimit}}</span></p>
+                </div>
+                <div class="sponsorPart">
+                    <label>Sponsor</label>
+                    <span class="logo"><img alt="logo" data-ng-src="{{logoData}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="/></span>
+                    <span class="taglineSum">{{tagline}}</span>
+                </div>
+                <div class="other">
+                    <p><label>Status:</label><span>Active</span></p>
+                    <div><label for="notes">Add Notes</label><div class="inputBorder"><input type="text" id="notes" name="notes" data-ng-model="$parent.notes" maxlength="250"></div></div>
+                </div>
+            </div>
+        </div>
+        <p class="errorInfo" data-ng-show="hasError"><span>Please correct the errors and try again.</span></p>
+        <ul class="pager">
+            <li class="previous" data-ng-hide="index==1 || index==4"><a class="btn btn-primary btnPrev" data-ng-click="prev();">Previous</a></li>
+            <li class="next" data-ng-hide="index==4"><a class="btn btn-primary btnNext" data-ng-click="next(contestForm);">Next</a></li>
+        </ul>
+        <div class="finalBtn"><a class="btn btn-primary" data-ng-show="index==4" data-ng-click="ok();">Launch Contest!</a></div>
+    </form>
+</div>

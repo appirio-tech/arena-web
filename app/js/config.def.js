@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = {
     apiDomain : '@@API_DOMAIN',
     auth0domain: '@@AUTH0_DOMAIN',
@@ -10,5 +11,7 @@ module.exports = {
     connectionTimeout: @@CONNECTION_TIMEOUT,
     googleAnalyticsTrackingId: '@@GOOGLE_ANALYTICS_TRACKING_ID',
     staticFileHost: '@@STATIC_FILE_HOST',
-    memberPhotoHost: '@@MEMBER_PHOTO_HOST'
+    memberPhotoHost: '@@MEMBER_PHOTO_HOST',
+    jwtToken: '@@JWT_TOKEN'
 };
+

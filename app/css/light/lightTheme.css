@@ -47,6 +47,7 @@ body{
 .panelChatArea .searchIcon,
 .detailPage section .heading .filterArea a:before,
 .filterPanel .closeLink:before,
+.wizardBody .panel-heading >span:before,
 .testReportPanel .caseName>a,
 .testReportPanel .modalHeader .cancel-x:before {
     background-image: url(../img/light/sprite-codeArena.png);
@@ -102,6 +103,17 @@ body{
 .testReportPanel .infoBar .memory:before,
 .reportQtip.qtip-default:after {
     background-image: url(../img/light/sprite-test.png);
+    background-repeat: no-repeat;
+}
+.modal .modal-content .wizardHeader .cancel:before,
+.wizardBody .nav>li>span:before,
+.wizardBody .nav .active:before,
+.wizardBody .pager .btn:before,
+.wizardBody .dropdown-toggle:before,
+.wizardBody .numberInput>div>a:before,
+.wizardBody .checkboxLbl:before,
+.step-2 .logoUpload .thumbnail {
+    background-image: url(../img/light/sprite-wizard.png);
     background-repeat: no-repeat;
 }
 /***************header style*/
@@ -243,6 +255,119 @@ footer .right .sponsorLogo {
 .modal .modal-content .modal-body .argType {
     color: #000;
 }
+
+/*contest creation wizard modal*/
+.modal-lg .modal-content {
+    border-color: #75a5c8
+}
+.modal .modal-content .wizardHeader {
+    background: #75a5c8;
+    color: #fff;
+}
+.modal .modal-content .wizardBody {
+    color: #316f99;
+    background: #d1dce3;
+}
+.modal .wizardBody .btn {
+    background: #0999d1;
+}
+.wizardBody .nav>li {
+    color: #19687c;
+    background: #75a5c8;
+}
+.wizardBody .nav .active {
+    color: #19687c;
+    background: #0bbbe7;
+}
+.wizardBody .tabContent {
+    border-color: #75a5c8;
+    background: #f5f8fa;
+}
+.wizardBody .step-1,
+.wizardBody .step-4 {
+    background: #fff;
+}
+.wizardBody .errorInfo {
+    color: #ff0f00;
+}
+.wizardBody .inputBorder,
+.wizardBody .dropdown-menu,
+.wizardBody .numberInput>div,
+.wizardBody .radioLbl:before,
+.wizardBody .selectorMenu ul:first-child,
+.step-3 .phaseSchedule hr {
+    border-color: #b7c9d7;
+}
+.wizardBody .error .inputBorder,
+.wizardBody .error .radioLbl:before {
+    border-color: #ff0f00;
+}
+.wizardBody .inputBorder>input {
+    background: transparent;
+    border-width: 0;
+    color: #316F99;
+}
+.wizardBody .inputBorder>input[name="startDate"] {
+    color: #0bbbe7;
+}
+.wizardBody .dropdown-toggle {
+    color: #316F99;
+}
+.wizardBody .calendar .selectedDate .fc-day-number:before {
+    background: #0999d1;
+    color: #fff;
+}
+.wizardBody .methodDD .dropdown-menu .selectedLi,
+.wizardBody .dropdown-menu .selectedLi {
+    background: #0999d1;
+    color: #fff;
+}
+.wizardBody .panel-heading {
+    background: #75a5c8;
+    color: #fff;
+}
+.wizardBody .panel-body {
+    border-color: #75a5c8;
+    background: #fff;
+}
+.wizardBody .info {
+    color: #316f99;
+}
+.wizardBody .step-3 .info {
+    color: #636d70;
+}
+.step-1 .calendarSec {
+    background: #f5f8fa;
+}
+.wizardBody .startTime .dropdown-menu {
+    background: #f5f8fa;
+}
+.wizardBody .selectorMenu,
+.wizardBody .methodDD .dropdown-menu {
+    background: #fff;
+}
+.step-4 .leftPart h3 {
+    background: #e8f0f6;
+}
+.wizardBody .step-4 .leftPart p {
+    border-color: #d2dadc;
+}
+.wizardBody .step-4 .leftPart .roomAssignDiv {
+    height: 46px;
+    border-bottom: 1px solid #d2dadc;
+}
+.wizardBody .step-4 .leftPart label {
+    color: #5b6467;
+}
+.wizardBody .step-4 .leftPart .roomAssign label {
+    color: #4c5456;
+}
+.wizardBody .step-4 .rightPart label {
+    color: #636d70;
+}
+.step-4 .rightPart>div {
+    border-color: #d2dadc;
+}
 .notificationPopup {
     color: #3BA35E;
 }
@@ -344,7 +469,8 @@ footer .right .sponsorLogo {
 .panelCodeEditor .settingsPanel .lineNumberRow .lineNumLbl:before {
     border-color: #316F99;
 }
-.panelCodeEditor .settingsPanel .lineNumRadio:checked ~ .lineNumLbl:before {
+.panelCodeEditor .settingsPanel .lineNumRadio:checked ~ .lineNumLbl:before,
+.wizardBody .radioInput:checked ~ .radioLbl:before {
     box-shadow: 0 0 0 4px #fff inset,0 0 0 10px rgba(49,111,153,.98) inset;
 }
 .panelCodeEditor .settingsPanel .btn-settings {
@@ -528,7 +654,8 @@ footer .right .sponsorLogo {
 .listView .listHeader h2 {
     color: #316f99;
 }
-.calendar .fc-border-separate tr.fc-last th {
+.calendar .fc-border-separate tr.fc-last th,
+.wizardBody .step-1 .calendarSec .startTime {
     border-color: #b7c9d7;
 }
 .calendar .fc-border-separate thead .fc-day-header {
