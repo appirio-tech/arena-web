@@ -10,7 +10,7 @@ export NODE_ENV=development
 # Currently arena-web does not use an API backend. If we do end up 
 # adding in calls from TC api we will need this value any setup where the 
 # API is on different domain than where the client was served...
-# export API_DOMAIN=www.example.com/api
+export API_DOMAIN=http://54.92.194.73:8081/v2
 
 export AUTH0_CONNECTION=vm-ldap-connection
 export AUTH0_DOMAIN=sma.auth0.com
@@ -40,3 +40,5 @@ export CONNECTION_TIMEOUT=30000
 
 # the member photo host
 export MEMBER_PHOTO_HOST=http://apps.topcoder.com
+
+export JWT_TOKEN=tcjwt_vm

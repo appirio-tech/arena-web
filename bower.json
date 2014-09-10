@@ -20,7 +20,7 @@
     "angular-resource": "~1.2.5",
     "angular-sanitize": "~1.2.5",
     "angular-ui-router": "https://github.com/angular-ui/ui-router.git#master",
-    "angular-ui-bootstrap": "https://github.com/angular-ui/bootstrap/archive/gh-pages.zip",
+    "angular-bootstrap": "0.11.0",
     "angular-timer": "~1.1.5",
     "angular-ui-codemirror": "0.1.1",
     "angular-ui-calendar": "~0.8.1",

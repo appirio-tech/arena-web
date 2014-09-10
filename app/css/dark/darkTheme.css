@@ -42,6 +42,7 @@ body{
 .panelChatArea .searchIcon,
 .detailPage section .heading .filterArea a:before,
 .filterPanel .closeLink:before,
+.wizardBody .panel-heading >span:before,
 .testReportPanel .caseName>a,
 .testReportPanel .modalHeader .cancel-x:before {
     background-image: url(../img/dark/sprite-codeArena.png);
@@ -96,6 +97,17 @@ body{
 .testReportPanel .infoBar .memory:before,
 .reportQtip.qtip-default:after {
     background-image: url(../img/dark/sprite-test.png);
+    background-repeat: no-repeat;
+}
+.modal .modal-content .wizardHeader .cancel:before,
+.wizardBody .nav>li>span:before,
+.wizardBody .nav .active:before,
+.wizardBody .pager .btn:before,
+.wizardBody .dropdown-toggle:before,
+.wizardBody .numberInput>div>a:before,
+.wizardBody .checkboxLbl:before,
+.step-2 .logoUpload .thumbnail {
+    background-image: url(../img/dark/sprite-wizard.png);
     background-repeat: no-repeat;
 }
 /***************header style*/
@@ -228,6 +240,108 @@ footer .right .sponsorLogo {
 .modal .modal-content .modal-body .argType {
     color: #fff;
 }
+
+/*contest creation wizard modal*/
+.modal-lg .modal-content {
+    border-color: #1f444e
+}
+.modal .modal-content .wizardHeader {
+    background: #1f444e;
+}
+.modal .modal-content .wizardBody {
+    color: #fff;
+}
+.modal .wizardBody .btn {
+    background: #0f9abd;
+}
+.wizardBody .nav>li {
+    color: #1b5e6f;
+    background: #1f444e;
+}
+.wizardBody .nav .active {
+    color: #fff;
+    background: #0bbbe7;
+}
+.wizardBody .tabContent {
+    border-color: #1f444e;
+}
+.wizardBody .errorInfo {
+    color: #ff0f00;
+}
+.wizardBody .inputBorder,
+.wizardBody .dropdown-menu,
+.wizardBody .numberInput>div,
+.wizardBody .radioLbl:before,
+.wizardBody .selectorMenu ul:first-child,
+.step-3 .phaseSchedule hr {
+    border-color: #3b3c3d;
+    border-color: rgba(255, 255, 255, 0.16);
+}
+.wizardBody .error .inputBorder,
+.wizardBody .error .radioLbl:before {
+    border-color: #ff0f00;
+}
+.wizardBody .inputBorder>input {
+    background: transparent;
+    border-width: 0;
+    color: #fff;
+}
+.wizardBody .inputBorder>input[name="startDate"] {
+    color: #0bbbe7;
+}
+.wizardBody .dropdown-toggle {
+    color: #fff;
+}
+.wizardBody .calendar .selectedDate .fc-day-number:before {
+    background: #0f9abd;
+}
+.wizardBody .methodDD .dropdown-menu .selectedLi,
+.wizardBody .dropdown-menu .selectedLi {
+    background: #0f9abd;
+}
+.wizardBody .panel-heading {
+    background: #1f444e;
+    color: #fff;
+}
+.wizardBody .panel-body {
+    border-color: #1f444e;
+}
+.wizardBody .info {
+    color: #636d70;
+}
+.step-1 .calendarSec {
+    background: #1a1c1d;
+}
+.wizardBody .startTime .dropdown-menu {
+    background: #1A1C1D;
+}
+.wizardBody .selectorMenu,
+.wizardBody .methodDD .dropdown-menu {
+    background: #151718;
+}
+.step-4 .leftPart h3 {
+    background: #1a1c1d;
+}
+.wizardBody .step-4 .leftPart p {
+    border-color: #1a2e33;
+    border-color: rgba(31,68,78,0.5);
+}
+.wizardBody .step-4 .leftPart label {
+    color: #5b6467;
+}
+.wizardBody .step-4 .leftPart .roomAssignDiv {
+    height: 46px;
+    border-bottom: 1px solid rgba(31,68,78,0.5);
+}
+.wizardBody .step-4 .leftPart .roomAssign label {
+    color: #4c5456;
+}
+.wizardBody .step-4 .rightPart label {
+    color: #636d70;
+}
+.step-4 .rightPart>div {
+    border-color: #1f444e;
+}
 /********************* active contests part */
 .panel-custom {
     background: #151718;
@@ -315,7 +429,8 @@ footer .right .sponsorLogo {
 .panelCodeEditor .settingsPanel .lineNumberRow .lineNumLbl:before {
     border-color: rgba(255, 255, 255, 0.16);
 }
-.panelCodeEditor .settingsPanel .lineNumRadio:checked ~ .lineNumLbl:before {
+.panelCodeEditor .settingsPanel .lineNumRadio:checked ~ .lineNumLbl:before,
+.wizardBody .radioInput:checked ~ .radioLbl:before {
     box-shadow: 0 0 0 4px rgba(21,23,24,0.98) inset, 0 0 0 10px #fff inset;
 }
 .panelCodeEditor .settingsPanel .btn-settings {
@@ -502,7 +617,8 @@ footer .right .sponsorLogo {
 .listView .listHeader h2 {
     color: #687376;
 }
-.calendar .fc-border-separate tr.fc-last th {
+.calendar .fc-border-separate tr.fc-last th,
+.wizardBody .step-1 .calendarSec .startTime {
     border-color: #1f444e;
 }
 .calendar .fc-border-separate thead .fc-day-header {
