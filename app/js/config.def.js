@@ -12,6 +12,7 @@ module.exports = {
     googleAnalyticsTrackingId: '@@GOOGLE_ANALYTICS_TRACKING_ID',
     staticFileHost: '@@STATIC_FILE_HOST',
     memberPhotoHost: '@@MEMBER_PHOTO_HOST',
-    jwtToken: '@@JWT_TOKEN'
+    jwtToken: '@@JWT_TOKEN',
+    chatLength: '@@CHAT_LENGTH'
 };
 

@@ -57,7 +57,8 @@ module.exports = function (grunt) {
                         { match : 'GOOGLE_ANALYTICS_TRACKING_ID', replacement: process.env.GOOGLE_ANALYTICS_TRACKING_ID },
                         { match : 'CONNECTION_TIMEOUT', replacement: process.env.CONNECTION_TIMEOUT },
                         { match : 'MEMBER_PHOTO_HOST', replacement: process.env.MEMBER_PHOTO_HOST },
-                        { match : 'JWT_TOKEN', replacement: process.env.JWT_TOKEN }
+                        { match : 'JWT_TOKEN', replacement: process.env.JWT_TOKEN },
+                        { match : 'CHAT_LENGTH', replacement: process.env.CHAT_LENGTH }
                     ]
                 },
                 files : [

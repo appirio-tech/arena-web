@@ -42,3 +42,4 @@ export CONNECTION_TIMEOUT=30000
 export MEMBER_PHOTO_HOST=http://apps.topcoder.com
 
 export JWT_TOKEN=tcjwt_vm
+export CHAT_LENGTH=400

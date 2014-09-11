@@ -544,6 +544,9 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 type: getChatType(data.type)
             });
         }
+        if($rootScope.chatContent[roomId].length > config.chatLength) {
+            $rootScope.chatContent[roomId].shift();
+        }
         $rootScope.$broadcast('rebuild:chatboard');
     });
 
