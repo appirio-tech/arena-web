@@ -547,6 +547,14 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         if($rootScope.chatContent[roomId].length > config.chatLength) {
             $rootScope.chatContent[roomId].shift();
         }
+
+        if(data.type === helper.CHAT_TYPES.WhisperToYouChat || user === $rootScope.username()) {
+            var chatSound = document.getElementById('chatSound');
+            if (chatSound) {
+                chatSound.load();
+                chatSound.play();
+            }
+        }
         $rootScope.$broadcast('rebuild:chatboard');
     });
 
