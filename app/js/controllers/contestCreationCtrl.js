@@ -4,8 +4,11 @@
 /**
  * This file is the controller for create contest.
  *
+ * Changes in version 1.1:
+ *  - Changed the contest id and round id generation logic.
+ *
  * @author TCASSEMBLER
- * @version 1.0
+ * @version 1.1
  */
 'use strict';
 /*jshint -W097*/
@@ -141,10 +144,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             ok();
             $modalInstance.close();
 
-            var roundId, contestId, date, hour, dateString, contestData, roundData, languageData, i, popupDetailModalCtrl, header, segment;
-
-            roundId = parseInt(Math.random() * 20000 + 10000, 10); // generate round id between 10000 and 20000
-            contestId = parseInt(Math.random() * 20000 + 10000, 10); // generate contest id between 10000 and 20000
+            var roundId, date, hour, dateString, contestData, roundData, languageData, i, popupDetailModalCtrl, header, segment;
 
             date = new Date();
             hour = +$scope.startHh;
@@ -160,14 +160,11 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
 
             contestData = {};
             contestData.name = $scope.contestName;
-            contestData.contestId = contestId;
             contestData.startDate = $filter('date')(date, 'yyyy-MM-dd HH:mm');
             contestData.status = 'A';
             contestData.endDate = $filter('date')(new Date(date.getTime() + 10 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd HH:mm');
 
             roundData = {};
-            roundData.contest_id = contestId;
-            roundData.id = roundId;
             roundData.type = {id: 1};
             roundData.invitationalType = ($scope.type === 'Public' ? 0 : 1);
             roundData.region = {region_id: 1};
@@ -184,11 +181,9 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             roundData.short_name = contestData.name + ' Round';
 
             languageData = {};
-            languageData.roundId = roundId;
             languageData.languages = [];
 
             segment = {};
-            segment.roundId = roundId;
             segment.registrationStart = $filter('date')(date, 'yyyy-MM-dd HH:mm:ss');
             segment.registrationLength = (+$scope.regStartH) * 60 + (+$scope.regStartMm);
             segment.codingStart = $filter('date')(new Date(date.getTime() + ((+$scope.regStartH) * 60
@@ -300,10 +295,14 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 if (data.error && data.error !== '') {
                     showDetailModal(data, status);
                 } else {
+                    roundData.contest_id = data.contestId;
                     $http.post(config.apiDomain + '/data/srm/rounds', roundData, header).success(function (data, status, headers) {
                         if (data.error && data.error !== '') {
                             showDetailModal(data, status);
                         } else {
+                            languageData.roundId = data.roundId;
+                            segment.roundId = data.roundId;
+                            roundId = data.roundId;
                             $http.post(config.apiDomain + '/data/srm/rounds/' + roundId + '/languages', languageData, header).success(function (data, status, headers) {
                                 if (data.error && data.error !== '') {
                                     showDetailModal(data, status);
