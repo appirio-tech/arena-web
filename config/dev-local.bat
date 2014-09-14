@@ -34,7 +34,7 @@ set CONNECTION_TIMEOUT=30000
 :: the member photo host
 set MEMBER_PHOTO_HOST=http://apps.topcoder.com
 
-set API_DOMAIN=http://54.90.93.195:8081/v2
+set API_DOMAIN=http://tc.cloud.topcoder.com:8081/v2
 set JWT_TOKEN=tcjwt_vm
 
 set CHAT_LENGTH=400
