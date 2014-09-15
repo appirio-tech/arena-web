@@ -542,6 +542,9 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
     helper.removeTcsso = function () {
         cookies.remove(config.ssoKey);
     };
+    helper.getJwtToken = function () {
+        return cookies.get(config.jwtToken);
+    };
     return helper;
 }];
 

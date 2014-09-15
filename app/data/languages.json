@@ -1,0 +1,17 @@
+{
+    "all": [
+        {"text": "Java", "id": 1},
+        {"text": "C++", "id": 3},
+        {"text": "C#", "id": 4},
+        {"text": "Python", "id": 6},
+        {"text": "VB", "id": 5},
+        {"text": "R", "id": 7}
+    ],
+    "commonSet": [
+        "Java",
+        "C++",
+        "C#",
+        "Python",
+        "VB"
+    ]
+}

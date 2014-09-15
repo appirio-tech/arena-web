@@ -39,7 +39,8 @@ body a {cursor: pointer;}
 .detailPage .table>thead>tr>th .sort,
 .detailPage .leaderboardWrapper .heading .viewFilter .showLBLbl:before,
 .filterPanel .contentWrapper .dropdown .arrow,
-.detailPage section .table>thead>tr>th .arrow {
+.detailPage section .table>thead>tr>th .arrow
+.modal-body .table>thead>tr>th .arrow {
     background-repeat: no-repeat;
 }
 /*common button style*/
@@ -166,6 +167,10 @@ body a {cursor: pointer;}
 }
 .navIcons .iconTS:before{
     background-position: -175px 0;
+}
+.header .navbar .navIcons>li>.iconCC:before {
+    background-image: url(../img/wizard-icon.png);
+    background-position: 0 0;
 }
 .navIcons .iconBug:before{
     background-image: url(../img/dark/icon-bug.png) !important;
@@ -918,19 +923,27 @@ footer .right>span:nth-child(2) {
     overflow-y: auto;
 }
 .modal-open {
-    overflow:auto;
-    overflow-x:hidden;
+    /*overflow:auto;
+    overflow-x:hidden;*/
 }
 /* ** /.Fix to page move right ** */
 
 .modal .modal-dialog {
     padding-top: 10%;
 }
+.modal .modal-lg {
+    padding-top: 15.74%;
+    width: 892px;
+    margin-top: 0;
+}
 .modal .modal-content {
     border: 1px solid #234760;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
+}
+.modal-lg .modal-content {
+    border-top-width: 0;
 }
 .modal .modal-content .modal-header {
     font-size: 16px;
@@ -942,9 +955,31 @@ footer .right>span:nth-child(2) {
     border-radius: 0;
     height: 40px;
 }
+.modal .modal-content .wizardHeader {
+    padding: 7px 29px 9px;
+    position: relative;
+}
 .modal .modal-content .modal-header .cancel-x {
     float: right;
     cursor: pointer;
+}
+.modal .modal-content .wizardHeader .cancel {
+    position: absolute;
+    right: 19px;
+    top: 5px;
+    display: block;
+    height: 30px;
+    width: 30px;
+}
+.modal .modal-content .wizardHeader .cancel:before {
+    content: '';
+    display: block;
+    height: 10px;
+    width: 11px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-position: 0 0;
 }
 .modal .modal-content .modal-body {
     border-width: 0;
@@ -953,8 +988,25 @@ footer .right>span:nth-child(2) {
     overflow: hidden;
     height: 190px;
 }
+.modal .modal-content .wizardBody {
+    height: 536px;
+    padding: 30px 20px 29px 29px;
+}
+.modal .modal-content .modal-body.registrants-modal {
+    height: 300px;
+    padding: 0 0;
+}
+.modal .modal-content .modal-body.registrants-modal .registrants-count {
+    padding-left: 24px;
+}
+.registrants-modal .tableDiv.scroll {
+    max-height: 200px;
+}
 .modal .modal-content .modal-body p {
     margin: auto 20px;
+}
+.modal .modal-content .wizardBody p {
+    margin: 0;
 }
 .modal .modal-content .modal-body ul {
     list-style: none;
@@ -994,7 +1046,730 @@ footer .right>span:nth-child(2) {
     opacity: .8;
     filter: alpha(opacity=80);
 }
-
+/*contest creation wizard modal*/
+.wizardBody a:hover {
+    text-decoration: none;
+    opacity: 0.7;
+}
+.wizardBody .nav {
+    width: 100%;
+}
+.wizardBody .nav>li {
+    display: inline-block;
+    font-size: 16px;
+    height: 40px;
+    width: 199px;
+    padding: 7px 0 8px 55px;
+    position: relative;
+    text-align: left;
+}
+.wizardBody .nav .item-2 {
+    width: 213px;
+    padding-left: 52px;
+}
+.wizardBody .nav .item-3 {
+    width: 228px;
+    padding-left: 43px;
+}
+.wizardBody .nav .item-4 {
+    width: 197px;
+    padding-left: 48px;
+}
+.wizardBody .nav .clickable {
+    cursor: pointer;
+}
+.wizardBody .nav .clickable:hover {
+    opacity: 0.8;
+}
+.wizardBody .nav .active:before {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 8px;
+    position: absolute;
+    top: 40px;
+    left: 92px;
+    background-position: -120px 0;
+}
+.wizardBody .nav .item-2.active:before {
+    left: 99px;
+}
+.wizardBody .nav .item-3.active:before {
+    left: 108px;
+}
+.wizardBody .nav>li>span {
+    position: relative;
+}
+.wizardBody .nav>li>span:before {
+    content: '';
+    display: block;
+    height: 9px;
+    width: 9px;
+    position: absolute;
+    top: 6px;
+    left: -14px;
+    background-position: -20px -20px;
+}
+.wizardBody .nav .item-1>span:before {
+    left: -15px;
+}
+.wizardBody .nav .active>span:before {
+    background-position: -20px 0;
+}
+.wizardBody .tabContent {
+    border: 1px solid #1f444e;
+    border-top-width: 0;
+    height: 381px;
+}
+.wizardBody .pager {
+    margin-bottom: 0;
+}
+.wizardBody .pager .btn {
+    width: 116px;
+    font-size: 16px;
+    position: relative;
+}
+.wizardBody .pager .btn:before {
+    content: '';
+    display: block;
+    height: 15px;
+    width: 8px;
+    position: absolute;
+    top: 11px;
+    right: 10px;
+    background-position: -40px 0;
+}
+.wizardBody .pager .btnPrev:before {
+    right: auto;
+    left: 10px;
+    background-position: -40px -20px;
+}
+.wizardBody .errorInfo {
+    position: absolute;
+    bottom: 33px;
+    width: 841px;
+    padding-left: 15px;
+    text-align: center;
+}
+.wizardBody .inputBorder {
+    display: inline-block;
+    border: 1px solid #fff;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    height: 36px;
+}
+.wizardBody .inputBorder>input {
+    padding-left: 8px;
+    height: 34px;
+    font-weight: 300;
+}
+.wizardBody .inputBorder>input[name="startDate"] {
+    padding-left: 13px;
+    width: 90px;
+}
+/*dropdown*/
+.wizardBody .dropdown-toggle {
+    display: inline-block;
+    height: 34px;
+    padding: 4px 30px 5px 8px;
+    min-width: 69px;
+    position: relative;
+}
+.wizardBody .dropdown-toggle:before,
+.wizardBody .numberInput>div>a:before {
+    content: '';
+    display: block;
+    height: 5px;
+    width: 9px;
+    position: absolute;
+    top: 15px;
+    right: 9px;
+    background-position: -100px 0;
+}
+.wizardBody .dropdown-menu {
+    min-width: 69px;
+    margin-top: 0;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.wizardBody .dropdown-menu li {
+    padding-left: 8px;
+}
+.wizardBody .dropdown-menu li:hover {
+    opacity: 0.6;
+}
+/*customized dropdown*/
+.wizardBody .langSelector {
+    position: relative;
+}
+.wizardBody .selectorToggle {
+    width: 320px;
+}
+.wizardBody .selectorMenu {
+    display: block;
+    width: 322px;
+    padding: 0;
+    height: auto;
+    position: absolute;
+    top: 34px;
+    left: -1px;
+    z-index: 10;
+}
+.wizardBody .selectorMenu .lastUl{
+    border-bottom: none!important;
+}
+.wizardBody .selectorMenu ul {
+    padding-left: 0;
+    padding: 9px 30px 3px 12px;
+}
+.wizardBody .selectorMenu ul:first-child {
+    border-bottom: 1px solid #fff;
+    margin-bottom: 2px;
+}
+.wizardBody .selectorMenu li>label {
+    margin-bottom: 6px;
+}
+/*numberInput*/
+.wizardBody .numberInput {
+    position: relative;
+    padding-right: 30px;
+}
+.wizardBody .numberInput>div {
+    position: absolute;
+    right: 0;
+    top: 2px;
+    height: 30px;
+    width: 30px;
+    border-left: 1px solid #fff;
+}
+.wizardBody .numberInput>div>a {
+    display: block;
+    height: 10px;
+    width: 19px;
+    position: absolute;
+    right: 4px;
+}
+.wizardBody .numberInput .addTri {
+    top: 4px;
+}
+.wizardBody .numberInput .subTri {
+    bottom: 3px;
+}
+.wizardBody .numberInput>div>a:before {
+    top: 2px;
+    right: 5px;
+}
+.wizardBody .numberInput .addTri:before {
+    background-position: -100px -20px;
+}
+/*checkbox*/
+.wizardBody .checkboxInput {
+    display: none;
+}
+.wizardBody .checkboxLbl {
+    padding-left: 31px;
+    position: relative;
+}
+.wizardBody .checkboxLbl:before {
+    content: '';
+    display: block;
+    height: 19px;
+    width: 19px;
+    position: absolute;
+    left: 0;
+    top: 3px;
+    background-position: -60px -20px;
+}
+.wizardBody .checkboxInput:checked ~ .checkboxLbl:before {
+    background-position: -60px 0;
+}
+/*radio*/
+.wizardBody .radioInput {
+    display: none;
+}
+.wizardBody .radioLbl {
+    padding-left: 28px;
+    position: relative;
+}
+.wizardBody label[for="typeInvitational"] {
+    padding-left: 30px;
+}
+.wizardBody .radioLbl:before {
+    content: '';
+    display: block;
+    height: 20px;
+    width: 20px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    position: absolute;
+    left: 0;
+    top: 2px;
+}
+/*panel in wizard*/
+.wizardBody .panel {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    background: transparent;
+    border-width: 0;
+    margin-bottom: 0;
+}
+.wizardBody .panel-heading {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    display: block;
+    padding: 7px 15px 8px 36px;
+    height: 40px;
+    font-size: 16px;
+    position: relative;
+}
+.wizardBody .panel-heading >span:before {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    left: 8px;
+    top: 13px;
+    background-position: -75px 0;
+}
+.wizardBody .panel-heading.open >span:before {
+    background-position: -50px 0;
+}
+.wizardBody .panel-body {
+    border: 1px solid #fff;
+    border-top-width: 0;
+    padding-left: 36px;
+    padding-right: 36px;
+}
+:-moz-ui-invalid:not(output) {
+    box-shadow: none;
+}
+/*step-1*/
+.step-1 {
+    margin: 0;
+}
+.step-1 section {
+    padding-top: 17px;
+}
+.step-1 .information {
+    width: 502px;
+    padding-left: 29px;
+    padding-right: 17px;
+}
+.step-1 .calendarSec {
+    width: 336px;
+    padding-left: 17px;
+    padding-right: 29px;
+}
+.step-1 .information fieldset {
+    margin-bottom: 11px;
+}
+.step-1 .information fieldset>label {
+    padding-left: 1px;
+    width: 134px;
+}
+.step-1 .information .contestName label {
+    display: block;
+    height: 34px;
+    padding-top: 7px;
+}
+.step-1 .information .contestName .contestNameInput > input{
+    width: 455px;
+}
+.step-1 .information .typeRow {
+    padding-top: 1px;
+    margin-bottom: 7px;
+}
+.step-1 .information .typeRow>label {
+    line-height: 1.5em;
+    vertical-align: top;
+}
+.step-1 .typeRow>div {
+    display: inline-block;
+    padding-left: 1px;
+}
+.step-1 .typeRow .publicItem {
+    width: 86px;
+}
+.step-1 .regLimitRow input {
+    width: 70px;
+}
+.step-1 .calendarSec .startDate {
+    margin-bottom: 13px;
+}
+.step-1 .calendarSec .startDate>label {
+    vertical-align: top;
+    padding-top: 7px;
+    width: 197px;
+}
+.step-1 .calendarSec .startTime {
+    padding-top: 9px;
+    padding-bottom: 13px;
+    border-top: 1px solid #fff;
+}
+.step-1 .calendarSec .startTime>label {
+    vertical-align: top;
+    padding-top: 6px;
+    width: 93px;
+}
+.step-1 .calendarSec .startTime .inputBorder>input {
+    width: 46px;
+}
+.step-1 .calendarSec .startTime .startHh {
+    margin-right: 9px;
+}
+.step-1 .calendarSec .startTime .startMm {
+    margin-right: 9px;
+    margin-left: 8px;
+}
+.step-1 .calendarSec .startTime .startMark {
+    vertical-align: top;
+    width: 70px;
+}
+.wizardBody .calendar .fc-header-title h2 {
+    font-size: 15px;
+    font-weight: 400;
+}
+.wizardBody .calendar .fc-header-right .fc-button-next,
+.wizardBody .calendar .fc-header-right .fc-button-prev {
+    margin-bottom: 8px;
+}
+.wizardBody .calendar .fc-button-next .fc-text-arrow,
+.wizardBody .calendar .fc-button-prev .fc-text-arrow {
+    top: 0;
+}
+.wizardBody .calendar .fc-border-separate thead .fc-day-header {
+    padding-left: 12px;
+    padding-top: 3px;
+    padding-bottom: 6px;
+}
+.wizardBody .calendar .fc-day .fc-day-number {
+    padding-left: 14px;
+    cursor: pointer;
+}
+.wizardBody .calendar .fc-day.fc-first .fc-day-number {
+    padding-left: 16px;
+}
+.wizardBody .calendar .selectedDate .fc-day-number:before {
+    content: attr(day);
+    display: block;
+    height: 30px;
+    width: 30px;
+    padding-top: 2px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 6px;
+    text-align: center;
+}
+.wizardBody .calendar .fc-first.selectedDate .fc-day-number:before {
+    left: 8px;
+}
+/*step-2*/
+.step-2,
+.step-3 {
+    padding-top: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.step-2 .panel-body {
+    padding-bottom: 19px;
+}
+.step-2 .officialRated {
+    padding-left: 7px;
+    margin-bottom: 12px;
+}
+.step-2 .officialRated label:before {
+    top: 2px;
+}
+.modal-content .wizardBody .step-2 .info {
+    margin-bottom: 15px;
+    margin-top: 5px;
+}
+.step-2 fieldset>label {
+    width: 184px;
+    vertical-align: top;
+}
+.step-2 .logoUpload>label {
+    padding-top: 25px;
+}
+.step-2 .logoUpload {
+    margin-bottom: 19px;
+}
+.step-2 .logoUpload>div {
+    display: inline-block;
+    padding-left: 184px;
+    position: relative;
+    padding-top: 1px;
+}
+.step-2 .logoUpload .thumbnail {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border-width: 0;
+    padding: 0;
+    height: 79px;
+    width: 167px;
+    background-color: transparent;
+    background-position: 0 -40px;
+    position: absolute;
+    left: 1px;
+    top: 0;
+    margin-bottom: 0;
+}
+.step-2 .logoUpload .thumbnail:hover {
+    opacity: 1;
+}
+.step-2 .logoUpload .thumbnail >img {
+    height: 79px;
+    width: 167px;
+    zoom: auto;
+}
+.step-2 .logoUpload .inputBorder {
+    width: 357px;
+    margin-bottom: 9px;
+    padding-left: 8px;
+    padding-top: 4px;
+    display: block;
+}
+.step-2 .logoUpload .btnRow {
+    padding-left: 1px
+}
+.step-2 .logoUpload .btn {
+    width: 151px;
+    height: 30px;
+    padding: 3px;
+}
+.step-2 .tagline>label {
+    padding-top: 5px;
+}
+.step-2 .tagline input {
+    width: 537px;
+}
+/*step-3*/
+.modal-content .wizardBody .step-3 .info {
+    line-height: 1.22em;
+    padding-left: 9px;
+    margin-bottom: 18px;
+}
+.step-3 .phaseSchedule .panel-body {
+    padding-top: 10px;
+    padding-bottom: 12px;
+}
+.step-3 .phaseSchedule fieldset {
+    width: 438px;
+    display: inline-block;
+}
+.step-3 .phaseSchedule .disabled {
+    opacity: 0.2;
+}
+.step-3 .phaseSchedule .disabled a {
+    cursor: text;
+}
+.step-3 .phaseSchedule fieldset+div {
+    display: inline-block;
+}
+.step-3 .phaseSchedule .removeInter {
+    vertical-align: top;
+    margin-top: 29px;
+}
+.step-3 .phaseSchedule fieldset>div>label,
+.step-3 fieldset>label {
+    width: 169px;
+}
+.step-3 .phaseSchedule fieldset .inputBorder>input {
+    width: 34px;
+}
+.wizardBody .step-3 .phaseSchedule .spec {
+    width: 277px;
+    padding-left: 0;
+    margin-bottom: 0;
+    margin-top: -1px;
+    vertical-align: top;
+}
+.step-3 .line {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-color: transparent;
+}
+.step-3 .phaseSchedule hr {
+    margin-top: 6px;
+    margin-bottom: 7px;
+}
+.step-3 .regStart,
+.step-3 .intermissionLength {
+    margin-bottom: 10px;
+}
+.step-3 .numberInput {
+    margin-right: 10px;
+}
+.step-3 .numberInput+.numberInput {
+    margin-left: 9px;
+    margin-right: 8px;
+}
+.step-3 .roomAssignment .panel-body {
+    padding-top: 10px;
+    padding-bottom: 9px;
+}
+.step-3 .roomAssignment fieldset{
+    vertical-align: top;
+    height: 36px;
+    margin-bottom: 9px;
+}
+.step-3 .roomAssignment .assignByDiv {
+    padding-top: 2px;
+}
+.step-3 .roomAssignment fieldset>label {
+    vertical-align: top;
+    padding-top: 7px;
+    width: 170px;
+}
+.step-3 .roomAssignment fieldset label:before {
+    top: 9px;
+    width: 20px;
+}
+.step-3 .roomAssignment .numberInput>input {
+    width: 71px;
+}
+.step-3 .roomAssignment .dropdown-toggle {
+    width: 239px;
+}
+/*step-4*/
+.step-4 {
+    margin: 0;
+    padding: 31px 8px 13px 13px;
+}
+.step-4 .leftPart {
+    width: 295px;
+}
+.step-4 .leftPart h3 {
+    margin: 0;
+    height: 34px;
+    font-size: 14px;
+    padding: 10px 0 10px 12px;
+    margin-bottom: 1px;
+}
+.wizardBody .step-4 .leftPart p {
+    height: 30px;
+    border-bottom: 1px solid #fff;
+    padding-top: 2px;
+    padding-left: 9px;
+}
+.wizardBody .step-4 .leftPart label {
+    margin-bottom: 0;
+    width: 121px;
+}
+.wizardBody .step-4 .leftPart .roomAssignMethod {
+    float: right;
+    border: none;
+    height: 21px;
+    padding: 0;
+}
+.wizardBody .step-4 .leftPart .schedule span {
+    white-space: nowrap;
+    display: inline-block;
+    width: 65px;
+    vertical-align: top;
+}
+.wizardBody .step-4 .leftPart .roomAssign {
+    margin-top: 19px;
+}
+.wizardBody .step-4 .leftPart .roomAssign h3 {
+    margin-bottom: 0;
+}
+.wizardBody .step-4 .leftPart .roomAssign p {
+    padding-left: 10px;
+}
+.wizardBody .step-4 .leftPart .roomAssign label {
+    width: 128px;
+}
+.step-4 .rightPart {
+    width: 522px;
+}
+.wizardBody .step-4 .rightPart .contestName {
+    margin-top: -4px;
+    margin-bottom: 7px;
+}
+.wizardBody .step-4 .rightPart label {
+    width: 144px;
+    margin-bottom: 4px;
+}
+.wizardBody .step-4 .rightPart p {
+    margin-top: 11px;
+}
+.wizardBody .step-4 .rightPart .regLimitRow {
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+.wizardBody .step-4 .typePart {
+    text-align: right;
+    padding: 0 15px 0 0;
+}
+.wizardBody .step-4 .typePart label {
+    width: auto;
+    margin-right: 8px;
+}
+.step-4 .rightPart>div {
+    border-top: 1px solid #fff;
+}
+.step-4 .sponsorPart {
+    height: 85px;
+    padding-top: 14px;
+    padding-bottom: 16px;
+}
+.step-4 .sponsorPart .logo {
+    display: inline-block;
+    height: 54px;
+    width: 131px;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-right: 13px;
+}
+.step-4 .sponsorPart .logo>img {
+    zoom: auto;
+    height: 54px;
+    width: 131px;
+}
+.step-4 .sponsorPart label {
+    vertical-align: top;
+    padding-top: 14px;
+}
+.step-4 .sponsorPart .logo+span {
+    display: inline-block;
+    width: 185px;
+    vertical-align: top;
+    line-height: 1.22em;
+    padding-top: 9px;
+}
+.wizardBody .step-4 .rightPart .other p {
+    margin-bottom: 9px;
+}
+.wizardBody .step-4 .rightPart .other .inputBorder input {
+    width: 340px!important;
+    padding-left: 0;
+}
+.wizardBody .finalBtn {
+    text-align: center;
+}
+.wizardBody .finalBtn .btn {
+    width: 280px;
+    font-size: 16px;
+    font-weight: 600;
+}
+.wizardBody .methodDD .dropdown-menu {
+    width: 241px;
+    left: -1px;
+    height: 200px;
+    overflow: auto;
+}
 .notificationPopup {
     color: #A8FAC4;
 }
@@ -3416,7 +4191,9 @@ footer .right>span:nth-child(2) {
     width: 100%;
 }
 .detailPage section .tableDiv .innerWrapper,
-.detailPage section .tHeadDiv .innerWrapper {
+.detailPage section .tHeadDiv .innerWrapper,
+.modal-body .tHeadDiv .innerWrapper,
+.modal-body .tableDiv .innerWrapper {
     padding-right: 16px;
 }
 .detailPage .panel-body section.expand .tableDiv {
@@ -3452,10 +4229,13 @@ footer .right>span:nth-child(2) {
 }
 /*common style of table in detail page */
 .detailPage .tHeadDiv .table,
-.detailPage .tableDiv .table {
+.detailPage .tableDiv .table,
+.modal-body .tHeadDiv .table,
+.modal-body .tableDiv .table{
     margin-bottom: 0;
 }
-.detailPage .table>thead>tr>th {
+.detailPage .table>thead>tr>th,
+.modal-body .table>thead>tr>th {
     font-weight: 400;
     border-width: 1px;
     border-color: #1f444e;
@@ -3463,7 +4243,8 @@ footer .right>span:nth-child(2) {
     padding-bottom: 10px;
     position: relative;
 }
-.detailPage section .table>thead>tr>th .arrow {
+.detailPage section .table>thead>tr>th .arrow,
+.modal-body .table>thead>tr>th .arrow {
     display: inline-block;
     height: 7px;
     width: 9px;
@@ -3471,10 +4252,17 @@ footer .right>span:nth-child(2) {
     position: relative;
     margin-left: 3px;
 }
+.modal-body .table td.col1 span {
+    cursor: pointer;
+}
 .detailPage section .table>thead>tr>th .ascArrow {
     background-position: -33px -59px;
 }
-.detailPage .table>thead>tr>.sortableHeading {
+.modal-body .table>thead>tr>th .ascArrow {
+    background-position: -33px -58px;
+}
+.detailPage .table>thead>tr>.sortableHeading,
+.modal-body .table>thead>tr>.sortableHeading {
     cursor: pointer;
     /*prevent text be selected*/
     -webkit-touch-callout: none;
@@ -3493,9 +4281,23 @@ footer .right>span:nth-child(2) {
     vertical-align: middle;
     height: 31px;
 }
+.modal-body .table>tbody>tr>td {
+    padding: 4px 5px;
+    border-top-width: 0;
+    border-bottom: 1px solid #1f444e;
+    position: relative;
+    vertical-align: middle;
+    height: 31px;
+}
 .detailPage .table>thead>tr>th:last-child,
-.detailPage .table>tbody>tr>td:last-child {
+.detailPage .table>tbody>tr>td:last-child{
     text-align: right;
+}
+.modal-body .table .col1 {
+    width: 40%;
+}
+.modal-body .table .col2 {
+    width: 50%;
 }
 .detailPage .leftSec .table .col1 {
     width: 29px;
@@ -3526,7 +4328,8 @@ footer .right>span:nth-child(2) {
 .challengerWrapper .table .col2 {
     width: 25%;
 }
-.leaderboardWrapper .table .colR {
+.leaderboardWrapper .table .colR,
+.modal-body .table .colR {
     width: 30px;
     font-weight: 100;
 }
@@ -3575,6 +4378,7 @@ footer .right>span:nth-child(2) {
     -ms-word-break:break-all;
     word-break:break-all;
     font-weight: 300;
+    cursor: pointer;
 }
 .detailPage section .table td .roomLeader{
     display: inline-block;
@@ -3776,7 +4580,9 @@ footer .right>span:nth-child(2) {
 }
 @media only screen and (max-width: 1277px) {
     .detailPage .tableDiv .table-responsive,
-    .detailPage .tHeadDiv .table-responsive {
+    .detailPage .tHeadDiv .table-responsive,
+    .modal-body .tableDiv .table-responsive,
+    .modal-body .tHeadDiv .table-responsive{
         border-width: 0;
     }
     .detailPage .moreProblemTbl .table th,
@@ -4659,6 +5465,7 @@ footer .right>span:nth-child(2) {
 }
 .registration-modal-body .surveyDiv .answerText {
     padding-left: 45px;
+    margin-right: 18px;
 }
 .registration-modal-body .surveyDiv .answerText .radio {
     margin-right: 5px;
@@ -4709,4 +5516,11 @@ footer .right>span:nth-child(2) {
 }
 .challengeWrapper .table .col1 .arrow {
     margin-left: 3px!important;
+}
+.header .navIcons .lastLi {
+    border-right: 1px solid #2d2f30;
+}
+
+.wizardBody .step-3 .errorNumber {
+    border: 1px solid red!important;
 }

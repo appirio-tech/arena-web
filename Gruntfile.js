@@ -13,8 +13,11 @@
  *   bundle-light.css wraps app/css/app.css and light theme related files.
  * - Fixed JSLint issues.
  *
- * @author amethystlei
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena UI - Contest Creation Wizard):
+ * - Added jwt token setting.
+ *
+ * @author amethystlei, flytoj2ee
+ * @version 1.2
  */
 'use strict';
 /*global module, process*/
@@ -53,7 +56,9 @@ module.exports = function (grunt) {
                         { match : 'STATIC_FILE_HOST', replacement: process.env.STATIC_FILE_HOST },
                         { match : 'GOOGLE_ANALYTICS_TRACKING_ID', replacement: process.env.GOOGLE_ANALYTICS_TRACKING_ID },
                         { match : 'CONNECTION_TIMEOUT', replacement: process.env.CONNECTION_TIMEOUT },
-                        { match : 'MEMBER_PHOTO_HOST', replacement: process.env.MEMBER_PHOTO_HOST }
+                        { match : 'MEMBER_PHOTO_HOST', replacement: process.env.MEMBER_PHOTO_HOST },
+                        { match : 'JWT_TOKEN', replacement: process.env.JWT_TOKEN },
+                        { match : 'CHAT_LENGTH', replacement: process.env.CHAT_LENGTH }
                     ]
                 },
                 files : [
@@ -179,6 +184,12 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+        jshint: {
+            all: ['Gruntfile.js', 'app/js/*.js'],
+            options: {
+                force: true
+            }
         }
     });
 
@@ -192,6 +203,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-aws');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
     // The default tasks to run when you type: grunt
     grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
@@ -203,4 +215,6 @@ module.exports = function (grunt) {
     grunt.registerTask('deploy-cdn', ['s3:deploy']);
 
     grunt.registerTask('deploy-compress', ['compress:deploy']);
+
+    grunt.registerTask('jslint', ['jshint:all']);
 };

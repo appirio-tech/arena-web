@@ -48,8 +48,7 @@
             <div ng-if="problem.component.constraints && problem.component.constraints.length > 0">
                 <h2>Constraints</h2>
                 <div class="problemStatementRow" ng-repeat="constraint in problem.constraints">
-                    -&nbsp;
-                    <div ng-bind-html="constraint"></div>
+                    <div ng-bind-html="'- ' + constraint"></div>
                 </div>
             </div>
             <div ng-if="hasExampleTest">

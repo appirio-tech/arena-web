@@ -42,6 +42,7 @@ body{
 .panelChatArea .searchIcon,
 .detailPage section .heading .filterArea a:before,
 .filterPanel .closeLink:before,
+.wizardBody .panel-heading >span:before,
 .testReportPanel .caseName>a,
 .testReportPanel .modalHeader .cancel-x:before {
     background-image: url(../img/orange/sprite-codeArena.png);
@@ -77,7 +78,8 @@ body{
 .detailPage .table>thead>tr>th .sort,
 .detailPage .leaderboardWrapper .heading .viewFilter .showLBLbl:before,
 .filterPanel .contentWrapper .dropdown .arrow,
-.detailPage section .table>thead>tr>th .arrow {
+.detailPage section .table>thead>tr>th .arrow,
+.modal-body .table>thead>tr>th .arrow{
     background-image: url(../img/orange/sprite-room-summary.png);
 }
 .filterPanel.qtip-default,
@@ -96,6 +98,17 @@ body{
 .testReportPanel .infoBar .memory:before,
 .reportQtip.qtip-default:after {
     background-image: url(../img/orange/sprite-test.png);
+    background-repeat: no-repeat;
+}
+.modal .modal-content .wizardHeader .cancel:before,
+.wizardBody .nav>li>span:before,
+.wizardBody .nav .active:before,
+.wizardBody .pager .btn:before,
+.wizardBody .dropdown-toggle:before,
+.wizardBody .numberInput>div>a:before,
+.wizardBody .checkboxLbl:before,
+.step-2 .logoUpload .thumbnail {
+    background-image: url(../img/orange/sprite-wizard.png);
     background-repeat: no-repeat;
 }
 /***************header style*/
@@ -271,6 +284,127 @@ footer .left>span {
     border-width: 0;
 }
 
+/*contest creation wizard modal*/
+.modal-lg .modal-content {
+    border-color: #e7e7e7
+}
+.modal .modal-content .wizardHeader {
+    background: #f0f0f0;
+    border: 1px solid #e7e7e7;
+    color: #656565;
+    font-weight: 600;
+}
+.modal .modal-content .wizardBody {
+    color: #656565;
+}
+.modal .wizardBody .btn {
+    background: #ff8a00;
+}
+.wizardBody .nav>li {
+    color: #656565;
+    background: #f0f0f0;
+    border: 1px solid #e7e7e7;
+    border-left-width: 0;
+    border-right-width: 0;
+}
+.wizardBody .nav .item-1{
+    border-left-width: 1px;
+}
+.wizardBody .nav .item-4{
+    border-right-width: 1px;
+}
+.wizardBody .nav .active {
+    color: #fff;
+    background: #ff8a00;
+    border-width: 0;
+}
+.wizardBody .tabContent {
+    border-color: #e7e7e7;
+}
+.wizardBody .errorInfo {
+    color: #ff0f00;
+}
+.wizardBody .inputBorder,
+.wizardBody .dropdown-menu,
+.wizardBody .numberInput>div,
+.wizardBody .radioLbl:before,
+.wizardBody .selectorMenu ul:first-child,
+.step-3 .phaseSchedule hr {
+    border-color: #e7e7e7;
+}
+.wizardBody .error .inputBorder,
+.wizardBody .error .radioLbl:before {
+    border-color: #ff0f00;
+}
+.wizardBody .inputBorder>input {
+    background: transparent;
+    border-width: 0;
+    color: #656565;
+}
+.wizardBody .inputBorder>input[name="startDate"] {
+    color: #656565;
+}
+.wizardBody .dropdown-toggle {
+    color: #656565;
+}
+.wizardBody .calendar .selectedDate .fc-day-number:before {
+    background: #656565;
+    color: #fff;
+}
+.wizardBody .methodDD .dropdown-menu .selectedLi,
+.wizardBody .dropdown-menu .selectedLi {
+    background: #656565;
+    color: #fff;
+}
+.wizardBody .panel-heading {
+    background: #f0f0f0;
+    color: #656565;
+    border: 1px solid #e7e7e7;
+}
+.wizardBody .panel-body {
+    border-color: #e7e7e7
+}
+.wizardBody .info {
+    color: #636d70;
+}
+.step-1 .calendarSec {
+    background: #f7f7f7;
+}
+.wizardBody .startTime .dropdown-menu {
+    background: #f7f7f7;
+}
+.wizardBody .selectorMenu,
+.wizardBody .methodDD .dropdown-menu {
+    background: #fff;
+}
+.step-4 span {
+    font-weight: 600;
+}
+.step-4 .leftPart h3 {
+    background: #f3f3f3;
+}
+.wizardBody .step-4 .leftPart p {
+    border-color: #ffe8cc;
+    border-color: rgba(255,138,0,0.2);
+}
+.wizardBody .step-4 .leftPart .roomAssignDiv {
+    height: 46px;
+    border-bottom: 1px solid rgba(255,138,0,0.2);
+}
+.wizardBody .step-4 .leftPart label {
+    color: #5b6467;
+}
+.wizardBody .step-4 .leftPart .roomAssign label {
+    color: #4c5456;
+}
+.wizardBody .step-4 .rightPart label {
+    color: #636d70;
+}
+.step-4 .rightPart>div {
+    border-color: #ffe8cc;
+    border-color: rgba(255,138,0,0.2);
+}
+
 .notificationPopup {
     color: #3BA35E;
 }
@@ -391,7 +525,8 @@ footer .left>span {
 .panelCodeEditor .settingsPanel .lineNumberRow .lineNumLbl:before {
     border-color: #e7e7e7;
 }
-.panelCodeEditor .settingsPanel .lineNumRadio:checked ~ .lineNumLbl:before {
+.panelCodeEditor .settingsPanel .lineNumRadio:checked ~ .lineNumLbl:before,
+.wizardBody .radioInput:checked ~ .radioLbl:before {
     box-shadow: 0 0 0 4px #fff inset, 0 0 0 10px #ff8a00 inset;
 }
 .panelCodeEditor .settingsPanel .btn-settings {
@@ -613,7 +748,8 @@ footer .left>span {
 .listView .listHeader h2 {
     color: #687376;
 }
-.calendar .fc-border-separate tr.fc-last th {
+.calendar .fc-border-separate tr.fc-last th,
+.wizardBody .step-1 .calendarSec .startTime {
     border-color: #ffe9cf;
 }
 .calendar .fc-border-separate thead .fc-day-header {
@@ -1050,4 +1186,16 @@ footer .left>span {
     margin-right: 18px;
     margin-left: 18px;
     min-height: 80px;
+}
+.step-1 .information {
+    width: 486px;
+}
+.step-4 .rightPart {
+    width: 522px;
+}
+.wizardBody .tabContent {
+    height: 371px;
+}
+.wizardBody .langSelectorDivWidth{
+    width: 0;
 }

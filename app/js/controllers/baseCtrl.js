@@ -51,8 +51,14 @@
  * Changes in version 1.11 (Module Assembly - Web Arena UI - Suvery and Questions Support For Contest Registration):
  * - Updated the logic to support registration survey and questions.
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.11
+ * Changes in version 1.12 (Web Arena UI - Registrants Dialog Improvement):
+ * - Updated popupModalController to handle Registrants Modal
+ *
+ * Changes in version 1.13 (Module Assembly - Web Arena UI - Contest Creation Wizard):
+ * - Added create contest logic.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee
+ * @version 1.13
  */
 'use strict';
 /*jshint -W097*/
@@ -65,7 +71,8 @@
  *
  * @type {exports}
  */
-var helper = require('../helper');
+var helper = require('../helper'),
+    contestCreationCtrl = require('./contestCreationCtrl');
 
 /**
  * The base controller.
@@ -85,6 +92,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.enableClose = data.enableClose;
             $scope.coderInfo = data.message;
             $scope.coderHistoryData = data.coderHistoryData;
+            $scope.registrants = data.registrants;
+
+            // define initial sorting order for registrants list
+            $scope.registrantPredicate = 'userRating';
 
             if ($scope.title === 'Coder History') {
                 $timeout(function () {
@@ -137,6 +148,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $modalInstance.opened.then(function () {
                 $timeout(function () {
                     $scope.$broadcast('rebuild:codeInfo');
+                    $scope.$broadcast('rebuild:registrantsList');
                 });
             });
 
@@ -287,7 +299,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
      * @param {string} name the name of the user
      * @param {string} userType the user type
      */
-    $scope.showCoderInfo = function (name, userType) {
+    $rootScope.showCoderInfo = function (name, userType) {
         if (waitingCoderInfo) {
             return;
         }
@@ -549,6 +561,30 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             buttons: buttons,
             enableClose: true
         }, okClicked);
+    };
+
+    /**
+     * Open contest creation wizard
+     */
+    $scope.createContest = function () {
+        $rootScope.currentModal = $modal.open({
+            templateUrl: '../../../partials/contestCreationWizard.html',
+            controller: contestCreationCtrl,
+            backdrop: 'static',
+            size: 'lg',
+            resolve: {
+                ok: function () {
+                    return function () {
+                        $rootScope.currentModal = undefined;
+                    };
+                },
+                cancel: function () {
+                    return function () {
+                        $rootScope.currentModal = undefined;
+                    };
+                }
+            }
+        });
     };
 }];
 

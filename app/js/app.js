@@ -42,8 +42,11 @@
  * Changes in version 1.10 (Module Assembly - Web Arena UI - Test Panel Update for Batch Testing):
  * - Updated to include resources for test panel and test report.
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.10
+ * Changes in version 1.11 (Module Assembly - Web Arena UI - Contest Creation Wizard):
+ * - Removed the $httpProvider setting.
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
+ * @version 1.11
  */
 'use strict';
 /*jshint -W097*/
@@ -56,7 +59,7 @@ require('./../../bower_components/angular-sanitize/angular-sanitize');
 require('./../../bower_components/angular-themer');
 require('./../../bower_components/angular-ui-angular/angular-cookies.min.js');
 require('./../../bower_components/angular-ui-router/release/angular-ui-router');
-require('./../../bower_components/angular-ui-bootstrap/ui-bootstrap-tpls-0.9.0');
+require('./../../bower_components/angular-bootstrap/ui-bootstrap-tpls');
 require('./../../bower_components/codemirror/lib/codemirror');
 require('./../../bower_components/angular-ui-codemirror/ui-codemirror');
 require('./../../bower_components/codemirror/mode/clike/clike');
@@ -231,7 +234,7 @@ main.directive('sglclick', directives.sglclick);
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
 
-main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, themerProvider) {
+main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', function ($stateProvider, $urlRouterProvider, themerProvider) {
 // theme selector starts
     var styles = [{
             key : 'DARK',
@@ -241,18 +244,6 @@ main.config([ '$stateProvider', '$urlRouterProvider', '$httpProvider', 'themerPr
 
     themerProvider.setStyles(styles);
     themerProvider.setSelected(styles[0].key);
-    //add an interceptor to always add authentication to api calls if logged in
-    $httpProvider.interceptors.push(['sessionHelper', function (sessionHelper) {
-        return {
-            request: function (config) {
-                if (config.url.match(/api/gi) && sessionHelper.isLoggedIn()) {
-                    config.headers.Authorization = 'Bearer ' + sessionHelper.getJwt();
-                    if (config.apiDomain) { config.headers.useXDomain = true; }
-                }
-                return config;
-            }
-        };
-    }]);
 
     //default is homepage not logged in
     $urlRouterProvider.otherwise('/a/home');
