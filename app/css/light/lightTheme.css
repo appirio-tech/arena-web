@@ -58,6 +58,7 @@ body{
 .anon-header .navbar .navbar-brand,
 .header .navbar-brand,
 .header .navIcons>li>.icon:before,
+.header .pastNoti,
 .userInfo .notification,
 .userInfo .arrow,
 .header .navIcons .themePanel .closeBtn:before,
@@ -200,7 +201,7 @@ body{
 /* basical stucture, title, breadcrumb and connection */
 .dashboard .definition .item span {color: #316f99;}
 .tcTime>span {
-    color: #316f99;
+    color: #fff;
 }
 
 .codeArea .shareLink > ul > li > a:hover {color: #0bbbe7;}
@@ -564,6 +565,10 @@ footer .right .sponsorLogo {
 .messageArena .messageBox .mItem .bottomRow {
     color: #5e92ad !important;
 }
+.pastNotifications .viewMore {
+    border-color: #b7c9d7;
+    color: #0999d1;
+}
 /*room summary widget in contest page*/
 .panelSummary {
     border-color: #b7c9d7;
@@ -841,7 +846,8 @@ footer .right .sponsorLogo {
     .header .navIcons > li {
         background-image: url(../img/black-header.png);
     }
-    .header .navbar-right.userInfo {
+    .header .timeItem,
+    .header .navbar-right .userInfo {
         background-image: url(../img/black-header.png);
     }
 }
@@ -903,4 +909,19 @@ footer .right .sponsorLogo {
     margin-right: 18px;
     margin-left: 18px;
     min-height: 80px;
+}
+.notifications .alert {
+  -webkit-box-shadow:none;
+  -moz-box-shadow:none;
+  -o-box-shadow:none;
+  box-shadow:none;
+}
+.alert-green {
+  border-color: rgba(73, 88, 95, 0.3);
+}
+.alert-gray {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.alert-orange {
+  border-color: rgba(175, 96, 30, 0.3);
 }

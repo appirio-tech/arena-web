@@ -216,18 +216,33 @@ body a {cursor: pointer;}
     background-color:transparent;
     text-decoration:none;
 }
-
-.header .navbar-right.userInfo {
+.header .navOther {
+    margin: 0;
+}
+.header .navbar-right .userInfo {
     color: #fff;
     margin-right: 0;
+    padding-right: 15px;
+}
+.timeItem {
+    padding: 17px 0 0;
 }
 .userInfo > li {
     padding: 17px 0 0;
 }
-.userInfo .notification {
-    margin-left: 24px;
+.userInfo .pastNoti {
+    margin-left: 23px;
     display: inline-block;
-    height: 21px;
+    height: 23px;
+    width: 16px;
+    background-position: -250px 0;
+    position: relative;
+    padding: 0;
+}
+.userInfo .notification {
+    margin-left: 16px;
+    display: inline-block;
+    height: 23px;
     width: 21px;
     background-position: -200px 0;
     position: relative;
@@ -270,9 +285,9 @@ body a {cursor: pointer;}
 .userInfo .arrow {
     display: inline-block;
     width: 21px;
-    height: 21px;
+    height: 23px;
     background-position: -225px 0;
-    margin-left: 25px;
+    margin-left: 22px;
     padding: 0;
 }
 .header .navbar-toggle{
@@ -698,11 +713,12 @@ body a {cursor: pointer;}
 }
 .tcTime {
     display: block;
-    width: 240px;
+    width: 240px;  
+    padding-right: 33px;
     font-size: 14px;
-    text-align: left;
+    text-align: right;
     color: #687376;
-    line-height: 22px;
+    /*line-height: 22px;*/
     letter-spacing: -0.030em;
 }
 .connectionStatus {
@@ -2508,6 +2524,9 @@ footer .right>span:nth-child(2) {
     min-height: 298px;
     min-width: 326px;
 }
+.pastNotifications .qtip-content {
+    min-height: 416px;
+}
 .messageArena .panelHeader {
     position: relative;
     margin-right: 20px;
@@ -2517,6 +2536,9 @@ footer .right>span:nth-child(2) {
     padding: 13px 0;
     margin: 0;
     font-size: 14px;
+}
+.pastNotifications .panelHeader h3 {
+    padding: 13px 0 15px;
 }
 .messageArena .panelHeader .btnClose {
     display: block;
@@ -2566,6 +2588,9 @@ footer .right>span:nth-child(2) {
     padding-right: 4px;
     max-height: 212px;
 }
+.pastNotifications .messageBox {
+    max-height: 318px;
+}
 .messageArena .messageBox .mItem {
     padding: 9px 0 10px 22px;
     margin-right: 16px;
@@ -2574,11 +2599,26 @@ footer .right>span:nth-child(2) {
     position: relative;
     cursor: pointer;
 }
+.pastNotifications .messageBox .mItem {
+    padding: 14px 0 7px;
+    cursor: text;
+}
+.pastNotifications .messageBox .mItem:nth-child(3) {
+    padding-top: 16px;
+    padding-bottom: 10px;
+}
+.pastNotifications .messageBox .mItem:nth-child(4) {
+    padding-top: 18px;
+    padding-bottom: 8px;
+}
 .messageArena .messageBox .mItem:last-child {
     border-bottom-width: 0;
 }
 .messageArena .messageBox .mItem:before {
     top: 14px;
+}
+.pastNotifications .messageBox .mItem:before {
+    content: none;
 }
 .messageArena .messageBox .mItem p {
     margin-bottom: 0;
@@ -2587,10 +2627,24 @@ footer .right>span:nth-child(2) {
 .messageArena .messageBox .mItem .bottomRow {
     color: #8BA0A6;
 }
+.pastNotifications .messageBox .mItem .bottomRow {
+    margin-top: 5px;
+    font-size: 13px;
+}
+.pastNotifications .messageBox .mItem:first-child .bottomRow{
+    margin-top: 3px;
+}
+.pastNotifications .messageBox .mItem:nth-child(3) .bottomRow{
+    margin-top: 4px;
+}
 .messageArena .messageBox .mItem .bottomRow a {
     text-decoration: underline;
 }
-
+.pastNotifications .viewMore {
+    border-top: 1px solid #fff;
+    margin-right: 20px;
+    padding-top: 18px;
+}
 /*room summary widget in contest page*/
 .panelSummary {
     height: 275px;
@@ -2602,6 +2656,7 @@ footer .right>span:nth-child(2) {
     padding-bottom: 10px;
 }
 .messageArena .default .messageWrapper {height: 212px; overflow-x: hidden; overflow-y: scroll;}
+.pastNotifications .default .messageWrapper {height: 318px!important;}
 .listView .default .tableDiv {height: 219px; overflow-x: hidden; overflow-y: scroll;}
 
 .panelChatArea {
@@ -3800,10 +3855,10 @@ footer .right>span:nth-child(2) {
     }
 }
 @media only screen and (max-width: 1095px) {
-    .tcTime,
+    /*.tcTime,
     .connectionStatus {
         text-align: right;
-    }
+    }*/
     .codeArea .connectionStatus {
         text-align: left;
     }
@@ -3840,7 +3895,8 @@ footer .right>span:nth-child(2) {
         margin-left: 0;
         margin-top: 20px;
     }
-    .header .navIcons > li {
+    .header .navIcons > li,
+    .header .timeItem {
         width: 100%;
         padding-left: 15px;
         border:1px solid #2d2f30;
@@ -3883,16 +3939,23 @@ footer .right>span:nth-child(2) {
     .header .navIcons .themeSwitcher .closeBtn {
         padding-left: 0;
     }
-    .header .navbar-right.userInfo {
+    .header .navbar-right .userInfo {
         margin: 0;
         border:1px solid #2d2f30;
         background-position: 0 0;
         background-repeat: repeat-x;
         padding-left: 15px;
     }
+    .header .timeItem >div{
+        padding-left: 10px;
+        padding-bottom: 13px;
+    }
     .header .userInfo > li {
-        padding: 10px;
+        padding: 17px 10px 12px;
         display: inline-block;
+    }
+    .header .userInfo .userName {
+        vertical-align: top;
     }
     .dashboard .titleBar {height: 115px; }
     .dashboard .connection {
@@ -4278,12 +4341,34 @@ footer .right>span:nth-child(2) {
     .panelOverview .overviewAndMessage .messagesBox {padding: 0 9px 0 10px;}
 }
 @media only screen and (max-width: 400px) {
+    .userInfo .pastNoti,
+    .userInfo .notification,
+    .userInfo .arrow {
+        margin-left: 2px;
+    }
+    .header .userInfo>li {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
     .contest .panelContestStat .panel-body .overview>div>.column,
     .contest .panelContestStat .panel-body .schedule .details .column {
         width: 100%;
     }
 }
 @media only screen and (max-width: 394px) {
+    .notifications.top-right {
+      right: 5px;
+    }
+    .notifications.bottom-right {
+      right: 5px;
+    }
+    .notifications .alert {
+        width: 310px;
+        padding-left: 30px;
+    }
+    .notifications .alert:before {
+        left: 8px;
+    }
     .panelCodeEditor .toolBar .rightPart>div:first-child {width: 116px;}
     .panelCodeEditor .toolBar .rightPart>div:nth-child(2) {width: 87px;}
     .calendar .fc-border-separate thead .fc-day-header.fc-first,
@@ -4315,8 +4400,14 @@ footer .right>span:nth-child(2) {
     .messageArena:before {
         left: 172px;
     }
+    .pastNotifications:before {
+        left: 152px;
+    }
     .messageArena:after {
         left: 174px;
+    }
+    .pastNotifications:after {
+        left: 154px;
     }
     .panelChatArea .panel-heading{
         height: 70px;
@@ -4367,8 +4458,14 @@ footer .right>span:nth-child(2) {
     .messageArena:before {
         left: 177px;
     }
+    .pastNotifications:before {
+        left: 157px;
+    }
     .messageArena:after {
         left: 179px;
+    }
+    .pastNotifications:after {
+        left: 159px;
     }
 }
 

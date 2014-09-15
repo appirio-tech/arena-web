@@ -53,6 +53,7 @@ body{
 .anon-header .navbar .navbar-brand,
 .header .navbar-brand,
 .header .navIcons>li>.icon:before,
+.header .pastNoti,
 .userInfo .notification,
 .userInfo .arrow,
 .header .navIcons .themePanel .closeBtn:before,
@@ -533,6 +534,13 @@ footer .right .sponsorLogo {
 .messageArena .messageBox .mItem {
     border-bottom: 1px solid #1f444e;
 }
+.pastNotifications .messageBox .mItem .bottomRow {
+    color: #707374;
+}
+.pastNotifications .viewMore {
+    border-color: #1f444e;
+    color: #0999d1;
+}
 
 /*room summary widget in contest page*/
 .panelSummary {
@@ -803,7 +811,8 @@ footer .right .sponsorLogo {
     .header .navIcons > li {
         background-image: url(../img/black-header.png);
     }
-    .header .navbar-right.userInfo {
+    .header .timeItem,
+    .header .navbar-right .userInfo {
         background-image: url(../img/black-header.png);
     }
 }

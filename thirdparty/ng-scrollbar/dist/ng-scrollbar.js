@@ -2,6 +2,8 @@
  * This directive is cloned from https://github.com/asafdav/ng-scrollbar/blob/53a2b3e558c84182d6afe6bc62f17b8835b3387d/dist/ng-scrollbar.js
  * with some minor changes to fix UI issues when rebuilding.
  * Two options 'scrollTop' and 'keepBottom' are added to keep the scrollbar at top / bottom position when it is rebuilt.
+ *
+ * add 'reload' option to rebuild the scrollbar when reload the data.
  */
 'use strict';
 angular.module('ngScrollbar', []).directive('ngScrollbar', [
@@ -117,8 +119,9 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           thumbLine = angular.element(thumb.children()[0]);
           track = angular.element(angular.element(tools.children()[0]).children()[1]);
           page.height = element[0].offsetHeight;
-          if(attrs.class==="dropdown-menu" && page.height > 10) // fix negative height
+          if(attrs.class==="dropdown-menu" && page.height > 10) {// fix negative height
             page.height -= 10;
+          }
           page.scrollHeight = transculdedContainer[0].scrollHeight;
           if (page.height < page.scrollHeight) {
             scope.showYScrollbar = true;
@@ -182,6 +185,12 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
 
           }, 72);
         };
+        var reload = function () {
+          maxDraggerTop = 0;
+          scope.rebuildScroll = true;
+          dragger = { top: 0 }, page = { top: 0 };
+          buildScrollbar();
+        };
         buildScrollbar();
         if (!!attrs.rebuildOn) {
           attrs.rebuildOn.split(' ').forEach(function (eventName) {
@@ -190,6 +199,11 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
         }
         if (attrs.hasOwnProperty('rebuildOnResize')) {
           win.on('resize', rebuild);
+        }
+        if (!!attrs.reloadOn) {
+          attrs.reloadOn.split(' ').forEach(function (eventName) {
+            scope.$on(eventName, reload);
+          });
         }
       },
         template: '<div>' + '<div class="ngsb-wrap">' + '<div class="ngsb-container" ng-transclude tabindex="100"></div>' + '<div class="ngsb-scrollbar" style="position: absolute; display: block;" ng-show="showYScrollbar">' + '<div class="ngsb-thumb-container">' + '<div class="ngsb-thumb-pos" oncontextmenu="return false;">' + '<div class="ngsb-thumb" ></div>' + '</div>' + '<div class="ngsb-track"></div>' + '</div>' + '</div>' + '</div>' + '</div>'

@@ -40,7 +40,7 @@ var config = require('./config');
 var Auth0 = require('auth0-js');
 var socket = require('socket.io-client').connect(config.webSocketURL);
 /*jshint -W097*/
-/*global $ : false, angular : false, require, module*/
+/*global $ : false, angular : false, require, module, document*/
 
 var helper = require('./helper');
 ///////////////
@@ -51,7 +51,8 @@ var factories = {};
 factories.notificationService = ['$rootScope', '$filter', function ($rootScope, $filter) {
     var service = {
         notifications: [],
-        unRead: 0
+        unRead: 0,
+        pastNotifications: []
     },
         sameMessage = function (msgA, msgB) {
             return msgA.date === msgB.date && msgA.type === msgB.type && msgA.message === msgB.message
@@ -137,7 +138,9 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
 
     // the central way to add message
     service.addMessages = function (messages) {
-        var player = document.getElementById('player');
+        var player = document.getElementById('player'),
+            i,
+            unreadDelta = 0;
         if (player) {
             player.load();
             player.play();
@@ -154,7 +157,6 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
         //     target: string - target href (url)
         //   }
         // }
-        var i, unreadDelta = 0;
         for (i = messages.length - 1; i >= 0; i -= 1) {
             if (!service.existMessage(messages[i])) {
                 service.notifications.unshift(messages[i]);
@@ -185,6 +187,10 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
     // demo starts in messageArenaCtrl.js
     service.startLoadMessages = function () {
         service.clearNotifications();
+    };
+    // add a past notification
+    service.addPastNotification = function (message) {
+        service.pastNotifications.unshift(message);
     };
     return service;
 }];
