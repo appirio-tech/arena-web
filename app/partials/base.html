@@ -66,15 +66,23 @@
                             <a class="icon iconCC">CONTEST CREATION</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Contest creation wizard"></a>
                         </li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right userInfo">
-                        <li>Welcome&nbsp;<span class="{{getRatingClass(userInfo().rating)}}">{{ username() }}</span></li>
-                        <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Messages"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
-                        <li><a data-ui-sref="user.logout" class="arrow" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Logout"></a></li>
+                    <ul class="nav navbar-nav navbar-right navOther">
+                        <li class="timeItem"><div data-topcodertime></div></li>
+                        <li class="userItem">
+                            <ul class="nav navbar-nav userInfo">
+                                <li class="userName">Welcome&nbsp;<span class="{{getRatingClass(userInfo().rating)}}">{{ username() }}</span></li>
+                                <li><a class="pastNoti" data-past-notifications="" id="qtipPastNoti" data-ng-click="onClickPastNotifications()" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Notifications"></a></li>
+                                <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Messages"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
+                                <li><a data-ui-sref="user.logout" class="arrow" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Logout"></a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div><!-- /.container-fluid -->
         </div>
     </div>
+    <div class='notifications top-right'></div>
+    <div class='notifications bottom-right'></div>
     <div data-ui-view></div>
     <footer data-ng-show="loggedIn()">
         <div class="line"></div>

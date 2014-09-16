@@ -376,9 +376,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             } else {
                 data.enableClose = true;
                 roundName = angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roomData)
-                            && angular.isDefined($rootScope.roomData[data.moveData[1]])
-                            && angular.isDefined($rootScope.roundData[$rootScope.roomData[data.moveData[1]].roundID])
-                            ? $rootScope.roundData[$rootScope.roomData[data.moveData[1]].roundID].contestName : '';
+                                && angular.isDefined($rootScope.roomData[data.moveData[1]])
+                                && angular.isDefined($rootScope.roundData[$rootScope.roomData[data.moveData[1]].roundID])
+                                ? $rootScope.roundData[$rootScope.roomData[data.moveData[1]].roundID].contestName : '';
                 angular.forEach($rootScope.roundData, function (round) {
                     angular.forEach(round.coderRooms, function (room) {
                         if (room.roomID === data.moveData[1]) {
@@ -477,18 +477,28 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     $scope.notificationService = notificationService;
     // the notification list is a qtip, see directives/meesageArena.js for details
     $scope.qtipNoti = $('#qtipNoti');
+    $scope.qtipPastNoti = $('#qtipPastNoti');
     // close the notification list
     $scope.closeQtip = function () {
         $scope.qtipNoti.qtip('toggle', false);
     };
+    $scope.closePastNoti = function () {
+        $scope.qtipPastNoti.qtip('toggle', false);
+    };
     window.onresize = function () {
         $scope.closeQtip();
+        $scope.closePastNoti();
     };
     // notification ends
     // check window size, reset message arena's position
     function checkPosition() {
         if (document.body.clientWidth > 991) {
             $scope.qtipNoti.qtip('api').set({
+                'position.my': 'top right',
+                'position.at': 'bottom right',
+                'position.adjust.x': 46
+            });
+            $scope.qtipPastNoti.qtip('api').set({
                 'position.my': 'top right',
                 'position.at': 'bottom right',
                 'position.adjust.x': 46
@@ -500,20 +510,34 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 'position.at': 'bottom center',
                 'position.adjust.x': -2
             });
+            $scope.qtipPastNoti.qtip('api').set({
+                'position.my': 'top center',
+                'position.at': 'bottom center',
+                'position.adjust.x': -2
+            });
         }
         if (document.body.clientWidth < 361) {
             $scope.qtipNoti.qtip('api').set({
                 'position.adjust.x': -25
+            });
+            $scope.qtipPastNoti.qtip('api').set({
+                'position.adjust.x': 0
             });
         }
         if (document.body.clientWidth < 332) {
             $scope.qtipNoti.qtip('api').set({
                 'position.adjust.x': -37
             });
+            $scope.qtipPastNoti.qtip('api').set({
+                'position.adjust.x': -15
+            });
         }
     }
     $scope.onClickMessageArena = function () {
         notificationService.clearUnRead();
+        checkPosition();
+    };
+    $scope.onClickPastNotifications = function () {
         checkPosition();
     };
 

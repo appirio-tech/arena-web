@@ -54,6 +54,7 @@ body{
 .anon-header .navbar .navbar-brand,
 .header .navbar-brand,
 .header .navIcons>li>.icon:before,
+.header .pastNoti,
 .userInfo .notification,
 .userInfo .arrow,
 .header .navIcons .themePanel .closeBtn:before,
@@ -225,7 +226,7 @@ body{
 /* basical stucture, title, breadcrumb and connection */
 .dashboard .definition .item span,
 .tcTime>span {
-    color: #ff8a00;
+    color: #fff;/*#ff8a00*/
 }
 .codeArea .shareLink > ul > li > a:hover {color: #ff8a00;}
 .codeArea .shareLink > ul > .open > a {color: #ff8a00;}
@@ -790,7 +791,14 @@ footer .left>span {
 .messageArena .messageBox .mItem {
     border-bottom: 1px solid #7B612E;
 }
+.pastNotifications .messageBox .mItem .bottomRow {
+    color: #707374;
+}
 .messageArena a {
+    color: #ff8a00;
+}
+.pastNotifications .viewMore {
+    border-color: #784911;
     color: #ff8a00;
 }
 /*room summary widget in contest page*/
@@ -1102,7 +1110,8 @@ footer .left>span {
     .header .navIcons > li {
         background-image: url(../img/black-header.png);
     }
-    .header .navbar-right.userInfo {
+    .header .timeItem,
+    .header .navbar-right .userInfo {
         background-image: url(../img/black-header.png);
     }
 }

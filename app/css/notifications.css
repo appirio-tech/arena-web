@@ -1,0 +1,100 @@
+/* notifications custom styles */
+.notifications .alert:before,
+.notifications .close:before {
+  background-image: url(../img/sprite-new-header.png);
+  background-repeat: no-repeat;
+}
+.notifications.top-right {
+  top: 75px;
+  right: 27px;
+}
+.notifications.bottom-right {
+  bottom: 7px;
+  right: 10px;
+}
+.notifications .alert {
+  box-sizing: border-box;
+  width: 342px;
+  line-height: 17px;
+  margin-top: 0;
+  padding: 8px 30px 7px 59px;
+  position: relative;
+  -webkit-box-shadow:1px 1px 4px 0 rgba(0, 0, 0, 0.52);
+  -moz-box-shadow:1px 1px 4px 0 rgba(0, 0, 0, 0.52);
+  -o-box-shadow:1px 1px 4px 0 rgba(0, 0, 0, 0.52);
+  box-shadow:1px 1px 4px 0 rgba(0, 0, 0, 0.52);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+.notifications .alert-green {
+  margin-top: 1px;
+  width: 348px;
+}
+.notifications .alert-gray {
+  padding-left: 49px;
+}
+.notifications .alert-orange {
+  margin-right: 1px;
+  padding-left: 54px;
+}
+.notifications .alert:before {
+  content: '';
+  display: block;
+  height: 17px;
+  width: 15px;
+  background-position: -260px -25px;
+  position: absolute;
+  top: 50%;
+  margin-top: -9px;
+  left: 21px;
+}
+.notifications .close {
+  display: block;
+  height: 0;
+  width: 0;
+  padding: 24px 0 0 25px;
+  overflow: hidden;
+  opacity: 1;
+  position: absolute;
+  top: 3px;
+  right: 5px;
+}
+.notifications .close:hover {
+  opacity: 0.5;
+}
+.notifications .close:before {
+  content: '';
+  display: block;
+  height: 8px;
+  width: 9px;
+  background-position: -260px -42px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+.alert-green {
+  background: #769c7e;
+  background: rgba(130, 173, 138, 0.882);
+  border: 1px solid #445258;
+  border-color: rgba(73, 88, 95, 0.882);
+  overflow: hidden;
+  color: white;
+}
+.alert-gray {
+  background: #3e3e3e;
+  border: 1px solid #fff;
+  border-color: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  color: white;
+}
+.alert-orange {
+  background: #c77937;
+  background: rgba(247, 147, 63, 0.784);
+  border: 1px solid #90521d;
+  border-color: rgba(175, 96, 30, 0.784);
+  overflow: hidden;
+  color: white;
+  text-decoration: underline;
+}
