@@ -751,7 +751,7 @@ footer .right .sponsorLogo {
 }
 .rating-none,
 .rating-note:hover{
-    color: #fff;
+    color: #ffffff!important;
 }
 .rating-admin,
 .rating-admin:hover{

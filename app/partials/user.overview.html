@@ -44,24 +44,6 @@
             </div><!--/.contentWrapper-->
         </div><!--/.panel-body-->
     </section><!--/.trainingArea-->
-    <section class="leaderboard">
-        <div class="panel-heading" data-ng-class="{active:showSection==='leaderboard',inactive:showSection!=='leaderboard'}">
-            <input type="radio" data-ng-model="showSection" value="leaderboard" id="radioLeaderboard" class="showSectionRadio"/><label for="radioLeaderboard" class="showSectionLbl">Leaderboard</label>
-        </div>
-        <div class="panel-body">
-            <div class="contentWrapper" data-ng-show="showSection==='leaderboard'">
-                <p>Coming Soon...</p>
-            </div><!--/.contentWrapper-->
-        </div><!--/.panel-body-->
-    </section><!--/.leaderboard-->
-    <section class="activeUsers">
-        <div class="panel-heading" data-ng-class="{active:showSection==='users',inactive:showSection!=='users'}">
-            <input type="radio" data-ng-model="showSection" value="users" id="radioUsers" class="showSectionRadio"/><label for="radioUsers" class="showSectionLbl">Active Users (99)</label>
-        </div>
-        <div class="panel-body" >
-             <div class="contentWrapper" data-ng-show="showSection==='users'">
-                 <p>Coming Soon...</p>
-              </div>
-        </div><!--/.panel-body-->
-    </section><!--/.activeUsers-->
+    <section class="leaderboard" data-overviewleaderboard></section><!--/.leaderboard-->
+    <section class="activeUsers" data-activeuser></section><!--/.activeUsers-->
 </div> <!-- content end -->

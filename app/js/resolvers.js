@@ -60,8 +60,11 @@
  * Changes in version 1.13 (Module Assembly - Web Arena UI - Challenges and Challengers):
  * - Added logic to support challenges and challengers table.
  *
+ * Changes in version 1.14 (Module Assembly - Dashboard - Active Users and Leaderboard Panel):
+ * - Updated the logic in CreateLeaderBoardResponse, UpdateLeaderBoardResponse and CreateUserListResponse.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.13
+ * @version 1.14
  */
 ///////////////
 // RESOLVERS //
@@ -254,37 +257,103 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         }
     });
 
-    /**
-     * Handle create user list response.
-     * Logics for chat rooms are implemented here
-     * as the data should be prepared before entering the chat room or
-     * even when the user is in coding/leaderboard pages.
-     */
-    socket.on(helper.EVENT_NAME.CreateUserListResponse, function (data) {
-        var i, tmpArray = [];
-        $rootScope.whosHereArray = [];
-        for (i = 0; i < data.names.length; i += 1) {
-            tmpArray.push({name: data.names[i],
-                userListItem: data.userListItems[i],
-                rating: data.ratings[i]});
+    // Handle the CreateLeaderBoardResponse event.
+    socket.on(helper.EVENT_NAME.CreateLeaderBoardResponse, function (data) {
+        if (!$rootScope.leaderBoardRoundData) {
+            $rootScope.leaderBoardRoundData = [];
+        }
+        // it should replace the existing one
+        var existFlag = false, i;
+        for (i = 0; i < $rootScope.leaderBoardRoundData.length; i++) {
+            if ($rootScope.leaderBoardRoundData[i].roundID === data.roundID) {
+                $rootScope.leaderBoardRoundData[i] = data;
+                existFlag = true;
+                break;
+            }
+        }
+        if (!existFlag) {
+            $rootScope.leaderBoardRoundData.push(data);
         }
 
-        tmpArray = tmpArray.sort(
-            function (a, b) {
-                var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
-                if (nameA < nameB) {//sort string ascending
-                    return -1;
+        $rootScope.$broadcast('rebuild:leaderBoardMethods');
+        $rootScope.$broadcast('rebuild:leaderBoardLeaders');
+    });
+
+    // handle UpdateLeaderBoardResponse event.
+    socket.on(helper.EVENT_NAME.UpdateLeaderBoardResponse, function (data) {
+        if (!$rootScope.leaderBoardRoundData) {
+            $rootScope.leaderBoardRoundData = [];
+        }
+        var existFlag = false, i, j, items;
+        for (i = 0; i < $rootScope.leaderBoardRoundData.length; i++) {
+            if ($rootScope.leaderBoardRoundData[i].roundID === data.roundID) {
+                if ($rootScope.leaderBoardRoundData[i].items) {
+                    for (j = 0; j < $rootScope.leaderBoardRoundData[i].items.length; j++) {
+                        if ($rootScope.leaderBoardRoundData[i].items[j].roomID === data.item.roomID) {
+                            $rootScope.leaderBoardRoundData[i].items[j] = data.item;
+                            break;
+                        }
+                    }
+                } else {
+                    $rootScope.leaderBoardRoundData[i].items = [];
+                    $rootScope.leaderBoardRoundData[i].items.push(data.item);
                 }
-                if (nameA > nameB) {
-                    return 1;
-                }
-                return 0;
+                existFlag = true;
+                break;
             }
-        );
-        $rootScope.whosHereArray = tmpArray;
-        $rootScope.whosHereArrayFullList = tmpArray;
-        $rootScope.$broadcast('rebuild:whosHere');
-        $rootScope.$broadcast('rebuild:members');
+        }
+
+        if (!existFlag) {
+            items = [];
+            items.push(data.item);
+            $rootScope.leaderBoardRoundData.push({roundID: data.roundID, items: items});
+        }
+
+        $rootScope.$broadcast('rebuild:leaderBoardMethods');
+        $rootScope.$broadcast('rebuild:leaderBoardLeaders');
+    });
+
+    /**
+     * Handle create user list response.
+     *
+     * If the data type is room users, logic for chat rooms are implemented here
+     * as the data should be prepared before entering the chat room or
+     * even when the user is in coding/leaderboard pages.
+     *
+     * If data type is active users, it's for active users panel in dashboard.
+     */
+    socket.on(helper.EVENT_NAME.CreateUserListResponse, function (data) {
+        if (data.type === helper.CREATE_USER_LIST_RESPONSE_TYPE.ACTIVE_USERS) {
+            $rootScope.activeUsers = data.userListItems;
+            $rootScope.activeUserCount = $rootScope.activeUsers.length;
+            $rootScope.$broadcast('rebuild:activeUser');
+            $rootScope.isLoadingActiveUsersData = false;
+        } else if (data.type === helper.CREATE_USER_LIST_RESPONSE_TYPE.ROOM_USERS) {
+            var i, tmpArray = [];
+            $rootScope.whosHereArray = [];
+            for (i = 0; i < data.names.length; i += 1) {
+                tmpArray.push({name: data.names[i],
+                    userListItem: data.userListItems[i],
+                    rating: data.ratings[i]});
+            }
+
+            tmpArray = tmpArray.sort(
+                function (a, b) {
+                    var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+                    if (nameA < nameB) {//sort string ascending
+                        return -1;
+                    }
+                    if (nameA > nameB) {
+                        return 1;
+                    }
+                    return 0;
+                }
+            );
+            $rootScope.whosHereArray = tmpArray;
+            $rootScope.whosHereArrayFullList = tmpArray;
+            $rootScope.$broadcast('rebuild:whosHere');
+            $rootScope.$broadcast('rebuild:members');
+        }
     });
 
     /**
@@ -344,7 +413,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                     success: success,
                     total: 1,
                     points: $rootScope.challenges[roomID][i].points,
-                    rate: parseInt((success * 100.0).toFixed(0))
+                    rate: parseInt((success * 100.0).toFixed(0), 10)
                 };
                 index = index + 1;
                 $rootScope.calculatedChallengers.push(tmp);
@@ -352,7 +421,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 success = ($rootScope.challenges[roomID][i].success === true ? 1 : 0) + tmp.success;
                 tmp.success = success;
                 tmp.total = tmp.total + 1;
-                tmp.rate = parseInt(((success * 100.0 / tmp.total).toFixed(0)));
+                tmp.rate = parseInt(((success * 100.0 / tmp.total).toFixed(0)), 10);
                 tmp.points = tmp.points + $rootScope.challenges[roomID][i].points;
                 $rootScope.calculatedChallengers[foundIndex] = tmp;
             }

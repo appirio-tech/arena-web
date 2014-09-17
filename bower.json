@@ -26,7 +26,8 @@
     "angular-ui-calendar": "~0.8.1",
     "angular-themer" : "~0.2.2",
     "angular-ui-angular": "https://github.com/angular-ui/angular.git",
-    "angulartics": "~0.15.20"
+    "angulartics": "~0.15.20",
+    "angular-table":"https://github.com/esvit/ng-table.git"
   },
   "resolutions": {
     "jquery": "~2.x"

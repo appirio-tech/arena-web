@@ -1,0 +1,31 @@
+<div class="panel-heading" data-ng-class="{active:showSection==='users',inactive:showSection!=='users'}" data-ng-click="refreshActiveUser(true)">
+  <input type="radio" data-ng-model="showSection" value="users" id="radioUsers" class="showSectionRadio" /><label
+    for="radioUsers" class="showSectionLbl">Active Users {{getActiveUsersCountDetail()}}</label>
+</div>
+<div class="panel-body">
+  <div class="contentWrapper" data-ng-show="showSection==='users'">
+   <table class="activeUserTable heading">
+      <thead>
+        <tr>
+          <th class="colR text-center anchor" data-ng-class="{'sort':sortAu.column==='userRating', 'desc':sortAu.descending}" data-ng-click="changeSortingAu('userRating');">R</th>
+          <th class="colHandle anchor" data-ng-class="{'sort':sortAu.column==='userName', 'desc':sortAu.descending}" data-ng-click="changeSortingAu('userName');">Handle</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="activeUserList">
+      <div data-ng-scrollbar rebuild-on-resize rebuild-on="rebuild:activeUser" class="tableWrap">
+        <table class="activeUserTable">
+          <tr data-ng-repeat="user in getActiveUsers() | orderBy:sortAu.column:!sortAu.descending">
+            <td class="colR text-center" data-header-class="colR text-center"><span
+              data-rating-indicator="{{user.userRating}}" class="ratingIcon" data-ng-click="showCoderInfo(user.userName, user.userType);"></span></td>
+            <td class="colHandle" data-header-class="colHandle"><span
+              class="user {{getRatingClass(user.userRating)}}" data-ng-click="showCoderInfo(user.userName, user.userType);">{{user.userName}}</span></td>
+          </tr>
+        </table>
+        <!-- /.activeUserTable -->
+      </div>
+      <a class="refreshData" data-ng-click="refreshActiveUser(false);" data-ng-class="{'loading':isLoadingActiveUsersData}"></a>
+    </div>
+  </div>
+</div>
+<!--/.panel-body-->

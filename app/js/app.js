@@ -45,8 +45,11 @@
  * Changes in version 1.11 (Module Assembly - Web Arena UI - Contest Creation Wizard):
  * - Removed the $httpProvider setting.
  *
+ * Changes in version 1.12 (Module Assembly - Dashboard - Active Users and Leaderboard Panel):
+ * - Updated to include resources for Active Users and Leaderboard Panel.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.11
+ * @version 1.12
  */
 'use strict';
 /*jshint -W097*/
@@ -79,6 +82,7 @@ require('./../../bower_components/angular-ui-calendar/src/calendar.js');
 require('./../../bower_components/fullcalendar/fullcalendar.js');
 require('./../../bower_components/angulartics/dist/angulartics.min');
 require('./../../bower_components/angulartics/dist/angulartics-ga.min');
+require('./../../bower_components/angular-table/ng-table.min.js');
 require('./../../thirdparty/jquery.qtip/jquery.qtip.min.js');
 require('./../../thirdparty/ng-scrollbar/dist/ng-scrollbar.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-transition.js');
@@ -127,6 +131,8 @@ controllers.notificationsCtrl = require('./controllers/notificationsCtrl');
 controllers.contestSummaryCtrl = require('./controllers/contestSummaryCtrl');
 controllers.userContestDetailCtrl = require('./controllers/userContestDetailCtrl');
 controllers.testPanelCtrl = require('./controllers/testPanelCtrl');
+controllers.activeUsersCtrl = require('./controllers/activeUsersCtrl');
+controllers.overviewLeaderboardCtrl = require('./controllers/overviewLeaderboardCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -150,6 +156,8 @@ directives.testPanel = require('./directives/testPanel');
 directives.testReport = require('./directives/testReport');
 directives.qTip = require('./directives/qTip.js');
 directives.sglclick = require('./directives/sglclick');
+directives.activeUser = require('./directives/activeUser');
+directives.overviewLeaderboard = require('./directives/overviewLeaderboard');
 
 /*global $ : false, angular : false */
 /*jslint nomen: true, browser: true */
@@ -161,7 +169,7 @@ directives.sglclick = require('./directives/sglclick');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable']);
 
 ///////////////
 // FACTORIES //
@@ -205,6 +213,8 @@ main.controller('notificationsCtrl', controllers.notificationsCtrl);
 main.controller('contestSummaryCtrl', controllers.contestSummaryCtrl);
 main.controller('userContestDetailCtrl', controllers.userContestDetailCtrl);
 main.controller('testPanelCtrl', controllers.testPanelCtrl);
+main.controller('activeUsersCtrl', controllers.activeUsersCtrl);
+main.controller('overviewLeaderboardCtrl', controllers.overviewLeaderboardCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -230,11 +240,16 @@ main.directive('testPanel', directives.testPanel);
 main.directive('testReport', directives.testReport);
 main.directive('qTip', directives.qTip);
 main.directive('sglclick', directives.sglclick);
+main.directive('activeuser', directives.activeUser);
+main.directive('overviewleaderboard', directives.overviewLeaderboard);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
 
-main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', function ($stateProvider, $urlRouterProvider, themerProvider) {
+main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, themerProvider, $httpProvider) {
+    if (config.staticFileHost === 'undefined') {
+        config.staticFileHost = "";
+    }
 // theme selector starts
     var styles = [{
             key : 'DARK',
@@ -244,6 +259,13 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', function
 
     themerProvider.setStyles(styles);
     themerProvider.setSelected(styles[0].key);
+
+    //initialize get if not there
+    if (!$httpProvider.defaults.headers.get) {
+        $httpProvider.defaults.headers.get = {};
+    }
+    //disable ajax request caching
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
 
     //default is homepage not logged in
     $urlRouterProvider.otherwise('/a/home');

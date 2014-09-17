@@ -896,28 +896,6 @@ footer .left>span {
 .panelChatArea .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
     background: #e7e7e7;
 }
-/** rating style and role style **/
-.rating-red{
-    color: #ee0000;
-}
-.rating-yellow{
-    color: #ddcc00;
-}
-.rating-blue{
-    color: #6666ff;
-}
-.rating-green{
-    color: #00a900;
-}
-.rating-grey{
-    color: #999;
-}
-.rating-none{
-    color: #0b0b0b;
-}
-.rating-admin{
-    color: #ff9900;
-}
 
 /** Modal style **/
 .chatWidget-modal-header,
@@ -1198,4 +1176,51 @@ footer .left>span {
 }
 .wizardBody .langSelectorDivWidth{
     width: 0;
+}
+/* active user and leadearboard */
+.activeUsers .refreshData {
+    background: url(../img/loading-o.png) 50% 50% no-repeat
+}
+.activeUsers .activeUserTable th,.leaderBoardTable thead th {
+    color: #757d80;
+    border-bottom: 1px solid #FFE6C7;
+    background-color: #e7e7e7
+}
+.activeUsers .activeUserTable.heading {
+    margin-bottom: 3px
+}
+.activeUsers .activeUserTable.heading th,.activeUsers .activeUserTable.heading tr {
+    border-bottom: 0
+}
+.activeUsers .activeUserList {
+    border-top: 1px solid #FFE6C7
+}
+.activeUsers .activeUserTable thead .colHandle,.activeUsers .activeUserTable thead .colR {
+    background-color: #e7e7e7
+}
+.leaderBoardTable.heading thead th{
+    border-bottom: none;
+}
+.leaderBoardTable  td,
+.activeUserTable  td{
+    border-bottom: 1px solid #FFE6C7;
+    color: #4e4e4e;
+}
+.leaderboard .leaderBoardTable.heading{
+    margin-bottom: 3px;
+}
+.leaderboard .leadarboardList{
+    border-top: 1px solid #FFE6C7;
+}
+.leaderboard .rounds .lbl{
+    color: #5E676A;
+}
+.customDropdown .dropdown-toggle{
+    color: #333;
+    border: 1px solid #C3C3C3;
+    background-image: url(../img/orange/select.png);
+}
+.leadarboardList .ngsb-scrollbar,
+.activeUserList .ngsb-scrollbar{
+    background: #fff;
 }
