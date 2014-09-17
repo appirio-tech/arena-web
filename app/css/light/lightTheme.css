@@ -1053,3 +1053,29 @@ footer .right .sponsorLogo {
 .alert-orange {
   border-color: rgba(175, 96, 30, 0.3);
 }
+/* active user and leadearboard */
+.activeUsers .refreshData{
+    background:url(../img/loading-bl.png) 50% 50% no-repeat;
+}
+.activeUsers .activeUserTable th,
+.leaderBoardTable thead th{
+    color: #316F99;
+    border-bottom: 1px solid #B7C9D7;
+}
+.leaderBoardTable  td,
+.activeUserTable  td{
+    border-bottom: 1px solid #B7C9D7;
+    color: #316F99;
+}
+.leaderboard .rounds .lbl{
+    color: #316F99;
+}
+.customDropdown .dropdown-toggle{
+    color: #316F99;
+    border: 1px solid #B7C9D7;
+}
+
+.leadarboardList .ngsb-scrollbar,
+.activeUserList .ngsb-scrollbar{
+    background: #F5F8FA;
+}

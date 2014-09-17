@@ -1,0 +1,54 @@
+<div class="panel-heading" data-ng-class="{active:showSection==='leaderboard',inactive:showSection!=='leaderboard'}">
+  <input type="radio" data-ng-model="showSection" value="leaderboard" id="radioLeaderboard" class="showSectionRadio" /><label
+    for="radioLeaderboard" class="showSectionLbl">Leaderboard</label>
+</div>
+<div class="panel-body">
+  <div class="contentWrapper" data-ng-show="showSection==='leaderboard'">
+    <p data-ng-show="getRounds().length == 0">The leaderboard is not ready.</p>
+
+    <div class="rounds" data-ng-show="getRounds().length > 0">
+      <span class="lbl">Rounds:</span>
+      <div class="val">
+
+        <ul class="customDropdown">
+          <li class="dropdown"><a class="dropdown-toggle" data-ng-click="rebuildAll()">{{getActiveRound()}}</a>
+            <ul class="dropdown-menu" id="methodsList" data-ng-scrollbar data-rebuild-on="rebuild:leaderBoardMethods" data-rebuild-on-resize>
+              <li data-ng-repeat="round in getRounds()"><a data-ng-click="updateRound(round)"
+                data-ng-class="{current: activeRound === round}">{{getRoundName(round)}}</a></li>
+            </ul></li>
+        </ul>
+
+      </div>
+    </div>
+    <table class="leaderBoardTable heading" data-ng-show="getRounds().length > 0">
+      <thead>
+        <tr>
+          <th class="colRoom text-center anchor" data-ng-class="{'sort':sortlb.column==='roomID', 'desc':sortlb.descending}" data-ng-click="changeSortingLb('roomID');"
+            data-header-class="colRoom text-center">Room</th>
+          <th class="colR text-center anchor" data-ng-class="{'sort':sortlb.column==='userRating', 'desc':sortlb.descending}" data-ng-click="changeSortingLb('userRating');"
+            data-header-class="colR text-center">R</th>
+          <th class="colHandle anchor"  data-ng-class="{'sort':sortlb.column==='userName', 'desc':sortlb.descending}" data-ng-click="changeSortingLb('userName');" data-header-class="colHandle">Handle</th>
+          <th class="colScore anchor"  data-ng-class="{'sort':sortlb.column==='points', 'desc':sortlb.descending}" data-ng-click="changeSortingLb('points');" data-header-class="colScore">Score</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="leadarboardList" data-ng-show="getRounds().length > 0">
+      <div data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:leaderBoardLeaders" class="tableWrap">
+        <table class="leaderBoardTable">
+          <tbody>
+            <tr data-ng-repeat="user in getLeaderBoardData() | orderBy:sortlb.column:!sortlb.descending">
+              <td class="colRoom text-center" data-header-class="colRoom text-center">{{$index + 1}}</td>
+              <td class="colR text-center" data-header-class="colR text-center"><span
+                data-rating-indicator="{{user.userRating}}" class="ratingIcon" data-ng-click="showCoderInfo(user.userName, 1);"></span></td>
+              <td class="colHandle" data-header-class="colHandle"><span class="user {{getRatingClass(user.userRating)}}" data-ng-click="showCoderInfo(user.userName, 1);">{{user.userName}}</span></td>
+              <td class="colScore" data-header-class="colScore">{{user.points / 100 | number:2}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- /.leaderBoardTable -->
+      </div>
+    </div>
+  </div>
+  <!--/.contentWrapper-->
+</div>
+<!--/.panel-body-->

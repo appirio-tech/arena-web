@@ -63,8 +63,12 @@
  * Changes in version 1.15 (Module Assembly - Web Arena UI - Test Panel Update for Batch Testing):
  * - Added BatchTestRequest and BatchTestResponse event name.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.14
+ * Changes in version 1.16 (Module Assembly - Dashboard - Active Users and Leaderboard Panel):
+ * - Added the create user list response type.
+ * - Added ActiveUsersRequest event name and CreateLeaderBoardResponse event name.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
+ * @version 1.16
  */
 
 module.exports = {
@@ -152,6 +156,8 @@ module.exports = {
         CoderHistoryResponse: 'CoderHistoryResponse',
         ChallengesListResponse: 'ChallengesListResponse',
         ChallengeResponse: 'ChallengeResponse',
+        ActiveUsersRequest: 'ActiveUsersRequest',
+        CreateLeaderBoardResponse: 'CreateLeaderBoardResponse',
         // internal events
         Connected: 'Connected',
         Disconnected: 'Disconnected',
@@ -366,5 +372,11 @@ module.exports = {
         MULTI_CHOICE: 2,
         LONG_TEXT: 3,
         SHORT_TEXT: 4
+    },
+
+    // The create user list response type.
+    CREATE_USER_LIST_RESPONSE_TYPE: {
+        ROOM_USERS: 0,
+        ACTIVE_USERS: 2
     }
 };
