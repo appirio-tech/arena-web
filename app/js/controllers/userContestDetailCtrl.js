@@ -654,6 +654,8 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             lbFilter.qtip('api').toggle(false);
         } else if (panel === 'challenge') {
             challengeFilter.qtip('api').toggle(false);
+        } else if (panel === 'challenger') {
+            challengerFilter.qtip('api').toggle(false);
         }
     };
     // browser back action

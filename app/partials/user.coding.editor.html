@@ -49,7 +49,7 @@
                 --><div class="gotoInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><label for="goto">Go To</label><input type="text" name="goto" id="goto" data-ng-model="gotoLine" data-ng-keypress="inputGotoText($event)"/><a id="gotoByText" data-ng-click="jumpToLine()" class="arrow"></a></div>
             </div>
             <div class="rightPart">
-                <div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged. &nbsp;</div><div data-ng-show="currentStateName()=='user.coding' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isInSameRoom()" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>
+                <div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged. &nbsp;</div><div data-ng-show="(currentStateName()=='user.coding' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isInSameRoom()) && !isChallenged()" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>
                     <div class="testPanel" data-ng-show="testOpen" data-test-panel>
                     </div>
                 </div>

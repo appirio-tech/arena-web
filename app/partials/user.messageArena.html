@@ -8,7 +8,7 @@
         <label class="iRound">Round</label>
     </p>
 </div><!--/.panelHeader -->
-<div class="messageBox visible-lg visible-md" data-ng-scrollbar data-rebuild-on="rebuild:messages">
+<div class="messageBox visible-lg visible-md" data-ng-custom-scrollbar data-rebuild-on="rebuild:messages">
     <div class="messageWrapper">
         <div data-ng-repeat="item in notificationService.notifications track by $index " class="mItem {{item.type}}" data-ng-click="showNotificationDetails(item)">
             <p class="topRow">

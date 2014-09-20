@@ -40,9 +40,11 @@
  * Changes in version 1.10 (Module Assembly - Web Arena UI - Test Panel Update for Batch Testing):
  * - Updated for test panel and test report logic.
  *
+ * Changes in version 1.11 (Module Assembly - Web Arena Bug Fix 20140909):
+ * - Fixed the issues in coding editor.
  *
  * @author tangzx, amethystlei, flytoj2ee, TCASSEMBLER
- * @version 1.10
+ * @version 1.11
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -489,6 +491,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             sessionHelper.setUserLanguagePreference($scope.lang($scope.langIdx).id);
         };
 
+        // At first load, it loads the code content, it's not changed the code.
+        $scope.firstLoadCode = true;
+
         /**
          * The code mirror config.
          *
@@ -529,7 +534,13 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     $scope.settingsOpen = false;
                 };
                 cmInstance.on('change', function () {
-                    $scope.contentDirty = true;
+                    if ($scope.firstLoadCode) {
+                        $scope.contentDirty = false;
+                        $scope.firstLoadCode = false;
+                    } else {
+                        $scope.contentDirty = true;
+                        $scope.firstLoadCode = false;
+                    }
                 });
                 // comment out error handle related logic for now
                 /*
@@ -610,7 +621,6 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 language: $scope.lang($scope.langIdx).id,
                 code: code
             });
-            $scope.testOpen = false;
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
             }
@@ -636,8 +646,8 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 }, function () {
                     socket.emit(helper.EVENT_NAME.SubmitRequest, {componentID: $scope.componentID});
                     $scope.testOpen = false;
-		    // Temporary change to allow tracking client of user submissions
-		    $.ajax("https://arena.topcoder.com/track-web-arena-user/whatever/handle=" + encodeURIComponent($scope.username()));
+                    // Temporary change to allow tracking client of user submissions
+                    $.ajax("https://arena.topcoder.com/track-web-arena-user/whatever/handle=" + encodeURIComponent($scope.username()));
                 });
             };
             if ($scope.contentDirty) {
@@ -765,6 +775,10 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     }
                 });
             });
+            $rootScope.userTests.forEach(function (testCase) {
+                testCase.checked = false;
+            });
+            $scope.customChecked = false;
             $scope.customTest = [];
             /*jslint unparam: true*/
             angular.forEach($scope.problem.allArgTypes, function (arg) {
@@ -816,12 +830,30 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                         return false;
                     }
                 }
+                if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+                    if ($scope.userData.tests.length === 0 && $rootScope.userTests.length === 0) {
+                        return false;
+                    }
+                }
                 return $scope.currentStateName() === helper.STATE_NAME.Coding || !!$scope.customChecked;
+            };
+
+            /**
+             * Checks whether the select all check should be disable.
+             * @returns {boolean} the checked result.
+             */
+            $scope.isSelectedAllDisable = function () {
+                if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+                    if ($scope.userData.tests.length === 0 && $rootScope.userTests.length === 0) {
+                        return true;
+                    }
+                }
+                return false;
             };
 
             // set the code written by the user
             $scope.code = $scope.userData.code;
-            $scope.contentDirty = true;
+            $scope.contentDirty = false;
 
             // load supported languages from config.
             // $scope.problem.supportedLanguages was set in the parent controller

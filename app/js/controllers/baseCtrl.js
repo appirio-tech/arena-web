@@ -57,8 +57,11 @@
  * Changes in version 1.13 (Module Assembly - Web Arena UI - Contest Creation Wizard):
  * - Added create contest logic.
  *
+ * Changes in version 1.14 (Module Assembly - Web Arena Bug Fix 20140909):
+ * - Changed the popup location for registration modal.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.13
+ * @version 1.14
  */
 'use strict';
 /*jshint -W097*/
@@ -242,6 +245,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
      * @param finish the finish function
      */
     $scope.openModal = function (data, handle, finish, templateUrl) {
+        var cssName = '';
         if ($rootScope.currentModal) {
             $rootScope.currentModal.dismiss('cancel');
             $rootScope.currentModal = undefined;
@@ -249,8 +253,13 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         if (!templateUrl) {
             templateUrl =  'popupModalBase.html';
         }
+
+        if (templateUrl === 'partials/user.contest.registration.html') {
+            cssName = 'marginTop';
+        }
         $rootScope.currentModal = $modal.open({
             templateUrl: templateUrl,
+            windowClass: cssName,
             controller: popupModalCtrl,
             backdrop: 'static',
             resolve: {

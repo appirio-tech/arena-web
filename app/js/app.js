@@ -48,8 +48,11 @@
  * Changes in version 1.12 (Module Assembly - Dashboard - Active Users and Leaderboard Panel):
  * - Updated to include resources for Active Users and Leaderboard Panel.
  *
+ * Changes in version 1.13 (Module Assembly - Web Arena Bug Fix 20140909):
+ * - Added custom scroll bar.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.12
+ * @version 1.13
  */
 'use strict';
 /*jshint -W097*/
@@ -88,6 +91,7 @@ require('./../../thirdparty/ng-scrollbar/dist/ng-scrollbar.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-transition.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-alert.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-notify.js');
+require('./../../thirdparty/ng-scrollbar/dist/ng-customscrollbar.js');
 
 var config = require('./config.js');
 
@@ -169,7 +173,7 @@ directives.overviewLeaderboard = require('./directives/overviewLeaderboard');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'ngCustomScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable']);
 
 ///////////////
 // FACTORIES //

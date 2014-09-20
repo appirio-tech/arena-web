@@ -28,8 +28,11 @@
  * Changes in version 1.6 (Module Assembly - Web Arena UI - Phase I Bug Fix 5):
  * - Update goBack() logic.
  *
+ * Changes in version 1.7 (Module Assembly - Web Arena Bug Fix 20140909):
+ * - Updated the test panel height in expand mode.
+ *
  * @author dexy, amethystlei, TCASSEMBLER
- * @version 1.6
+ * @version 1.7
  */
 'use strict';
 /*global module, angular, document, $*/
@@ -114,6 +117,10 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 $('#codeArea').css({
                     height: 475 + 'px'
                 });
+                $('#testPanelDiv').css({
+                    height: 480 + 'px'
+                });
+                $scope.$broadcast('test-panel-loaded');
                 $scope.topStatus = 'normal';
                 $scope.bottomStatus = 'normal';
                 $scope.cmElem.CodeMirror.refresh();
@@ -162,11 +169,16 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 $('#codeArea').css({
                     height: 643 + 'px'
                 });
+                $('#testPanelDiv').css({
+                    height: 653 + 'px'
+                });
+                $scope.$broadcast('test-panel-loaded');
                 $scope.bottomStatus = 'expand';
                 $scope.topStatus = 'normal';
                 $scope.cmElem.CodeMirror.refresh();
                 $scope.sharedObj.rebuildErrorBar();
             }
+            $scope.$broadcast('problem-loaded');
         };
         $scope.countdown = 1;
 
@@ -371,9 +383,9 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             if (component.constraints && component.constraints.length > 0) {
                 $scope.problem.constraints = [];
                 component.constraints.forEach(function (constraint) {
-		    if(constraint && constraint.userConstraint) {
-                      $scope.problem.constraints.push(getHtmlContent(constraint.userConstraint));
-		    }
+                    if (constraint && constraint.userConstraint) {
+                        $scope.problem.constraints.push(getHtmlContent(constraint.userConstraint));
+                    }
                 });
             }
             $scope.tests.forEach(function (test) {

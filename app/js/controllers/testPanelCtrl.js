@@ -6,8 +6,11 @@
  * Currently it can be used for coding and viewing others' code.
  * It is distinguished by states 'user.coding' and 'user.viewCode'.
  *
+ * Changes in version 1.1 (Module Assembly - Web Arena Bug Fix 20140909):
+ *  - Fixed the issues in test panel.
+ *
  * @author TCASSEMBLER
- * @version 1.0
+ * @version 1.1
  */
 'use strict';
 /*jshint -W097*/
@@ -113,7 +116,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($ro
      * Populate the test cases and send them to server side.
      */
     populateTestCases = function () {
-        var errorMessage = [], index = 0, errorFlag = false;
+        var errorMessage = [], index = 0, errorFlag = false, str, k;
 
         angular.forEach($scope.allTestCases, function (testcase) {
             var param, params = [], args = [], i, j;
@@ -159,9 +162,9 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($ro
         });
 
         if (errorMessage.length > 0) {
-            var str = '', i;
-            for (i = 0; i < errorMessage.length; i++) {
-                str = str + errorMessage[i] + '\n';
+            str = '';
+            for (k = 0; k < errorMessage.length; k++) {
+                str = str + errorMessage[k] + '\n';
             }
             $scope.openModal({
                 title: 'Error',
@@ -265,7 +268,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($ro
         var testCase = {};
         testCase.checked = false;
         testCase.toggle = true;
-        testCase.name = 'Custom Test Case' + (count + 1);
+        testCase.name = 'Custom Test Case ' + (count + 1);
         testCase.params = [];
         /*jslint unparam: true*/
         angular.forEach($scope.problem.allArgTypes, function (arg) {
@@ -283,14 +286,17 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($ro
      */
     $scope.deleteTestCase = function (index) {
         $rootScope.userTests.splice(index, 1);
+        $scope.$broadcast('test-panel-loaded');
     };
     /**
      * Edit the name of test case.
      *
+     * @param index the index
      * @param event the event
      */
-    $scope.editName = function (event) {
+    $scope.editName = function (index, event) {
         angular.element(event.target).next().removeClass('hide').focus();
+        $scope.caseName = $rootScope.userTests[index].name;
     };
     /**
      * Update the name of test case.
@@ -312,12 +318,14 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($ro
      * Run tests.
      */
     $scope.runTests = function () {
+        $scope.$broadcast('test-panel-loaded');
         $scope.report = [];
         $scope.allTestCases = [];
         $scope.allTestCaseNames = [];
 
-        if ($scope.customChecked) {
+        if (!!$scope.customChecked) {
             $scope.allTestCases.push($scope.customTest);
+            $scope.allTestCaseNames.push('Test Case');
         }
 
         angular.forEach($scope.userData.tests, function (item) {
@@ -338,6 +346,13 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($ro
 
         $scope.argsList = [];
         populateTestCases();
+    };
+
+    /**
+     * Set the custom checked flag.
+     */
+    $scope.setCustomChecked = function () {
+        $scope.customChecked = !$scope.customChecked;
     };
 
     $scope.toggleTextCase = function () {
