@@ -2,11 +2,9 @@
  * This directive is cloned from https://github.com/asafdav/ng-scrollbar/blob/53a2b3e558c84182d6afe6bc62f17b8835b3387d/dist/ng-scrollbar.js
  * with some minor changes to fix UI issues when rebuilding.
  * Two options 'scrollTop' and 'keepBottom' are added to keep the scrollbar at top / bottom position when it is rebuilt.
- *
- * add 'reload' option to rebuild the scrollbar when reload the data.
  */
 'use strict';
-angular.module('ngScrollbar', []).directive('ngScrollbar', [
+angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
   '$parse',
   '$window',
   function ($parse, $window) {
@@ -16,10 +14,8 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
       replace: true,
       transclude: true,
       link: function (scope, element, attrs) {
-        var mainElm, transculdedContainer, tools, thumb, thumbLine, track, upLink, downLink
+        var mainElm, transculdedContainer, tools, thumb, thumbLine, track;
         var win = angular.element($window);
-        var maxDraggerTop = 0;
-        scope.rebuildScroll = true;
         var dragger = { top: 0 }, page = { top: 0 };
         var scrollboxStyle, draggerStyle, draggerLineStyle, pageStyle;
         var calcStyles = function () {
@@ -51,14 +47,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           thumb.css('top', dragger.top + 'px');
           var draggerOffset = dragger.top / page.height;
           page.top = -Math.ceil(page.scrollHeight * draggerOffset * 1.0013);
-            if ((attrs.hasOwnProperty('scrollTop') && dragger.top === 0) || dragger.top >= maxDraggerTop) {
-                maxDraggerTop = dragger.top;
-                scope.rebuildScroll = true;
-                rebuild();
-            } else {
-                scope.rebuildScroll = false;
-            }
-            transculdedContainer.css('top', page.top + 'px');
+          transculdedContainer.css('top', page.top + 'px');
         };
         var trackClick = function (event) {
           var offsetY = event.hasOwnProperty('offsetY') ? event.offsetY : event.layerY;
@@ -92,26 +81,6 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
                   dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
                   redraw();
               }
-
-//              if (!!event.preventDefault) {
-//                  event.preventDefault();
-//              } else {
-//                  return false;
-//              }
-          };
-          var upClick = function () {
-              var deltaY = 10;
-              //up
-              dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
-              console.log(dragger.top);
-              redraw();
-          };
-          var downClick = function () {
-              var deltaY = -10;
-              //up
-              dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
-              console.log(dragger.top);
-              redraw();
           };
         var lastOffsetY;
         var thumbDrag = function (event, offsetX, offsetY) {
@@ -128,19 +97,15 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
         var buildScrollbar = function (keepBottom) {
           mainElm = angular.element(element.children()[0]);
           transculdedContainer = angular.element(mainElm.children()[0]);
-          tools = angular.element(mainElm.children()[2]);
+          tools = angular.element(mainElm.children()[1]);
           thumb = angular.element(angular.element(tools.children()[0]).children()[0]);
           thumbLine = angular.element(thumb.children()[0]);
           track = angular.element(angular.element(tools.children()[0]).children()[1]);
-
-          upLink = angular.element(mainElm.children()[1]);
-          downLink = angular.element(mainElm.children()[3]);
-
           page.height = element[0].offsetHeight;
-          if(attrs.class==="dropdown-menu" && page.height > 10) {// fix negative height
+          if(attrs.class==="dropdown-menu" && page.height > 10) // fix negative height
             page.height -= 10;
-          }
           page.scrollHeight = transculdedContainer[0].scrollHeight;
+
           if (page.height < page.scrollHeight) {
             redraw();
             scope.showYScrollbar = true;
@@ -153,12 +118,6 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
             thumb.css(draggerStyle);
             thumbLine.css(draggerLineStyle);
             track.bind('click', trackClick);
-
-            upLink.unbind('click', upClick);
-            upLink.bind('click', upClick);
-            downLink.unbind('click', downClick);
-            downLink.bind('click', downClick);
-
             var wheelEvent = win[0].onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
             transculdedContainer[0].addEventListener(wheelEvent, wheelHandler, false);
             transculdedContainer[0].addEventListener('keydown', keyDownHandler, false);
@@ -184,9 +143,11 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
             calcStyles();
             mainElm.css(scrollboxStyle);
             scope.showYScrollbar = false;
+            if (attrs.hasOwnProperty('scrollTop')) {
               transculdedContainer.css({
                 top: 0
               });
+            }
           }
         };
         var rebuildTimer;
@@ -194,25 +155,15 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           if (rebuildTimer != null) {
             clearTimeout(rebuildTimer);
           }
-          scope.rebuildScroll = true;
           rebuildTimer = setTimeout(function () {
-              if (scope.rebuildScroll) {
-                page.height = null;
+           page.height = null;
 
-                buildScrollbar(attrs.hasOwnProperty('keepBottom'));
+            buildScrollbar(attrs.hasOwnProperty('keepBottom'));
 
-                if (!scope.$$phase) {
-                  scope.$digest();
-                }
-              }
-
+            if (!scope.$$phase) {
+              scope.$digest();
+            }
           }, 72);
-        };
-        var reload = function () {
-          maxDraggerTop = 0;
-          scope.rebuildScroll = true;
-          dragger = { top: 0 }, page = { top: 0 };
-          buildScrollbar();
         };
         buildScrollbar();
         if (!!attrs.rebuildOn) {
@@ -223,13 +174,8 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
         if (attrs.hasOwnProperty('rebuildOnResize')) {
           win.on('resize', rebuild);
         }
-        if (!!attrs.reloadOn) {
-          attrs.reloadOn.split(' ').forEach(function (eventName) {
-            scope.$on(eventName, reload);
-          });
-        }
       },
-        template: '<div>' + '<div class="ngsb-wrap">' + '<div class="ngsb-container" ng-transclude tabindex="100"></div>' + '<span ng-show="showYScrollbar" class="upScrollButton"></span><div class="ngsb-scrollbar" style="position: absolute; display: block;" ng-show="showYScrollbar">' + '<div class="ngsb-thumb-container">' + '<div class="ngsb-thumb-pos" oncontextmenu="return false;">' + '<div class="ngsb-thumb" ></div>' + '</div>' + '<div class="ngsb-track"></div>' + '</div>' + '</div>' + '<span ng-show="showYScrollbar" class="downScrollButton"></span></div>' + '</div>'
+        template: '<div>' + '<div class="ngsb-wrap">' + '<div class="ngsb-container" ng-transclude tabindex="100"></div>' + '<div class="ngsb-scrollbar" style="position: absolute; display: block;" ng-show="showYScrollbar">' + '<div class="ngsb-thumb-container">' + '<div class="ngsb-thumb-pos" oncontextmenu="return false;">' + '<div class="ngsb-thumb" ></div>' + '</div>' + '<div class="ngsb-track"></div>' + '</div>' + '</div>' + '</div>' + '</div>'
     };
   }
 ]);

@@ -53,7 +53,7 @@
             </div>
             <!-- /.schedulePanel -->
             <div data-ng-show="contest.detailIndex == 3 && isShownRooms(contest)" class="roomsPanel roomsDiv">
-                <div class="roomsDivScroll" data-ng-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:roomslist">
+                <div class="roomsDivScroll" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:roomslist">
                     <ul>
                         <li data-ng-repeat="room in getRoomsList(contest) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize"><a data-ng-click="moveToRoom(contest, room.roomID)">{{room.roomTitle}}</a></li>
                     </ul>

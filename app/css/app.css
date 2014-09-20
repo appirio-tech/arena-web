@@ -1010,8 +1010,8 @@ footer .right>span:nth-child(2) {
 }
 .modal .modal-content .modal-body {
     border-width: 0;
-    padding: 14px 0 0;
-    margin: 0;
+    padding: 0;
+    margin-top: 5px;
     overflow: hidden;
     height: 195px;
 }
@@ -2495,7 +2495,8 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeEditor .testPanel .btnRow label {
     display: inline-block;
-    width: 102px;
+    width: 55px;
+    margin-right: 45px;
     height: 36px;
     padding-top: 15px;
     margin-bottom: 6px;
@@ -3718,7 +3719,6 @@ footer .right>span:nth-child(2) {
 }
 .panelChatArea .memberDropdown .dropdown-menu{
     max-height: 100px;
-    height: 100px;
     min-width: 107px;
 }
 .panelChatArea .methodDropdown .dropdown-menu li a{
@@ -4282,7 +4282,7 @@ footer .right>span:nth-child(2) {
     cursor: pointer;
 }
 .detailPage section .table>thead>tr>th .ascArrow {
-    background-position: -33px -59px;
+    background-position: -33px -58px;
 }
 .modal-body .table>thead>tr>th .ascArrow {
     background-position: -33px -58px;
@@ -4333,7 +4333,7 @@ footer .right>span:nth-child(2) {
     width: 58px;
 }
 .detailPage .leftSec .table .col1 .arrow {
-    margin-left: 0;
+    margin-left: 3px;
 }
 .detailPage .leftSec .table .col2 {
     padding-left: 0;
@@ -4403,7 +4403,7 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     -ms-word-break:break-all;
     word-break:break-all;
-    font-weight: 300;
+    font-weight: 600;
     cursor: pointer;
 }
 .detailPage section .table td .roomLeader{
@@ -4419,7 +4419,6 @@ footer .right>span:nth-child(2) {
 
 .leaderboardWrapper .table td.colR {
     cursor: pointer;
-    text-align: right;
     padding-right: 1px;
 }
 
@@ -4470,14 +4469,14 @@ footer .right>span:nth-child(2) {
 }
 /**** Java language ****/
 .detailPage .leaderboardWrapper .colorSubmittedJava {
-    color: rgb(0, 255, 0);
+    color: #00a900;
 }
 .detailPage .leaderboardWrapper .colorChallengedJava {
-    color: rgb(0, 255, 0);
+    color: #00a900;
     font-style: italic!important;
 }
 .detailPage .leaderboardWrapper .colorPassedJava {
-    color: rgb(0, 255, 0);
+    color: #00a900;
 }
 .detailPage .leaderboardWrapper .colorFailedJava {
     color: rgb(255, 0, 51);
@@ -4543,8 +4542,8 @@ footer .right>span:nth-child(2) {
     font-style: italic!important;
 }
 
-.detailPage .leaderboardWrapper .colorPending {
-    color: #2c8236;
+.challengerWrapper .table .colRHeader {
+    color: #00a900;
 }
 .detailPage .leaderboardWrapper .colorCompiled {
     color: #f99800;
@@ -5522,11 +5521,9 @@ footer .right>span:nth-child(2) {
 }
 .challengerWrapper .table .colRHeader {
     width: 30px;
-    font-weight: 100;
 }
 .challengeWrapper .table .colRHeader {
     width: 31px;
-    font-weight: 100;
     padding-left: 0;
     padding-right: 0;
 }
@@ -5811,4 +5808,30 @@ table thead .sort.desc{
 .leadarboardList .ngsb-scrollbar,
 .activeUserList .ngsb-scrollbar{
     background: #151717;
+}
+.marginTop {
+    margin-top: -30px;
+}
+.upScrollButton {
+    background-image: url(../img/dark/sprite-room-summary.png);
+    position: absolute;
+    top: -1px;
+    right: 4px;
+    z-index: 1;
+    width: 7px;
+    height: 9px;
+    background-position: -34px -56px;
+    cursor:pointer;
+}
+
+.downScrollButton {
+    background-image: url(../img/dark/sprite-room-summary.png);
+    position: absolute;
+    top:calc(100% - 8px);
+    right: 4px;
+    width: 9px;
+    height: 9px;
+    z-index:1;
+    background-position: -33px -51px;
+    cursor:pointer;
 }

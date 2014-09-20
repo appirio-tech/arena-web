@@ -287,9 +287,12 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
 
     $scope.rebuildMembersScrollbar = function () {
         if ($(window).scrollTop() + $(window).height() !== $(document).height()) {
-            angular.element('#usersList').addClass('dropdown-menu-up');
+            var height = angular.element('#usersList').css('height'),
+                newMargin = -36 - (+height.replace('px', ''));
+
+            angular.element('#usersList').css("margin-top", newMargin + 'px');
         } else {
-            angular.element('#usersList').removeClass('dropdown-menu-up');
+            angular.element('#usersList').css("margin-top", '0px');
         }
         $scope.$broadcast('rebuild:whosHere');
         $scope.$broadcast('rebuild:members');

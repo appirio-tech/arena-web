@@ -235,7 +235,7 @@ footer .right .sponsorLogo {
      line-height: 27px;
 }
 .modal .modal-content .modal-footer {
-    border-width: 0;
+    border-top: 1px solid #1f444e;
 }
 
 .modal .modal-content .modal-body .argType {
@@ -547,6 +547,9 @@ footer .right .sponsorLogo {
 .testReportPanel .modalFooter .btn {
     background: #0f9abd;
 }
+.testReportPanel .modalFooter {
+    border-top: 1px solid #1f444e;
+}
 /******************* count down widget */
 .panelCountDown {
     background: #1b2920;
@@ -833,14 +836,14 @@ footer .right .sponsorLogo {
 }
 /**** Java language ****/
 .detailPage .leaderboardWrapper .colorSubmittedJava {
-    color: rgb(0, 255, 0);
+    color: #00a900;
 }
 .detailPage .leaderboardWrapper .colorChallengedJava {
-    color: rgb(0, 255, 0);
+    color: #00a900;
     font-style: italic!important;
 }
 .detailPage .leaderboardWrapper .colorPassedJava {
-    color: rgb(0, 255, 0);
+    color: #00a900;
 }
 .detailPage .leaderboardWrapper .colorFailedJava {
     color: rgb(255, 0, 51);
@@ -907,7 +910,7 @@ footer .right .sponsorLogo {
 }
 
 .detailPage .leaderboardWrapper .colorPending {
-    color: #2c8236;
+    color: #00a900;
 }
 .detailPage .leaderboardWrapper .colorCompiled {
     color: #f99800;

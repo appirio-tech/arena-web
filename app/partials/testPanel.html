@@ -1,6 +1,6 @@
-<div data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="test-panel-loaded">
+<div data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="test-panel-loaded" id="testPanelDiv">
     <div class="btnRow">
-        <input type="checkbox" id="testCase-all" class="caseCheck" data-ng-disabled="false" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()" /><label for="testCase-all" data-ng-if="currentStateName()=='user.coding'" class="caseLbl">Check All</label><!--
+        <input type="checkbox" id="testCase-all" class="caseCheck" data-ng-disabled="isSelectedAllDisable()" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()" /><label for="testCase-all" data-ng-if="currentStateName()=='user.coding'" class="caseLbl">Check All</label><!--
         --><a data-ng-click="runTests()" data-ng-if="currentStateName()=='user.viewCode'" data-ng-show="!isTesting" class="btn challengeBtn">Challenge</a><!-- avoid whitespace
         --><a data-ng-click="runCheckedTests()" data-ng-if="currentStateName()=='user.coding'" data-ng-show="!isTesting" class="btn testBtn">Run Test</a><!-- avoid whitespace
         --><a data-ng-click="addTestCase();toggleTextCase();" data-ng-if="currentStateName()=='user.coding'" data-ng-show="!isTesting" class="btn addBtn"><b>+</b> Add</a>
@@ -9,7 +9,7 @@
     <!-- Custom test case for Challenge Phase -->
     <div class='testCase' data-ng-if="isChallengePhase() && currentStateName()=='user.viewCode'" data-ng-init="caseNum='custom'; toggle=false">
         <header><!-- avoid unnecessary blank
-         --><input type="checkbox" id="testCase-{{caseNum}}" name="testCase-{{caseNum}}" class="caseCheck" data-ng-disabled="isTesting" data-ng-model="$parent.customChecked" /><!-- avoid unnecessary blank
+         --><input type="checkbox" id="testCase-{{caseNum}}" name="testCase-{{caseNum}}" class="caseCheck" data-ng-disabled="isTesting" data-ng-click="setCustomChecked();" /><!-- avoid unnecessary blank
          --><a data-ng-click="toggle=!toggle;toggleTextCase()" data-ng-class="{open:toggle,collapsed:!toggle}"></a><!-- avoid unnecessary blank
          --><label for="testCase-{{caseNum}}" class="caseLbl">Test Case</label>
         </header>
@@ -38,8 +38,8 @@
         --><input type="checkbox" id="customTestCase-{{caseNum}}" name="customTestCase-{{caseNum}}" class="caseCheck" data-ng-disabled="isTesting" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" /><!-- avoid unnecessary blank
         --><a data-ng-click="testCase.toggle=!testCase.toggle; $parent.toggleTextCase()" data-ng-class="{open:testCase.toggle,collapsed:!testCase.toggle}" class="collapseIcon"></a><!-- avoid unnecessary blank
         --><label for="customTestCase-{{caseNum}}" class="caseLbl"></label><!--
-        --><label class="nameLbl" data-ng-click="editName($event)">{{testCase.name}}</label><!--
-        --><input type="text" placeholder="{{testCase.name}}" data-ng-model="$parent.caseName" data-ng-blur="updateName($index, $event);" class="nameInput hide" maxlength="18"/>
+        --><label class="nameLbl" data-ng-click="editName($index, $event)">{{testCase.name}}</label><!--
+        --><input type="text" placeholder="{{testCase.name}}" data-ng-model="$parent.$parent.caseName" data-ng-blur="updateName($index, $event);" class="nameInput hide" maxlength="18"/>
             <a data-ng-click="runSingleTest(testCase)" class="runIcon">Run</a>
             <a data-ng-click="deleteTestCase($index)" class="deleteIcon">Delete</a>
         </header>

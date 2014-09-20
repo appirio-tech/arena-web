@@ -33,8 +33,11 @@
  * Changes in version 1.8 (Module Assembly - Web Arena UI - Suvery and Questions Support For Contest Registration):
  * - Updated the logic to support registration survey and questions.
  *
+ * Changes in version 1.9 (Module Assembly - Web Arena Bug Fix 20140909):
+ * - Changed the text in registration error popup.
+ *
  * @author amethystlei, dexy, flytoj2ee, TCASSEMBLER
- * @version 1.8
+ * @version 1.9
  */
 'use strict';
 /*global module, angular, require*/
@@ -426,7 +429,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                     }
 
                     if (validationError.length > 0) {
-                        detail = '<p class="textColor">You must provide an answer to the question:</p>';
+                        detail = '<p class="textColor">You must answer the following question' + (validationError.length > 1 ? 's' : '') + ':</p>';
                         for (i = 0; i < validationError.length; i++) {
                             detail = detail + '<p> --- ' + validationError[i] + "</p>";
                         }
