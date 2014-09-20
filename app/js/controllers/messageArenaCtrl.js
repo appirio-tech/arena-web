@@ -34,6 +34,19 @@ var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', '$window', 
                 $timeout(function () {
                     angular.element(target).removeClass('animationaAlert');
                 }, 1000);
+
+                angular.forEach(notificationService.notifications, function(notification) {
+                    if(!notification.displayed) {
+                        notification.displayed = true;
+                        $('.top-right').notify({
+                            message: notification.message,
+                            type: "green",
+                            fadeOut: {
+                                enabled: false
+                            }
+                        }).show();                        
+                    }
+                });
             }
         }
         $scope.goTo = function (link) {

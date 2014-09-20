@@ -90,11 +90,10 @@ body a {cursor: pointer;}
 /* topcoder logo */
 .anon-header .navbar .navbar-brand,
 .navbar-brand {
-    background-position: -21px -25px;
+    background-position: -1px -51px;
     background-repeat: no-repeat;
-    padding: 22px 0 0 176px;
+    padding: 24px 0 0 216px;
     height: 0;
-    width: 0;
     overflow: hidden;
     display: inline-block;
     margin: 0;

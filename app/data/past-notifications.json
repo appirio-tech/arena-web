@@ -79,21 +79,5 @@
     ],
     "newMessages":
     [
-        {
-            "message": "The Submission Phase for Single Match<br/>Round 1 is starting in 5 minutes",
-            "type": "green"
-        },
-        {
-            "message": "The Submission Phase for Single Match<br/>Round 1 is ending in 20 minutes",
-            "type": "orange"
-        },
-        {
-            "message": "Attention coders, the arena will be restarting <br/>in 3 minutes, you will have to log in again",
-            "type": "green"
-        },
-        {
-            "message": "The Coding Phase for Single Match<br/> Round 1 is starting in 5 minutes",
-            "type": "orange"
-        }
     ]
 }
