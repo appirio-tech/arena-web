@@ -30,8 +30,11 @@
  * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
  * - Fixed the issues in chat area.
  *
+ * Changes in version 1.8 (Module Assembly - Web Arena - Local Chat Persistence):
+ * - Clear the chat history while changing the room.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.7
+ * @version 1.8
  */
 'use strict';
 /*global require, module, angular, $, window, document */
@@ -187,6 +190,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         if (+roomID === +$rootScope.currentRoomInfo.roomID) {
             return;
         }
+        $rootScope.chatContent[roomID] = [];
         socket.emit(helper.EVENT_NAME.MoveRequest, {moveType: $rootScope.roomMenu[roomID].roomType, roomID: roomID});
         socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
         $scope.$broadcast('rebuild:chatboard');
@@ -407,7 +411,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         findText = findText.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
         for (i = 0; i < angular.element('.allChatText').length; i++) {
             text = $scope.htmlEncode($(angular.element('.allChatText')[i]).text());
-            resultText = text.replace(new RegExp(findText,"ig"), replace);
+            resultText = text.replace(new RegExp(findText, "ig"), replace);
 
             $(angular.element('.allChatText')[i]).html(resultText);
         }
@@ -447,7 +451,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
     $scope.inputSearchText = function () {
 
         if ($scope.previousSearchText !== '') {
-            $scope.revertText('<span class="chat-highlight">'+$scope.htmlEncode($scope.previousSearchText)+'</span>',
+            $scope.revertText('<span class="chat-highlight">' + $scope.htmlEncode($scope.previousSearchText) + '</span>',
                 $scope.htmlEncode($scope.previousSearchText));
         }
 

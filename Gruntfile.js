@@ -16,8 +16,11 @@
  * Changes in version 1.2 (Module Assembly - Web Arena UI - Contest Creation Wizard):
  * - Added jwt token setting.
  *
+ * Changes in version 1.3 (Module Assembly - Web Arena - Local Chat Persistence):
+ * - Added LOCAL_STORAGE_EXPIRE_TIME setting.
+ *
  * @author amethystlei, flytoj2ee
- * @version 1.2
+ * @version 1.3
  */
 'use strict';
 /*global module, process*/
@@ -58,7 +61,8 @@ module.exports = function (grunt) {
                         { match : 'CONNECTION_TIMEOUT', replacement: process.env.CONNECTION_TIMEOUT },
                         { match : 'MEMBER_PHOTO_HOST', replacement: process.env.MEMBER_PHOTO_HOST },
                         { match : 'JWT_TOKEN', replacement: process.env.JWT_TOKEN },
-                        { match : 'CHAT_LENGTH', replacement: process.env.CHAT_LENGTH }
+                        { match : 'CHAT_LENGTH', replacement: process.env.CHAT_LENGTH },
+                        { match : 'LOCAL_STORAGE_EXPIRE_TIME', replacement: process.env.LOCAL_STORAGE_EXPIRE_TIME }
                     ]
                 },
                 files : [

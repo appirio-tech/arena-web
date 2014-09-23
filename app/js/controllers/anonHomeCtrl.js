@@ -10,12 +10,15 @@
  *  - Added variable to say empty username and password
  *  - Flags such as loginTimeout, isEmpty and hasError are handled to avoid text overlap in login page
  *
- * @author ananthhh
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena - Local Chat Persistence):
+ *  - Clear the data in local storage if clicked login buttons.
+ *
+ * @author ananthhh, TCASSEMBLER
+ * @version 1.2
  */
 'use strict';
 
-var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$rootScope', function ($scope, $state, $window, sessionHelper, auth0, $rootScope) {
+var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$rootScope', 'appHelper', function ($scope, $state, $window, sessionHelper, auth0, $rootScope, appHelper) {
     // whether the login has error
     $scope.hasError = false;
     $scope.hasErrorForm = false;
@@ -72,6 +75,8 @@ var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$r
         sessionHelper.clear();
         sessionHelper.persist({remember: $scope.remember});
 
+        appHelper.clearLocalStorage();
+
         auth0.signin({
             connection: auth0.auth0connection,
             username: $scope.username,
@@ -88,6 +93,7 @@ var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$r
     };
 
     $scope.socialLogin = function (connection) {
+        appHelper.clearLocalStorage();
         auth0.signin({
             connection: connection,
             state: $window.location.href

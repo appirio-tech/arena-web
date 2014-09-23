@@ -67,8 +67,11 @@
  * - Added the create user list response type.
  * - Added ActiveUsersRequest event name and CreateLeaderBoardResponse event name.
  *
+ * Changes in version 1.17 (Module Assembly - Web Arena - Local Chat Persistence):
+ * - Added local storage constants.
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.16
+ * @version 1.17
  */
 
 module.exports = {
@@ -378,5 +381,11 @@ module.exports = {
     CREATE_USER_LIST_RESPONSE_TYPE: {
         ROOM_USERS: 0,
         ACTIVE_USERS: 2
+    },
+
+    // The local storage prefix and room list key
+    LOCAL_STORAGE: {
+        PREFIX: 'chat_history_',
+        ROOM_LIST: 'chat_history_room_list'
     }
 };
