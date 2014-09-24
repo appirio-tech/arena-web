@@ -38,3 +38,4 @@ set API_DOMAIN=http://tc.cloud.topcoder.com:8081/v2
 set JWT_TOKEN=tcjwt_vm
 
 set CHAT_LENGTH=400
+set LOCAL_STORAGE_EXPIRE_TIME=1800

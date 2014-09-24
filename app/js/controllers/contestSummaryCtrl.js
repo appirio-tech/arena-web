@@ -13,8 +13,11 @@
  * Changes in version 1.3 (Module Assembly - Web Arena UI - Phase I Bug Fix 5):
  * - Added isInMyRoom() checking.
  *
+ * Changes in version 1.4 (Module Assembly - Web Arena - Local Chat Persistence):
+ * - Clear the chat history while changing the room.
+ *
  * @author amethystlei, flytoj2ee, TCASSEMBLER
- * @version 1.3
+ * @version 1.4
  */
 'use strict';
 /*global module, angular*/
@@ -47,6 +50,10 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', functio
      */
     $scope.moveToRoom = function (roomId) {
         $rootScope.competingRoomID = roomId;
+        if (roomId !== -1) {
+            var str = '';
+            $rootScope.chatContent[roomId + str] = [];
+        }
         // requests will be sent by the resolvers
         $state.go(helper.STATE_NAME.Contest, {
             contestId: $scope.contest.roundID

@@ -63,8 +63,11 @@
  * Changes in version 1.14 (Module Assembly - Dashboard - Active Users and Leaderboard Panel):
  * - Updated the logic in CreateLeaderBoardResponse, UpdateLeaderBoardResponse and CreateUserListResponse.
  *
+ * Changes in version 1.15 (Module Assembly - Web Arena - Local Chat Persistence):
+ * - Added set / get / clear data for local storage.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.14
+ * @version 1.15
  */
 ///////////////
 // RESOLVERS //
@@ -72,7 +75,7 @@
 /*jshint -W097*/
 /*jshint strict:false*/
 /*jslint plusplus: true*/
-/*global require, setTimeout, console, module, angular*/
+/*global require, setTimeout, console, module, angular, document*/
 
 var config = require('./config');
 var helper = require('./helper');
@@ -98,7 +101,7 @@ var DATE_FORMAT = 'MMM d, h:mm a';
 //Here we put resolver logic into a container object so that the state declaration code section stays readable
 var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
-resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', 'notificationService', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService, notificationService) {
+resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', 'notificationService', 'appHelper', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService, notificationService, appHelper) {
     var deferred, sso = sessionHelper.getTcsso(), requestId,
         forceLogout = function () {
             $rootScope.isLoggedIn = false;
@@ -255,6 +258,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         } else if ($rootScope.currentRoomInfo.roomType === helper.ROOM_TYPE_ID.CoderRoom) {
             $rootScope.competingRoomID = $rootScope.currentRoomInfo.roomID;
         }
+
+        appHelper.getLocalStorage($rootScope.currentRoomInfo.roomID);
     });
 
     // Handle the CreateLeaderBoardResponse event.
@@ -554,7 +559,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         $rootScope.chatScope = data.scope;
 
         var str = '', roomId = data.roomID + str, links = [], user = '', splitData = '', index = data.data.indexOf(': '),
-            allLinks, linksArray, i, j, flag;
+            allLinks, linksArray, i, j, flag, tmp, chatSound;
         if (!$rootScope.chatContent) {
             $rootScope.chatContent = {};
         }
@@ -595,30 +600,34 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         }
 
         if (user === $rootScope.username()) {
-            $rootScope.chatContent[roomId].push({
+            tmp = {
                 userRating: data.rating,
                 prefix: data.prefix,
                 text: data.data,
                 hasLink: links.length !== 0,
                 links: links,
                 type: 'toMe'
-            });
+            };
         } else {
-            $rootScope.chatContent[roomId].push({
+            tmp = {
                 userRating: data.rating,
                 prefix: data.prefix,
                 text: data.data,
                 hasLink: links.length !== 0,
                 links: links,
                 type: getChatType(data.type)
-            });
+            };
         }
-        if($rootScope.chatContent[roomId].length > config.chatLength) {
+
+        $rootScope.chatContent[roomId].push(tmp);
+        appHelper.setLocalStorage(roomId, tmp);
+
+        if ($rootScope.chatContent[roomId].length > config.chatLength) {
             $rootScope.chatContent[roomId].shift();
         }
 
-        if(data.type === helper.CHAT_TYPES.WhisperToYouChat || user === $rootScope.username()) {
-            var chatSound = document.getElementById('chatSound');
+        if (data.type === helper.CHAT_TYPES.WhisperToYouChat || user === $rootScope.username()) {
+            chatSound = document.getElementById('chatSound');
             if (chatSound) {
                 chatSound.load();
                 chatSound.play();
@@ -869,11 +878,13 @@ resolvers.alreadyLoggedIn = ['$q', '$state', 'sessionHelper', function ($q, $sta
     return deferred.promise;
 }];
 
-resolvers.logout = ['$rootScope', '$q', '$state', 'sessionHelper', 'socket', function ($rootScope, $q, $state, sessionHelper, socket) {
+resolvers.logout = ['$rootScope', '$q', '$state', 'sessionHelper', 'socket', 'appHelper', function ($rootScope, $q, $state, sessionHelper, socket, appHelper) {
     $rootScope.isLoggedIn = false;
     sessionHelper.clear();
     sessionHelper.removeTcsso();
     socket.emit(helper.EVENT_NAME.LogoutRequest, {});
+
+    appHelper.clearLocalStorage();
 
     // defer the logout promise
     var deferred = $q.defer();

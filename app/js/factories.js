@@ -32,8 +32,11 @@
  * Changes in version 1.7 (Module Assembly - Web Arena UI - Phase I Bug Fix 4):
  * - Added setUserLanguagePreference() method.
  *
- * @author tangzx, dexy, amethystlei, ananthhh
- * @version 1.7
+ * Changes in version 1.8 (Module Assembly - Web Arena - Local Chat Persistence):
+ * - Added logic to set / get / clear data in local storage.
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
+ * @version 1.8
  */
 'use strict';
 var config = require('./config');
@@ -41,6 +44,7 @@ var Auth0 = require('auth0-js');
 var socket = require('socket.io-client').connect(config.webSocketURL);
 /*jshint -W097*/
 /*global $ : false, angular : false, require, module, document*/
+/*jslint plusplus: true*/
 
 var helper = require('./helper');
 ///////////////
@@ -195,7 +199,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
     return service;
 }];
 
-factories.appHelper = ['$rootScope', function ($rootScope) {
+factories.appHelper = ['$rootScope', 'localStorageService', function ($rootScope, localStorageService) {
     var retHelper = {};
 
     // return an empty array of fixed length
@@ -334,6 +338,129 @@ factories.appHelper = ['$rootScope', function ($rootScope) {
             return false;
         }
         return true;
+    };
+
+    /**
+     * Set data to local storage.
+     * @param roomId - the given room id which used as key
+     * @param value - the value.
+     */
+    retHelper.setLocalStorage = function (roomId, value) {
+        if (localStorageService.isSupported) {
+            // maintain the room list
+            var roomList = localStorageService.get(helper.LOCAL_STORAGE.ROOM_LIST), found, i, key, items, itemsJson, roomIdStr, str = '';
+            roomIdStr = roomId + str;
+            if (roomList) {
+                found = false;
+                for (i = 0; i < roomList.length; i++) {
+                    if (roomList[i] === roomIdStr) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    roomList.push(roomIdStr);
+                }
+
+            } else {
+                roomList = [];
+                roomList.push(roomIdStr);
+            }
+            localStorageService.set(helper.LOCAL_STORAGE.ROOM_LIST, JSON.stringify(roomList));
+
+            // get data by key
+            key = helper.LOCAL_STORAGE.PREFIX + roomId;
+            items = localStorageService.get(key);
+            itemsJson = [];
+            if (items) {
+                itemsJson = items;
+            }
+
+            // remove one if reach the limit count
+            if (itemsJson.length >= (+config.chatLength)) {
+                itemsJson.shift();
+            }
+            angular.extend(value, {createdTime: Date.now()});
+            itemsJson.push(value);
+
+            // save to local storage
+            localStorageService.set(key, JSON.stringify(itemsJson));
+        }
+    };
+
+    /**
+     * Get data from local storage.
+     * @param roomId - the room id.
+     */
+    retHelper.getLocalStorage = function (roomId) {
+        if (localStorageService.isSupported) {
+            var expire = Date.now() - ((+config.localStorageExpireTime) * 1000), roomList, newRoomList, k, roomItems, key, items, i, roomIdStr, str = '', newRoomItems, m;
+
+            roomIdStr = roomId + str;
+
+            // remove the expired cache
+            roomList = localStorageService.get(helper.LOCAL_STORAGE.ROOM_LIST);
+            newRoomList = [];
+            if (roomList) {
+                for (k = 0; k < roomList.length; k++) {
+                    roomItems = localStorageService.get(helper.LOCAL_STORAGE.PREFIX + roomList[k]);
+                    if (roomItems && roomItems.length > 0) {
+                        if (roomItems[roomItems.length - 1].createdTime < expire) {
+                            // if the latest message expire, clear all.
+                            localStorageService.remove(helper.LOCAL_STORAGE.PREFIX + roomList[k]);
+                        } else {
+                            newRoomList.push(roomList[k]);
+
+                            newRoomItems = [];
+                            for (m = 0; m < roomItems.length; m++) {
+                                if (roomItems[m].createdTime >= expire) {
+                                    // just keep the not expired item
+                                    newRoomItems.push(roomItems[m]);
+                                }
+                            }
+                            localStorageService.set(helper.LOCAL_STORAGE.PREFIX + roomList[k], JSON.stringify(newRoomItems));
+                        }
+                    }
+                }
+
+                localStorageService.set(helper.LOCAL_STORAGE.ROOM_LIST, JSON.stringify(newRoomList));
+            }
+
+            // get data from local storage
+            key = helper.LOCAL_STORAGE.PREFIX + roomId;
+            if (!$rootScope.chatContent) {
+                $rootScope.chatContent = {};
+            }
+            $rootScope.chatContent[roomIdStr] = [];
+
+            items = localStorageService.get(key);
+
+            if (items && items.length > 0) {
+                for (i = 0; i < items.length; i++) {
+                    if (items[i].createdTime > expire) {
+                        $rootScope.chatContent[roomIdStr].push(items[i]);
+                    }
+                }
+            }
+
+            $rootScope.$broadcast('rebuild:chatboard');
+        }
+    };
+
+    /**
+     * Clear the data in local storage.
+     */
+    retHelper.clearLocalStorage = function () {
+        if (localStorageService.isSupported) {
+            var roomList = localStorageService.get(helper.LOCAL_STORAGE.ROOM_LIST), k;
+            if (roomList) {
+                for (k = 0; k < roomList.length; k++) {
+                    localStorageService.remove(helper.LOCAL_STORAGE.PREFIX + roomList[k]);
+                }
+
+                localStorageService.remove(helper.LOCAL_STORAGE.ROOM_LIST);
+            }
+        }
     };
 
     return retHelper;

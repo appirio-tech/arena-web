@@ -13,6 +13,7 @@ module.exports = {
     staticFileHost: '@@STATIC_FILE_HOST',
     memberPhotoHost: '@@MEMBER_PHOTO_HOST',
     jwtToken: '@@JWT_TOKEN',
-    chatLength: '@@CHAT_LENGTH'
+    chatLength: '@@CHAT_LENGTH',
+    localStorageExpireTime: @@LOCAL_STORAGE_EXPIRE_TIME
 };
 

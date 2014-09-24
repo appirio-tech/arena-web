@@ -43,3 +43,4 @@ export MEMBER_PHOTO_HOST=http://apps.topcoder.com
 
 export JWT_TOKEN=tcjwt_vm
 export CHAT_LENGTH=400
+export LOCAL_STORAGE_EXPIRE_TIME=1800
