@@ -20,6 +20,7 @@
                     <p class="lastLoginRow">
                         <label>Last Login</label>:&nbsp;<span>{{userProfile.lastLogin| date:'yyyy-MM-dd h:mm a'}} {{ timeZone }}</span>
                     </p>
+                    <div><span class="fb-btn-post" data-ng-click="postFacebookStatus()"></span> <span class="tweet-share" twitter data-url="{{getMemberStatusUrl()}}" data-message="{{getMemberStatusMessage()}}"></span></div>
                 </div><!--/.profile-->
                 <div class="messagesBox">
                     <table class="table">

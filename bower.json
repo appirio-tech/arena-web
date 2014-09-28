@@ -28,7 +28,8 @@
     "angular-ui-angular": "https://github.com/angular-ui/angular.git",
     "angulartics": "~0.15.20",
     "angular-table":"https://github.com/esvit/ng-table.git",
-    "angular-local-storage": "https://github.com/grevory/angular-local-storage.git"
+    "angular-local-storage": "https://github.com/grevory/angular-local-storage.git",
+    "angular-facebook":"https://github.com/Ciul/angular-facebook.git"
   },
   "resolutions": {
     "jquery": "~2.x"

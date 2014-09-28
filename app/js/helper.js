@@ -70,8 +70,11 @@
  * Changes in version 1.17 (Module Assembly - Web Arena - Local Chat Persistence):
  * - Added local storage constants.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.17
+ * Changes in version 1.18 (PoC Assembly - Share Member Status To Facebook and Twitter):
+ * - Added FACEBOOK_TITLES, FACEBOOK_MESSAGES, SOCIAL constants to handle posting to Facebook and Twitter.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
+ * @version 1.18
  */
 
 module.exports = {
@@ -387,5 +390,31 @@ module.exports = {
     LOCAL_STORAGE: {
         PREFIX: 'chat_history_',
         ROOM_LIST: 'chat_history_room_list'
+    },
+
+    // Titles for Facebook pop-ups
+    FACEBOOK_TITLES: {
+        NotReady: 'Error: Service not ready',
+        LoginError: 'Error: Login',
+        StatusMessageConfirm: 'Confirm the message',
+        StatusMessageError: 'Error: Status message not sent',
+        StatusMessageOK: 'Status message sent'
+    },
+
+    // Messages for Facebook pop-ups
+    FACEBOOK_MESSAGES: {
+        NotReady: 'Facebook service is not ready.',
+        LoginError: 'There was a log in error. Please try again.',
+        StatusMessageConfirm: 'Are you sure you want to post this message:',
+        StatusMessageError: 'There was an error sending status message. Please try again.',
+        StatusMessageOK: 'The status message was sent successfully.'
+    },
+
+    // Constants to handle social network messages
+    SOCIAL: {
+        StatusMessage: {
+            NumberEventsTag: '__MATCHES__',
+            RatingTag: '__RATING__'
+        }
     }
 };
