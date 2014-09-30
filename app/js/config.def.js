@@ -14,6 +14,15 @@ module.exports = {
     memberPhotoHost: '@@MEMBER_PHOTO_HOST',
     jwtToken: '@@JWT_TOKEN',
     chatLength: '@@CHAT_LENGTH',
-    localStorageExpireTime: @@LOCAL_STORAGE_EXPIRE_TIME
+    localStorageExpireTime: @@LOCAL_STORAGE_EXPIRE_TIME,
+    facebookApiId: '@@FACEBOOK_API_ID',
+    social: {
+        statusTemplate: '@@SOCIAL_STATUS_TEMPLATE',
+        arena: {
+            URL: '@@SOCIAL_ARENA_URL',
+            description: '@@SOCIAL_ARENA_DESCRIPTION',
+            title: '@@SOCIAL_ARENA_TITLE'
+        }
+    }
 };
 

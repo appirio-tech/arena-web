@@ -19,8 +19,12 @@
  * Changes in version 1.3 (Module Assembly - Web Arena - Local Chat Persistence):
  * - Added LOCAL_STORAGE_EXPIRE_TIME setting.
  *
- * @author amethystlei, flytoj2ee
- * @version 1.3
+ * Changes in version 1.4 (PoC Assembly - Share Member Status To Facebook and Twitter):
+ * - Added Facebook API Client ID to the configuration.
+ * - Added additional information to the configuration to handle social network messages.
+ *
+ * @author amethystlei, flytoj2ee, dexy
+ * @version 1.4
  */
 'use strict';
 /*global module, process*/
@@ -62,7 +66,12 @@ module.exports = function (grunt) {
                         { match : 'MEMBER_PHOTO_HOST', replacement: process.env.MEMBER_PHOTO_HOST },
                         { match : 'JWT_TOKEN', replacement: process.env.JWT_TOKEN },
                         { match : 'CHAT_LENGTH', replacement: process.env.CHAT_LENGTH },
-                        { match : 'LOCAL_STORAGE_EXPIRE_TIME', replacement: process.env.LOCAL_STORAGE_EXPIRE_TIME }
+                        { match : 'LOCAL_STORAGE_EXPIRE_TIME', replacement: process.env.LOCAL_STORAGE_EXPIRE_TIME },
+                        { match : 'FACEBOOK_API_ID', replacement: process.env.FACEBOOK_API_ID },
+                        { match : 'SOCIAL_STATUS_TEMPLATE', replacement: process.env.SOCIAL_STATUS_TEMPLATE },
+                        { match : 'SOCIAL_ARENA_URL', replacement: process.env.SOCIAL_ARENA_URL },
+                        { match : 'SOCIAL_ARENA_DESCRIPTION', replacement: process.env.SOCIAL_ARENA_DESCRIPTION },
+                        { match : 'SOCIAL_ARENA_TITLE', replacement: process.env.SOCIAL_ARENA_TITLE }
                     ]
                 },
                 files : [

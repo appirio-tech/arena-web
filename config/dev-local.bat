@@ -39,3 +39,15 @@ set JWT_TOKEN=tcjwt_vm
 
 set CHAT_LENGTH=400
 set LOCAL_STORAGE_EXPIRE_TIME=1800
+
+:: Facebook API client ID
+set FACEBOOK_API_ID=652496988181876
+
+:: Message template to post conestant status to Facebook and Twitter
+set SOCIAL_STATUS_TEMPLATE=I have participated in __MATCHES__ in #topcoder arena. My current rating is __RATING__.
+:: The url of the Web Arena used in posting to Facebook and Twitter
+set SOCIAL_ARENA_URL=https://arena.topcoder.com
+:: The Web Arena description used in posting to Facebook wall
+set SOCIAL_ARENA_DESCRIPTION=Algorithm matches for big brains. Solve these and bragging rights are yours.
+:: The Web Arena Title used in posting to Facebook wall
+set SOCIAL_ARENA_TITLE=TopCoder Arena

@@ -54,8 +54,12 @@
  * Changes in version 1.14 (Module Assembly - Web Arena - Local Chat Persistence):
  * - Added angular-local-storage component.
  *
+ * Changes in version 1.15 (PoC Assembly - Share Member Status To Facebook and Twitter):
+ * - Added facebook library and twitter directive.
+ * - Updated main.config to initialize Facebook library API ID.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.14
+ * @version 1.15
  */
 'use strict';
 /*jshint -W097*/
@@ -89,6 +93,7 @@ require('./../../bower_components/fullcalendar/fullcalendar.js');
 require('./../../bower_components/angulartics/dist/angulartics.min');
 require('./../../bower_components/angulartics/dist/angulartics-ga.min');
 require('./../../bower_components/angular-table/ng-table.min.js');
+require('./../../bower_components/angular-facebook/lib/angular-facebook');
 require('./../../thirdparty/jquery.qtip/jquery.qtip.min.js');
 require('./../../thirdparty/ng-scrollbar/dist/ng-scrollbar.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-transition.js');
@@ -166,8 +171,9 @@ directives.qTip = require('./directives/qTip.js');
 directives.sglclick = require('./directives/sglclick');
 directives.activeUser = require('./directives/activeUser');
 directives.overviewLeaderboard = require('./directives/overviewLeaderboard');
+directives.twitter = require('./directives/twitter');
 
-/*global $ : false, angular : false */
+/*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
 
 ////////////////////////////
@@ -177,7 +183,7 @@ directives.overviewLeaderboard = require('./directives/overviewLeaderboard');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'ngCustomScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'ngCustomScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook']);
 
 ///////////////
 // FACTORIES //
@@ -250,11 +256,12 @@ main.directive('qTip', directives.qTip);
 main.directive('sglclick', directives.sglclick);
 main.directive('activeuser', directives.activeUser);
 main.directive('overviewleaderboard', directives.overviewLeaderboard);
+main.directive('twitter', directives.twitter);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
 
-main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, themerProvider, $httpProvider) {
+main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpProvider', 'FacebookProvider', function ($stateProvider, $urlRouterProvider, themerProvider, $httpProvider, FacebookProvider) {
     if (config.staticFileHost === 'undefined') {
         config.staticFileHost = "";
     }
@@ -264,6 +271,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             label : 'Dark Theme',
             href : config.staticFileHost + '/css/bundle.css'
         }];
+    FacebookProvider.init(config.facebookApiId);
 
     themerProvider.setStyles(styles);
     themerProvider.setSelected(styles[0].key);
@@ -539,4 +547,15 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         return "";
     };
 
+    $rootScope.twitterLoaded = false;
+    /**
+     * Loads the Twitter library.
+     * @since 1.14
+     */
+    $rootScope.loadTwitterLibrary = function () {
+        $.getScript('//platform.twitter.com/widgets.js', function () {
+            $rootScope.twitterLoaded = true;
+        });
+    };
+    $rootScope.loadTwitterLibrary();
 }]);

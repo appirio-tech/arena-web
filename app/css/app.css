@@ -1870,6 +1870,27 @@ footer .right>span:nth-child(2) {
     cursor: pointer;
     line-height: 36px;
 }
+.fb-btn-post {
+    display: inline-block;
+    background-image: url(../img/facebook.png);
+    background-repeat: no-repeat;
+    background-size: 53px 19px;
+    content: '';
+    display: inline-block;
+    width: 55px;
+    height: 20px;
+    cursor: pointer;
+    border: 1px solid;
+    border-radius: 3px;
+}
+
+.fb-btn-post:hover {
+    opacity: 0.9;
+}
+
+.tweet-share {
+    display: inline-block;
+}
 .panel-custom .summaries {
     height: 115px;
     overflow-x: hidden;
@@ -5514,6 +5535,12 @@ footer .right>span:nth-child(2) {
 .validation-modal-body {
     padding: 0!important;
 }
+
+.modal-body .fbMsg-input {
+    width: 550px;
+    margin: 5px 5px 5px 15px;
+}
+
 .challengerWrapper .table .colR,
 .challengeWrapper .table .colR {
     width: 30px;
