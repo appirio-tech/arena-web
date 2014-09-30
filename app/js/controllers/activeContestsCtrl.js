@@ -36,8 +36,11 @@
  * Changes in version 1.9 (Module Assembly - Web Arena Bug Fix 20140909):
  * - Changed the text in registration error popup.
  *
+ * Changes in version 1.10 (PoC Assembly - Invite friends To Participate On A Match From Facebook and Twitter):
+ * - Added facebook / twitter invitation logic.
+ *
  * @author amethystlei, dexy, flytoj2ee, TCASSEMBLER
- * @version 1.9
+ * @version 1.10
  */
 'use strict';
 /*global module, angular, require*/
@@ -47,14 +50,15 @@
  *
  * @type {exports}
  */
-var helper = require('../helper');
+var helper = require('../helper'),
+    config = require('../config');
 
 /**
  * The controller for the active contests widget in the dashboard.
  *
  * @type {*[]}
  */
-var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper', '$modal', function ($scope, $rootScope, $state, socket, appHelper, $modal) {
+var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper', '$modal', 'Facebook', function ($scope, $rootScope, $state, socket, appHelper, $modal, Facebook) {
     var getPhase = function (contest, phaseTypeId) {
         var i;
         if (!contest.phases) {
@@ -79,6 +83,18 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.getPhaseTime = appHelper.getPhaseTime;
     $scope.range = appHelper.range;
     $scope.currentContest = 0;
+    $scope.tweetText = config.tweetText;
+    $scope.tweetUrl = config.tweetUrl;
+
+    /**
+     * Send facebook message.
+     */
+    $scope.sendFacebookMessage = function () {
+        Facebook.ui({
+            method: 'send',
+            link: config.facebookLink
+        });
+    };
 
     /*jslint unparam:true*/
     $scope.$on(helper.EVENT_NAME.CreateRoomListResponse, function (event, data) {
