@@ -11,8 +11,10 @@
                 <span>{{ countdownPrefix(contest) }}</span>
                 <span class="textRed" data-ng-show="isCountingDown(contest)">{{ displayCountDown(contest) }}.</span>
             </p>
+            <div data-ng-show="isShownRegistered(contest)">While you wait, you can challenge friends to participate in the match with you via <span class="facebookWrap" ng-click="sendFacebookMessage()"><span class="icon"></span><span class="text">Send</span></span> or <span class="twitter-custom tweet-share" twitter data-url="{{tweetUrl}}" data-message="{{tweetText}}"></span>.</div>
+            <div data-ng-hide="isShownRegistered(contest)" class="minSocialHeight"></div>
             <!-- /.infoRow -->
-            <div class="tabs">
+            <div class="tabs tabsMargin">
                 <ul class="nav nav-tabs hidden-xs">
                     <li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0)">Contest Summary</li>
                     <li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1)">Contest Schedule</li>

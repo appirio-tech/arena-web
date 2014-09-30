@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="{{$state.current.data.pageTitle}}" />
     <meta name="author" content="" />
+    <meta property="og:url" content="@@STATIC_FILE_HOST" />
+    <meta property="og:title" content="Topcoder Arena" />
+    <meta property="og:description" content="Topcoder Arena Web" />
     <link rel="shortcut icon" href="img/favicon.ico" />
 
     <title data-ng-bind="$state.current.data.pageTitle + ' - TopCoder Arena'">TopCoder Arena</title>    
@@ -38,5 +41,6 @@
       ga('create', '@@GOOGLE_ANALYTICS_TRACKING_ID', 'auto');
     </script>
 
+      <script src="http://platform.twitter.com/widgets.js"></script>
   </body>
 </html>

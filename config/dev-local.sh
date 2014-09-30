@@ -56,3 +56,7 @@ export SOCIAL_ARENA_URL=https://arena.topcoder.com
 export SOCIAL_ARENA_DESCRIPTION='Algorithm matches for big brains. Solve these and bragging rights are yours.'
 # The Web Arena Title used in posting to Facebook wall
 export SOCIAL_ARENA_TITLE='TopCoder Arena'
+
+export TWEET_TEXT='I am about to participate in a #topcoder arena match, and I am challenging you! To register for the match click arena.topcoder.com.'
+export TWEET_URL=arena.topcoder.com
+export FACEBOOK_LINK=arena.topcoder.com

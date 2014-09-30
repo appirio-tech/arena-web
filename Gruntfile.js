@@ -23,8 +23,11 @@
  * - Added Facebook API Client ID to the configuration.
  * - Added additional information to the configuration to handle social network messages.
  *
+ * Changes in version 1.5 (PoC Assembly - Invite friends To Participate On A Match From Facebook and Twitter):
+ * - Added facebook / twitter related setting.
+ *
  * @author amethystlei, flytoj2ee, dexy
- * @version 1.4
+ * @version 1.5
  */
 'use strict';
 /*global module, process*/
@@ -71,7 +74,10 @@ module.exports = function (grunt) {
                         { match : 'SOCIAL_STATUS_TEMPLATE', replacement: process.env.SOCIAL_STATUS_TEMPLATE },
                         { match : 'SOCIAL_ARENA_URL', replacement: process.env.SOCIAL_ARENA_URL },
                         { match : 'SOCIAL_ARENA_DESCRIPTION', replacement: process.env.SOCIAL_ARENA_DESCRIPTION },
-                        { match : 'SOCIAL_ARENA_TITLE', replacement: process.env.SOCIAL_ARENA_TITLE }
+                        { match : 'SOCIAL_ARENA_TITLE', replacement: process.env.SOCIAL_ARENA_TITLE },
+                        { match : 'TWEET_TEXT', replacement: process.env.TWEET_TEXT },
+                        { match : 'TWEET_URL', replacement: process.env.TWEET_URL },
+                        { match : 'FACEBOOK_LINK', replacement: process.env.FACEBOOK_LINK }
                     ]
                 },
                 files : [

@@ -58,8 +58,11 @@
  * - Added facebook library and twitter directive.
  * - Updated main.config to initialize Facebook library API ID.
  *
+ * Changes in version 1.16 (PoC Assembly - Invite friends To Participate On A Match From Facebook and Twitter):
+ * - Added angular-facebook module and related config.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.15
+ * @version 1.16
  */
 'use strict';
 /*jshint -W097*/

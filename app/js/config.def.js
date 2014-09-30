@@ -23,6 +23,9 @@ module.exports = {
             description: '@@SOCIAL_ARENA_DESCRIPTION',
             title: '@@SOCIAL_ARENA_TITLE'
         }
-    }
+    },
+    tweetText: '@@TWEET_TEXT',
+    tweetUrl: '@@TWEET_URL',
+    facebookLink: '@@FACEBOOK_LINK'
 };
 
