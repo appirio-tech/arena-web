@@ -245,7 +245,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     });
                     $scope.problemLoaded = true;
                     // broadcast problem-load message to child states.
-                    $scope.$broadcast('problem-loaded');
+                    $rootScope.$broadcast('problem-loaded');
                     startTimer();
                 }
             }

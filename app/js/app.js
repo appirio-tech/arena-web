@@ -61,8 +61,12 @@
  * Changes in version 1.16 (PoC Assembly - Invite friends To Participate On A Match From Facebook and Twitter):
  * - Added angular-facebook module and related config.
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.16
+ * Changes in version 1.17 (F2F Web Arena - Match Clock Visibility)
+ * - Added new directory codingTime
+ * - Added new controller userCodingTimeCtrl
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.17
  */
 'use strict';
 /*jshint -W097*/
@@ -103,7 +107,7 @@ require('./../../thirdparty/bootstrap-notify/js/bootstrap-transition.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-alert.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-notify.js');
 require('./../../thirdparty/ng-scrollbar/dist/ng-customscrollbar.js');
-require('./../../bower_components/angular-local-storage/angular-local-storage.js');
+require('./../../bower_components/angular-local-storage/dist/angular-local-storage.js');
 
 var config = require('./config.js');
 
@@ -149,6 +153,7 @@ controllers.userContestDetailCtrl = require('./controllers/userContestDetailCtrl
 controllers.testPanelCtrl = require('./controllers/testPanelCtrl');
 controllers.activeUsersCtrl = require('./controllers/activeUsersCtrl');
 controllers.overviewLeaderboardCtrl = require('./controllers/overviewLeaderboardCtrl');
+controllers.userCodingTimeCtrl = require('./controllers/userCodingTimeCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -175,6 +180,7 @@ directives.sglclick = require('./directives/sglclick');
 directives.activeUser = require('./directives/activeUser');
 directives.overviewLeaderboard = require('./directives/overviewLeaderboard');
 directives.twitter = require('./directives/twitter');
+directives.codingTime = require('./directives/codingTime');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -232,6 +238,7 @@ main.controller('userContestDetailCtrl', controllers.userContestDetailCtrl);
 main.controller('testPanelCtrl', controllers.testPanelCtrl);
 main.controller('activeUsersCtrl', controllers.activeUsersCtrl);
 main.controller('overviewLeaderboardCtrl', controllers.overviewLeaderboardCtrl);
+main.controller('userCodingTimeCtrl', controllers.userCodingTimeCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -260,6 +267,7 @@ main.directive('sglclick', directives.sglclick);
 main.directive('activeuser', directives.activeUser);
 main.directive('overviewleaderboard', directives.overviewLeaderboard);
 main.directive('twitter', directives.twitter);
+main.directive('codingTime', directives.codingTime);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //

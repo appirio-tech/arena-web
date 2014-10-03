@@ -52,6 +52,6 @@ set SOCIAL_ARENA_DESCRIPTION=Algorithm matches for big brains. Solve these and b
 :: The Web Arena Title used in posting to Facebook wall
 set SOCIAL_ARENA_TITLE=TopCoder Arena
 
-set TWEET_TEXT='I am about to participate in a #topcoder arena match, and I am challenging you! To register for the match click arena.topcoder.com.'
+set TWEET_TEXT=I am about to participate in a #topcoder arena match, and I am challenging you! To register for the match click arena.topcoder.com.
 set TWEET_URL=arena.topcoder.com
 set FACEBOOK_LINK=arena.topcoder.com

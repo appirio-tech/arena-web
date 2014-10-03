@@ -24,6 +24,11 @@ body a {cursor: pointer;}
 .anon-header,
 .header {
     background-repeat: repeat-x;
+    height: 62px;
+}
+/* To tackle fixed top nav*/
+.mainContainer {
+    margin-top: 62px;
 }
 .anon-header .navbar .navbar-brand,
 .header .navbar-brand,
@@ -55,16 +60,6 @@ body a {cursor: pointer;}
 }
 .btn:hover {
     color: #fff;
-}
-/***************header style*/
-.anon-header,
-.header {
-    height: 62px;
-    background-position: 0 0;
-    background-color: transparent;
-    position:relative;
-    width:100%;
-    z-index:100;
 }
 /* 'topcoder arena' */
 .anon-header .navbar .container-fluid {
@@ -228,7 +223,7 @@ body a {cursor: pointer;}
     margin-right: 0;
     padding-right: 15px;
 }
-.timeItem {
+.timeItem, .codingTimeItem {
     padding: 17px 0 0;
 }
 .userInfo > li {
@@ -753,6 +748,16 @@ body a {cursor: pointer;}
     /*line-height: 22px;*/
     letter-spacing: -0.030em;
 }
+.codingTime {
+    display: block;
+    width: 160px;
+    padding-right: 33px;
+    font-size: 14px;
+    text-align: right;
+    color: #687376;
+    /*line-height: 22px;*/
+    letter-spacing: -0.030em;
+}
 .connectionStatus {
     display: block;
     width: 160px;
@@ -791,8 +796,8 @@ body a {cursor: pointer;}
     width: 95px;
     text-align: left;
 }
-.codeArea .titleBar .textGreen {color: #5fb806;}
-.codeArea .titleBar .textRed {color: #f40000;}
+.textGreen {color: #5fb806;}
+.textRed {color: #f40000;}
 .dashboard .titleBar .title {
     font: 300 26px/35px 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;/*Light*/
     margin: 0;
@@ -4748,7 +4753,8 @@ footer .right>span:nth-child(2) {
         margin-top: 20px;
     }
     .header .navIcons > li,
-    .header .timeItem {
+    .header .timeItem,
+    .header .codingTimeItem {
         width: 100%;
         padding-left: 15px;
         border:1px solid #2d2f30;
@@ -4798,7 +4804,8 @@ footer .right>span:nth-child(2) {
         background-repeat: repeat-x;
         padding-left: 15px;
     }
-    .header .timeItem >div{
+    .header .timeItem >div,
+    .header .codingTimeItem >div {
         padding-left: 10px;
         padding-bottom: 13px;
     }
@@ -4820,7 +4827,8 @@ footer .right>span:nth-child(2) {
         padding-left: 0;
     }
     .tcTime,
-    .connectionStatus {
+    .connectionStatus,
+    .codingTime{
         text-align: left;
     }
     .codeArea .panel-custom,
