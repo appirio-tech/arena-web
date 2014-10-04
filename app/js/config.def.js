@@ -26,6 +26,7 @@ module.exports = {
     },
     tweetText: '@@TWEET_TEXT',
     tweetUrl: '@@TWEET_URL',
-    facebookLink: '@@FACEBOOK_LINK'
+    facebookLink: '@@FACEBOOK_LINK',
+    divsionLearderBoardLimit:'@@DIVISION_LEADERBOARD_LIMIT'
 };
 

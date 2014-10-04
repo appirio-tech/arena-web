@@ -46,8 +46,11 @@
  * Changes in version 1.9 (Module Assembly - Web Arena UI - Challenges and Challengers):
  * - Added logic to support challenges and challengers table.
  *
+ * Changes in version 2.0 (Web Arena - Division Leaderboard Pagination):
+ * - Added division leaderboard pagination
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.9
+ * @version 2.0
  */
 'use strict';
 /*jshint -W097*/
@@ -60,15 +63,98 @@
  *
  * @type {exports}
  */
-var helper = require('../helper');
-
+var helper = require('../helper'),
+    config = require('../config');
 /**
  * The main controller for the room summary page.
  *
  * @type {*[]}
  */
 var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location', '$timeout', 'socket', '$window', 'appHelper', function ($scope, $stateParams, $rootScope, $location, $timeout, socket, $window, appHelper) {
-    /**
+
+// page for Division Leaderboard
+    $scope.numOfPage = config.divsionLearderBoardLimit;
+    $scope.currentPage = 0;
+    $scope.setCurrentPage = function (index) {
+        $scope.currentPage = index;
+    };
+// limit the page item length
+    function filterPageItem(items) {
+
+        var pageNumber = items.length, cpage = $scope.currentPage + 1,
+            // limit size param
+            showPageLength = 13, result = [], i;
+
+        if (cpage > pageNumber) {
+            cpage = pageNumber;
+        }
+        if (cpage < 1) {
+            cpage = 1;
+        }
+
+        for (i = 1; i <= pageNumber; i++) {
+            if (cpage <= 6 + showPageLength) {
+                if (pageNumber > 7 + showPageLength) {
+                    if (i !== 1 && i !== pageNumber) {
+                        if (cpage <= 4 + showPageLength && i > 6 + showPageLength) {
+                            continue;
+                        } else if (cpage > 4 + showPageLength && pageNumber - cpage > 2 + showPageLength && Math.abs(i - cpage) > 2 + showPageLength / 2) {
+                            continue;
+                        } else if (cpage > 4 + showPageLength && pageNumber - cpage < 2 + showPageLength) {
+                            if (i < cpage && pageNumber - cpage + cpage - i > 4 + showPageLength) {
+                                continue;
+                            }
+                        }
+
+                    }
+                }
+
+            } else if (cpage > 6 + showPageLength && cpage < pageNumber - 3 - showPageLength) {
+
+                if (i != 1 && i !== pageNumber && Math.abs(i - cpage) > 2 + showPageLength / 2) {
+                    continue;
+                }
+
+            } else if (cpage > 6 + showPageLength && cpage >= pageNumber - 3 - showPageLength) {
+                if (i !== 1 && i !== pageNumber) {
+                    if (i < cpage) {
+                        if (pageNumber - cpage + cpage - i > 5 + showPageLength) {
+                            continue;
+                        }
+                    }
+                }
+            }
+            var showi = i;
+            if (i === 1 && cpage >= 5 + showPageLength && pageNumber > 7 + showPageLength) {
+                showi = "1...";
+            }
+            if (i === pageNumber && pageNumber - cpage >= 4 + showPageLength && i > 6 + showPageLength) {
+                showi = "..." + i;
+            }
+
+            result.push({i: i - 1, show: showi});
+        }
+        return result;
+    }
+
+    var lastPageNums = [], lastInvokeTime = 0;
+// get pagination index
+    $scope.range = function (data, num) {
+
+        if (new Date().getTime() - lastInvokeTime < 500) {
+            return lastPageNums;
+        }
+
+        if (num === 0) {
+            return [];
+        }
+        lastInvokeTime = new Date().getTime();
+        var len = data.length % num !== 0 ? (data.length - data.length % num) / num + 1 : (data.length - data.length % num) / num;
+        lastPageNums = new [].constructor(len);
+        lastPageNums = filterPageItem(lastPageNums);
+        return lastPageNums;
+    };
+     /**
      * Check if the client suppports touch screen.
      *
      * @returns {boolean} true if the client supports touch screen.
@@ -359,6 +445,9 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         }
     };
 
+
+
+
     // Closes the opened division summary on page leaving.
     $window.onbeforeunload = onLeavingContestDetailPage;
     $scope.$on("$destroy", onLeavingContestDetailPage);
@@ -436,12 +525,20 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         } else {
             $scope.getKeys(viewOn).leaderboardKey = toggleKey($scope.getKeys(viewOn).leaderboardKey, key);
             $scope.$broadcast('rebuild:leaderboardTable');
+            $scope.setCurrentPage(0);
         }
     };
 
     /**
+     * show pagination only in division leaderboard panel.
+     */
+    $scope.isShowPage = function () {
+        return $rootScope.currentViewOn !== 'room';
+    };
+
+    /**
      * Set the view on Room, Division I, or Division II tab.
-     *
+     * Not limit page size when in room tab.
      * @param view can be 'room', 'divOne', 'divTwo'
      */
     $scope.setViewOn = function (view) {
@@ -449,9 +546,12 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         var divID = helper.VIEW_ID[view];
         if (view !== 'room') {
             getDivSummary($scope.contest.roundID, divID);
+            $scope.numOfPage = config.divsionLearderBoardLimit;
         } else {
+            $scope.numOfPage = 999999;
             closeLastDivSummary();
             $scope.leaderboard = [];
+
             $scope.isDivLoading = false;
         }
         $scope.viewOn = view;
@@ -770,7 +870,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         } else {
             $('.filterPanel').addClass('largeSize');
             $scope.previousChallengeHandle = handle;
-            $scope.getKeys(viewOn).challengeFilterKey='specific';
+            $scope.getKeys(viewOn).challengeFilterKey = 'specific';
             $scope.getKeys(viewOn).challengeFilter.challengerHandle = handle;
             $scope.challengeHandleString = handle;
             challengeFilter.qtip('api').render();

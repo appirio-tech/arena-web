@@ -103,7 +103,7 @@ require('./../../thirdparty/bootstrap-notify/js/bootstrap-transition.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-alert.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-notify.js');
 require('./../../thirdparty/ng-scrollbar/dist/ng-customscrollbar.js');
-require('./../../bower_components/angular-local-storage/angular-local-storage.js');
+require('./../../bower_components/angular-local-storage/dist/angular-local-storage.js');
 
 var config = require('./config.js');
 
