@@ -77,7 +77,8 @@ module.exports = function (grunt) {
                         { match : 'SOCIAL_ARENA_TITLE', replacement: process.env.SOCIAL_ARENA_TITLE },
                         { match : 'TWEET_TEXT', replacement: process.env.TWEET_TEXT },
                         { match : 'TWEET_URL', replacement: process.env.TWEET_URL },
-                        { match : 'FACEBOOK_LINK', replacement: process.env.FACEBOOK_LINK }
+                        { match : 'FACEBOOK_LINK', replacement: process.env.FACEBOOK_LINK },
+                        { match : 'DIVISION_LEADERBOARD_LIMIT', replacement: process.env.DIVISION_LEADERBOARD_LIMIT }
                     ]
                 },
                 files : [

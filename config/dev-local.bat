@@ -55,3 +55,5 @@ set SOCIAL_ARENA_TITLE=TopCoder Arena
 set TWEET_TEXT=I am about to participate in a #topcoder arena match, and I am challenging you! To register for the match click arena.topcoder.com.
 set TWEET_URL=arena.topcoder.com
 set FACEBOOK_LINK=arena.topcoder.com
+
+set DIVISION_LEADERBOARD_LIMIT=20

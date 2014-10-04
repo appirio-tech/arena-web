@@ -334,7 +334,7 @@
                                         <div class="innerWrapper">
                                             <table class="table table-condensed">
                                                 <tbody>
-                                                     <tr data-ng-repeat="coder in getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey">
+                                                     <tr data-ng-repeat="coder in getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey | startFrom: currentPage*numOfPage | limitTo: numOfPage">
                                                         <td class="col1">{{viewOn=='room' ? coder.roomPlace : coder.divPlace}}</td>
                                                         <td class="colR" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
                                                             --><!-- avoid blank
@@ -355,6 +355,9 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                        </div>
+                                        <div class="paginator"  data-ng-show='isShowPage()' >
+                                            <span      data-ng-repeat="n in range((getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter ), numOfPage)" data-ng-class="{'textActive': n.i == currentPage}" data-ng-click="setCurrentPage(n.i)">{{n.show}}</span>
                                         </div>
                                     </div><!-- /.tableDiv .scroll -->
                                     <div class="tableDiv default" data-ng-class="{moreProblemTbl:contest.problems[divisionID].length>3,normal:contest.problems[divisionID].length<=3}">
