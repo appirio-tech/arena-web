@@ -281,10 +281,10 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
              */
             var showDetailModal = function (data, status) {
                 $scope.closeDetailDialog();
-                $scope.openDetailModal({'title': 'Error', 'detail': 'Fail to create contest: ' + getErrorDetail(data, status), 'enableClose': true});
+                $scope.openDetailModal({'title': 'Error', 'detail': 'Fail to create match: ' + getErrorDetail(data, status), 'enableClose': true});
             };
 
-            $scope.openDetailModal({'title': 'Saving contest data', 'detail': 'Please wait for saving contest data.', 'enableClose': false});
+            $scope.openDetailModal({'title': 'Saving match data', 'detail': 'Please wait for saving match data.', 'enableClose': false});
 
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
@@ -312,7 +312,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                                             showDetailModal(data, status);
                                         } else {
                                             $scope.closeDetailDialog();
-                                            $scope.openDetailModal({'title': 'Success', 'detail': 'Success to create contest.', 'enableClose': true});
+                                            $scope.openDetailModal({'title': 'Success', 'detail': 'Success to create match.', 'enableClose': true});
                                         }
                                     }).error(function (data, status, headers, config) {
                                             showDetailModal(data, status);

@@ -13,7 +13,7 @@
         "status": "[...]",
         "message": "Lorem ipsum dolor sit amet.",
         "action": {
-            "question": "Do you want to move to the Contest room",
+            "question": "Do you want to move to the Match room",
             "target": "#/u/contests/1001"
         }
     }
