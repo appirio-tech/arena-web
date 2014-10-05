@@ -349,8 +349,8 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
         .state('user.contestSummary', {
             url: '/contests/{contestId}/{divisionId}/summary/{viewOn}',
             data: {
-                pageTitle: "Contest",
-                pageMetaKeywords: "contest"
+                pageTitle: "Match",
+                pageMetaKeywords: "match"
             },
             templateUrl: 'partials/user.contest.detail.html',
             controller: 'userContestDetailCtrl'

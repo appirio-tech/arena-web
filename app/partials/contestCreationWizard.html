@@ -1,4 +1,4 @@
-<div class="modal-header wizardHeader">Contest Wizard<a class="cancel" data-ng-click="cancel();"></a></div>
+<div class="modal-header wizardHeader">Match Wizard<a class="cancel" data-ng-click="cancel();"></a></div>
 <div class="modal-body wizardBody">
     <ul class="nav indicator" role="tablist">
         <li data-ng-class="{active: index==1, clickable: index==4}" class="item-1" data-ng-click="navTo(1)"><span>Step 1. Overview</span></li><!-- avoid whitespace
@@ -13,7 +13,7 @@
                 <section class="information col-lg-7 col-md-7 col-sm-12 col-xs-12">
                     <h2 class="hide">Basic Information</h2>
                     <fieldset class="contestName" data-ng-class="{error: !formValid.contestName}">
-                        <label for="contestName">Contest Name</label>
+                        <label for="contestName">Match Name</label>
                         <div class="inputBorder contestNameInput">
                             <input type="text" name="contestName" id="contestName" class="nameInput" data-ng-model="$parent.contestName" required maxlength="50"/>
                         </div>
@@ -60,7 +60,7 @@
                 <section class="calendarSec col-lg-5 col-md-5 col-sm-12 col-xs-12">
                     <h2 class="hide">calendar</h2>
                     <fieldset class="startDate" data-ng-class="{error: !formValid.startDate}">
-                        <label for="startDate">Select Contest Start Date</label><div class="inputBorder"><input type="text" name="startDate" id="startDate" data-ng-model="$parent.startDate" readonly required/></div>
+                        <label for="startDate">Select Match Start Date</label><div class="inputBorder"><input type="text" name="startDate" id="startDate" data-ng-model="$parent.startDate" readonly required/></div>
                     </fieldset>
                     <div data-ui-calendar="contestCalConfig.calendar" data-ng-model="contestCalendarEventSources" data-calendar="contestCalendar" class="calendar" id="contestCalendar"></div>
                     <fieldset class="startTime" data-ng-class="{error: !formValid.startHh || !formValid.startMm}">
@@ -76,7 +76,7 @@
         </div>
         <!-- step 2. Sponsorship -->
         <div class="tabContent step-2" data-ng-show="index==2">
-            <fieldset class="officialRated"><input type="checkbox" name="officialRated" id="officialRated" data-ng-model="officialRated" class="checkboxInput"><label for="officialRated" class="checkboxLbl">Official rated contest</label></fieldset>
+            <fieldset class="officialRated"><input type="checkbox" name="officialRated" id="officialRated" data-ng-model="officialRated" class="checkboxInput"><label for="officialRated" class="checkboxLbl">Official rated Match</label></fieldset>
             <div class="panel sponsorInfo">
                 <a data-ng-click="toggle('openSponsorInfo')" class="panel-heading" data-ng-class="{open:openSponsorInfo}"><span>Add Sponsorship Info</span></a>
                 <div class="panel-body" data-ng-show="openSponsorInfo">
@@ -100,7 +100,7 @@
         </div>
         <!-- step 3. Advance Setting-->
         <div class="tabContent step-3" data-ng-show="index==3">
-            <p class="info">On this step you can customize exactly how your contest will run. These are preset to [topcoder] standard SRM settings; <br/>leave them unchanged to adhere to [topcoder]'s tried and true contest style.</p>
+            <p class="info">On this step you can customize exactly how your match will run. These are preset to [topcoder] standard SRM settings; <br/>leave them unchanged to adhere to [topcoder]'s tried and true match style.</p>
             <!-- customized phase schedule -->
             <div class="panel phaseSchedule">
                 <a data-ng-click="toggle('openPhaseSchedule')" class="panel-heading" data-ng-class="{open:openPhaseSchedule}"><span>Customize Phase Schedule</span></a>
@@ -120,7 +120,7 @@
                                     <a data-ng-click="addStr('regStartMm')" class="addTri"></a>
                                     <a data-ng-click="minusStr('regStartMm')" class="subTri"></a>
                                 </div>
-                            </div><span>prior to contest</span>
+                            </div><span>prior to match</span>
                         </div>
                         <div class="codeLength">
                             <label>Coding Length</label><!--
@@ -139,7 +139,7 @@
                             </div>
                         </div>
                     </fieldset><!--
-                    --><div class="info spec">Registration will open specified amount of time prior to contest . Also Registration will always close five minutes before the contest start.</div>
+                    --><div class="info spec">Registration will open specified amount of time prior to match . Also Registration will always close five minutes before the match start.</div>
                     <hr data-ng-class="{disabled:removeInter}"/>
                     <fieldset data-ng-class="{disabled:removeInter}">
                         <div class="intermissionLength">
@@ -258,6 +258,6 @@
             <li class="previous" data-ng-hide="index==1 || index==4"><a class="btn btn-primary btnPrev" data-ng-click="prev();">Previous</a></li>
             <li class="next" data-ng-hide="index==4"><a class="btn btn-primary btnNext" data-ng-click="next(contestForm);">Next</a></li>
         </ul>
-        <div class="finalBtn"><a class="btn btn-primary" data-ng-show="index==4" data-ng-click="ok();">Launch Contest!</a></div>
+        <div class="finalBtn"><a class="btn btn-primary" data-ng-show="index==4" data-ng-click="ok();">Launch Match!</a></div>
     </form>
 </div>

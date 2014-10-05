@@ -1,13 +1,13 @@
 <div class="panel panel-custom panelContestStat">
     <div data-ng-show="isContestStarted(contest.phaseData) === 0">
         <div class="panel-heading">
-            Contest Overview
+            Match Overview
         </div>
         <div class="panel-body">
             <div class="overview">
                 <div>
                     <div class="column">
-                        <span>Contest Organizer</span>
+                        <span>Match Organizer</span>
                     </div><!-- 
                     avoid unnecessary blank
                     --><div class="column">
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="schedule">
-                <header class="textWhite">Contest Schedule</header>
+                <header class="textWhite">Match Schedule</header>
                 <div class="scheduleContent default" data-ng-show="isTouchDevice">
                     <div data-ng-repeat="phase in contest.phases"
                      data-ng-init="time0=getPhaseTime(phase, 0, contest.phaseData); time1=getPhaseTime(phase, 1, contest.phaseData);" class="details"  data-ng-class="{singleLine: !time1.value}">
