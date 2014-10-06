@@ -46,7 +46,7 @@ var contestCountdownCtrl = ['$scope', '$timeout', 'tcTimeService', function ($sc
      * @since 1.1
      */
     var phaseMessages = [
-        'The contest is inactive.',
+        'The match is inactive.',
         'Registration Phase will start in:',
         'Registration Phase will end in:',
         'Coding Phase will start in:',
@@ -55,7 +55,7 @@ var contestCountdownCtrl = ['$scope', '$timeout', 'tcTimeService', function ($sc
         'Challenge Phase will end in:',
         'Waiting for System Test Phase to start.',
         'System Test Phase is in process: ',
-        'Contest is complete.',
+        'Match is complete.',
         'Voting Phase is started.',
         'Tie Breaking Voting Phase is started.',
         'Moderated Chatting Phase is started.'

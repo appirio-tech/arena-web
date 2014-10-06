@@ -77,7 +77,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                             && contest.coderRooms && contest.coderRooms.length > 0) ? 'Enter' : '';
         },
         // show the active tab name when active contest widget is narrow
-        tabNames = ['Contest Summary', 'Contest Schedule', 'My Status', 'Rooms'],
+        tabNames = ['Match Summary', 'Match Schedule', 'My Status', 'Rooms'],
         popupDetailModalCtrl;
 
     $scope.getPhaseTime = appHelper.getPhaseTime;

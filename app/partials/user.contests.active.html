@@ -1,6 +1,6 @@
 <div class="panel panel-custom">
 	<div class="panel-heading">
-        Active Contests
+        Active Matches
     </div>
     <div class="panel-body" data-ng-show="getContests().length > 0">
         <div data-ng-repeat="contest in getContests() track by $index" data-ng-show="$index == currentContest" class="mainContent">
@@ -16,8 +16,8 @@
             <!-- /.infoRow -->
             <div class="tabs tabsMargin">
                 <ul class="nav nav-tabs hidden-xs">
-                    <li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0)">Contest Summary</li>
-                    <li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1)">Contest Schedule</li>
+                    <li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0)">Match Summary</li>
+                    <li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1)">Match Schedule</li>
                     <li data-ng-class="{'textActive': contest.detailIndex == 3}" data-ng-click="setDetailIndex(contest, 3)" data-ng-show="isShownRooms(contest)">Rooms</li>
                 </ul>
                 <!-- button and label will show when window is very narrow -->
@@ -27,8 +27,8 @@
                             {{ getTabName(contest.detailIndex) }}<b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0);">Contest Summary</li>
-                            <li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1);">Contest Schedule</li>
+                            <li data-ng-class="{'textActive': contest.detailIndex == 0}" data-ng-click="setDetailIndex(contest, 0);">Match Summary</li>
+                            <li data-ng-class="{'textActive': contest.detailIndex == 1}" data-ng-click="setDetailIndex(contest, 1);">Match Schedule</li>
                             <li data-ng-class="{'textActive': contest.detailIndex == 3}" data-ng-click="setDetailIndex(contest, 3);" data-ng-show="isShownRooms(contest)">Rooms</li>
                         </ul>
                     </li>
@@ -72,7 +72,7 @@
     <div class="panel-body" data-ng-show="getContests().length == 0">
         <div class="mainContent">
             <p class="infoRow">
-                <span class="textWhite">There are no active contests. Please check the schedule and try again later.</span>
+                <span class="textWhite">There are no active matches. Please check the schedule and try again later.</span>
             </p>
         </div>
     </div>

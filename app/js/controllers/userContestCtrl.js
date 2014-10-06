@@ -65,7 +65,7 @@ var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket
         var initWithContest = function (contest) {
             // set page title
             $state.current.data.pageTitle = contest.contestName;
-            $state.current.data.pageMetaKeywords = contest.contestName + ",contest";
+            $state.current.data.pageMetaKeywords = contest.contestName + ",match";
         };
 
         // handle update round list response
