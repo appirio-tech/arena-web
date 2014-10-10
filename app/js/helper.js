@@ -73,8 +73,11 @@
  * Changes in version 1.18 (PoC Assembly - Share Member Status To Facebook and Twitter):
  * - Added FACEBOOK_TITLES, FACEBOOK_MESSAGES, SOCIAL constants to handle posting to Facebook and Twitter.
  *
+ * Changes in version 1.19 (Module Assembly - Web Arena UI - Contest Management and Problem Assignment v1.0)
+ * - Added ROUND_STATUS, MANAGE_CONTESTS_PAGE_LENGTH
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.18
+ * @version 1.19
  */
 
 module.exports = {
@@ -89,7 +92,8 @@ module.exports = {
         Logout: 'user.logout',
         Anonymous: 'anon',
         AnonymousHome: 'anon.home',
-        LoggingIn: 'loggingin'
+        LoggingIn: 'loggingin',
+        ContestManagement: 'user.contestManagement'
     },
 
     // Represents the event names
@@ -416,5 +420,14 @@ module.exports = {
             NumberEventsTag: '__MATCHES__',
             RatingTag: '__RATING__'
         }
-    }
+    },
+
+    // Round Status Codes
+    ROUND_STATUS: {
+        A : 'Active',
+        F : 'Finished',
+        P : "Pending"
+    },
+    // Number of rounds per page
+    MANAGE_CONTESTS_PAGE_LENGTH : 10
 };

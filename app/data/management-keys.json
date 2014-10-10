@@ -1,0 +1,55 @@
+{
+    "contest" : {
+        "type": [
+            "Single Round Match",
+            "Tournament Round",
+            "Practice Round",
+            "Moderated Chat Session",
+            "Long Round",
+            "Screening Tool Problem Sets",
+            "Weakest Link Round",
+            "Team Single Round Match",
+            "Team Tournament Round",
+            "Team Practice Round",
+            "Private Label Tournament",
+            "Marathon Match",
+            "Marathon Match Practice Round",
+            "Intel Marathon Match",
+            "Intel Marathon Match Practice Round",
+            "HS Single Round Match",
+            "HS Tournament Round",
+            "Marathon Match Tournament Round",
+            "Intro Event Round",
+            "Education Round",
+            "AMD Marathon Match",
+            "AMD Marathon Match Practice",
+            "Marathon Match QA"
+        ],
+        "status": [
+            "Active",
+            "Inactive",
+            "Finished",
+            "Pending",
+            "Ready"
+        ]
+    },
+    "problem": {
+        "type": [
+            "Single",
+            "Long",
+            "Team"
+        ],
+        "status": [
+            "Proposal Pending",
+            "Proposal Rejected",
+            "Proposal Approved",
+            "Submission Pending",
+            "Submission Rejected",
+            "Submission Approved",
+            "Testing",
+            "Final Testing",
+            "Ready",
+            "Used"
+        ]
+    }
+}

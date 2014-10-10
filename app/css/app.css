@@ -85,9 +85,9 @@ body a {cursor: pointer;}
 /* topcoder logo */
 .anon-header .navbar .navbar-brand,
 .navbar-brand {
-    background-position: -1px -51px;
+    background-position: -14px -25px;
     background-repeat: no-repeat;
-    padding: 24px 0 0 216px;
+    padding: 24px 0 0 176px;
     height: 0;
     overflow: hidden;
     display: inline-block;
@@ -162,6 +162,9 @@ body a {cursor: pointer;}
 .navIcons .iconTS:before{
     background-position: -175px 0;
 }
+.navIcons .iconCM:before {
+    background-position: -275px 0;
+}
 .header .navbar .navIcons>li>.iconCC:before {
     background-image: url(../img/wizard-icon.png);
     background-position: 0 0;
@@ -200,6 +203,9 @@ body a {cursor: pointer;}
 }
 .navIcons .active .iconTS:after {
     background: #bb70d1;
+}
+.navIcons .active .iconCM:after {
+    background: #29918f;
 }
 .navbar-collapse {
     margin-right: 30px;
@@ -4601,6 +4607,720 @@ footer .right>span:nth-child(2) {
 .detailPage section .tableDiv.scroll {display: block;}
 .detailPage section .tableDiv.default {display: none;}
 
+/*Contest Management Page*/
+.popupOpen {
+    overflow: hidden;
+}
+.contestManagement .titleBar {
+    height: 112px;
+}
+.contestManagement .titleBar .title {
+    margin-top: 33px;
+}
+.contestManagement .titleBar .btnRow {
+    padding-top: 41px; /*14px*/
+}
+.contestManagement .titleBar .btn {
+    width: 188px;
+    font-size: 16px;
+    padding-left: 12px;
+    padding-right: 0;
+}
+.contestManagement .panel-body .tabs, 
+.contestManagement .panel-body .content {
+    padding: 0 28px 0 29px;
+    position: relative;
+}
+.contestManagement .panel-body .nav {
+    padding: 14px 0;
+}
+.contestManagement .tabs .nav li {
+    padding: 0 25px;
+    position: relative;
+    cursor: pointer;
+} 
+.contestManagement .tabs .nav li:hover {
+    /*text-decoration: underline;*/
+}
+.contestManagement .tabs .nav li:nth-child(2) {
+    padding: 0 27px;
+} 
+.contestManagement .tabs .nav li:last-child {
+    padding: 0 24px;
+}
+.contestManagement .tabs .textActive:before {
+    content: '';
+    display: block;
+    height: 12px;
+    width: 21px;
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    margin-left: -10px;
+    background-position: -10px 0;
+}
+.contestManagement .tabs .note {
+    position: absolute;
+    right: 149px;
+    top: 13px;
+}
+.contestManagement .filterArea,
+.problemAssignmentPanel .filterArea {
+    display: inline-block;
+    position: absolute;
+    top: 12px;
+    right: 41px;
+}
+.contestManagement .filterToggle,
+.problemAssignmentPanel .filterToggle{
+    position: relative;
+    padding-left: 22px;
+}
+.contestManagement .filterToggle:hover,
+.problemAssignmentPanel .filterToggle:hover {
+    text-decoration: none;
+    opacity: 0.7;
+}
+.contestManagement .filterToggle:before,
+.problemAssignmentPanel .filterToggle:before {
+    content: '';
+    display: block;
+    height: 15px;
+    width: 15px;
+    position: absolute;
+    left: 0;
+    top: 2px;
+    background-position: -100px 0;
+}
+.contestFilter.qtip-default {
+    background-position: 0 -50px;
+    height: 201px;
+    width: 252px;
+}
+.contestFilter .linkRow {
+    text-align: right;
+    padding-right: 7px;
+}
+.contestFilter .closeLink {
+    display: inline-block;
+    position: relative;
+    margin-bottom: 39px;
+}
+.contestFilter .closeLink:before {
+    left: 3px;
+    top: 1px;
+}
+.contestFilter.qtip-default .qtip-content {
+    height: 193px;
+}
+.contestFilter .qtip-content {
+    padding-left: 12px;
+}
+.contestFilter .btnWrapper {
+   bottom: 1px;
+   left: 3px;
+}
+.contestFilter .contentWrapper .dropdown-menu.typeFilter {
+    max-width: 220px;
+    max-height: 320px;
+    padding: 0px;
+}
+.contestFilter .contentWrapper .dropdown-menu.typeFilter li a{
+    display: block;
+    padding: 3px 15px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    min-width: 210px;
+}
+
+.contestFilter .contentWrapper .dropdown-menu.typeFilter .active a{
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #428BCC;
+}
+.contestFilter .contentWrapper .dropdown-menu.typeFilter li a:hover {
+    text-decoration:none;
+    color:#262626;
+    background-color:#f5f5f5
+}
+.contestManagement .table {
+    margin-bottom: 2px;
+}
+.contestManagement .table>tbody>tr:last-child>td {
+    border-bottom-width: 0; 
+}
+.contestManagement .table>thead>tr>th {
+    line-height: 1.29em;
+    vertical-align: middle;
+    padding-top: 12px;
+    padding-bottom: 9px;
+}
+.contestManagement .table>tbody>tr>td {
+    vertical-align: top;
+}
+.contestManagement .table .colText {
+    padding-top: 15px;
+}
+.contestManagement .table .btn {
+    margin-top: 8px;
+    margin-bottom: 6px;
+    height: 26px;
+    width: 69px;
+    padding: 0;
+    font-weight: 300;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.contestManagement .table .btn:focus {
+    outline: 0;
+}
+.contestManagement .table .btn:hover {
+    opacity: 0.7;
+}
+.contestManagement .table .viewBtn {
+    padding-left: 19px;
+    position: relative;
+}
+.contestManagement .table .viewBtn:before {
+    content: '';
+    display: block;
+    height: 10px;
+    width: 14px;
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    background-position: -10px -25px;
+}
+.contestManagement .colHide span {
+    display: block;
+    margin-top: 11px;
+    height: 22px;
+    width: 59px;
+    background-position: -35px 0;
+}
+.contestManagement .colHide .on {
+    background-position: -35px -25px;
+}
+.contestManagement .sortableHeading span {
+    display: inline-block;
+    height: 8px;
+    width: 10px;
+    margin-left: 8px;
+    background-position: 0 -35px;
+}
+.contestManagement .sortableHeading .up {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.contestManagement .colTitle,
+.contestManagement .table>tbody>tr>.colTitle {
+    padding-left: 12px;
+}
+.contestManagement .colProblem {
+    width: 109px;
+}
+.contestManagement thead .colProblem,
+.contestManagement .table>tbody>tr>.colRegQuestion {
+    padding-left: 10px;
+}
+.contestManagement .colTerm {
+    width: 104px;
+}
+.contestManagement thead .colTerm {
+    padding-left: 18px;
+}
+.contestManagement .colRegQuestion {
+    width: 112px;
+}
+.contestManagement .colSurvey {
+    width: 116px;
+}
+.contestManagement thead .colSurvey,
+.contestManagement .table>tbody>tr>.colStatus {
+    padding-left: 8px;
+}
+.contestManagement .colStatus {
+    width: 108px;
+    min-width: 70px;
+}
+.contestManagement .table>thead>tr>th:last-child,
+.contestManagement .colHide {
+    width: 95px;
+    text-align: left;
+}
+.contestManagement .table>tbody>tr>.colHide {
+    padding-left: 11px;
+}
+.contestManagement .colStart {
+    width: 201px;
+    text-align: left;
+}
+.contestManagement .panel .paginator {
+    padding-top: 13px;
+    padding-bottom: 16px;
+}
+.popupOpen .problemAssignmentPanel {
+    overflow-x: auto;
+    overflow-y: auto;  
+}
+.problemAssignmentPanel {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #050505;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    overflow: hidden;
+}
+.problemAssignment {
+    background: #0e1010;
+    background: rgba(0, 0, 0, 0.32);
+}
+.problemAssignmentPanel>.content {
+    width: 1001px;
+    margin: 67px auto 0;
+}
+.problemAssignment>.content {
+    width: 464px;
+    margin: 217px auto 0;
+}
+.problemAssignmentPanel a:hover,
+.problemAssignmentPanel button:hover {
+    opacity: 0.7;
+}
+.problemAssignmentPanel .panel {
+    width: 1001px;
+    height: 771px;
+    position: relative;
+}
+@media only screen and (min-height: 772px) {
+    .problemAssignmentPanel>.content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -386px;
+        margin-left: -501px;
+    }
+}
+.problemAssignment .panel {
+    width: 464px;
+    height: 522px;
+    position: relative;
+}
+@media only screen and (min-height: 523px) {
+    .problemAssignment>.content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -261px;
+        margin-left: -232px;
+    }
+}
+.problemAssignmentPanel .panel-heading {
+    height: 37px;
+    padding: 7px 31px;
+}
+.problemAssignmentPanel .panel-heading .close {
+    height: 25px;
+    width: 29px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 1;
+}
+.problemAssignmentPanel .panel-heading .close:before {
+    content: '';
+    display: block;
+    height: 10px;
+    width: 11px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-position: -160px 0;
+}
+.problemAssignmentPanel .panel-heading .close:hover {
+    opacity: 0.7;
+}
+.problemAssignmentPanel .dropdown {
+    display: inline-block;
+    height: 36px;
+    width: 160px;
+    background: 0 0;
+    border: 1px solid #3D3D3D;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    position: relative;
+}
+.problemAssignmentPanel .dropdown-toggle {
+    color: #FFF;
+    display: block;
+    height: 34px;
+    width: 158px;
+    padding: 2px 9px;
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    font-weight: 300;
+    text-align: left;
+}
+.problemAssignmentPanel .dropdown .arrow {
+    display: block;
+    height: 5px;
+    width: 9px;
+    background-position: 0 0;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+.problemAssignment form {
+    padding-left: 41px;
+    padding-top: 8px;
+}
+.problemAssignment fieldset {
+    margin-bottom: 9px;
+    height: 36px;
+}
+.problemAssignment fieldset>div {
+    display: inline-block;
+}
+.problemAssignment fieldset .forRead {
+    padding-left: 14px;
+    padding-top: 5px;
+    padding-bottom: 6px;
+    margin-bottom: 1px;
+}
+.problemAssignment fieldset label:first-child {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 5px;
+    width: 89px;
+}
+.problemAssignment .dropdown {
+    width: 149px;
+}
+.problemAssignment .dropdown-toggle {
+    padding-left: 13px;
+}
+.problemAssignment .arrow {
+    right: 13px;
+}
+.problemAssignment .inputBorder {
+    border: 1px solid #fff;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    height: 36px;
+    width: 64px;
+    padding-left: 13px;
+}
+.problemAssignment .inputBorder>input {
+    height: 34px;
+    width: 49px;
+    border-width: 0;
+    background: transparent;
+}
+.problemAssignmentPanel .panel-footer {
+    background-color: transparent;
+    height: 72px;
+    padding-top: 21px;
+    padding-left: 28px;
+    padding-right: 32px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+.problemAssignment .panel-footer {
+    height: 82px;
+    padding-top: 20px;
+    padding-left: 27px;
+    padding-right: 26px;
+}
+.problemAssignmentPanel .panel-footer .btn {
+    width: 116px;
+    font-size: 16px;
+}
+.problemAssignmentPanel .panel-body .btnRow {
+    text-align: right;
+    padding-right: 26px;
+}
+.problemAssignmentPanel .btnAssign {
+    width: 129px;
+    margin-bottom: 19px;
+    margin-top: 12px;
+}
+.problemAssignmentPanel .btnLeft {
+    float: left;
+}
+.problemAssignmentPanel .btnRight {
+    float: right;
+}
+.problemAssignmentPanel h4 {
+    font-size: 16px;
+}
+.problemAssignmentPanel .editBtn{
+    height: 24px;
+    width: 53px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 12px;
+    padding: 3px 2px 4px;
+    margin-top: 5px;
+    margin-bottom: 7px;
+    margin-right: 13px;
+}
+.problemAssignmentPanel .delBtn {
+    display: inline-block;
+    width: 34px;
+    height: 24px;
+    position: relative;
+    vertical-align: top;
+    margin-top: 5px;
+}
+.problemAssignmentPanel .delBtn:before {
+    content: '';
+    display: block;
+    height: 9px;
+    width: 10px;
+    background-position: -140px 0;
+    position: absolute;
+    right: 12px;
+    top: 8px;
+}
+.problemAssignmentPanel .tHead {
+    margin-bottom: 0;
+}
+.problemAssignmentPanel .availableProblems {
+    position: relative;
+    padding: 39px 23px 0 25px;
+}
+.problemAssignmentPanel .assignedProblems {
+    border-top: 1px solid;
+    padding: 15px 23px 0 28px;
+    height: 196px;
+}
+.problemAssignmentPanel .availableProblems .tHead>thead>tr>th{
+    padding-top: 14px;
+    padding-bottom: 12px;
+}
+.problemAssignmentPanel .assignedProblems .tHead>thead>tr>th{
+    padding-top: 7px;
+    padding-bottom: 5px;
+}
+.problemAssignmentPanel .availableProblems .table>tbody>tr>td{
+    padding-top: 6px;
+    padding-bottom: 7px;
+}
+.problemAssignmentPanel .table>thead>tr>th,
+.problemAssignmentPanel .table>tbody>tr>td,
+.problemAssignmentPanel .table>thead>tr>th:last-child,
+.problemAssignmentPanel .table>tbody>tr>td:last-child {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+}
+.problemAssignmentPanel .table>tbody>tr:last-child>td {
+    border-bottom-width: 0;
+}
+.problemAssignmentPanel .availableProblems .tableDiv {
+    border-bottom: 1px solid;
+    height: 218px;
+    width: 968px;
+    margin-right: -17px;
+}
+.problemAssignmentPanel .availableProblems .tableDiv>div{
+    padding-right: 17px;
+}
+
+.problemAssignmentPanel .availableProblems .colDiv {
+    width: 102px;
+}
+.problemAssignmentPanel .availableProblems .colStatus {
+    width: 214px;
+}
+.problemAssignmentPanel .availableProblems .colType {
+    width: 101px;
+}
+.problemAssignmentPanel .availableProblems .colID {
+    width: 52px;
+}
+.problemAssignmentPanel .availableProblems .colCheck {
+    width: 54px;
+    padding-left: 14px;
+}
+.problemAssignmentPanel .assignedProblems .colCheck {
+    display: none;
+}
+.problemAssignmentPanel .assignedProblems .colID {
+    width: 45px;
+}
+.problemAssignmentPanel .assignedProblems .colType {
+    width: 70px;
+}
+.problemAssignmentPanel .assignedProblems .colStatus {
+    width: 118px;
+}
+.problemAssignmentPanel .assignedProblems .colDiv {
+    width: 75px;
+}
+.problemAssignmentPanel .assignedProblems .colDifficulty{
+    width: 86px;
+}
+.problemAssignmentPanel .assignedProblems .colPoints {
+    width: 52px;
+}
+.problemAssignmentPanel .assignedProblems .colOpenOrder {
+    width: 87px;
+}
+.problemAssignmentPanel .assignedProblems .colSubmitOrder {
+    width: 92px;
+}
+.problemAssignmentPanel .assignedProblems .colAction {
+    width: 100px;
+}
+.problemAssignmentPanel .assignedProblems .table>thead>tr>.colAction {
+    padding-left: 25px;
+}
+.problemAssignmentPanel .assignedProblems .tableDiv {
+    max-height: 110px;
+    height: 110px;
+    width: 965px;
+    margin-right: -17px;
+}
+.problemAssignmentPanel .assignedProblems .tableDiv>div {
+    padding-right: 17px;
+}
+/*searchArea*/
+.problemAssignmentPanel .searchArea {
+    height: 42px;
+    padding: 6px 28px 0 30px;
+}
+.problemAssignmentPanel .searchArea .search {
+    width: 941px;
+    height: 36px;
+    padding-left: 9px;
+    border: 1px solid;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    position: relative;
+}
+.problemAssignmentPanel .searchArea input {
+    width: 900px;
+    border-width: 0;
+    height: 34px;
+    background: transparent;
+}
+.problemAssignmentPanel .searchArea input::-ms-clear {
+    display: none;
+}
+.problemAssignmentPanel .search .searchIcon {
+    display: inline-block;
+    height: 20px;
+    width: 20px;   
+    position: absolute;
+    right: 9px;
+    top: 7px;
+}
+.problemAssignmentPanel .search .clearIcon {
+    display: inline-block;
+    text-align: right;
+    position: absolute;
+    right: 16px;
+    top: 4px;
+}
+.problemAssignmentPanel .tags {
+    text-align: right;
+    position: absolute;
+    /*width: 450px;*/
+    top: 3px;
+    right: 60px;
+}
+.problemAssignmentPanel .tags label {
+    display: inline-block;
+    height: 26px;
+    width: auto;
+    padding: 7px 15px 5px 26px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: red;
+    position: relative;
+    line-height: 1em;
+    margin-left: 9px;
+}
+.problemAssignmentPanel .tags .closeIcon {
+    display: inline-block;
+    height: 8px;
+    width: 9px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+.problemAssignmentPanel .tags .closeIcon:before {
+    content: '';
+    display: block;
+    height: 8px;
+    width: 9px;
+    background-position: -120px 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.problemAssignmentPanel .search .searchIcon:before {
+    content: '';
+    display: block;
+    height: 19px;
+    width: 15px;
+    background-position: -120px -25px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+/*filter*/
+.problemAssignmentPanel .filterArea {
+    top: 43px;
+}
+.problemAssignmentPanel .viewDD {
+    position: absolute;
+    top: 38px;
+    right: 26px;
+}
+/*radio button*/
+.problemAssignmentPanel .radioLbl {
+    display: inline-block;
+    height: 30px;
+    width: 20px;
+    position: relative;
+}
+.radioLbl:before {
+    content: '';
+    display: block;
+    height: 20px;
+    width: 20px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.problemAssignmentPanel .radioLbl:before {
+    top: 7px;
+}
+.problemAssignmentPanel .radioInput {
+    display: none;
+}
 @media only screen and (max-width: 1245px) {
     .inner { padding: 0;}
     .dashboard .titleBar .brand,
@@ -4695,6 +5415,10 @@ footer .right>span:nth-child(2) {
     }
     .panelContestStat .panel-body .scheduleContent {
         height: auto;
+    }
+    .contestManagement .table .colBtn,
+    .contestManagement .table .colStatus {
+        width: 90px;
     }
 }
 @media only screen and (max-width: 1121px) {
@@ -4870,6 +5594,13 @@ footer .right>span:nth-child(2) {
     .detailPage .panelSummary .panel-body .leftSec {
         border-right-width: 0;
     }
+    .contestManagement .table .colBtn,
+    .contestManagement .table .colStatus {
+        width: 80px;
+    }
+    .contestManagement .table .colStart {
+        width: auto;
+    }
 }
 @media only screen and (max-width: 789px) {
     /* fix size of active contests */
@@ -4906,6 +5637,14 @@ footer .right>span:nth-child(2) {
         width: 100%;
         min-width: 250px;
     }
+    /* Specific to contest management */
+    .dashboard .panel-custom.panelSummary.contestPanel {
+        min-width: 750px;
+    }
+    .contestManagement .table {
+        margin-top: 10px;
+    }
+    /* ./Specific to contest management */
     .dashboard .mainContent {
         width: 100%;
     }
@@ -5844,6 +6583,10 @@ table thead .sort.desc{
 .activeUserList .ngsb-scrollbar{
     background: #151717;
 }
+
+.hl-matched {
+    text-decoration: underline;
+}
 .marginTop {
     margin-top: -30px;
 }
@@ -5857,6 +6600,7 @@ table thead .sort.desc{
     height: 9px;
     background-position: -34px -56px;
     cursor:pointer;
+    margin-bottom: 10px;
 }
 
 .downScrollButton {
@@ -5869,6 +6613,10 @@ table thead .sort.desc{
     z-index:1;
     background-position: -33px -51px;
     cursor:pointer;
+}
+
+.ngsb-wrap .ngsb-scrollbar {
+    top: 10px;
 }
 .panel-body .mainContent .infoRow {
     margin: 0 0 -10px;

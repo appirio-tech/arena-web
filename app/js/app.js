@@ -64,9 +64,12 @@
  * Changes in version 1.17 (F2F Web Arena - Match Clock Visibility)
  * - Added new directory codingTime
  * - Added new controller userCodingTimeCtrl
+ * Changes in version 1.18 (Module Assembly - Web Arena UI - Contest Management and Problem Assignment v1.0)
+ * - Added contestManagementCtrl
  *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
  * @version 1.17
+ * 
  */
 'use strict';
 /*jshint -W097*/
@@ -151,6 +154,7 @@ controllers.notificationsCtrl = require('./controllers/notificationsCtrl');
 controllers.contestSummaryCtrl = require('./controllers/contestSummaryCtrl');
 controllers.userContestDetailCtrl = require('./controllers/userContestDetailCtrl');
 controllers.testPanelCtrl = require('./controllers/testPanelCtrl');
+controllers.contestManagementCtrl = require('./controllers/contestManagementCtrl');
 controllers.activeUsersCtrl = require('./controllers/activeUsersCtrl');
 controllers.overviewLeaderboardCtrl = require('./controllers/overviewLeaderboardCtrl');
 controllers.userCodingTimeCtrl = require('./controllers/userCodingTimeCtrl');
@@ -211,6 +215,7 @@ main.factory('notificationService', factories.notificationService);
 // FILTERS //
 main.filter('showByMonth', filters.showByMonth);
 main.filter('startFrom', filters.startFrom);
+main.filter('highlight', filters.highlight);
 
 /////////////////
 // CONTROLLERS //
@@ -236,6 +241,7 @@ main.controller('notificationsCtrl', controllers.notificationsCtrl);
 main.controller('contestSummaryCtrl', controllers.contestSummaryCtrl);
 main.controller('userContestDetailCtrl', controllers.userContestDetailCtrl);
 main.controller('testPanelCtrl', controllers.testPanelCtrl);
+main.controller('contestManagementCtrl', controllers.contestManagementCtrl);
 main.controller('activeUsersCtrl', controllers.activeUsersCtrl);
 main.controller('overviewLeaderboardCtrl', controllers.overviewLeaderboardCtrl);
 main.controller('userCodingTimeCtrl', controllers.userCodingTimeCtrl);
@@ -354,6 +360,15 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             },
             templateUrl: 'partials/user.contest.detail.html',
             controller: 'userContestDetailCtrl'
+        })
+        .state('user.contestManagement', {
+            url: '/contestManagement',
+            data: {
+                pageTitle: "Manage Contests",
+                pageMetaKeywords: "contestManagement"
+            },
+            templateUrl: 'partials/user.contest.management.html',
+            controller: 'contestManagementCtrl'
         })
         .state('user.profile', {
             url: '/profile',
