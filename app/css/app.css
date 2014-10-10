@@ -4645,15 +4645,18 @@ footer .right>span:nth-child(2) {
     top: 12px;
     right: 41px;
 }
-.filterToggle {
+.contestManagement .filterToggle,
+.problemAssignmentPanel .filterToggle{
     position: relative;
     padding-left: 22px;
 }
-.filterToggle:hover {
+.contestManagement .filterToggle:hover,
+.problemAssignmentPanel .filterToggle:hover {
     text-decoration: none;
     opacity: 0.7;
 }
-.filterToggle:before {
+.contestManagement .filterToggle:before,
+.problemAssignmentPanel .filterToggle:before {
     content: '';
     display: block;
     height: 15px;
@@ -4681,7 +4684,7 @@ footer .right>span:nth-child(2) {
     left: 3px;
     top: 1px;
 }
-.filterPanel.qtip-default .qtip-content {
+.contestFilter.qtip-default .qtip-content {
     height: 193px;
 }
 .contestFilter .qtip-content {
@@ -4691,12 +4694,12 @@ footer .right>span:nth-child(2) {
    bottom: 1px;
    left: 3px;
 }
-.filterPanel .contentWrapper .dropdown-menu.typeFilter {
+.contestFilter .contentWrapper .dropdown-menu.typeFilter {
     max-width: 220px;
     max-height: 320px;
     padding: 0px;
 }
-.filterPanel .contentWrapper .dropdown-menu.typeFilter li a{
+.contestFilter .contentWrapper .dropdown-menu.typeFilter li a{
     display: block;
     padding: 3px 15px;
     clear: both;
@@ -4706,13 +4709,13 @@ footer .right>span:nth-child(2) {
     min-width: 210px;
 }
 
-.filterPanel .contentWrapper .dropdown-menu.typeFilter .active a{
+.contestFilter .contentWrapper .dropdown-menu.typeFilter .active a{
     color: #fff;
     text-decoration: none;
     outline: 0;
     background-color: #428BCC;
 }
-.filterPanel .contentWrapper .dropdown-menu.typeFilter li a:hover {
+.contestFilter .contentWrapper .dropdown-menu.typeFilter li a:hover {
     text-decoration:none;
     color:#262626;
     background-color:#f5f5f5
