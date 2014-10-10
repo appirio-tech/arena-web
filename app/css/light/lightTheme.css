@@ -117,6 +117,22 @@ body{
     background-image: url(../img/light/sprite-wizard.png);
     background-repeat: no-repeat;
 }
+.contestManagement .tabs .textActive:before,
+.contestManagement .filterToggle:before,
+.problemAssignmentPanel .filterToggle:before,
+.contestFilter.qtip-default,
+.contestManagement .table .viewBtn:before,
+.contestManagement .colHide span,
+.contestManagement .sortableHeading span.up,
+.contestManagement .sortableHeading span.down,
+.problemAssignmentPanel .panel-heading .close:before,
+.problemAssignmentPanel .searchIcon:before,
+.problemAssignmentPanel .searchArea .tags .closeIcon:before,
+.problemAssignmentPanel .dropdown .arrow,
+.problemAssignmentPanel .colAction .delBtn:before  {
+    background-image: url(../img/light/sprite-contestManagement.png);
+    background-repeat: no-repeat;
+}
 /***************header style*/
 .userInfo .rating-none {
     color: #fff;
@@ -298,7 +314,8 @@ footer .right .sponsorLogo {
 .wizardBody .numberInput>div,
 .wizardBody .radioLbl:before,
 .wizardBody .selectorMenu ul:first-child,
-.step-3 .phaseSchedule hr {
+.step-3 .phaseSchedule hr,
+.radioLbl:before {
     border-color: #b7c9d7;
 }
 .wizardBody .error .inputBorder,
@@ -473,7 +490,8 @@ footer .right .sponsorLogo {
     border-color: #316F99;
 }
 .panelCodeEditor .settingsPanel .lineNumRadio:checked ~ .lineNumLbl:before,
-.wizardBody .radioInput:checked ~ .radioLbl:before {
+.wizardBody .radioInput:checked ~ .radioLbl:before,
+.problemAssignmentPanel .radioInput:checked ~ .radioLbl:before {
     box-shadow: 0 0 0 4px #fff inset,0 0 0 10px rgba(49,111,153,.98) inset;
 }
 .panelCodeEditor .settingsPanel .btn-settings {
@@ -815,8 +833,14 @@ footer .right .sponsorLogo {
 .filterPanel .closeLink {
     color: #316f99;
 }
+.contestFilter .closeLink {
+    color: #75a5c8;
+}
 .filterPanel .contentWrapper label {
     color: #316f99;
+}
+.contestFilter .contentWrapper label {
+    color: #636d70;
 }
 .filterPanel .contentWrapper .dropdown,
 .filterPanel .contentWrapper .filterInput {
@@ -827,6 +851,9 @@ footer .right .sponsorLogo {
 }
 .filterPanel .contentWrapper .dropdown-toggle {
     color: #316f99;
+}
+.contestFilter .contentWrapper .dropdown-toggle {
+    color: #636d70;
 }
 .filterPanel .btnWrapper {
     border-top: 1px solid #b7c9d7;
@@ -965,7 +992,90 @@ footer .right .sponsorLogo {
     filter: "alpha(opacity=100)";
     -ms-filter: "alpha(opacity=100)";
 }
-
+.contestManagement .panel {
+    border-width: 0;
+    background: #fff;
+}
+.contestManagement .panel-heading {
+    color: #fff;
+}
+.contestManagement .panel-body {
+    border: 1px solid #e9e6e6;
+}
+.contestManagement .panel-body .nav {
+    border-color: #75a5c8;
+    color: #636d70;
+}
+.contestManagement .panel .panel-body .textActive {
+    color: #75a5c8;
+}
+.contestManagement .redStar {
+    color: #ff0000;
+}
+.contestManagement .tabs .note {
+    color: #858383;
+}
+.filterToggle,
+.filterToggle:hover {
+    color: #fea700;
+}
+.contestManagement .table .btn {
+    background: #0999d1;
+}
+.contestManagement .table .viewBtn,
+.problemAssignmentPanel .tags label,
+.problemAssignmentPanel .colAction .editBtn {
+    background: #eaeaea;
+    color: #75a5c8;
+}
+.contestManagement .table .colTitle a{
+    color: #75a5c8;
+}
+.contestManagement .table>thead>tr>th {
+    color: #636d70;
+}
+.contestManagement .table>tbody>tr>td {
+    color: #636d70;
+}
+.contestManagement .panel .paginator {
+    background: transparent;
+    border-color: #e9e6e6;
+}
+.problemAssignmentPanel .panel {
+    border-color: #75a5c8;
+}
+.problemAssignmentPanel .panel-heading {
+    background: #75a5c8;
+    color: #fff;
+}
+.problemAssignmentPanel .btn {
+    background: #0999d1;
+}
+.problemAssignmentPanel .btnCancel,
+.problemAssignmentPanel .btnSave {
+    color: #fff;
+    color: rgba(255,255,255,0.5);
+}
+.problemAssignmentPanel .btnSave {
+    color: #fff;
+}
+.problemAssignmentPanel .dropdown-toggle,
+.problemAssignmentPanel .search input {
+    color: #316f99;
+}
+.problemAssignmentPanel .dropdown,
+.problemAssignmentPanel .inputBorder,
+.problemAssignmentPanel .searchArea .search{
+    border-color: #b7c9d7;
+}
+.problemAssignmentPanel .panel-footer,
+.problemAssignmentPanel .assignedProblems,
+.problemAssignmentPanel .availableProblems .tableDiv {
+    border-color: #b7c9d7;
+}
+.problemAssignmentPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
+    background: #75a5c8;
+}
 @media only screen and (max-width: 1121px) {
     .panelCodeEditor .panel-body .toolBar {
         padding-top: 30px;

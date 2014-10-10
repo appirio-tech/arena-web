@@ -1,0 +1,314 @@
+<div class="container-fluid inner">
+    <!-- content start -->
+    <div class="row-fluid dashboard contest detailPage contestManagement">
+        <div class="col-lg-12 text-left titleBar">
+            <div class="col-lg-6 col-md-7">
+                <h1 class="title">Manage Contests</h1>
+            </div>
+            <div class="col-lg-6 col-md-5 connection">
+                <!--div data-topcodertime></div><div data-connectionstatus></div-->
+                <div class="col-lg-12 col-md-12 btnRow"><a class="btn btnBack btnCreate" data-ng-click="createContest();">Create New Contest</a></div>
+            </div>
+        </div>
+        <div class="container-fluid row-fluid mainContent">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">
+                <div class="panel panel-custom panelSummary contestPanel">
+                    <div class="panel-heading">
+                        Topcoder Contests
+                    </div>
+                    <div class="panel-body">
+                        <div class="tabs">
+                            <ul class="nav nav-tabs">
+                                <li data-ng-class="{textActive: key==='active'}" data-ng-click="setDataTo('active')">Active Contests</li>
+                                <li data-ng-class="{textActive: key==='past'}" data-ng-click="setDataTo('past')">Past Contests</li>
+                                <li data-ng-class="{textActive: key==='hidden'}" data-ng-click="setDataTo('hidden')">Hidden Contests</li>
+                            </ul>
+                            <!-- /.nav-tabls -->
+                            <label class="note"><span class="redStar">* </span>Required</label>
+                            <div class="filterArea"><a id="managementFilter" class="filterToggle">Filter</a>
+                                <div>
+                                    <div class="linkRow"><a data-ng-click="closeQtip('management')" class="closeLink">Filter</a></div>
+                                    <div class="contentWrapper">
+                                        <div class="contentRow">
+                                            <label>Type</label>
+                                            <div class="dropdown">
+                                                <button class="dropdown-toggle" data-ng-click="rebuildTypeFilter();">{{getFilterKey('management', 'type')}}<span class="arrow"></span></button>
+                                                <ul class="dropdown-menu typeFilter" data-ng-custom-scrollbar data-rebuild-on="rebuild:typeFilter" data-reload-on="reload:typeFilter" data-rebuild-on-resize>
+                                                    <li data-ng-repeat="type in contestKeys.type track by $index" data-ng-class="{active:getFilterKey('management', 'type')==type,inactive:getFilterKey('management', 'type')!=type}"><a dropdown-toggle data-ng-click="setFilterKey('management', 'type', $index)">{{type}}</a></li>
+                                                </ul>
+                                            </div><!--/.dropdown-->
+                                        </div>
+                                        <div class="contentRow">
+                                            <label>Status</label>
+                                            <div class="dropdown">
+                                                <button class="dropdown-toggle">{{getFilterKey('management', 'status')}}<span class="arrow"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li data-ng-repeat="status in contestKeys.status track by $index" data-ng-class="{active:getFilterKey('management', 'status')==status,inactive:getFilterKey('management', 'status')!=status}"><a dropdown-toggle data-ng-click="setFilterKey('management', 'status', $index)">{{status}}</a></li>
+                                                </ul>
+                                            </div><!--/.dropdown-->
+                                        </div>
+                                    </div>
+                                    <div class="btnWrapper">
+                                        <a class="btn btnFilter" data-ng-click="filterBegin('management')">Filter</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.filterArea -->
+                        </div>
+                        <!-- /.tabs -->
+                        <div class="content">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="colTitle sortableHeading" data-ng-click="toggleSortKey(keys.managementKeys, 'title')">Contest Title<span data-ng-class="{up: keys.managementKeys.indexOf('title') == 0,down: keys.managementKeys.indexOf('-title') == 0}"></span></th>
+                                        <th class="colStart sortableHeading" data-ng-click="toggleSortKey(keys.managementKeys, 'start')">Contest Start<span data-ng-class="{up: keys.managementKeys.indexOf('start') == 0,down: keys.managementKeys.indexOf('-start') == 0}"></span></th>
+                                        <th class="colBtn colProblem">Problem Assignment <span class="redStar">*</span></th>
+                                        <th class="colBtn colTerm">Terms <span class="redStar">*</span></th>
+                                        <th class="colBtn colRegQuestion">Registration Questions</th>
+                                        <th class="colBtn colSurvey">Add Survey</th>
+                                        <th class="colStatus">Status</th>
+                                        <th class="colHide">Hide Contest</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-show="allRoundsArray.length == 0"><td>Loading Rounds. Please wait...</td></tr>
+                                    <tr data-ng-repeat="round in allRoundsArray | filter: keys.managementFilter: stringsEqual | orderBy: keys.managementKeys | startFrom: currentPage*pageLength | limitTo: pageLength">
+                                        <td class="colText colTitle"><a>{{round.title}}</a></td>
+                                        <td class="colText colStart">{{round.start | date: 'MMM d, yyyy hh:mm a'}} <span data-ng-show="round.start != ''">{{timeZone}}</span></td>
+                                        <td class="colBtn colProblem"><button class="btn" data-ng-class="{viewBtn: round.problems, addBtn: !round.problems}" data-ng-disabled="disableAssign" data-ng-click="openAssignProblem(round)">{{round.problems ? 'View' : 'Add'}}</button></td>
+                                        <td class="colBtn colTerm"><button class="btn" data-ng-class="{viewBtn: round.terms, addBtn: !round.terms}">{{round.terms ? 'View' : 'Add'}}</button></td>
+                                        <td class="colBtn colRegQuestion"><button class="btn" data-ng-class="{viewBtn: round.question, addBtn: !round.question}">{{round.question ? 'View' : 'Add'}}</button></td>
+                                        <td class="colBtn colSurvey"><button class="btn" data-ng-class="{viewBtn: round.survey, addBtn: !round.survey}">{{round.survey ? 'View' : 'Add'}}</button></td>
+                                        <td class="colText colStatus">{{round.status}}</td>
+                                        <td class="colHide"><span data-ng-class="{on: item.isHide, off: !item.isHide}"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="paginator">
+                            <span data-ng-repeat="n in range((allRoundsArray | filter: keys.managementFilter), pageLength) track by $index" data-ng-class="{'textActive': $index == currentPage}" data-ng-click="setCurrentPage($index)">{{$index+1}}</span>
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="problemAssignmentPanel" class="problemAssignmentPanel detailPage">
+    <div class="content">
+        <div class="panel panel-custom panel-problemAssignment">
+            <div class="panel-heading">
+                Problem Assignment Configuration
+                <a class="close" data-ng-click="cancelProblemAssignments()"></a>
+            </div>
+            <div class="panel-body">
+                <div class="searchArea">
+                    <div class="search">
+                        <input placeholder="Search" data-ng-model="searchText" data-ng-change="reloadScrollBar()"/>
+                        <div class="tags">
+                            <label data-ng-repeat="item in tags track by $index"><a
+                                data-ng-click="removeTag($index)" class="closeIcon"></a><span>{{item.type}} : {{item.value}}</span></label>
+                        </div>
+                        <a data-ng-show="tags.length > 0 || searchText.length > 0" data-ng-click="clearSearchArea()" class="clearIcon">clear</a>
+                        <a data-ng-hide="tags.length > 0 || searchText.length > 0" class="searchIcon"></a>
+                    </div>
+                </div>
+                <!-- /.searchArea -->
+                <div class="availableProblems">
+                    <h4>Available Contest Problems</h4>
+                    <div class="filterArea">
+                        <a id="assignmentFilter" class="filterToggle">Filter</a>
+                        <div>
+                            <div class="linkRow"><a data-ng-click="closeQtip('assignment')" class="closeLink">Filter</a></div>
+                            <div class="contentWrapper">
+                                <div class="contentRow">
+                                    <label>Type</label>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle">{{getFilterKey('assignment', 'type')}}<span class="arrow"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li data-ng-repeat="type in problemKeys.type track by $index" data-ng-class="{active:getFilterKey('assignment', 'type')==type,inactive:getFilterKey('assignment', 'type')!=type}"><a dropdown-toggle data-ng-click="setFilterKey('assignment', 'type', $index)">{{type}}</a></li>
+                                        </ul>
+                                    </div><!--/.dropdown-->
+                                </div>
+                                <div class="contentRow">
+                                    <label>Status</label>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle">{{getFilterKey('assignment', 'status')}}<span class="arrow"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li data-ng-repeat="status in problemKeys.status track by $index" data-ng-class="{active:getFilterKey('assignment', 'status')==status,inactive:getFilterKey('assignment', 'status')!=status}"><a dropdown-toggle data-ng-click="setFilterKey('assignment', 'status', $index)">{{status}}</a></li>
+                                        </ul>
+                                    </div><!--/.dropdown-->
+                                </div>
+                            </div>
+                            <div class="btnWrapper">
+                                <a class="btn btnFilter" data-ng-click="filterBegin('assignment')">Filter</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <table class="table table-condensed problemTable tHead">
+                            <thead>
+                                <tr>
+                                    <th class="colCheck">&nbsp;</th>
+                                    <th class="colID">ID</th>
+                                    <th class="colProblemName">Name</th>
+                                    <th class="colType">Type</th>
+                                    <th class="colStatus">Status</th>
+                                    <th class="colDiv">Division</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="tableDiv" data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:availableProblems" data-reload-on="reload:availableProblems">
+                            <div>
+                                <table class="table table-condensed problemTable">
+                                <tbody>
+                                    <tr data-ng-repeat="item in problemsToAssign | filter: keys.assignmentFilter: stringsEqual | filter: {name: searchText} : caseSensitiveCmp" data-ng-hide="item.checked">
+                                        <td class="colCheck">{{item.checked}}<input type="radio" name="problemToAssign" id="radio-{{item.id}}" data-ng-model="$parent.$parent.problemCheckedID" value="{{item.id}}" class="radioInput"/><label for="radio-{{item.id}}" class="radioLbl"></label></td>
+                                        <td class="colID">{{item.id}}</td>
+                                        <td class="colProblemName" data-ng-bind-html="item.name | highlight:searchText:true"></td>
+                                        <td class="colType">{{item.type}}</td>
+                                        <td class="colStatus">{{item.status}}</td>
+                                        <td class="colDiv">{{getDivisionName(item.proposedDivisionId)}}</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.availableProblems -->
+                <div class="btnRow">
+                    <a data-ng-click="assignProblem()" class="btn btnAssign">Assign Problem</a>
+                </div>
+                <div class="assignedProblems">
+                    <h4>Assigned Contest Problems</h4>
+                    <div class="content">
+                        <table class="table table-condensed problemTable tHead">
+                            <thead>
+                                <tr>
+                                    <th class="colCheck">&nbsp;</th>
+                                    <th class="colID">ID</th>
+                                    <th class="colProblemName">Name</th>
+                                    <th class="colType">Type</th>
+                                    <th class="colStatus">Status</th>
+                                    <th class="colDiv">Division</th>
+                                    <th class="colDifficulty">Difficulty</th>
+                                    <th class="colPoints">Points</th>
+                                    <th class="colOpenOrder">Open Order</th>
+                                    <th class="colSubmitOrder">Submit Order</th>
+                                    <th class="colAction">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="tableDiv" data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:assignedProblems" data-reload-on="reload:assignedProblems">
+                            <div>
+                                <table class="table table-condensed problemTable">
+                                <tbody>
+                                    <tr data-ng-repeat="item in assignedProblems">
+                                        <td class="colCheck">{{item.checked}}</td>
+                                        <td class="colID">{{item.id}}</td>
+                                        <td class="colProblemName">{{item.name}}</td>
+                                        <td class="colType">{{item.type}}</td>
+                                        <td class="colStatus">{{item.status}}</td>
+                                        <td class="colDiv">{{item.division.desc}}</td>
+                                        <td class="colDifficulty">{{item.difficulty.desc}}</td>
+                                        <td class="colPoints">{{item.pointValue}}</td>
+                                        <td class="colOpenOrder">{{item.openOrder}}</td>
+                                        <td class="colSubmitOrder">{{item.submitOrder}}</td>
+                                        <td class="colAction"><a data-ng-click="startEditProblem(item)" class="btn editBtn">Edit</a><a data-ng-click="removeProblem(item)" class="delBtn"></a></td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.assignedProblems -->
+            </div>
+            <div class="panel-footer">
+                <div class="btnRow">
+                    <a data-ng-click="cancelProblemAssignments()" class="btn btnCancel btnLeft">Cancel</a>
+                    <a data-ng-click="submitProblemAssignments()" class="btn btnSubmit btnRight">Submit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="customQtip"></div>
+</div>
+<!-- /.problemAssignmentPanel -->
+<div id="problemAssignment" class="problemAssignmentPanel problemAssignment">
+    <div class="content">
+        <div class="panel panel-custom panel-assignProblem">
+            <div class="panel-heading">
+                Problem Assignment
+                <a class="close" data-ng-click="cancelProblemAssignment()"></a>
+            </div>
+            <div class="panel-body">
+                <form class="info">
+                    <fieldset>
+                        <label>Class</label>
+                        <div class="forRead className">{{problemToAssign.name}}</div>
+                    </fieldset>
+                    <fieldset>
+                        <label>Method</label>
+                        <div class="forRead methodName">{{problemToAssign.componentData.methodName}}({{problemToAssign.componentData.paramTypes.toString()}})</div>
+                    </fieldset>
+                    <fieldset>
+                        <label>Type</label>
+                        <div class="forRead typeName">{{problemToAssign.type}}</div>
+                    </fieldset>
+                    <fieldset>
+                        <label>Division</label>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">{{problemToAssign.division.desc}}<span class="arrow"></span></button>
+                            <ul class="dropdown-menu">
+                                <li data-ng-class="{active: problemToAssign.division.desc=='Division-I'}"><a dropdown-toggle data-ng-click="problemToAssign.division.desc='Division-I';problemToAssign.division.id=1;">Division-I</a></li>
+                                <li data-ng-class="{active: problemToAssign.division.desc=='Division-II'}"><a dropdown-toggle data-ng-click="problemToAssign.division.desc='Division-II';problemToAssign.division.id=2;">Division-II</a></li>
+                            </ul>
+                        </div><!--/.dropdown-->
+                    </fieldset>
+                    <fieldset>
+                        <label>Difficulty</label>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">{{problemToAssign.difficulty.desc}}<span class="arrow"></span></button>
+                            <ul class="dropdown-menu">
+                                <li data-ng-class="{active:problemToAssign.difficulty.desc=='Level One'}"><a dropdown-toggle data-ng-click="problemToAssign.difficulty.desc='Level One';problemToAssign.difficulty.id=1;">Level One</a></li>
+                                <li data-ng-class="{active:problemToAssign.difficulty.desc=='Level Two'}"><a dropdown-toggle data-ng-click="problemToAssign.difficulty.desc='Level Two';problemToAssign.difficulty.id=2;">Level Two</a></li>
+                                <li data-ng-class="{active:problemToAssign.difficulty.desc=='Level Three'}"><a dropdown-toggle data-ng-click="problemToAssign.difficulty.desc='Level Three';problemToAssign.difficulty.id=3;">Level Three</a></li>
+                            </ul>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <label>Points</label>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">{{problemToAssign.pointValue}}<span class="arrow"></span></button>
+                            <ul class="dropdown-menu">
+                                <li data-ng-class="{active:problemToAssign.pointValue==250}"><a dropdown-toggle data-ng-click="problemToAssign.pointValue=250">250</a></li>
+                                <li data-ng-class="{active:problemToAssign.pointValue==500}"><a dropdown-toggle data-ng-click="problemToAssign.pointValue=500">500</a></li>
+                                <li data-ng-class="{active:problemToAssign.pointValue==1000}"><a dropdown-toggle data-ng-click="problemToAssign.pointValue=1000">1000</a></li>
+                            </ul>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <label for="openOrder">Open Order</label>
+                        <div class="inputBorder"><input type="text" name="openOrder" id="openOrder" required="" data-ng-pattern="/^\d+$/" data-ng-model="problemToAssign.openOrder" maxlength="5"/></div>
+                         <!-- data-ng-pattern="/^+?[1-9][0-9]*1/" --> 
+                    </fieldset>
+                    <fieldset>
+                        <label for="submitOrder">Submit Order</label>
+                        <div class="inputBorder"><input type="text" name="submitOrder" id="submitOrder" required="" data-ng-pattern="/^\d+$/" data-ng-model="problemToAssign.submitOrder" maxlength="5"/></div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="panel-footer">
+                <div class="btnRow">
+                    <a class="btn btnLeft btnCancel" data-ng-click="cancelProblemAssignment()">Cancel</a>
+                    <a class="btn btnRight btnSave" data-ng-click="saveProblemAssignment()">Save</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.problemAssignment -->
+<!-- content end -->
