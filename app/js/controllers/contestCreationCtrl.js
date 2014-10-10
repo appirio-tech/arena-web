@@ -23,8 +23,8 @@ var helper = require('../helper');
  * The create contest controller.
  * @type {*[]}
  */
-var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', '$timeout', '$filter', 'appHelper', '$rootScope', '$modal',  'sessionHelper',
-    function ($scope, $http, $modalInstance, ok, cancel, $timeout, $filter, appHelper, $rootScope, $modal, sessionHelper) {
+var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', '$timeout', '$filter', 'appHelper', '$rootScope', '$modal',  'sessionHelper', '$state',
+    function ($scope, $http, $modalInstance, ok, cancel, $timeout, $filter, appHelper, $rootScope, $modal, sessionHelper, $state) {
         var limits = {
                 regLimit: {
                     min: 1,
@@ -108,6 +108,8 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
          * Close detail dialog.
          */
         $scope.closeDetailDialog = function () {
+            // requests will be sent by the resolvers
+            $state.go(helper.STATE_NAME.ContestManagement, null, {reload: true});
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
             }

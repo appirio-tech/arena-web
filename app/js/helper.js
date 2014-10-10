@@ -70,6 +70,9 @@
  * Changes in version 1.17 (Module Assembly - Web Arena - Local Chat Persistence):
  * - Added local storage constants.
  *
+ * Changes in version 1.18 (Module Assembly - Web Arena UI - Contest Management and Problem Assignment v1.0)
+ * - Added ROUND_STATUS, MANAGE_CONTESTS_PAGE_LENGTH
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
  * @version 1.17
  */
@@ -86,7 +89,8 @@ module.exports = {
         Logout: 'user.logout',
         Anonymous: 'anon',
         AnonymousHome: 'anon.home',
-        LoggingIn: 'loggingin'
+        LoggingIn: 'loggingin',
+        ContestManagement: 'user.contestManagement'
     },
 
     // Represents the event names
@@ -387,5 +391,14 @@ module.exports = {
     LOCAL_STORAGE: {
         PREFIX: 'chat_history_',
         ROOM_LIST: 'chat_history_room_list'
-    }
+    },
+
+    // Round Status Codes
+    ROUND_STATUS: {
+        A : 'Active',
+        F : 'Finished',
+        P : "Pending"
+    },
+    // Number of rounds per page
+    MANAGE_CONTESTS_PAGE_LENGTH : 10
 };

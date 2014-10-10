@@ -23,6 +23,10 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
         var dragger = { top: 0 }, page = { top: 0 };
         var scrollboxStyle, draggerStyle, draggerLineStyle, pageStyle;
         var calcStyles = function () {
+		  var draggerTop = dragger.top;
+		  if(dragger.top >= maxDraggerTop - 20 && maxDraggerTop != 0) {
+		    draggerTop = maxDraggerTop - 20;
+		  }
           scrollboxStyle = {
             position: 'relative',
             overflow: 'hidden',
@@ -35,7 +39,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           draggerStyle = {
             position: 'absolute',
             height: dragger.height + 'px',
-            top: dragger.top + 'px'
+            top: draggerTop + 'px'
           };
           draggerLineStyle = {
             position: 'relative',
@@ -48,7 +52,11 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           };
         };
         var redraw = function () {
-          thumb.css('top', dragger.top + 'px');
+          var draggerTop = dragger.top;
+		  if(dragger.top >= maxDraggerTop - 20 && maxDraggerTop - 20 > 0) {
+		    draggerTop = maxDraggerTop - 20;
+		  }
+          thumb.css('top', draggerTop + 'px');
           var draggerOffset = dragger.top / page.height;
           page.top = -Math.ceil(page.scrollHeight * draggerOffset * 1.0013);
             if ((attrs.hasOwnProperty('scrollTop') && dragger.top === 0) || dragger.top >= maxDraggerTop) {
@@ -145,6 +153,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
             redraw();
             scope.showYScrollbar = true;
             dragger.height = Math.round(page.height / page.scrollHeight * page.height);
+			maxDraggerTop = page.height - dragger.height;
             dragger.trackHeight = page.height;
             calcStyles();
             element.css({ overflow: 'hidden' });
