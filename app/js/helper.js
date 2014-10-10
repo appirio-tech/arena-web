@@ -420,7 +420,6 @@ module.exports = {
             NumberEventsTag: '__MATCHES__',
             RatingTag: '__RATING__'
         }
-    }
     },
 
     // Round Status Codes

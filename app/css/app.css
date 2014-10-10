@@ -85,9 +85,9 @@ body a {cursor: pointer;}
 /* topcoder logo */
 .anon-header .navbar .navbar-brand,
 .navbar-brand {
-    background-position: -1px -51px;
+    background-position: -14px -25px;
     background-repeat: no-repeat;
-    padding: 24px 0 0 216px;
+    padding: 24px 0 0 176px;
     height: 0;
     overflow: hidden;
     display: inline-block;
