@@ -733,7 +733,6 @@ footer .left>span {
 .panelOverview .panel-body .contentWrapper {
     background: #fff;
     border: 1px solid #e7e7e7;
-    border-bottom-width: 0;
     height: 230px;
     margin-top: 4px;
     margin-bottom: 3px;
