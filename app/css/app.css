@@ -3582,6 +3582,7 @@ footer .right>span:nth-child(2) {
 }
 .panelChatArea .memberDropdown .dropdown-menu li a {
     padding-left: 9px;
+    padding-right: 15px;
     display: block;
     width: 100%;
     height: 100%;
