@@ -14,6 +14,15 @@
  * The leader board controller.
  */
 var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootScope) {
+    /**
+     * Used in sort function to order rounds dropdown by round names
+     * @param roundA Round ID of round to compare
+     * @param roundB Round ID of other round to compare with
+     * @returns {boolean} Returns 0, 1 or -1 based on comparison
+     */
+    var compareRoundNames = function(roundA, roundB) {
+        return $scope.getRoundName(roundA).localeCompare($scope.getRoundName(roundB));
+    };
     $scope.activeRound = "";
     $scope.isLoadingLbData = false;
 
@@ -67,9 +76,10 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
             for (i = 0; i < $rootScope.leaderBoardRoundData.length; i++) {
                 rounds.push($rootScope.leaderBoardRoundData[i].roundID);
             }
-            if (rounds.length > 0 && $scope.activeRound === "") {
-                $scope.activeRound = rounds[0];
-            }
+        }
+        rounds.sort(compareRoundNames);
+        if (rounds.length > 0 && $scope.activeRound === "") {
+            $scope.activeRound = rounds[0];
         }
         return rounds;
     };
