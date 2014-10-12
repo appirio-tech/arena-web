@@ -804,6 +804,9 @@ body a {cursor: pointer;}
 }
 .textGreen {color: #5fb806;}
 .textRed {color: #f40000;}
+.title {
+    white-space: nowrap;
+}
 .dashboard .titleBar .title {
     font: 300 26px/35px 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;/*Light*/
     margin: 0;
