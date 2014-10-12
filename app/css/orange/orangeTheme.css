@@ -1271,17 +1271,11 @@ footer .left>span {
     margin-left: 18px;
     min-height: 80px;
 }
-.step-1 .information {
-    width: 486px;
-}
 .step-4 .rightPart {
     width: 522px;
 }
 .wizardBody .tabContent {
-    height: 371px;
-}
-.wizardBody .langSelectorDivWidth{
-    width: 0;
+    height: 381px;
 }
 /* active user and leadearboard */
 .activeUsers .refreshData {
