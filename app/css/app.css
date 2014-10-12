@@ -6118,7 +6118,7 @@ footer .right>span:nth-child(2) {
     float: left;
 }
 
-.problemStatementRow .textWhite {
+.problemStatementRow /*.textWhite*/ {
     float: left;
 }
 /* rating indicator */
