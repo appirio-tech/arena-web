@@ -6268,7 +6268,7 @@ footer .right>span:nth-child(2) {
     list-style: none;
 }
 .coder-history-textMargin {
-    margin-top: 50px!important;
+    /*margin-top: 50px!important;*/
 }
 .coder-history-span-red {
     color: rgb(255, 0, 51)!important;
