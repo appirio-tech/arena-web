@@ -25,15 +25,15 @@
                             <ul class="selectorMenu inputBorder" data-ng-show="langToggle" id="langPanel">
                                 <li><ul><li>
                                     <input type="checkbox" name="selectAll" id="selectAll" class="checkboxInput" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()"/>
-                                    <label for="selectAll" class="checkboxLbl">Select <strong>All</strong> ({{languages.all.length}})</label>
+                                    <label for="selectAll" class="checkboxLbl" id="selectAllLabel">Select <strong>All</strong> ({{languages.all.length}})</label>
                                 </li>
                                 <li>
                                     <input type="checkbox" name="selectSet" id="selectSet" class="checkboxInput" data-ng-click="selectSet($event)" data-ng-checked="isSelectedSet()"/>
-                                    <label for="selectSet" class="checkboxLbl">Select <strong>Common Set</strong> ({{languages.commonSet.length}})</label>
+                                    <label for="selectSet" class="checkboxLbl" id="selectSetLabel">Select <strong>Common Set</strong> ({{languages.commonSet.length}})</label>
                                 </li></ul></li><li><ul class="lastUl">
                                 <li data-ng-repeat="item in languageChoice">
                                     <input type="checkbox" name="language-{{$index}}" id="language-{{$index}}" class="checkboxInput" data-ng-model="item.checked"/>
-                                    <label for="language-{{$index}}" class="checkboxLbl">{{item.language}}</label>
+                                    <label for="language-{{$index}}" class="checkboxLbl" id="language-{{$index}}-label">{{item.language}}</label>
                                 </li></ul></li>
                             </ul>
                         </div>
@@ -43,15 +43,15 @@
                         --><div class="publicItem"><input type="radio" name="type" id="typePublic" data-ng-model="$parent.type" value="Public" class="radioInput" required/>
                         <label for="typePublic" class="radioLbl">Public</label></div><!-- avoid whitespace
                         --><div><input type="radio" name="type" id="typeInvitational" data-ng-model="$parent.type" value="Invitational" class="radioInput" required/>
-                        <label for="typeInvitational" class="radioLbl">Normal</label></div>
+                        <label for="typeInvitational" class="radioLbl">Invitational</label></div>
                     </fieldset>
                     <fieldset class="regLimitRow" data-ng-class="{error: !formValid.regLimit}">
                         <label for="regLimit">Registration Limit</label><!-- avoid whitespace
                         --><div class="inputBorder numberInput">
                             <input type="text" name="regLimit" id="regLimit" data-ng-model="$parent.regLimit" required data-ng-pattern="/^\+?[1-9][0-9]*$/" maxlength="5"/>
                             <div>
-                                <a data-ng-click="add('regLimit')" class="addTri"></a>
-                                <a data-ng-click="minus('regLimit')" class="subTri"></a>
+                                <a data-ng-click="add('regLimit')" class="addTri" data-ng-class="{disabled:addDisable('regLimit')}"></a>
+                                <a data-ng-click="minus('regLimit')" class="subTri" data-ng-class="{disabled:minusDisable('regLimit')}"></a>
                             </div>
                         </div>
                     </fieldset>
@@ -60,11 +60,15 @@
                 <section class="calendarSec col-lg-5 col-md-5 col-sm-12 col-xs-12">
                     <h2 class="hide">calendar</h2>
                     <fieldset class="startDate" data-ng-class="{error: !formValid.startDate}">
-                        <label for="startDate">Select Match Start Date</label><div class="inputBorder"><input type="text" name="startDate" id="startDate" data-ng-model="$parent.startDate" readonly required/></div>
+                        <label for="startDate">Select Match Start Date</label><div class="inputBorder"><input type="text" name="startDate" id="startDate" data-ng-model="$parent.startDate" readonly disabled required/></div>
                     </fieldset>
-                    <div data-ui-calendar="contestCalConfig.calendar" data-ng-model="contestCalendarEventSources" data-calendar="contestCalendar" class="calendar" id="contestCalendar"></div>
+                    <div data-ui-calendar="contestCalConfig.calendar" data-ng-model="contestCalendarEventSources" data-calendar="contestCalendar" class="calendar calendarBottom" id="contestCalendar"></div>
                     <fieldset class="startTime" data-ng-class="{error: !formValid.startHh || !formValid.startMm}">
-                        <label>Start Time</label><div class="inputBorder startHh"><input type="text" data-ng-model="$parent.startHh" data-ng-pattern="/^\d{1,2}$/" required></div>:<div class="inputBorder startMm"><input type="text" data-ng-model="$parent.startMm" required="" data-ng-pattern="/^\d{1,2}$/"></div><div class="dropdown inputBorder startMark">
+                        <label>Start Time</label><div class="dropdown inputBorder startHh">
+                        <input type="text" data-ng-model="$parent.startHh" data-ng-pattern="/^\d{1,2}$/" required maxlength="2" data-ng-change="validateInput('startHh')">
+                    </div>:<div class="dropdown inputBorder startMm">
+                        <input type="text" data-ng-model="$parent.startMm" required="" data-ng-pattern="/^\d{1,2}$/" maxlength="2" data-ng-change="validateInput('startMm')">
+                    </div><div class="dropdown inputBorder startMark" id="markerDropdown">
                             <a class="dropdown-toggle">{{getMarker()}}</a>
                             <ul class="dropdown-menu">
                                 <li data-ng-class="{selectedLi: getMarker()==='AM'}" data-ng-click="setMarker('AM')"><label>AM</label></li>
@@ -81,7 +85,7 @@
                 <a data-ng-click="toggle('openSponsorInfo')" class="panel-heading" data-ng-class="{open:openSponsorInfo}"><span>Add Sponsorship Info</span></a>
                 <div class="panel-body" data-ng-show="openSponsorInfo">
                     <p class="info">Please specify logo or tagline, or both.</p>
-                    <fieldset class="logoUpload">
+                    <fieldset class="logoUpload" data-ng-class="{error: !formValid.logoData}">
                         <label>Upload sponsor logo</label><!--
                         --><div>
                             <a class="thumbnail"><img alt="logo" data-ng-src="{{logoData}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="/></a>
@@ -92,7 +96,7 @@
                     <fieldset class="tagline">
                         <label for="tagline">Sponsor tagline</label><!--
                         --><div class="inputBorder">
-                            <input type="text" name="tagline" id="tagline" data-ng-model="tagline">
+                            <input type="text" name="tagline" id="tagline" data-ng-model="tagline" maxlength="70">
                         </div>
                     </fieldset>
                 </div>
@@ -103,38 +107,38 @@
             <p class="info">On this step you can customize exactly how your match will run. These are preset to [topcoder] standard SRM settings; <br/>leave them unchanged to adhere to [topcoder]'s tried and true match style.</p>
             <!-- customized phase schedule -->
             <div class="panel phaseSchedule">
-                <a data-ng-click="toggle('openPhaseSchedule')" class="panel-heading" data-ng-class="{open:openPhaseSchedule}"><span>Customize Phase Schedule</span></a>
+                <a data-ng-click="toggle('openPhaseSchedule')" class="panel-heading" data-ng-class="{open:openPhaseSchedule}"><span>Customize Phase Schedule (HH:MM)</span></a>
                 <div class="panel-body" data-ng-show="openPhaseSchedule">
                     <fieldset>
                         <div class="regStart">
                             <label>Registration Start</label><!--
                             --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.regStartH}">
-                                <input type="text" name="regStartH" id="regStartH" data-ng-model="$parent.regStartH" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3">
+                                <input type="text" name="regStartH" id="regStartH" data-ng-model="$parent.regStartH" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3" data-ng-change="validateInput('regStartH')">
                                 <div>
-                                    <a data-ng-click="add('regStartH')" class="addTri"></a>
-                                    <a data-ng-click="minus('regStartH')" class="subTri"></a>
+                                    <a data-ng-click="add('regStartH')" class="addTri" data-ng-class="{disabled:addDisable('regStartH')}"></a>
+                                    <a data-ng-click="minus('regStartH')" class="subTri" data-ng-class="{disabled:minusDisable('regStartH')}"></a>
                                 </div>
                             </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.regStartMm}">
-                                <input type="text" name="regStartMm" id="regStartMm" data-ng-model="$parent.regStartMm" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2">
+                                <input type="text" name="regStartMm" id="regStartMm" data-ng-model="$parent.regStartMm" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2" data-ng-change="validateInput('regStartMm')">
                                 <div>
-                                    <a data-ng-click="addStr('regStartMm')" class="addTri"></a>
-                                    <a data-ng-click="minusStr('regStartMm')" class="subTri"></a>
+                                    <a data-ng-click="addStr('regStartMm')" class="addTri" data-ng-class="{disabled:addDisable('regStartMm')}"></a>
+                                    <a data-ng-click="minusStr('regStartMm')" class="subTri" data-ng-class="{disabled:minusDisable('regStartMm')}"></a>
                                 </div>
                             </div><span>prior to match</span>
                         </div>
                         <div class="codeLength">
                             <label>Coding Length</label><!--
                             --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.codeLengthH}">
-                                <input type="text" name="codeLengthH" id="codeLengthH" data-ng-model="$parent.codeLengthH" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3">
+                                <input type="text" name="codeLengthH" id="codeLengthH" data-ng-model="$parent.codeLengthH" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3" data-ng-change="validateInput('codeLengthH')">
                                 <div>
-                                    <a data-ng-click="add('codeLengthH')" class="addTri"></a>
-                                    <a data-ng-click="minus('codeLengthH')" class="subTri"></a>
+                                    <a data-ng-click="add('codeLengthH')" class="addTri" data-ng-class="{disabled:addDisable('codeLengthH')}"></a>
+                                    <a data-ng-click="minus('codeLengthH')" class="subTri" data-ng-class="{disabled:minusDisable('codeLengthH')}"></a>
                                 </div>
                             </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.codeLengthMm}">
-                                <input type="text" name="codeLengthMm" id="codeLengthMm" data-ng-model="$parent.codeLengthMm" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2">
+                                <input type="text" name="codeLengthMm" id="codeLengthMm" data-ng-model="$parent.codeLengthMm" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2" data-ng-change="validateInput('codeLengthMm')">
                                 <div>
-                                    <a data-ng-click="addStr('codeLengthMm')" class="addTri"></a>
-                                    <a data-ng-click="minusStr('codeLengthMm')" class="subTri"></a>
+                                    <a data-ng-click="addStr('codeLengthMm')" class="addTri" data-ng-class="{disabled:addDisable('codeLengthMm')}"></a>
+                                    <a data-ng-click="minusStr('codeLengthMm')" class="subTri" data-ng-class="{disabled:minusDisable('codeLengthMm')}"></a>
                                 </div>
                             </div>
                         </div>
@@ -145,32 +149,32 @@
                         <div class="intermissionLength">
                             <label>Intermission Length</label><!--
                             --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.intermissionLengthH}">
-                                <input type="text" name="intermissionLengthH" id="intermissionLengthH" data-ng-model="$parent.intermissionLengthH" data-ng-disable="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3">
+                                <input type="text" name="intermissionLengthH" id="intermissionLengthH" data-ng-model="$parent.intermissionLengthH" data-ng-disabled="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3" data-ng-change="validateInput('intermissionLengthH')">
                                 <div>
-                                    <a data-ng-click="add('intermissionLengthH')" class="addTri"></a>
-                                    <a data-ng-click="minus('intermissionLengthH')" class="subTri"></a>
+                                    <a data-ng-click="add('intermissionLengthH')" class="addTri" data-ng-class="{disabled:addDisable('intermissionLengthH')}"></a>
+                                    <a data-ng-click="minus('intermissionLengthH')" class="subTri" data-ng-class="{disabled:minusDisable('intermissionLengthH')}"></a>
                                 </div>
                             </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.intermissionLengthMm}">
-                                <input type="text" name="intermissionLengthMm" id="intermissionLengthMm" data-ng-model="$parent.intermissionLengthMm" data-ng-disable="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2">
+                                <input type="text" name="intermissionLengthMm" id="intermissionLengthMm" data-ng-model="$parent.intermissionLengthMm" data-ng-disabled="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2" data-ng-change="validateInput('intermissionLengthMm')">
                                 <div>
-                                    <a data-ng-click="addStr('intermissionLengthMm')" class="addTri"></a>
-                                    <a data-ng-click="minusStr('intermissionLengthMm')" class="subTri"></a>
+                                    <a data-ng-click="addStr('intermissionLengthMm')" class="addTri" data-ng-class="{disabled:addDisable('intermissionLengthMm')}"></a>
+                                    <a data-ng-click="minusStr('intermissionLengthMm')" class="subTri" data-ng-class="{disabled:minusDisable('intermissionLengthMm')}"></a>
                                 </div>
                             </div>
                         </div>
                         <div class="challengeLength">
                             <label>Challenge Length</label><!--
                             --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.challengeLengthH}">
-                                <input type="text" name="challengeLengthH" id="challengeLengthH" data-ng-model="$parent.challengeLengthH" data-ng-disable="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3">
+                                <input type="text" name="challengeLengthH" id="challengeLengthH" data-ng-model="$parent.challengeLengthH" data-ng-disabled="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3" data-ng-change="validateInput('challengeLengthH')">
                                 <div>
-                                    <a data-ng-click="add('challengeLengthH')" class="addTri"></a>
-                                    <a data-ng-click="minus('challengeLengthH')" class="subTri"></a>
+                                    <a data-ng-click="add('challengeLengthH')" class="addTri" data-ng-class="{disabled:addDisable('challengeLengthH')}"></a>
+                                    <a data-ng-click="minus('challengeLengthH')" class="subTri" data-ng-class="{disabled:minusDisable('challengeLengthH')}"></a>
                                 </div>
                             </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.challengeLengthMm}">
-                                <input type="text" name="challengeLengthMm" id="challengeLengthMm" data-ng-model="$parent.challengeLengthMm" data-ng-disable="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2">
+                                <input type="text" name="challengeLengthMm" id="challengeLengthMm" data-ng-model="$parent.challengeLengthMm" data-ng-disabled="removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2" data-ng-change="validateInput('challengeLengthMm')">
                                 <div>
-                                    <a data-ng-click="addStr('challengeLengthMm')" class="addTri"></a>
-                                    <a data-ng-click="minusStr('challengeLengthMm')" class="subTri"></a>
+                                    <a data-ng-click="addStr('challengeLengthMm')" class="addTri" data-ng-class="{disabled:addDisable('challengeLengthMm')}"></a>
+                                    <a data-ng-click="minusStr('challengeLengthMm')" class="subTri" data-ng-class="{disabled:minusDisable('challengeLengthMm')}"></a>
                                 </div>
                             </div>
                         </div>
@@ -186,8 +190,8 @@
                     <fieldset class="coderPerRoom" data-ng-class="{error: !formValid.coderPerRoom}">
                         <label>Coders per room</label><!--
                         --><div class="inputBorder numberInput">
-                            <input type="text" name="coderPerRoom" id="coderPerRoom" data-ng-model="$parent.coderPerRoom" data-ng-pattern="/^\+?[1-9][0-9]*$/">
-                            <div><a href="" data-ng-click="add('coderPerRoom')" class="addTri"></a><a href="" data-ng-click="minus('coderPerRoom')" class="subTri"></a></div>
+                        <input type="text" name="coderPerRoom" id="coderPerRoom" data-ng-model="$parent.coderPerRoom" maxlength="5"  data-ng-pattern="/^\+?[1-9][0-9]*$/" data-ng-change="validateInput('coderPerRoom')">
+                        <div><a href="" data-ng-click="add('coderPerRoom')" class="addTri" data-ng-class="{disabled:addDisable('coderPerRoom')}"></a><a href="" data-ng-click="minus('coderPerRoom')" class="subTri" data-ng-class="{disabled:minusDisable('coderPerRoom')}"></a></div>
                         </div>
                     </fieldset>
                     <fieldset class="assignMethod">
@@ -214,7 +218,7 @@
         <div class="tabContent step-4 row" data-ng-show="index==4">
             <div class="leftPart col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <section class="schedule">
-                    <h3>Phase Schedule</h3>
+                    <h3>Phase Schedule (prior to contest)</h3>
                     <p><label>Registration Start</label><span><span data-ng-hide="$parent.regStartH==0">{{$parent.regStartH}} hour<span data-ng-hide="$parent.regStartH==1">s</span> </span><span data-ng-hide="$parent.regStartMm=='0' || $parent.regStartMm==0">{{trimLeadingZero($parent.regStartMm)}} minute<span data-ng-hide="$parent.regStartMm=='1'">s</span></span></span></p>
                     <p><label>Coding Length</label><span><span data-ng-hide="$parent.codeLengthH==0">{{$parent.codeLengthH}} hour </span><span data-ng-hide="$parent.codeLengthMm=='0' || $parent.codeLengthMm==0">{{trimLeadingZero(codeLengthMm)}} minute<span data-ng-hide="$parent.codeLengthMm=='1'">s</span></span></span></p>
                     <p><label>Intermission Length</label><span data-ng-hide="removeInter"><span data-ng-hide="$parent.intermissionLengthH==0">{{intermissionLengthH}} hour </span><span data-ng-hide="$parent.intermissionLengthMm=='0' || $parent.intermissionLengthMm==0">{{trimLeadingZero(intermissionLengthMm)}} minute<span data-ng-hide="$parent.intermissionLengthMm=='1'">s</span></span></span></p>
@@ -222,8 +226,8 @@
                 </section>
                 <section class="roomAssign">
                     <h3>Room Assignment</h3>
-                    <p><label>Coder per room</label><span>{{coderPerRoom}}</span></p>
-                    <div class="roomAssignDiv"><label>Assignment method</label><p class="roomAssignMethod">{{getMethod()}}</p></div>
+                    <p><label>Coders per room</label><span>{{coderPerRoom}}</span></p>
+                    <div class="roomAssignDiv"><label class="method">Assignment method</label><p class="roomAssignMethod">{{getMethod()}}</p></div>
                     <p><label>Assign by division</label><span>{{assignByDiv ? 'Yes' : 'No';}}</span></p>
                     <p><label>Assign by region</label><span>{{assignByRegion ? 'Yes' : 'No';}}</span></p>
                 </section>

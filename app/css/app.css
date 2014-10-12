@@ -1110,7 +1110,7 @@ footer .right>span:nth-child(2) {
     padding-left: 43px;
 }
 .wizardBody .nav .item-4 {
-    width: 197px;
+    width: 201px;
     padding-left: 48px;
 }
 .wizardBody .nav .clickable {
@@ -1211,7 +1211,7 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     height: 34px;
     padding: 4px 30px 5px 8px;
-    min-width: 69px;
+    min-width: 59px;
     position: relative;
 }
 .wizardBody .dropdown-toggle:before,
@@ -1226,7 +1226,7 @@ footer .right>span:nth-child(2) {
     background-position: -100px 0;
 }
 .wizardBody .dropdown-menu {
-    min-width: 69px;
+    min-width: 59px;
     margin-top: 0;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -1237,6 +1237,10 @@ footer .right>span:nth-child(2) {
 }
 .wizardBody .dropdown-menu li:hover {
     opacity: 0.6;
+    cursor: pointer;
+}
+.wizardBody .startTime .startMark .dropdown-menu {
+    padding: 0;
 }
 /*customized dropdown*/
 .wizardBody .langSelector {
@@ -1385,6 +1389,16 @@ footer .right>span:nth-child(2) {
     padding-left: 36px;
     padding-right: 36px;
 }
+.wizardBody .disabled {
+    opacity: 0.2!important;
+    cursor: auto;
+}
+.wizardBody .disabled a:hover {
+    opacity: 0.2!important;
+}
+.wizardBody .disabled a {
+    cursor: text;
+}
 :-moz-ui-invalid:not(output) {
     box-shadow: none;
 }
@@ -1448,7 +1462,7 @@ footer .right>span:nth-child(2) {
 }
 .step-1 .calendarSec .startTime {
     padding-top: 9px;
-    padding-bottom: 13px;
+    padding-bottom: 12px;
     border-top: 1px solid #fff;
 }
 .step-1 .calendarSec .startTime>label {
@@ -1461,14 +1475,32 @@ footer .right>span:nth-child(2) {
 }
 .step-1 .calendarSec .startTime .startHh {
     margin-right: 9px;
+    min-width: 50px;
+    width: 50px;
 }
 .step-1 .calendarSec .startTime .startMm {
     margin-right: 9px;
     margin-left: 8px;
+    min-width: 50px;
+    width: 50px;
+}
+.step-1 .calendarSec .startTime .startHh .dropdown-menu{
+    min-width: 53px;
+    height: 84px;
+}
+.step-1 .calendarSec .startTime .startMm .dropdown-menu{
+    min-width: 53px;
+    height: 84px;
+}
+.step-1 .calendarSec .startTime .startHh .dropdown-toggle{
+    min-width: 52px;
+}
+.step-1 .calendarSec .startTime .startMm .dropdown-toggle{
+    min-width: 52px;
 }
 .step-1 .calendarSec .startTime .startMark {
     vertical-align: top;
-    width: 70px;
+    width: 60px;
 }
 .wizardBody .calendar .fc-header-title h2 {
     font-size: 15px;
@@ -1497,14 +1529,14 @@ footer .right>span:nth-child(2) {
 .wizardBody .calendar .selectedDate .fc-day-number:before {
     content: attr(day);
     display: block;
-    height: 30px;
-    width: 30px;
+    height: 29px;
+    width: 29px;
     padding-top: 2px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
     position: absolute;
-    top: 0;
+    top: 2px;
     left: 6px;
     text-align: center;
 }
@@ -1569,6 +1601,7 @@ footer .right>span:nth-child(2) {
 .step-2 .logoUpload .thumbnail >img {
     height: 79px;
     width: 167px;
+    cursor: auto;
     zoom: auto;
 }
 .step-2 .logoUpload .inputBorder {
@@ -1577,6 +1610,7 @@ footer .right>span:nth-child(2) {
     padding-left: 8px;
     padding-top: 4px;
     display: block;
+    overflow: hidden;
 }
 .step-2 .logoUpload .btnRow {
     padding-left: 1px
@@ -1709,7 +1743,9 @@ footer .right>span:nth-child(2) {
     float: right;
     border: none;
     height: 21px;
-    padding: 0;
+    padding-top: 5px;
+    width: 111px;
+    line-height: 15px;
 }
 .wizardBody .step-4 .leftPart .schedule span {
     white-space: nowrap;
@@ -1792,7 +1828,8 @@ footer .right>span:nth-child(2) {
 }
 .wizardBody .step-4 .rightPart .other .inputBorder input {
     width: 340px!important;
-    padding-left: 0;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 .wizardBody .finalBtn {
     text-align: center;
@@ -6668,4 +6705,11 @@ table thead .sort.desc{
 .twitter-custom {
     position: relative;
     top: 4px;
+}
+.calendarBottom {
+    padding-bottom: 2px;
+}
+.roomAssign .roomAssignDiv .method {
+    padding-left: 10px;
+    width: 138px!important;
 }

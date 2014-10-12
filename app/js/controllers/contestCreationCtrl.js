@@ -7,8 +7,11 @@
  * Changes in version 1.1:
  *  - Changed the contest id and round id generation logic.
  *
- * @author TCASSEMBLER
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena - Contest Creation Wizard Bug Fix):
+ *  - Fixed the issues in create contest popup dialog.
+ *
+ * @author flytoj2ee
+ * @version 1.2
  */
 'use strict';
 /*jshint -W097*/
@@ -67,7 +70,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                     max: 99999
                 },
                 startHh: {
-                    min: 1,
+                    min: 0,
                     max: 12
                 },
                 startMm: {
@@ -76,7 +79,8 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 }
             },
             modalTimeoutPromise = null,
-            reader = new FileReader();
+            reader = new FileReader(),
+            showDetailModal;
 
 
         $scope.contestName = '';
@@ -126,8 +130,14 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
          * @returns {*} the error detail.
          */
         function getErrorDetail(data, status) {
-            return (data !== undefined && data.error !== undefined)
-                ? (data.error.details ? data.error.details : data.error) : ' status code - ' + status;
+            var str = '';
+            if ((status + str) === '0') {
+                return 'cannot connect to server.';
+            }
+            if (data !== undefined && data.error !== undefined) {
+                return (data.error.details !== undefined) ? data.error.details : data.error;
+            }
+            return ' status code - ' + status;
         }
 
         /**
@@ -281,9 +291,9 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
              * @param data - the data to show.
              * @param status - the status code.
              */
-            var showDetailModal = function (data, status) {
+            showDetailModal = function (data, status) {
                 $scope.closeDetailDialog();
-                $scope.openDetailModal({'title': 'Error', 'detail': 'Fail to create match: ' + getErrorDetail(data, status), 'enableClose': true});
+                $scope.openDetailModal({'title': 'Error', 'detail': 'Failed to create match: ' + getErrorDetail(data, status), 'enableClose': true});
             };
 
             $scope.openDetailModal({'title': 'Saving match data', 'detail': 'Please wait for saving match data.', 'enableClose': false});
@@ -314,7 +324,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                                             showDetailModal(data, status);
                                         } else {
                                             $scope.closeDetailDialog();
-                                            $scope.openDetailModal({'title': 'Success', 'detail': 'Success to create match.', 'enableClose': true});
+                                            $scope.openDetailModal({'title': 'Success', 'detail': 'Contest created successfully.', 'enableClose': true});
                                         }
                                     }).error(function (data, status, headers, config) {
                                             showDetailModal(data, status);
@@ -377,24 +387,37 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             intermissionLengthH: true,
             intermissionLengthMm: true,
             challengeLengthH: true,
-            challengeLengthMm: true
+            challengeLengthMm: true,
+            logoData: true
         };
+
+        function isValid(target) {
+            var str = '', value;
+            if (($scope[target] + str).trim() === str) {
+                return false;
+            }
+            value = +$scope[target];
+            if (isNaN(value)) {
+                return false;
+            }
+            if (angular.isDefined(limits[target].min) && value < limits[target].min) {
+                return false;
+            }
+            if (angular.isDefined(limits[target].max) && value > limits[target].max) {
+                return false;
+            }
+            return true;
+        }
+
         /**
          * The move to next page action.
          * @param form the form data
          */
         $scope.next = function (form) {
+            $timeout(function () {
+                $('#langPanel').click();
+            }, 10);
             var noError;
-            function isValid(target) {
-                var value = +$scope[target];
-                if (angular.isDefined(limits[target].min) && value < limits[target].min) {
-                    return false;
-                }
-                if (angular.isDefined(limits[target].max) && value > limits[target].max) {
-                    return false;
-                }
-                return true;
-            }
             if ($scope.index === 1) {
                 $scope.formValid.contestName = form.contestName.$valid ? true : false;
                 $scope.formValid.type = form.type.$valid ? true : false;
@@ -413,6 +436,12 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 noError = noError && $scope.formValid.startHh;
                 noError = noError && $scope.formValid.startMm;
                 if (noError) {
+                    if ($scope.logoData !== '' && $scope.logoData.indexOf('data:image') !== 0) {
+                        $scope.formValid.logoData = false;
+                        $scope.hasError = true;
+                        $scope.setPage(2);
+                        return;
+                    }
                     $scope.hasError = false;
                     $scope.setPage(2);
                 } else {
@@ -420,16 +449,27 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 }
                 return;
             }
-            if ($scope.index === 3) {
+            if ($scope.index === 2) {
+                if ($scope.logoData !== '' && $scope.logoData.indexOf('data:image') !== 0) {
+                    $scope.formValid.logoData = false;
+                    $scope.hasError = true;
+                    $scope.setPage(2);
+                    return;
+                }
+                $scope.formValid.logoData = true;
+            }
+            if ($scope.index === 2 || $scope.index === 3) {
                 $scope.formValid.coderPerRoom = (form.coderPerRoom.$valid && isValid('coderPerRoom') ? true : false);
                 $scope.formValid.regStartH = (form.regStartH.$valid && isValid('regStartH') ? true : false);
                 $scope.formValid.regStartMm = (form.regStartMm.$valid && isValid('regStartMm') ? true : false);
                 $scope.formValid.codeLengthH = (form.codeLengthH.$valid && isValid('codeLengthH') ? true : false);
                 $scope.formValid.codeLengthMm = (form.codeLengthMm.$valid && isValid('codeLengthMm') ? true : false);
-                $scope.formValid.intermissionLengthH = (form.intermissionLengthH.$valid && isValid('intermissionLengthH') ? true : false);
-                $scope.formValid.intermissionLengthMm = (form.intermissionLengthMm.$valid && isValid('intermissionLengthMm') ? true : false);
-                $scope.formValid.challengeLengthH = (form.challengeLengthH.$valid && isValid('challengeLengthH') ? true : false);
-                $scope.formValid.challengeLengthMm = (form.challengeLengthMm.$valid && isValid('challengeLengthMm') ? true : false);
+                if (!$scope.removeInter) {
+                    $scope.formValid.intermissionLengthH = (form.intermissionLengthH.$valid && isValid('intermissionLengthH') ? true : false);
+                    $scope.formValid.intermissionLengthMm = (form.intermissionLengthMm.$valid && isValid('intermissionLengthMm') ? true : false);
+                    $scope.formValid.challengeLengthH = (form.challengeLengthH.$valid && isValid('challengeLengthH') ? true : false);
+                    $scope.formValid.challengeLengthMm = (form.challengeLengthMm.$valid && isValid('challengeLengthMm') ? true : false);
+                }
                 noError = true;
                 /*jslint unparam:false*/
                 noError = noError && $scope.formValid.coderPerRoom;
@@ -437,19 +477,29 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 noError = noError && $scope.formValid.regStartMm;
                 noError = noError && $scope.formValid.codeLengthH;
                 noError = noError && $scope.formValid.codeLengthMm;
-                noError = noError && $scope.formValid.intermissionLengthH;
-                noError = noError && $scope.formValid.intermissionLengthMm;
-                noError = noError && $scope.formValid.challengeLengthH;
-                noError = noError && $scope.formValid.challengeLengthMm;
-
-                if (noError) {
-                    $scope.hasError = false;
-                    $scope.setPage(4);
-                } else {
-                    $scope.hasError = true;
-                    $scope.setPage(3);
+                if (!$scope.removeInter) {
+                    noError = noError && $scope.formValid.intermissionLengthH;
+                    noError = noError && $scope.formValid.intermissionLengthMm;
+                    noError = noError && $scope.formValid.challengeLengthH;
+                    noError = noError && $scope.formValid.challengeLengthMm;
                 }
-                return;
+
+                if ($scope.index === 3) {
+                    if (noError) {
+                        $scope.hasError = false;
+                        $scope.setPage(4);
+                    } else {
+                        $scope.hasError = true;
+                        $scope.setPage(3);
+                    }
+                    return;
+                }
+
+                if ($scope.index === 2) {
+                    $scope.hasError = !noError;
+                    $scope.setPage(3);
+                    return;
+                }
             }
             $scope.setPage($scope.index + 1);
         };
@@ -457,6 +507,10 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
          * Go to previous step
          */
         $scope.prev = function () {
+            $timeout(function () {
+                $('#langPanel').click();
+            }, 10);
+            $scope.hasError = false;
             $scope.setPage($scope.index - 1);
         };
 
@@ -547,6 +601,16 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             var closeLangPanel = function (event) {
                 // the depth of DOM tree rooted at the element with id 'themePanel'
                 var panelDOMDepth = 4;
+                if (appHelper.clickOnTarget(event.target, 'selectAllLabel', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'selectAll', panelDOMDepth)
+                    || appHelper.clickOnTarget(event.target, 'selectSetLabel', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'selectSet', panelDOMDepth)
+                    || appHelper.clickOnTarget(event.target, 'language-0', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-0-label', panelDOMDepth)
+                    || appHelper.clickOnTarget(event.target, 'language-1', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-1-label', panelDOMDepth)
+                    || appHelper.clickOnTarget(event.target, 'language-2', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-2-label', panelDOMDepth)
+                    || appHelper.clickOnTarget(event.target, 'language-3', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-3-label', panelDOMDepth)
+                    || appHelper.clickOnTarget(event.target, 'language-4', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-4-label', panelDOMDepth)
+                    || appHelper.clickOnTarget(event.target, 'language-5', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-5-label', panelDOMDepth)) {
+                    return;
+                }
                 if (!appHelper.clickOnTarget(event.target, 'langPanel', panelDOMDepth)) {
                     $scope.langToggle = false;
                 }
@@ -568,6 +632,9 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
          * @param target - the target flag
          */
         $scope.toggle = function (target) {
+            $timeout(function () {
+                $('#langPanel').click();
+            }, 10);
             $scope[target] = !$scope[target];
             // only one section can be open
             if (target === 'openPhaseSchedule' && $scope.openPhaseSchedule) {
@@ -591,8 +658,8 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
         $scope.challengeLengthH = 0;
         $scope.challengeLengthMm = 15;
         $scope.coderPerRoom = 20;
-        $scope.startHh = '';
-        $scope.startMm = '';
+        $scope.startHh = 0;
+        $scope.startMm = 0;
 
         /**
          * Check the value's limits.
@@ -629,6 +696,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 return;
             }
             $scope.changeStr(target, +1);
+            $scope.validateInput(target);
         };
         /**
          * Minus string value by 1.
@@ -640,6 +708,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 return;
             }
             $scope.changeStr(target, -1);
+            $scope.validateInput(target);
         };
         /**
          * Add the target value by 1.
@@ -650,7 +719,12 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 // disable click
                 return;
             }
-            $scope[target] = applyConstraints((+$scope[target]) + 1);
+            if (isNaN(+$scope[target])) {
+                $scope[target] = limits[target].min;
+            } else {
+                $scope[target] = applyConstraints((+$scope[target]) + 1, limits[target]);
+            }
+            $scope.validateInput(target);
         };
         /**
          * Minus the target value by 1.
@@ -661,7 +735,40 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 // disable click
                 return;
             }
-            $scope[target] = applyConstraints((+$scope[target]) - 1);
+            if (isNaN(+$scope[target])) {
+                $scope[target] = limits[target].min;
+            } else {
+                $scope[target] = applyConstraints((+$scope[target]) - 1, limits[target]);
+            }
+
+            $scope.validateInput(target);
+        };
+
+        /**
+         * Disable the minus arrow.
+         *
+         * @param target - the target field which contains arrow
+         * @returns {*|boolean} the checked result
+         */
+        $scope.minusDisable = function (target) {
+            if ($scope.removeInter && (target === 'intermissionLengthMm' || target === 'challengeLengthMm'
+                || target === 'intermissionLengthH' || target === 'challengeLengthH')) {
+                return true;
+            }
+            return limits[target] && angular.isDefined(limits[target].min) && (+$scope[target] <= limits[target].min);
+        };
+
+        /**
+         * Disable the added arrow.
+         * @param target - the target field which contains arrow
+         * @returns {*|boolean} - the checked result.
+         */
+        $scope.addDisable = function (target) {
+            if ($scope.removeInter && (target === 'intermissionLengthMm' || target === 'challengeLengthMm'
+                || target === 'intermissionLengthH' || target === 'challengeLengthH')) {
+                return true;
+            }
+            return limits[target] && angular.isDefined(limits[target].max) && (+$scope[target] >= limits[target].max);
         };
         /**
          * Trim the zero prefix.
@@ -675,32 +782,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
         $scope.contestCalendarEvents = [];
         $scope.contestCalendarEventSources = [$scope.contestCalendarEvents];
 
-        /**
-         * Parsed the date value.
-         * @param dateString the date value
-         * @returns {Date} the date instance
-         */
-        function parseDate(dateString) {
-            var date = new Date();
-            // ignore Timezone
-            date.setFullYear(+dateString.substring(0, 4));
-            date.setMonth((+dateString.substring(5, 7)) - 1);
-            date.setDate(+dateString.substring(8, 10));
-            date.setHours(+dateString.substring(11, 13));
-            date.setMinutes(+dateString.substring(14, 16));
-            return date;
-        }
         $http.get('data/contest-plan.json').success(function (data) {
-            data.contests.forEach(function (contest) {
-                $timeout(function () {
-                    $scope.contestCalendarEvents.push({
-                        title: contest.title,
-                        start: parseDate(contest.start),
-                        allDay: false
-                    });
-                }, 0);
-            });
-
             // config calendar plugin
             $scope.contestCalConfig = {
                 calendar: {
@@ -716,7 +798,14 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                         day: 'MMM d, yyyy'
                     },
                     eventRender: $scope.eventRender, // add color tag and events number qtip to day number when events are loading
-                    dayClick: $scope.selectDay // change to day view when clicking day number
+                    dayClick: $scope.selectDay, // change to day view when clicking day number
+                    viewRender: function (view, element) {
+                        $scope.currentStartMonth = view.start;
+                        $scope.currentEndMonth = view.end;
+                        if ($scope.currentSelectedDate !== null) {
+                            $scope.selectDay($scope.currentSelectedDate, null, null, null);
+                        }
+                    }
                 }
             };
         });
@@ -734,6 +823,10 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 target = $('#contestCalendar .fc-view-month').find('[data-date=' + date + ']');
             target.addClass('eventColor');
         };
+
+        $scope.currentSelectedDate = null;
+        $scope.currentStartMonth = null;
+        $scope.currentEndMonth = null;
         /**
          * Select the day
          * @param date the date instance
@@ -742,19 +835,39 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
          * @param view the view
          */
         $scope.selectDay = function (date, allDay, jsEvent, view) {
+            var current = new Date(), dateSelect, day;
+            if (+date < (+current - 60 * 1000 * 60 * 24)) {
+                return;
+            }
+
             $scope.startDate = $filter('date')(date, 'MM/dd/yyyy');
             $scope.startDateSum = $filter('date')(date, 'dd MMM yyyy');
-            var dateSelect = $filter('date')(date, 'yyyy-MM-dd'),
-                day = $filter('date')(date, 'd');
+            dateSelect = $filter('date')(date, 'yyyy-MM-dd');
+            day = $filter('date')(date, 'd');
             $('#contestCalendar').find('.selectedDate').removeClass('selectedDate');
             $('#contestCalendar .fc-view-month')
                 .find('[data-date=' + dateSelect + ']')
                 .addClass('selectedDate')
                 .find('.fc-day-number')
                 .attr('day', day);
+
+            $scope.currentSelectedDate = date;
+
+            if (view !== null) {
+                if (date < $scope.currentStartMonth) {
+                    // click previous
+                    $('#contestCalendar .fc-header-right .fc-text-arrow').first().click();
+                }
+                if (date > $scope.currentEndMonth) {
+                    // click next
+                    $('#contestCalendar .fc-header-right .fc-text-arrow').last().click();
+                }
+            }
         };
         /*jslint unparam: false*/
-
+        $timeout(function () {
+            $scope.selectDay(new Date(), null, null, null);
+        }, 400);
         // handle am/pm marker
         $scope.marker = 'AM';
         /**
@@ -812,6 +925,14 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
         $scope.setMethod = function (method) {
             $scope.roomAssignmentMethod = method;
         };
+        /**
+         * Validate the input.
+         * @param target - the input target.
+         */
+        $scope.validateInput = function (target) {
+            $scope.formValid[target] = isValid(target) ? true : false;
+            $scope.hasError = !$scope.formValid[target];
+        }
     }];
 
 module.exports = contestCreationCtrl;
