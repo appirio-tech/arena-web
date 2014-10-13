@@ -237,6 +237,19 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
      */
     $scope.setFindMode = function (flag) {
         $scope.findMode = flag;
+        $scope.highlightMode();
+    };
+
+    /**
+     * Highlights/unhighlights searched text based on findMode
+     */
+    $scope.highlightMode = function () {
+        if ($scope.findMode === false && $scope.previousSearchText !== '') {
+            $scope.revertText('<span class="chat-highlight">' + $scope.htmlEncode($scope.previousSearchText) + '</span>',
+                $scope.htmlEncode($scope.previousSearchText));
+        } else if ($scope.previousSearchText !== '') {
+            $scope.replaceText($scope.previousSearchText);
+        }
     };
 
     /**
