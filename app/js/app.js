@@ -67,9 +67,13 @@
  * Changes in version 1.18 (Module Assembly - Web Arena UI - Contest Management and Problem Assignment v1.0)
  * - Added contestManagementCtrl
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.17
- * 
+ * Changes in version 1.19 (Module Assembly - Web Arena UI - Match Summary Widget):
+ * - Initialized leaderboard to the empty array.
+ * - Updated routing to user.viewCode and user.contest including the last view and page visited
+ *   to support better forward/back navigation.
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
+ * @version 1.19
  */
 'use strict';
 /*jshint -W097*/
@@ -332,7 +336,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             controller: 'userCodingCtrl'
         })
         .state('user.viewCode', {
-            url: '/viewCode/{roundId}/{componentId}/{divisionId}/{roomId}/{defendant}',
+            url: '/viewCode/{roundId}/{componentId}/{divisionId}/{roomId}/{defendant}/{page}',
             data: {
                 pageTitle: "View Code",
                 pageMetaKeywords: "code,arena"
@@ -341,7 +345,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             controller: 'userCodingCtrl'
         })
         .state('user.contest', {
-            url: '/contests/{contestId}',
+            url: '/contests/{contestId}/{viewOn}',
             data: {
                 pageTitle: "Contest",
                 pageMetaKeywords: "contest"
@@ -470,6 +474,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     $rootScope.connectionID = undefined;
     $rootScope.startSyncResponse = false;
     $rootScope.lastServerActivityTime = new Date().getTime();
+    $rootScope.leaderboard = [];
     $rootScope.$on('$stateChangeStart', function (event, toState) {
         //use whitelist approach
         var allowedStates = [helper.STATE_NAME.Anonymous, helper.STATE_NAME.AnonymousHome, helper.STATE_NAME.LoggingIn, helper.STATE_NAME.Logout],

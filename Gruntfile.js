@@ -26,8 +26,11 @@
  * Changes in version 1.5 (PoC Assembly - Invite friends To Participate On A Match From Facebook and Twitter):
  * - Added facebook / twitter related setting.
  *
+ * Changes in version 1.6 (Module Assembly - Web Arena UI - Match Summary Widget):
+ * - Added SUMMARY_TOPCODER_COUNT setting to limit number of coders in match summary leaderboard table.
+ *
  * @author amethystlei, flytoj2ee, dexy
- * @version 1.5
+ * @version 1.6
  */
 'use strict';
 /*global module, process*/
@@ -78,7 +81,8 @@ module.exports = function (grunt) {
                         { match : 'TWEET_TEXT', replacement: process.env.TWEET_TEXT },
                         { match : 'TWEET_URL', replacement: process.env.TWEET_URL },
                         { match : 'FACEBOOK_LINK', replacement: process.env.FACEBOOK_LINK },
-                        { match : 'DIVISION_LEADERBOARD_LIMIT', replacement: process.env.DIVISION_LEADERBOARD_LIMIT }
+                        { match : 'DIVISION_LEADERBOARD_LIMIT', replacement: process.env.DIVISION_LEADERBOARD_LIMIT },
+                        { match : 'SUMMARY_TOPCODER_COUNT', replacement: process.env.SUMMARY_TOPCODER_COUNT }
                     ]
                 },
                 files : [

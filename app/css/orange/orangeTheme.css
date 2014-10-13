@@ -244,6 +244,9 @@ body{
 .tcTime>span {
     color: #fff;/*#ff8a00*/
 }
+.dashboard .definition .item .textWhite {
+    color: #E49B9B !important;
+}
 .codeArea .shareLink > ul > li > a:hover {color: #ff8a00;}
 .codeArea .shareLink > ul > .open > a {color: #ff8a00;}
 .codeArea .shareLink > ul > .open > a:after {background-position: -25px 0;}
@@ -672,7 +675,7 @@ footer .left>span {
     border-bottom: 1px solid #ffe6c7;
 }
 .panelContestStat .breadcrumbHead {
-    padding: 9px 0 7px 28px;
+    padding: 9px 0 7px 10px;
 }
 .panelContestStat .breadcrumbHead .breadcrumb .active {
     color: #ff890c;
@@ -825,6 +828,7 @@ footer .left>span {
 /*room summary widget in contest page*/
 .panelSummary {
     border-color: #e7e7e7;
+    height: 277px;
 }
 .panelSummary .panel-heading {
     background: #f0f0f0;
@@ -832,6 +836,7 @@ footer .left>span {
 .panelSummary .panel-body {
     background: #fffffd;
     color: #636d70;
+    padding: 7px 14px 0px 30px;
 }
 .panelSummary .panel-body .summaryWrapper {
     border-color: #ff8a00;
@@ -983,6 +988,14 @@ footer .left>span {
     border-top: 8px solid #fff;
     border-bottom-width: 3px;
     border-color: #fff;
+}
+
+/*common style of table in detail page */
+.panelSummary .shortLeaderboard .table>thead:first-child>tr:first-child>th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border-top: 0px solid #fff;
+    border-bottom-width: 0px;
 }
 .detailPage .table>tbody>tr:first-child>td {
     border-top: 1px solid #ffe6c7;

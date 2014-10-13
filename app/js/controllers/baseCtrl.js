@@ -60,8 +60,16 @@
  * Changes in version 1.14 (Module Assembly - Web Arena Bug Fix 20140909):
  * - Changed the popup location for registration modal.
  *
+ * Changes in version 1.15 (Module Assembly - Web Arena UI - Match Summary Widget):
+ * - Added closeDivSummary, openDivSummary, updateDivSummary, updateRoomSummary from userContestDetailCtrl.js
+ *   to have global support for room/division leaderboard table.
+ * - Added closeLastDivSummary, getDivSummary, getCurrentLeaderboard, formatScore, showResult, getStatusColor
+ *   getCoderHistory, isViewable from userContestDetailCtrl.js to $rootScope to have global support
+ *   for room/division leaderboard table.
+ * - Added handling leaderboard events from userContestDetailCtrl.js.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.14
+ * @version 1.15
  */
 'use strict';
 /*jshint -W097*/
@@ -231,7 +239,116 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         selTheme,
         waitingCoderInfo = false,
         modalTimeoutPromise = null,
-        phaseChangeRoundId;
+        phaseChangeRoundId,
+        /**
+         * Close the division summary.
+         *
+         * @param roundID the round id
+         * @param divisionID the division id
+         */
+        closeDivSummary = function (roundID, divisionID) {
+            if (angular.isDefined($rootScope.lastDivSummary)) {
+                socket.emit(helper.EVENT_NAME.CloseDivSummaryRequest, {
+                    roundID: roundID,
+                    divisionID: divisionID
+                });
+            }
+        },
+        /**
+         * Open the division summary.
+         *
+         * @param roundID the round id
+         * @param divisionID the division id
+         */
+        openDivSummary = function (roundID, divisionID) {
+            socket.emit(helper.EVENT_NAME.DivSummaryRequest, {
+                roundID: roundID,
+                divisionID : divisionID
+            });
+            $rootScope.lastDivSummary = {
+                roundID: roundID,
+                divisionID: divisionID
+            };
+        },
+
+        /**
+         * Update the division summary.
+         *
+         * @param roundID the round id
+         * @param divisionID the division id
+         */
+        updateDivSummary = function (roundID, divisionID) {
+            var il;
+            $rootScope.leaderboard = [];
+            if (angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roundData[roundID])
+                    && angular.isDefined($rootScope.roundData[roundID].coderRooms)) {
+                angular.forEach($rootScope.roundData[roundID].coderRooms, function (coderRoom) {
+                    if (coderRoom.divisionID === divisionID && coderRoom.roundID === roundID
+                            && angular.isDefined($rootScope.roomData[coderRoom.roomID])
+                            && angular.isDefined($rootScope.roomData[coderRoom.roomID].coders)) {
+                        angular.forEach($rootScope.roomData[coderRoom.roomID].coders, function (coder) {
+                            coder.roomID = coderRoom.roomID;
+                        });
+                        $rootScope.leaderboard = $rootScope.leaderboard.concat($rootScope.roomData[coderRoom.roomID].coders);
+                    }
+                });
+            }
+            if ($rootScope.leaderboard.length > 0) {
+                $rootScope.leaderboard.sort(function (coderA, coderB) {
+                    return coderB.totalPoints - coderA.totalPoints;
+                });
+                $rootScope.leaderboard[0].divPlace = 1;
+                for (il = 1; il < $rootScope.leaderboard.length; il += 1) {
+                    if ($rootScope.leaderboard[il].totalPoints === $rootScope.leaderboard[il - 1].totalPoints) {
+                        $rootScope.leaderboard[il].divPlace = $rootScope.leaderboard[il - 1].divPlace;
+                    } else {
+                        $rootScope.leaderboard[il].divPlace = (il + 1);
+                    }
+                }
+            }
+            $rootScope.isDivLoading = false;
+            $rootScope.currentlyLoaded = 0;
+            angular.forEach($rootScope.roundData[roundID].coderRooms, function (coderRoom) {
+                if (coderRoom.divisionID === divisionID && coderRoom.roundID === roundID) {
+                    if (coderRoom.isLoading) {
+                        $rootScope.isDivLoading = true;
+                    } else {
+                        $rootScope.currentlyLoaded += 1;
+                    }
+                }
+            });
+            $rootScope.$broadcast('rebuild:loadingCounter');
+            $timeout.cancel($rootScope.ldrbrdTimeoutPromise);
+            $rootScope.ldrbrdTimeoutPromise = $timeout(function () {
+                $rootScope.$broadcast('rebuild:leaderboardTable');
+            }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
+        },
+        /**
+         * Update the room summary.
+         * It only checks if the current opened division summary (if any) should be updated
+         * if the room with roomID is updated. It then calls updateDivSummary.
+         *
+         * @param roomID the room id
+         */
+        updateRoomSummary = function (roomID) {
+            var updatedDivSummary = false;
+            if ($rootScope.lastDivSummary !== undefined) {
+                if (angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.lastDivSummary.roundID)
+                        && angular.isDefined($rootScope.roundData[$rootScope.lastDivSummary.roundID].coderRooms)) {
+                    angular.forEach($rootScope.roundData[$rootScope.lastDivSummary.roundID].coderRooms, function (coderRoom) {
+                        if (coderRoom.roomID === roomID
+                                && coderRoom.divisionID === Number($rootScope.lastDivSummary.divisionID)
+                                && coderRoom.roundID === Number($rootScope.lastDivSummary.roundID)) {
+                            coderRoom.isLoading = false;
+                            updatedDivSummary = true;
+                        }
+                    });
+                }
+            }
+            if (updatedDivSummary) {
+                updateDivSummary(Number($rootScope.lastDivSummary.roundID), Number($rootScope.lastDivSummary.divisionID));
+            }
+        };
 
     // modal defined in the root scope can be used by other scopes.
     $rootScope.currentModal = null;
@@ -595,6 +712,204 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             }
         });
     };
+
+    $rootScope.isDivLoading = false;
+    /**
+     * Close the last opened division summary.
+     */
+    $rootScope.closeLastDivSummary = function () {
+        if (angular.isDefined($rootScope.lastDivSummary)) {
+            closeDivSummary($rootScope.lastDivSummary.roundID, $rootScope.lastDivSummary.divisionID);
+        }
+        $rootScope.lastDivSummary = undefined;
+    };
+
+    /**
+     * Get the division summary.
+     * It is first sending close div summary for the summary we want to open.
+     * NOTE: This is the behavior of the Arena applet.
+     *
+     * @param roundID the round id
+     * @param divisionID the division id
+     */
+    $rootScope.getDivSummary = function (roundID, divisionID) {
+        if (angular.isDefined($rootScope.lastDivSummary) && angular.isDefined(angular.isDefined($rootScope.lastDivSummary.roundID))
+                && angular.isDefined($rootScope.lastDivSummary.divisionID)
+                && $rootScope.lastDivSummary.roundID === roundID && $rootScope.lastDivSummary.divisionID === divisionID) {
+            return;
+        }
+        $rootScope.closeLastDivSummary();
+        $rootScope.currentlyLoaded = 0;
+        $rootScope.totalLoading = 0;
+        $rootScope.isDivLoading = true;
+        $rootScope.leaderboard = [];
+        angular.forEach($rootScope.roundData[roundID].coderRooms, function (coderRoom) {
+            if (coderRoom.divisionID === divisionID && coderRoom.roundID === roundID) {
+                coderRoom.isLoading = true;
+                $rootScope.totalLoading += 1;
+            }
+        });
+        if ($rootScope.totalLoading === 0) {
+            $rootScope.isDivLoading = false;
+        }
+        closeDivSummary(roundID, divisionID);
+        $timeout(function () {
+            openDivSummary(roundID, divisionID);
+        }, helper.DIVSUMMARYREQUEST_TIMEGAP);
+    };
+    /*jslint unparam:true*/
+    // Handlers for leaderboard table events
+    $rootScope.$on(helper.EVENT_NAME.UpdateCoderComponentResponse, function (event, data) {
+        updateRoomSummary(data.roomID);
+    });
+    $rootScope.$on(helper.EVENT_NAME.UpdateCoderPointsResponse, function (event, data) {
+        updateRoomSummary(data.roomID);
+    });
+    $rootScope.$on(helper.EVENT_NAME.CreateChallengeTableResponse, function (event, data) {
+        updateRoomSummary(data.roomID);
+    });
+    /*jslint unparam:false*/
+    /**
+     * Get the selected leader board.
+     *
+     * @param viewOn the view which can be 'room', 'divOne', 'divTwo'
+     * @param roomID the room id
+     * @returns {Array} the leader board
+     */
+    $rootScope.getCurrentLeaderboard = function (viewOn, roomID) {
+        if (viewOn === 'room') {
+            return $rootScope.roomData[roomID].coders;
+        }
+        if (viewOn === 'divOne' || viewOn === 'divTwo') {
+            return $rootScope.leaderboard;
+        }
+    };
+
+    /**
+     * Get the score for display by dividing 100 and round at two digits after the decimal point.
+     *
+     * @param score the score multiplied by 100
+     * @returns {string} the score for display
+     */
+    $rootScope.formatScore = function (score) {
+        return (score * 0.01).toFixed(2);
+    };
+
+    /**
+     * Get the result to display on the room/division summary table for a coder component.
+     *
+     * @param component the coder component object
+     * @param showBy 'points' or 'status'
+     * @returns {string} the string indicating the coder component
+     */
+    $rootScope.showResult = function (component, showBy) {
+        if (component.status < helper.CODER_PROBLEM_STATUS_ID.NOT_CHALLENGED) {
+            // Not submitted, show status
+            return helper.CODER_PROBLEM_STATUS_NAME[component.status];
+        }
+        // show points when:
+        // 1) user wants to show by points; or
+        // 2) the problem is submitted but not challenged nor system tested
+        if (showBy === 'points' || component.status <= helper.CODER_PROBLEM_STATUS_ID.CHALLENGE_FAILED) {
+            return $rootScope.formatScore(component.points);
+        }
+        // show status
+        return helper.CODER_PROBLEM_STATUS_NAME[component.status];
+    };
+
+    /**
+     * Get the css class for the color of the component status.
+     *
+     * @param component the component
+     * @param languageID the id of the language
+     * @returns {string} the css class name
+     */
+    $rootScope.getStatusColor = function (status, languageID) {
+        var statusName = helper.CODER_PROBLEM_STATUS_NAME[status],
+            className = 'color' + statusName;
+        if (statusName === 'Submitted' || statusName === 'Challenged'
+                || statusName === 'Failed' || statusName === 'Passed') {
+            className += helper.LANGUAGE_NAME[languageID];
+        }
+        return className;
+    };
+
+    /**
+     * Get coder history.
+     *
+     * @param coder - the coder.
+     */
+    $rootScope.getCoderHistory = function (coder) {
+        socket.emit(helper.EVENT_NAME.CoderHistoryRequest, {
+            handle: coder.userName,
+            userType: coder.userType,
+            historyType: -1,
+            roomID: coder.roomID || $rootScope.currentRoomInfo.roomID
+        });
+    };
+
+    /**
+     * Check if the code of the component can be viewed by the user.
+     *
+     * @param phaseType the phase type
+     * @param component the component
+     * @returns {boolean} true if the component can be viewed
+     */
+    $rootScope.isViewable = function (phaseType, component) {
+        // cannot view when phase is not challenge or after.
+        if (phaseType < helper.PHASE_TYPE_ID.ChallengePhase) {
+            return false;
+        }
+        // cannot view if it is not submitted.
+        if (component.status < helper.CODER_PROBLEM_STATUS_ID.NOT_CHALLENGED) {
+            return false;
+        }
+        return true;
+    };
+
+    /**
+     * Views the code after the challenge phase starts.
+     *
+     * @param phaseType current phase type
+     * @param roundID the round id
+     * @param divisionID the division id
+     * @param componentID the component id
+     * @param roomID the room id
+     * @param username the name of the coder which solution is opened
+     * @param lastPage last page in the navigation ('details', 'contest')
+     */
+    $rootScope.viewCode = function (phaseType, roundID, divisionID, componentID, roomID, username, lastPage) {
+        if (phaseType >= helper.PHASE_TYPE_ID.ChallengePhase) {
+            $scope.$state.go(helper.STATE_NAME.ViewCode, {
+                roundId: roundID,
+                divisionId: divisionID,
+                componentId: componentID,
+                roomId: roomID,
+                defendant: username,
+                page: lastPage
+            });
+        }
+    };
+    // Show the coder history.
+    socket.on(helper.EVENT_NAME.CoderHistoryResponse, function (data) {
+        var i, tmpDate, coderHistoryData = [];
+
+        for (i = 0; i < data.historyData.length; i++) {
+            tmpDate = new Date(data.historyData[i].time);
+
+            coderHistoryData.push({"time": (tmpDate.getMonth() + 1) + "-" + tmpDate.getDate() + "-" + tmpDate.getFullYear()
+                + " " + tmpDate.getHours() + ":" + tmpDate.getMinutes() + ":" + tmpDate.getSeconds(),
+                "actionDescription": data.historyData[i].actionDescription, "userName": data.historyData[i].coder.userName,
+                "userRating": data.historyData[i].coder.userRating,
+                "componentValue": data.historyData[i].componentValue, "points": data.historyData[i].points, "detail": data.historyData[i].detail});
+        }
+
+        $scope.openModal({
+            title: 'Coder History',
+            coderHistoryData: coderHistoryData,
+            message: ''
+        }, null, null, 'partials/user.code.history.html');
+    });
 }];
 
 module.exports = baseCtrl;

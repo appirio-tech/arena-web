@@ -16,28 +16,54 @@
  * Changes in version 1.4 (Module Assembly - Web Arena - Local Chat Persistence):
  * - Clear the chat history while changing the room.
  *
- * @author amethystlei, flytoj2ee, TCASSEMBLER
- * @version 1.4
+ * Changes in version 1.5 (Module Assembly - Web Arena UI - Match Summary Widget):
+ * - Added config and $window to the controller.
+ * - Updated setViewOn to handle division leaderboard retrieval.
+ * - Added getCurrentLeaderboard, getTopCoderCount, viewCode to handle leaderboard table.
+ *
+ * @author amethystlei, flytoj2ee, dexy
+ * @version 1.5
  */
 'use strict';
 /*global module, angular*/
 
-var helper = require('../helper');
+var helper = require('../helper'),
+    config = require('../config');
 
 /**
  * The main controller for the contest summary page.
  *
  * @type {*[]}
  */
-var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', function ($scope, $state, $rootScope, appHelper) {
-    $scope.viewOn = 'room';
+var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$window', '$stateParams', function ($scope, $state, $rootScope, appHelper, $window, $stateParams) {
+    var preserveLastDivSummary = false,
+        cleanBeforeUnload = function () {
+            if (!preserveLastDivSummary) {
+                $rootScope.closeLastDivSummary();
+            }
+        };
+
+    $scope.viewDivisionID = $scope.divisionID;
     $scope.setViewOn = function (view) {
+        $rootScope.currentViewOn = view;
+        var divID = helper.VIEW_ID[view];
         $scope.viewOn = view;
         if (view === 'rooms') {
             $scope.$broadcast('rebuild:roomslist');
+            $rootScope.closeLastDivSummary();
+            $rootScope.leaderboard = [];
+            $rootScope.isDivLoading = false;
+            $scope.viewDivisionID = $scope.divisionID;
+        } else {
+            $scope.viewDivisionID = divID;
+            $rootScope.getDivSummary($scope.contest.roundID, divID);
         }
     };
-
+    if ($stateParams.viewOn) {
+        $scope.setViewOn($stateParams.viewOn);
+    } else {
+        $scope.setViewOn('room');
+    }
     // default to 50
     $scope.pageSize = 50;
 
@@ -93,9 +119,27 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', functio
      * @returns {boolean|$rootScope.roundData.coderRooms|*} the flag
      */
     $scope.isShownRooms = function () {
-        return $scope.contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.AlmostContestPhase
+        return angular.isDefined($scope.contest.phaseData)
+            && $scope.contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.AlmostContestPhase
             && $scope.contest.coderRooms && $scope.contest.coderRooms.length > 0;
     };
+
+    /**
+     * Get the selected leader board.
+     *
+     * @returns {Array} the leader board
+     */
+    $scope.getCurrentLeaderboard = function () {
+        return $rootScope.getCurrentLeaderboard($scope.viewOn, $rootScope.competingRoomID);
+    };
+
+    $scope.getTopCoderCount = function () {
+        return config.summaryTopCoderCount;
+    };
+
+    // Closes the opened division summary on page leaving.
+    $window.onbeforeunload = cleanBeforeUnload;
+    $scope.$on("$destroy", cleanBeforeUnload);
 
     /**
      * Checks whether the current user is in his/her room.
@@ -132,7 +176,34 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', functio
         return '';
     };
     $scope.viewDetail = function (contest) {
+        preserveLastDivSummary = true;
         $state.go('user.contestSummary', {contestId : contest.roundID, divisionId : $scope.divisionID, viewOn : $scope.viewOn});
+    };
+
+    /**
+     * View the source of the given coder and component.
+     *
+     * @param {{
+     *           userName: string,
+     *           userRating: number,
+     *           teamName: string,
+     *           userID: number,
+     *           userType: number,
+     *           countryName: string,
+     *           components: {
+     *              componentID: number,
+     *              points: number,
+     *              status: number,
+     *              language: number
+     *           }
+     *        }} coder
+     * @param {number} componentId
+     */
+    $scope.viewCode = function (coder, componentId) {
+        var roomID = ($scope.viewOn === 'room') ? $rootScope.competingRoomID : coder.roomID;
+        preserveLastDivSummary = true;
+        $rootScope.viewCode($scope.contest.phaseData.phaseType, $scope.contest.roundID, $scope.divisionID,
+                            componentId, roomID, coder.userName, 'contest');
     };
 }];
 

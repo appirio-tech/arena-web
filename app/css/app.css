@@ -2932,7 +2932,7 @@ footer .right>span:nth-child(2) {
     line-height: 20px;
 }
 .panelContestStat .breadcrumbHead {
-    padding: 9px 0 7px 28px;
+    padding: 9px 0 7px 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow:ellipsis;
@@ -3914,13 +3914,13 @@ footer .right>span:nth-child(2) {
     border-top: 1px solid #0bbbe7;
     height: 115px;
     line-height: 20px;
-    margin-bottom: 17px;
+    margin-bottom: 7px;
     position: relative;
     margin-right: 16px;
 }
 .panelSummary .summaryWrapper .sumDiv {
     height: 115px;
-    padding-top: 13px;
+    padding-top: 5px;
     margin-right: -16px;
 }
 .panelSummary .summaryWrapper .sumDiv .innerWrapper{
@@ -3962,6 +3962,11 @@ footer .right>span:nth-child(2) {
 }
 .panelSummary .mainContent .detailLink {
     color: #0bbbe7;
+}
+.panelSummary .btn {
+    padding-left: 0px;
+    padding-right: 0px;
+    vertical-align: middle;
 }
 /* contest summary page --> uesr.contest.detail.html*/
 .detailPage .titleBar {
@@ -4285,6 +4290,12 @@ footer .right>span:nth-child(2) {
     min-height: 495px;
     width: 100%;
 }
+
+.panelSummary .shortLeaderboard .leaderboardWrapper .tableDiv {
+    max-height: 130px;
+    min-height: 130px;
+}
+
 .detailPage section .tableDiv .innerWrapper,
 .detailPage section .tHeadDiv .innerWrapper,
 .modal-body .tHeadDiv .innerWrapper,
@@ -4338,6 +4349,12 @@ footer .right>span:nth-child(2) {
     padding-bottom: 10px;
     position: relative;
 }
+
+.panelSummary .shortLeaderboard .table>thead>tr>th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
 .detailPage section .table>thead>tr>th .arrow,
 .modal-body .table>thead>tr>th .arrow {
     display: inline-block;
@@ -4367,6 +4384,11 @@ footer .right>span:nth-child(2) {
     -ms-user-select: none;
     user-select: none;
 }
+
+.panelSummary .shortLeaderboard .table>thead>tr>.sortableHeading {
+    cursor: default;
+}
+
 .detailPage .table>tbody>tr>td {
     color: #fff;
     padding: 4px 5px;
@@ -4428,6 +4450,9 @@ footer .right>span:nth-child(2) {
     width: 30px;
     font-weight: 100;
 }
+.panelSummary .shortLeaderboard .leaderboardWrapper .table .colR {
+    width: 21px;
+}
 .leaderboardWrapper .table .col2 {
     width: 22%;
 }
@@ -4482,13 +4507,17 @@ footer .right>span:nth-child(2) {
     font-weight: 700!important;
 }
 
-.leaderboardWrapper .table td.col2 {
+.leaderboardWrapper .table td.col2 .name{
     cursor: pointer;
 }
 
 .leaderboardWrapper .table td.colR {
     cursor: pointer;
     padding-right: 1px;
+}
+
+.panelSummary .shortLeaderboard .leaderboardWrapper .table td.colR {
+    padding-left: 2px;
 }
 
 .detailPage section .table td .rating {
@@ -6226,7 +6255,7 @@ footer .right>span:nth-child(2) {
 }
 .panelSummary .panel-body .summaryWrapper,
 .panelSummary .summaryWrapper .sumDiv {
-    height: 20px !important;
+    height: 0px !important;
 }
 *:focus {
     outline: none;

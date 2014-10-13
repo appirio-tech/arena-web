@@ -31,8 +31,11 @@
  * Changes in version 1.7 (Module Assembly - Web Arena Bug Fix 20140909):
  * - Updated the test panel height in expand mode.
  *
- * @author dexy, amethystlei, TCASSEMBLER
- * @version 1.7
+ * Changes in version 1.15 (Module Assembly - Web Arena UI - Match Summary Widget):
+ * - Updated goBack to support going back to the match summary page.
+ *
+ * @author dexy, amethystlei
+ * @version 1.8
  */
 'use strict';
 /*global module, angular, document, $*/
@@ -431,6 +434,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
          * Go back to the contest summary page when user is viewing others' code.
          */
         $scope.goBack = function () {
+            if ($stateParams.page && $stateParams.page === 'contest') {
+                $scope.$state.go(helper.STATE_NAME.Contest, {
+                    contestId : $scope.roundID,
+                    viewOn : $rootScope.currentViewOn
+                });
+            } else {
             if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
                 $scope.$state.go(helper.STATE_NAME.Contest, {
                     contestId: $scope.roundID
@@ -441,6 +450,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     divisionId : $scope.divisionID,
                     viewOn : $rootScope.currentViewOn
                 });
+                }
             }
         };
 

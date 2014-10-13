@@ -1,6 +1,6 @@
 <div class="panel panel-custom panelSummary">
     <div class="panel-heading">
-        Summary
+        Match Summary
     </div>
     <div class="panel-body">
         <div class="mainContent">
@@ -49,7 +49,94 @@
                     <div class="default visible-sm visible-xs"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
                 </div>
             </div>
-            <a class="detailLink" data-ng-hide="viewOn=='rooms'" data-ng-click="viewDetail(contest)">View Details</a>
+            <p data-ng-show="!isShownRooms()">The leaderboard is not ready.</p>
+            <section class="detailPage shortLeaderboard">
+                <section class="leaderboardWrapper" data-rebuild-on="rebuild:leaderboardTable" id="leaderboardPanel" data-ng-hide="viewOn=='rooms'">
+                    <p data-ng-show="!isShownRooms()">The leaderboard is not ready.</p>
+                    <div class="tableWrapper" data-ng-show="isShownRooms()" data-rebuild-on="rebuild:leaderboardTable">
+                        <div class="tHeadDiv" data-ng-class="{moreProblemTbl:contest.problems[viewDivisionID].length>3,normal:contest.problems[viewDivisionID].length<=3}">
+                            <div class="innerWrapper">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th class="col1 sortableHeading" data-ng-hide="viewOn=='room'">
+                                                Place
+                                            </th>
+                                            <th class="col1 sortableHeading" data-ng-show="viewOn=='room'">
+                                                Place
+                                            </th>
+                                            <th class="colR sortableHeading">
+                                                R
+                                            </th>
+                                            <th class="col2 sortableHeading">
+                                                Handle
+                                            </th>
+                                            <th data-ng-repeat="problem in contest.problems[viewDivisionID] track by $index" class="colProblem sortableHeading">
+                                                {{ problem.primaryComponent.pointValue }}
+                                            </th>
+                                            <th class="col6 sortableHeading">
+                                                Score
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div><!--/.innerWrapper-->
+                        </div><!--/.tHeadDiv-->
+                        <div class="tableDiv scroll" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-ng-class="{moreProblemTbl:contest.problems[viewDivisionID].length>3,normal:contest.problems[viewDivisionID].length<=3}">
+                            <div class="innerWrapper">
+                                <table class="table table-condensed">
+                                    <tbody>
+                                         <tr data-ng-repeat="coder in getCurrentLeaderboard() | orderBy: ['-totalPoints', '-userRating', 'userName'] | limitTo: getTopCoderCount()">
+                                            <td class="col1">{{viewOn=='room' ? coder.roomPlace : coder.divPlace}}</td>
+                                            <td class="colR" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
+                                                --><!-- avoid blank
+                                                --><a data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!--
+                                                    --><span class="name {{getRatingClass(coder.userRating)}}"><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span></span><!--
+                                                --></a>
+                                            </td>
+                                            <td class="col2"><!-- avoid blank
+                                                --><!-- avoid blank
+                                                --><span data-ng-click="showCoderInfo(coder.userName, coder.userType);" class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
+                                                <a class="rating" data-ng-click="getCoderHistory(coder)"><img src="../img/history.png"/></a>
+                                            </td>
+                                            <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
+                                                <a data-ng-show="isViewable(contest.phaseData.phaseType, component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span></a>
+                                                <span data-ng-hide="isViewable(contest.phaseData.phaseType, component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span>
+                                            </td>
+                                            <td class="col6">{{$root.formatScore(coder.totalPoints)}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><!-- /.tableDiv .scroll -->
+                        <div class="tableDiv default" data-ng-class="{moreProblemTbl:contest.problems[viewDivisionID].length>3,normal:contest.problems[viewDivisionID].length<=3}">
+                            <div class="innerWrapper">
+                               <table class="table table-condensed">
+                                    <tbody>
+                                         <tr data-ng-repeat="coder in getCurrentLeaderboard() | orderBy: ['-totalPoints', '-userRating', 'userName'] | limitTo: getTopCoderCount()">
+                                            <td class="col1">{{viewOn=='room' ? coder.roomPlace : coder.divPlace}}</td>
+                                            <td class="colR" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
+                                                --><!-- avoid blank
+                                                --><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span>
+                                            </td>
+                                            <td class="col2" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
+                                                --><!-- avoid blank
+                                                --><span class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
+                                            </td>
+                                            <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
+                                                <a data-ng-show="isViewable(contest.phaseData.phaseType, component)" data-ng-click=""><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span></a>
+                                                <span data-ng-hide="isViewable(contest.phaseData.phaseType, component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span>
+                                            </td>
+                                            <td class="col6">{{$root.formatScore(coder.totalPoints)}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                             </div>
+                        </div><!-- /.tableDiv .default -->
+                    </div>
+                </section>
+            </section>
+            <a class="detailLink" data-ng-hide="viewOn=='rooms'" data-ng-click="viewDetail(contest)">Challenges & Leaderboard</a>
         </div><!-- /.mainContent -->
     </div>
     <!-- /.panel-body -->

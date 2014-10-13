@@ -581,7 +581,7 @@ footer .right .sponsorLogo {
     border-bottom: 1px solid #1f444e;
 }
 .panelContestStat .breadcrumbHead {
-    padding: 9px 0 7px 28px;
+    padding: 9px 0 7px 10px;
 }
 .panelContestStat .breadcrumbHead .breadcrumb .active {color: #0bbbe7; }
 .panelContestStat .breadcrumbHead .breadcrumb li {
