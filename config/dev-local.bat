@@ -57,3 +57,6 @@ set TWEET_URL=arena.topcoder.com
 set FACEBOOK_LINK=arena.topcoder.com
 
 set DIVISION_LEADERBOARD_LIMIT=20
+
+:: The number of top coders shown in Match Summary widget
+set SUMMARY_TOPCODER_COUNT=4

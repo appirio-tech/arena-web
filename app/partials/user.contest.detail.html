@@ -267,7 +267,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 rightSec" id="rSec">
                             <section class="leaderboardWrapper" id="leaderboardPanel">
                                 <div class="heading">
-                                    <h3><span data-ng-show="viewOn=='room'">Room</span><span data-ng-hide="viewOn=='room'">Division</span> <span data-ng-show="viewOn=='divOne'">I</span><span data-ng-show="viewOn=='divTwo'">II</span> Leaderboard<span data-ng-show="isDivLoading"> (Loading... <span>{{currentlyLoaded}}/{{totalLoading}}</span>)</span></h3><br/>
+                                    <h3><span data-ng-show="viewOn=='room'">Room</span><span data-ng-hide="viewOn=='room'">Division</span> <span data-ng-show="viewOn=='divOne'">I</span><span data-ng-show="viewOn=='divTwo'">II</span> Leaderboard<span data-ng-show="isDivLoading"> (Loading... <span data-rebuild-on="rebuild:loadingCounter">{{currentlyLoaded}}/{{totalLoading}}</span>)</span></h3><br/>
                                     <div class="filterArea" data-ng-show="registrationFinished()">
                                         <a id="leaderboardFilter" data-ng-click="checkFilter(viewOn, 'leaderboard')" class="filterToggle">Filter</a>
                                         <div>
@@ -345,13 +345,13 @@
                                                         <td class="col2"><!-- avoid blank
                                                             --><!-- avoid blank
                                                             --><span data-ng-click="showCoderInfo(coder.userName, coder.userType);" class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
-                                                            <a class="rating" data-ng-click="getCoderHistory(coder.userName)"><img src="../img/history.png"/></a>
+                                                            <a class="rating" data-ng-click="getCoderHistory(coder)"><img src="../img/history.png"/></a>
                                                         </td>
                                                         <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
-                                                            <a data-ng-show="isViewable(component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span></a>
-                                                            <span data-ng-hide="isViewable(component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span>
+                                                            <a data-ng-show="isViewable(contest.phaseData.phaseType, component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span></a>
+                                                            <span data-ng-hide="isViewable(contest.phaseData.phaseType, component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span>
                                                         </td>
-                                                        <td class="col6">{{formatScore(coder.totalPoints)}}</td>
+                                                        <td class="col6">{{$root.formatScore(coder.totalPoints)}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -375,10 +375,10 @@
                                                             --><span class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
                                                         </td>
                                                         <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
-                                                            <a data-ng-show="isViewable(component)" data-ng-click=""><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span></a>
-                                                            <span data-ng-hide="isViewable(component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span>
+                                                            <a data-ng-show="isViewable(contest.phaseData.phaseType, component)" data-ng-click=""><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span></a>
+                                                            <span data-ng-hide="isViewable(contest.phaseData.phaseType, component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span>
                                                         </td>
-                                                        <td class="col6">{{formatScore(coder.totalPoints)}}</td>
+                                                        <td class="col6">{{$root.formatScore(coder.totalPoints)}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

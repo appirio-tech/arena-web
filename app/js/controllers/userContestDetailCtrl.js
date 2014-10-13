@@ -49,8 +49,13 @@
  * Changes in version 2.0 (Web Arena - Division Leaderboard Pagination):
  * - Added division leaderboard pagination
  *
- * @author amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 2.0
+ * Changes in version 2.1 (Module Assembly - Web Arena UI - Match Summary Widget):
+ * - Moved closeDivSummary, closeLastDivSummary, openDivSummary, getDivSummary, updateDivSummary
+ *   updateRoomSummary, formatScore, getStatusColor, showResult, isViewable, ldrbrdTimeoutPromise,
+ *   getCoderHistory to baseCtrl.js to have global support for leaderboard tables.
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee
+ * @version 2.1
  */
 'use strict';
 /*jshint -W097*/
@@ -70,8 +75,21 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location', '$timeout', 'socket', '$window', 'appHelper', function ($scope, $stateParams, $rootScope, $location, $timeout, socket, $window, appHelper) {
-
+var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location', '$timeout', '$window', 'appHelper', function ($scope, $stateParams, $rootScope, $location, $timeout, $window, appHelper) {
+    var // qtip here
+        // use qtip to create a filter panel
+        filter = $('.filterToggle'),
+        lbFilter = $('#leaderboardFilter'),
+        challengeFilter = $('#challengeFilter'),
+        challengerFilter = $('#challengerFilter'),
+        lastPageNums = [],
+        lastInvokeTime = 0,
+        preserveLastDivSummary = false,
+        cleanBeforeUnload = function () {
+            if (!preserveLastDivSummary) {
+                $rootScope.closeLastDivSummary();
+            }
+        };
 // page for Division Leaderboard
     $scope.numOfPage = config.divsionLearderBoardLimit;
     $scope.currentPage = 0;
@@ -83,7 +101,8 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
 
         var pageNumber = items.length, cpage = $scope.currentPage + 1,
             // limit size param
-            showPageLength = 13, result = [], i;
+            showPageLength = 13, result = [], i,
+            skipPage, showi;
 
         if (cpage > pageNumber) {
             cpage = pageNumber;
@@ -93,16 +112,17 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         }
 
         for (i = 1; i <= pageNumber; i++) {
+            skipPage = false;
             if (cpage <= 6 + showPageLength) {
                 if (pageNumber > 7 + showPageLength) {
                     if (i !== 1 && i !== pageNumber) {
                         if (cpage <= 4 + showPageLength && i > 6 + showPageLength) {
-                            continue;
+                            skipPage = true;
                         } else if (cpage > 4 + showPageLength && pageNumber - cpage > 2 + showPageLength && Math.abs(i - cpage) > 2 + showPageLength / 2) {
-                            continue;
+                            skipPage = true;
                         } else if (cpage > 4 + showPageLength && pageNumber - cpage < 2 + showPageLength) {
                             if (i < cpage && pageNumber - cpage + cpage - i > 4 + showPageLength) {
-                                continue;
+                                skipPage = true;
                             }
                         }
 
@@ -110,21 +130,21 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
                 }
 
             } else if (cpage > 6 + showPageLength && cpage < pageNumber - 3 - showPageLength) {
-
-                if (i != 1 && i !== pageNumber && Math.abs(i - cpage) > 2 + showPageLength / 2) {
-                    continue;
+                if (i !== 1 && i !== pageNumber && Math.abs(i - cpage) > 2 + showPageLength / 2) {
+                    skipPage = true;
                 }
 
             } else if (cpage > 6 + showPageLength && cpage >= pageNumber - 3 - showPageLength) {
                 if (i !== 1 && i !== pageNumber) {
                     if (i < cpage) {
                         if (pageNumber - cpage + cpage - i > 5 + showPageLength) {
-                            continue;
+                            skipPage = true;
                         }
                     }
                 }
             }
-            var showi = i;
+            if (!skipPage) {
+                showi = i;
             if (i === 1 && cpage >= 5 + showPageLength && pageNumber > 7 + showPageLength) {
                 showi = "1...";
             }
@@ -134,10 +154,10 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
 
             result.push({i: i - 1, show: showi});
         }
+        }
         return result;
     }
 
-    var lastPageNums = [], lastInvokeTime = 0;
 // get pagination index
     $scope.range = function (data, num) {
 
@@ -199,176 +219,6 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         return val;
     }
 
-    var // qtip here
-        // use qtip to create a filter panel
-        filter = $('.filterToggle'),
-        lbFilter = $('#leaderboardFilter'),
-        challengeFilter = $('#challengeFilter'),
-        challengerFilter = $('#challengerFilter'),
-        ldrbrdTimeoutPromise,
-        /**
-         * Close the division summary.
-         *
-         * @param roundID the round id
-         * @param divisionID the division id
-         */
-        closeDivSummary = function (roundID, divisionID) {
-            if (angular.isDefined($rootScope.lastDivSummary)) {
-                socket.emit(helper.EVENT_NAME.CloseDivSummaryRequest, {
-                    roundID: roundID,
-                    divisionID: divisionID
-                });
-            }
-        },
-        /**
-         * Close the last opened division summary.
-         */
-        closeLastDivSummary = function () {
-            if (angular.isDefined($rootScope.lastDivSummary)) {
-                closeDivSummary($rootScope.lastDivSummary.roundID, $rootScope.lastDivSummary.divisionID);
-            }
-            $rootScope.lastDivSummary = undefined;
-        },
-        /**
-         * Open the division summary.
-         *
-         * @param roundID the round id
-         * @param divisionID the division id
-         */
-        openDivSummary = function (roundID, divisionID) {
-            socket.emit(helper.EVENT_NAME.DivSummaryRequest, {
-                roundID: roundID,
-                divisionID : divisionID
-            });
-            $rootScope.lastDivSummary = {
-                roundID: roundID,
-                divisionID: divisionID
-            };
-        },
-        /**
-         * Get the division summary.
-         * It is first sending close div summary for the summary we want to open.
-         * NOTE: This is the behavior of the Arena applet.
-         *
-         * @param roundID the round id
-         * @param divisionID the division id
-         */
-        getDivSummary = function (roundID, divisionID) {
-            if (angular.isDefined($rootScope.lastDivSummary) && angular.isDefined(angular.isDefined($rootScope.lastDivSummary.roundID))
-                    && angular.isDefined($rootScope.lastDivSummary.divisionID)
-                    && $rootScope.lastDivSummary.roundID === roundID && $rootScope.lastDivSummary.divisionID === divisionID) {
-                return;
-            }
-            closeLastDivSummary();
-            $scope.currentlyLoaded = 0;
-            $scope.totalLoading = 0;
-            $scope.isDivLoading = true;
-            $scope.leaderboard = [];
-            angular.forEach($rootScope.roundData[roundID].coderRooms, function (coderRoom) {
-                if (coderRoom.divisionID === divisionID && coderRoom.roundID === roundID) {
-                    coderRoom.isLoading = true;
-                    $scope.totalLoading += 1;
-                }
-            });
-            if ($scope.totalLoading === 0) {
-                $scope.isDivLoading = false;
-            }
-            closeDivSummary(roundID, divisionID);
-            $timeout(function () {
-                openDivSummary(roundID, divisionID);
-            }, helper.DIVSUMMARYREQUEST_TIMEGAP);
-        },
-        /**
-         * Update the division summary
-         *
-         * @param roundID the round id
-         * @param divisionID the division id
-         */
-        updateDivSummary = function (roundID, divisionID) {
-            var il;
-            $scope.leaderboard = [];
-            if (angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roundData[roundID])
-                    && angular.isDefined($rootScope.roundData[roundID].coderRooms)) {
-                angular.forEach($rootScope.roundData[roundID].coderRooms, function (coderRoom) {
-                    if (coderRoom.divisionID === divisionID && coderRoom.roundID === roundID &&
-                            angular.isDefined($rootScope.roomData[coderRoom.roomID])) {
-                        coderRoom.isLoading = false;
-                        angular.forEach($rootScope.roomData[coderRoom.roomID].coders, function (coder) {
-                            coder.roomID = coderRoom.roomID;
-                        });
-                        $scope.leaderboard = $scope.leaderboard.concat($rootScope.roomData[coderRoom.roomID].coders);
-                    }
-                });
-            }
-            if ($scope.leaderboard.length > 0) {
-                $scope.leaderboard.sort(function (coderA, coderB) {
-                    return coderB.totalPoints - coderA.totalPoints;
-                });
-                $scope.leaderboard[0].divPlace = 1;
-                for (il = 1; il < $scope.leaderboard.length; il += 1) {
-                    if ($scope.leaderboard[il].totalPoints === $scope.leaderboard[il - 1].totalPoints) {
-                        $scope.leaderboard[il].divPlace = $scope.leaderboard[il - 1].divPlace;
-                    } else {
-                        $scope.leaderboard[il].divPlace = (il + 1);
-                    }
-                }
-            }
-            $scope.isDivLoading = false;
-            $scope.currentlyLoaded = 0;
-            angular.forEach($rootScope.roundData[roundID].coderRooms, function (coderRoom) {
-                if (coderRoom.divisionID === divisionID && coderRoom.roundID === roundID) {
-                    if (coderRoom.isLoading) {
-                        $scope.currentlyLoaded += 1;
-                        $scope.isDivLoading = true;
-                    }
-                }
-            });
-            $timeout.cancel(ldrbrdTimeoutPromise);
-            ldrbrdTimeoutPromise = $timeout(function () {
-                $scope.$broadcast('rebuild:leaderboardTable');
-            }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
-        },
-        /**
-         * Update the room summary.
-         * It only checks if the current opened division summary (if any) should be updated
-         * if the room with roomID is updated. It then calls updateDivSummary.
-         *
-         * @param roomID the room id
-         */
-        updateRoomSummary = function (roomID) {
-            var updatedDivSummary = false;
-            if ($scope.viewOn !== 'room') {
-                if (angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roundData[$stateParams.contestId])
-                        && angular.isDefined($rootScope.roundData[$stateParams.contestId].coderRooms)) {
-                    angular.forEach($rootScope.roundData[$stateParams.contestId].coderRooms, function (coderRoom) {
-                        if (coderRoom.roomID === roomID && coderRoom.divisionID === helper.VIEW_ID[$scope.viewOn] && coderRoom.roundID === Number($stateParams.contestId)) {
-                            updatedDivSummary = true;
-                        }
-                    });
-                }
-            }
-            if (updatedDivSummary) {
-                updateDivSummary(Number($stateParams.contestId), helper.VIEW_ID[$scope.viewOn]);
-            }
-        },
-        /**
-         * Close the last opened division summary on leaving the page.
-         */
-        onLeavingContestDetailPage = function () {
-            closeLastDivSummary();
-        };
-    /*jslint unparam:true*/
-    $scope.$on(helper.EVENT_NAME.UpdateCoderComponentResponse, function (event, data) {
-        updateRoomSummary(data.roomID);
-    });
-    $scope.$on(helper.EVENT_NAME.UpdateCoderPointsResponse, function (event, data) {
-        updateRoomSummary(data.roomID);
-    });
-    $scope.$on(helper.EVENT_NAME.CreateChallengeTableResponse, function (event, data) {
-        updateRoomSummary(data.roomID);
-    });
-    /*jslint unparam:false*/
-
     /**
      * Gets the leader room class.
      *
@@ -425,7 +275,6 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     $scope.challengesDivs = [[], []];
     // leaderboards
     $scope.boards = [[], []];
-    $scope.leaderboard = [];
     $scope.showBy = 'points';
     $scope.isDivisionActive = appHelper.isDivisionActive;
     /**
@@ -434,24 +283,15 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
      * @returns {Array} the leader board
      */
     $scope.getCurrentLeaderboard = function () {
-        if ($scope.viewOn === 'room') {
-            return $rootScope.roomData[$scope.roomID].coders;
-        }
-        if ($scope.viewOn === 'divOne') {
-            return $scope.leaderboard;
-        }
-        if ($scope.viewOn === 'divTwo') {
-            return $scope.leaderboard;
-        }
+        return $rootScope.getCurrentLeaderboard($scope.viewOn, $scope.roomID);
     };
 
 
 
 
     // Closes the opened division summary on page leaving.
-    $window.onbeforeunload = onLeavingContestDetailPage;
-    $scope.$on("$destroy", onLeavingContestDetailPage);
-    $scope.isDivLoading = false;
+    $window.onbeforeunload = cleanBeforeUnload;
+    $scope.$on("$destroy", cleanBeforeUnload);
 
     $scope.roomKeys = {
         challengerKey: '-points',
@@ -545,14 +385,16 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         $rootScope.currentViewOn = view;
         var divID = helper.VIEW_ID[view];
         if (view !== 'room') {
-            getDivSummary($scope.contest.roundID, divID);
+            $scope.divisionID = divID;
+            $rootScope.getDivSummary($scope.contest.roundID, divID);
             $scope.numOfPage = config.divsionLearderBoardLimit;
         } else {
+            $scope.divisionID = $stateParams.divisionId;
             $scope.numOfPage = 999999;
-            closeLastDivSummary();
-            $scope.leaderboard = [];
+            $rootScope.closeLastDivSummary();
+            $rootScope.leaderboard = [];
 
-            $scope.isDivLoading = false;
+            $rootScope.isDivLoading = false;
         }
         $scope.viewOn = view;
 
@@ -581,59 +423,11 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         $scope.setViewOn('room');
     }
 
-    /**
-     * Get the score for display by dividing 100 and round at two digits after the decimal point.
-     *
-     * @param score the score multiplied by 100
-     * @returns {string} the score for display
-     */
-    $scope.formatScore = function (score) {
-        return (score * 0.01).toFixed(2);
-    };
     $scope.percentage = function (success, total) {
         if (total <= 0) {
             return '0%';
         }
         return (success * 100.0 / total).toFixed(0) + '%';
-    };
-
-    /**
-     * Get the css class for the color of the component status.
-     *
-     * @param component the component
-     * @param languageID the id of the language
-     * @returns {string} the css class name
-     */
-    $scope.getStatusColor = function (status, languageID) {
-        var statusName = helper.CODER_PROBLEM_STATUS_NAME[status],
-            className = 'color' + statusName;
-        if (statusName === 'Submitted' || statusName === 'Challenged'
-                || statusName === 'Failed' || statusName === 'Passed') {
-            className += helper.LANGUAGE_NAME[languageID];
-        }
-        return className;
-    };
-
-    /**
-     * Get the result to display on the room/division summary table for a coder component.
-     *
-     * @param component the coder component object
-     * @param showBy 'points' or 'status'
-     * @returns {string} the string indicating the coder component
-     */
-    $scope.showResult = function (component, showBy) {
-        if (component.status < helper.CODER_PROBLEM_STATUS_ID.NOT_CHALLENGED) {
-            // Not submitted, show status
-            return helper.CODER_PROBLEM_STATUS_NAME[component.status];
-        }
-        // show points when:
-        // 1) user wants to show by points; or
-        // 2) the problem is submitted but not challenged nor system tested
-        if (showBy === 'points' || component.status <= helper.CODER_PROBLEM_STATUS_ID.CHALLENGE_FAILED) {
-            return $scope.formatScore(component.points);
-        }
-        // show status
-        return helper.CODER_PROBLEM_STATUS_NAME[component.status];
     };
 
     /**
@@ -655,30 +449,14 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     };
 
     /**
-     * Check if the code of the component can be viewed by the user.
-     *
-     * @params component the component
-     * @returns {boolean} true if the component can be viewed
-     */
-    $scope.isViewable = function (component) {
-        // cannot view when phase is not challenge or after.
-        if ($scope.contest.phaseData.phaseType < helper.PHASE_TYPE_ID.ChallengePhase) {
-            return false;
-        }
-        // cannot view if it is not submitted.
-        if (component.status < helper.CODER_PROBLEM_STATUS_ID.NOT_CHALLENGED) {
-            return false;
-        }
-        return true;
-    };
-
-    /**
      * Go back to the contest page.
      */
     $scope.goBack = function () {
+        preserveLastDivSummary = true;
         $scope.$state.go(helper.STATE_NAME.Contest, {
             contestId : $scope.contest.roundID,
-            divisionId : $scope.divisionID
+            divisionId : $scope.divisionID,
+            viewOn: $scope.viewOn
         });
     };
 
@@ -827,8 +605,8 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             } else {
                 $scope.getKeys(viewOn).lbFilter.userName = '';
             }
-            $timeout.cancel(ldrbrdTimeoutPromise);
-            ldrbrdTimeoutPromise = $timeout(function () {
+            $timeout.cancel($rootScope.ldrbrdTimeoutPromise);
+            $rootScope.ldrbrdTimeoutPromise = $timeout(function () {
                 $scope.$broadcast('rebuild:leaderboardTable');
             }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
         } else if (panel === 'challenge') {
@@ -899,48 +677,10 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
      */
     $scope.viewCode = function (coder, componentId) {
         var roomID = ($scope.viewOn === 'room') ? $scope.roomID : coder.roomID;
-        if ($scope.contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.ChallengePhase) {
-            $scope.$state.go(helper.STATE_NAME.ViewCode, {
-                roundId: $stateParams.contestId,
-                divisionId: $scope.divisionID,
-                componentId: componentId,
-                roomId: roomID,
-                defendant: coder.userName
-            });
-        }
+        preserveLastDivSummary = true;
+        $rootScope.viewCode($scope.contest.phaseData.phaseType, $stateParams.contestId, $scope.divisionID,
+                            componentId, roomID, coder.userName, 'details');
     };
-
-    /**
-     * Get coder history.
-     *
-     * @param userName - the user handle.
-     */
-    $scope.getCoderHistory = function (userName) {
-        socket.emit(helper.EVENT_NAME.CoderHistoryRequest, {handle: userName, userType: 1, historyType: -1,
-            roomID: $rootScope.currentRoomInfo.roomID});
-    };
-
-    // Show the coder history.
-    socket.on(helper.EVENT_NAME.CoderHistoryResponse, function (data) {
-        var i, tmpDate, coderHistoryData = [];
-
-        for (i = 0; i < data.historyData.length; i++) {
-            tmpDate = new Date(data.historyData[i].time);
-
-            coderHistoryData.push({"time": (tmpDate.getMonth() + 1) + "-" + tmpDate.getDate() + "-" + tmpDate.getFullYear()
-                + " " + tmpDate.getHours() + ":" + tmpDate.getMinutes() + ":" + tmpDate.getSeconds(),
-                "actionDescription": data.historyData[i].actionDescription, "userName": data.historyData[i].coder.userName,
-                "userRating": data.historyData[i].coder.userRating,
-                "componentValue": data.historyData[i].componentValue, "points": data.historyData[i].points, "detail": data.historyData[i].detail});
-        }
-
-        $scope.openModal({
-            title: 'Coder History',
-            coderHistoryData: coderHistoryData,
-            message: ''
-        }, null, null, 'partials/user.code.history.html');
-
-    });
 }];
 
 module.exports = userContestDetailCtrl;
