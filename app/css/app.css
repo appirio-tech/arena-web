@@ -2157,7 +2157,6 @@ footer .right>span:nth-child(2) {
     top: 6px;
     background-position: -75px -125px;
 }
-.panelCodeEditor .toolBar .middlePart .findInput > a:hover {right: 2px;}
 .panelCodeEditor .toolBar .middlePart .gotoInput > label {font-size: 13px;}
 .panelCodeEditor .toolBar .middlePart .gotoInput input {
     width: 68px;
