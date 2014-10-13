@@ -15,7 +15,7 @@
  * Changes in version 1.3 (Module Assembly - Web Arena UI - Challenge Phase):
  * - Updated to integrate code viewing logics.
  * - Fixed the angular-timer usage to avoid error messages in console.
- * - Removed unnecessary $state injection as it is exposed by $rootScope. 
+ * - Removed unnecessary $state injection as it is exposed by $rootScope.
  *
  * Changes in version 1.4 (Module Assembly - Web Arena UI - Phase I Bug Fix):
  * - Added the handler for PhaseDataResponse to implement coding time update (add time).
@@ -31,7 +31,7 @@
  * Changes in version 1.7 (Module Assembly - Web Arena Bug Fix 20140909):
  * - Updated the test panel height in expand mode.
  *
- * Changes in version 1.15 (Module Assembly - Web Arena UI - Match Summary Widget):
+ * Changes in version 1.8 (Module Assembly - Web Arena UI - Match Summary Widget):
  * - Updated goBack to support going back to the match summary page.
  *
  * @author dexy, amethystlei
