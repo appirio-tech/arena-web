@@ -43,7 +43,7 @@ var overviewCtrl = ['$scope', '$rootScope', 'Facebook', function ($scope, $rootS
     formatStatusMessage = function (numRatedEvents, rating) {
         var matches, message;
         if (numRatedEvents === 0) {
-            return "I haven't participated in any match in #topcoder arena and I'm not rated.";
+            return "I have not participated in any matches in the #topcoder arena yet, and I'm not rated.";
         }
         matches = numRatedEvents + (numRatedEvents === 1 ? " match" : " matches");
         if (rating <= 0) {
