@@ -1,0 +1,6 @@
+{
+    "type": ["All", "Single", "Long", "Team"],
+    "difficulty": ["All", "Easy", "Medium", "Hard"],
+    "status": ["All", "New", "Viewed", "Solved"],
+    "points": [250, 500, 1000]
+}

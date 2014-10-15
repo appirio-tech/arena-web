@@ -1,0 +1,145 @@
+<div class="container-fluid inner">
+    <div class="row-fluid dashboard contest detailPage contestManagement practiceProblemList">
+        <div class="col-lg-12 text-left titleBar">
+            <div class="col-lg-6 col-md-7">
+                <h1 class="title">Practices Room</h1>
+            </div>
+        </div>
+        <div class="container-fluid row-fluid mainContent">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">
+                <div class="panel panel-custom panelSummary contestPanel problemListPanel">
+                    <div class="panel-heading">
+                        Topcoder Contests Problem List
+                    </div>
+                    <div class="panel-body">
+                        <div class="searchArea">
+                            <div class="search">
+                                <input placeholder="Search" data-ng-model="searchText" data-ng-keypress="searchByText($event)" maxlength="32"/>
+                                <div class="tags">
+                                    <label data-ng-repeat="item in tags track by $index"><a
+                                        data-ng-click="removeTag($index)" class="closeIcon"></a><span>{{item.type}} : {{item.value}}</span></label>
+                                </div>
+                                <a data-ng-show="tags.length > 0 || (searchText.length > 0 && triggerSearch)" data-ng-click="clearSearchArea()" class="clearIcon">clear</a>
+                                <a data-ng-hide="tags.length > 0 || (searchText.length > 0 && triggerSearch)" class="searchIcon"></a>
+                            </div>
+                            <div class="filterArea">
+                                <a id="problemFilter" class="filterToggle">Filter</a>
+                                <div>
+                                    <div class="linkRow"><a data-ng-click="closeQtip('problemFilter')" class="closeLink">Filter</a></div>
+                                    <div class="contentWrapper">
+                                        <div class="contentRow">
+                                            <label>Type</label>
+                                            <div class="dropdown">
+                                                <button class="dropdown-toggle">{{filterShown.type}}<span class="arrow"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li data-ng-repeat="value in filterOptions.type"
+                                                        data-ng-class="{active:filterShown.type==value,inactive:filterShown.type!=value}"><a data-ng-click="setFilterKey('type', value, $event)">{{value}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div><!--/.dropdown-->
+                                        </div>
+                                        <div class="contentRow pointRow">
+                                            <label>Points</label>
+                                            <div class="dropdown minPointDD">
+                                                <button class="dropdown-toggle">{{filterShown.minPoints}}<span class="arrow"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li data-ng-repeat="value in filterOptions.points"
+                                                        data-ng-class="{active:filterShown.minPoints==value,inactive:filterShown.minPoints!=value}"><a data-ng-click="setFilterKey('minPoints', value, $event)">{{value}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div><!--/.dropdown
+                                         --><span class="practiceFilterTo">to</span><div class="dropdown maxPointDD">
+                                                <button class="dropdown-toggle">{{filterShown.maxPoints}}<span class="arrow"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li data-ng-repeat="value in filterOptions.points"
+                                                        data-ng-class="{active:filterShown.maxPoints==value,inactive:filterShown.maxPoints!=value}"><a data-ng-click="setFilterKey('maxPoints', value, $event)">{{value}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div><!--/.dropdown-->
+                                        </div>
+                                        <div class="contentRow">
+                                            <label class="difficulty">Difficulty</label>
+                                            <div class="dropdown">
+                                                <button class="dropdown-toggle">{{filterShown.difficulty}}<span class="arrow"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li data-ng-repeat="value in filterOptions.difficulty"
+                                                        data-ng-class="{active:filterShown.difficulty==value,inactive:filterShown.difficulty!=value}"><a data-ng-click="setFilterKey('difficulty', value, $event)">{{value}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div><!--/.dropdown-->
+                                        </div>
+                                        <div class="contentRow">
+                                            <label>Status</label>
+                                            <div class="dropdown">
+                                                <button class="dropdown-toggle">{{filterShown.status}}<span class="arrow"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li data-ng-repeat="value in filterOptions.status"
+                                                        data-ng-class="{active:filterShown.status==value,inactive:filterShown.status!=value}"><a data-ng-click="setFilterKey('status', value, $event)">{{value}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div><!--/.dropdown-->
+                                        </div>
+                                    </div>
+                                    <div class="btnWrapper">
+                                        <a class="btn btnFilter" data-ng-click="filterBegin()">Filter</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.searchArea -->
+                        <div class="resultCount">Showing {{currentStart()}} - {{currentEnd()}} of {{totalRecords}} result{{totalRecords > 1 ? 's' : ''}}.</div>
+                        <div data-ng-show="totalRecords > 0">
+                            <div class="content">
+                                <table class="table table-condensed problemTable tHead">
+                                    <thead>
+                                        <tr>
+                                            <th class="colName sortableHeading"
+                                                data-ng-click="toggleSortKey('problemName')">Problem Name<span
+                                                    data-ng-class="{up: problemKeys[0] =='problemName',down: problemKeys[0] == '-problemName'}"></span></th>
+                                            <th class="colType sortableHeading"
+                                                data-ng-click="toggleSortKey('problemType')">Problem Type<span
+                                                    data-ng-class="{up: problemKeys[0] == 'problemType',down: problemKeys[0] == '-problemType'}"></span></th>
+                                            <th class="colPoints sortableHeading"
+                                                data-ng-click="toggleSortKey('points')">Points<span
+                                                    data-ng-class="{up: problemKeys[0] == 'points',down: problemKeys[0] == '-points'}"></span></th>
+                                            <th class="colDifficulty sortableHeading"
+                                                data-ng-click="toggleSortKey('difficulty')">Difficulty<span
+                                                    data-ng-class="{up: problemKeys[0] == 'difficulty',down: problemKeys[0] == '-difficulty'}"></span></th>
+                                            <th class="colStatus sortableHeading"
+                                                data-ng-click="toggleSortKey('status')">Status<span
+                                                    data-ng-class="{up: problemKeys[0] == 'status',down: problemKeys[0] == '-status'}"></span></th>
+                                            <th class="colMyPoints sortableHeading"
+                                                data-ng-click="toggleSortKey('myPoints')">My Points<span
+                                                    data-ng-class="{up: problemKeys[0] == 'myPoints',down: problemKeys[0] == '-myPoints'}"></span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="item in problems">
+                                            <td class="colName"><a data-ng-bind-html="item.problemName | highlight:searchText:false"></a></td>
+                                            <td class="colType">{{item.problemType}}</td>
+                                            <td class="colPoints {{item.pointsColor}}">{{item.points}}</td>
+                                            <td class="colDifficulty">{{item.difficulty}}</td>
+                                            <td class="colStatus"><label class="statusIcon icon{{item.status}}">{{item.status}}</label></td>
+                                            <td class="colMyPoints">{{(item.myPoints < 0 || item.status !== 'Solved') ? '-' : item.myPoints.toFixed(2)}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.problemList -->
+                        <div class="paginator" data-ng-show="totalRecords > numOfPage">
+                            <span data-ng-class="{'textActive': currentPage === 1}" data-ng-click="gotoPage(1)">1</span>
+                            <span data-ng-show="currentPage > 3 && getTotalPages() > 6" class="skipSpan">...</span>
+                            <span data-ng-repeat="n in getPagesRange()" data-ng-class="{'textActive': n == currentPage}" data-ng-click="gotoPage(n)">{{n}}</span>
+                            <span data-ng-show="(getTotalPages() - currentPage) >= 4 && (getTotalPages() > 6)" class="skipSpan">...</span>
+                            <span data-ng-class="{'textActive': currentPage === getTotalPages()}" data-ng-click="gotoPage(getTotalPages())">{{getTotalPages()}}</span>
+
+
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

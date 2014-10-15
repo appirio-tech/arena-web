@@ -65,3 +65,5 @@ export DIVISION_LEADERBOARD_LIMIT=14
 
 # The number of top coders shown in Match Summary widget
 export SUMMARY_TOPCODER_COUNT=4
+
+export PRACTICE_PROBLEM_LIST_PAGE_SIZE=10

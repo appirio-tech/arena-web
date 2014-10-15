@@ -10,8 +10,11 @@
  * Changes in version 1.2 (Module Assembly - Web Arena UI - Contest Management and Problem Assignment v1.0)
  * - Added highlight filter
  *
+ * Changes in version 1.3 (Module Assembly - Practice Problem Listing Page):
+ * - Added practiceProblemFilter.
+ *
  * @author TCASSEMBLER
- * @version 1.2
+ * @version 1.3
  */
 'use strict';
 /*jshint -W097*/
@@ -55,6 +58,38 @@ filters.highlight = [function () {
             return text.replace(new RegExp(search, 'gi'), '<span class="hl-matched">$&</span>');
         }
         return text;
+    };
+}];
+
+/**
+ * Filter the practice problem list.
+ */
+filters.practiceProblemFilter = [function () {
+    return function (problems, problemFilter, searchText) {
+        function isValid(problem) {
+            if (searchText.length > 0 && problem.name.indexOf(searchText) < 0) {
+                // problem name must contain the search text as a substring
+                return false;
+            }
+            var keys = ['type', 'difficulty', 'status'], i;
+            for (i = 0; i < keys.length; i += 1) {
+                if (problemFilter[keys[i]] !== 'All' && problem[keys[i]] !== problemFilter[keys[i]]) {
+                    return false;
+                }
+            }
+            return problem.points >= problemFilter.minPoints &&
+                problem.points <= problemFilter.maxPoints;
+        }
+        var newProblems = [];
+        if (!angular.isArray(problems)) {
+            return newProblems;
+        }
+        angular.forEach(problems, function (problem) {
+            if (isValid(problem)) {
+                newProblems.push(problem);
+            }
+        });
+        return newProblems;
     };
 }];
 

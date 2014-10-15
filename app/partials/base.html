@@ -62,6 +62,9 @@
                         <li data-ng-class="{ active: $state.includes('user.contestManagement') }" data-ng-show="userInfo() && (userInfo().admin === true)">
                           <a data-ui-sref="user.contestManagement" class="icon iconCM">CONTEST MANAGEMENT</a><a data-ui-sref="user.contestManagement" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Contest Management"></a>
                         </li>
+                        <li data-ng-class="{ active: $state.includes('user.practiceProblemList') }">
+                            <a data-ui-sref="user.practiceProblemList" class="icon iconCM">PRACTICE PROBLEMS</a><a data-ui-sref="user.practiceProblemList" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Practice Problems"></a>
+                        </li>
                         <li data-ng-class="{lastLi: !(userInfo() && (userInfo().admin === true))}">
                           <a class="icon iconBug">REPORT ISSUE</a><a href="https://github.com/cloudspokes/arena-web/issues" target="_blank" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Report Issue"></a>
                         </li>

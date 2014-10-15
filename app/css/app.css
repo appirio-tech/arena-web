@@ -2027,8 +2027,12 @@ footer .right>span:nth-child(2) {
     margin-right: 14px;
     cursor: pointer;
 }
+.panel-custom .paginator .skipSpan {
+    cursor: auto;
+}
 .panel-custom .paginator .textActive {
     color: #0999d1;
+    cursor: auto;
 }
 .panel-custom .panel-body .textActive {
     font-weight: 400;/*regular*/
@@ -4112,6 +4116,9 @@ footer .right>span:nth-child(2) {
     left: 10px;
     top: 3px;
 }
+.filterPanel .contentWrapper .contentRow .difficulty {
+    padding-left: 2px;
+}
 .detailPage .challengeWrapper .heading .filterArea>a:before {
     left: 2px;
 }
@@ -4158,6 +4165,7 @@ footer .right>span:nth-child(2) {
     position: relative;
     padding-left: 62px;
     margin-bottom: 9px;
+    height: 36px;
 }
 .filterPanel .contentWrapper label {
     padding-left: 6px;
@@ -5186,6 +5194,7 @@ footer .right>span:nth-child(2) {
 }
 .problemAssignmentPanel .availableProblems .table>tbody>tr>td{
     padding-top: 6px;
+    max-height: 218px;
     padding-bottom: 7px;
 }
 .problemAssignmentPanel .table>thead>tr>th,
@@ -5229,7 +5238,7 @@ footer .right>span:nth-child(2) {
     display: none;
 }
 .problemAssignmentPanel .assignedProblems .colID {
-    width: 45px;
+    width: 41px;
 }
 .problemAssignmentPanel .assignedProblems .colType {
     width: 70px;
@@ -5268,11 +5277,13 @@ footer .right>span:nth-child(2) {
     padding-right: 17px;
 }
 /*searchArea*/
-.problemAssignmentPanel .searchArea {
+.problemAssignmentPanel .searchArea,
+.problemListPanel .searchArea {
     height: 42px;
     padding: 6px 28px 0 30px;
 }
-.problemAssignmentPanel .searchArea .search {
+.problemAssignmentPanel .searchArea .search,
+.problemListPanel .searchArea .search {
     width: 941px;
     height: 36px;
     padding-left: 9px;
@@ -5282,38 +5293,44 @@ footer .right>span:nth-child(2) {
     border-radius: 2px;
     position: relative;
 }
-.problemAssignmentPanel .searchArea input {
+.problemAssignmentPanel .searchArea input,
+.problemListPanel .searchArea input {
     width: 900px;
     border-width: 0;
     height: 34px;
     background: transparent;
 }
-.problemAssignmentPanel .searchArea input::-ms-clear {
+.problemAssignmentPanel .searchArea input::-ms-clear,
+.problemListPanel .searchArea input::-ms-clear {
     display: none;
 }
-.problemAssignmentPanel .search .searchIcon {
+.problemAssignmentPanel .search .searchIcon,
+.problemListPanel .search .searchIcon {
     display: inline-block;
     height: 20px;
-    width: 20px;   
+    width: 20px;
     position: absolute;
     right: 9px;
     top: 7px;
 }
-.problemAssignmentPanel .search .clearIcon {
+.problemAssignmentPanel .search .clearIcon,
+.problemListPanel .search .clearIcon {
     display: inline-block;
     text-align: right;
     position: absolute;
     right: 16px;
     top: 4px;
 }
-.problemAssignmentPanel .tags {
+.problemAssignmentPanel .tags,
+.problemListPanel .tags {
     text-align: right;
     position: absolute;
     /*width: 450px;*/
     top: 3px;
     right: 60px;
 }
-.problemAssignmentPanel .tags label {
+.problemAssignmentPanel .tags label,
+.problemListPanel .tags label {
     display: inline-block;
     height: 26px;
     width: auto;
@@ -5326,7 +5343,8 @@ footer .right>span:nth-child(2) {
     line-height: 1em;
     margin-left: 9px;
 }
-.problemAssignmentPanel .tags .closeIcon {
+.problemAssignmentPanel .tags .closeIcon,
+.problemListPanel .tags .closeIcon {
     display: inline-block;
     height: 8px;
     width: 9px;
@@ -5334,7 +5352,8 @@ footer .right>span:nth-child(2) {
     left: 10px;
     top: 10px;
 }
-.problemAssignmentPanel .tags .closeIcon:before {
+.problemAssignmentPanel .tags .closeIcon:before,
+.problemListPanel .tags .closeIcon:before {
     content: '';
     display: block;
     height: 8px;
@@ -5344,7 +5363,8 @@ footer .right>span:nth-child(2) {
     top: 0;
     left: 0;
 }
-.problemAssignmentPanel .search .searchIcon:before {
+.problemAssignmentPanel .search .searchIcon:before,
+.problemListPanel .search .searchIcon:before {
     content: '';
     display: block;
     height: 19px;
@@ -5356,6 +5376,7 @@ footer .right>span:nth-child(2) {
 }
 /*filter*/
 .problemAssignmentPanel .filterArea {
+    right: 210px;
     top: 43px;
 }
 .problemAssignmentPanel .viewDD {
@@ -5388,6 +5409,211 @@ footer .right>span:nth-child(2) {
 }
 .problemAssignmentPanel .radioInput {
     display: none;
+}
+/*practice problem list*/
+.practiceProblemList .titleBar {
+    height: 113px;
+}
+.practiceProblemList .titleBar .title {
+    margin-top: 34px;
+}
+.practiceProblemList .panel {
+    min-height: 738px;
+}
+.practiceProblemList .panel .paginator {
+    width: 100%;
+    margin-left: -1px;
+    padding-top: 16px;
+}
+.problemListPanel .searchArea {
+    padding: 23px 115px 0 28px;
+    height: 59px;
+}
+.problemListPanel .search input::-webkit-input-placeholder{
+    font-weight: 300;
+    font-size: 14px;
+}
+.problemListPanel .search input:-moz-placeholder{
+    font-weight: 300;
+    font-size: 14px;
+}
+.problemListPanel .search input::-moz-placeholder{
+    font-weight: 300;
+    font-size: 14px;
+}
+.problemListPanel .search input:-ms-input-placeholder{
+    font-weight: 300;
+    font-size: 14px;
+}
+.problemListPanel .searchArea .search {
+    width: 96.9%;
+    padding-left: 8px;
+}
+.problemListPanel .searchArea input {
+    width: 97%;
+}
+.problemListPanel .search .searchIcon {
+    right: 6px;
+    top: 6px;
+}
+.problemListPanel .filterArea {
+    top: 69px;
+    right: 68px;
+}
+.practiceProblemFilter.qtip-default {
+    background-position: -30px 0;
+    height: 290px;
+    width: 252px;
+}
+.practiceProblemFilter .linkRow {
+    text-align: right;
+    padding-right: 5px;
+}
+.practiceProblemFilter .closeLink {
+    display: inline-block;
+    position: relative;
+    margin-bottom: 37px;
+    padding-top: 2px;
+}
+.practiceProblemFilter .closeLink:before {
+    left: 1px;
+    top: 1px;
+}
+.practiceProblemFilter.qtip-default .qtip-content {
+    height: 280px;
+}
+.practiceProblemFilter .qtip-content {
+    padding-left: 12px;
+}
+.practiceProblemFilter .pointRow .dropdown {
+    width: 65px;
+}
+.practiceProblemFilter .pointRow .dropdown-toggle {
+    width: 63px;
+    padding-left: 14px;
+}
+.practiceProblemFilter .pointRow .maxPointDD .dropdown-toggle {
+    padding-left: 11px;
+}
+.practiceProblemFilter .pointRow  .dropdown .arrow {
+    right: 1px;
+}
+.practiceProblemFilter .pointRow span {
+    margin-left: 9px;
+    margin-right: 9px;
+}
+.practiceProblemFilter .btnWrapper {
+    bottom: 1px;
+    left: 3px;
+}
+.practiceProblemFilter .btnWrapper .btnFilter {
+    margin-top: 7px;
+}
+.practiceProblemList .resultCount {
+    padding-top: 4px;
+    padding-left: 39px;
+}
+.practiceProblemList .panel-body .content {
+    padding: 0 30px;
+}
+.practiceProblemList .sortableHeading span {
+    display: none;
+}
+.practiceProblemList .sortableHeading span.down {
+    display: inline-block;
+    height: 8px;
+    width: 10px;
+    margin-left: 8px;
+    background-position: 0 -35px;
+}
+.practiceProblemList .sortableHeading span.up {
+    display: inline-block;
+    height: 8px;
+    width: 10px;
+    margin-left: 8px;
+    background-position: 0 -35px;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.practiceProblemList .table>thead>tr>th,
+.practiceProblemList .table>tbody>tr>td,
+.practiceProblemList .table>thead>tr>th:last-child,
+.practiceProblemList .table>tbody>tr>td:last-child {
+    padding-left: 0;
+    text-align: left;
+}
+.practiceProblemList .table>tbody>tr>td:last-child {
+    text-align: center;
+}
+.practiceProblemList .table>thead>tr>th {
+    padding-top: 20px;
+    padding-bottom: 24px;
+}
+.practiceProblemList .table>tbody>tr>td {
+    padding-top: 13px;
+    padding-bottom: 15px;
+}
+.practiceProblemList .table .colName {
+    padding-left: 10px;
+}
+.practiceProblemList .table .colType {
+    width: 200px;
+}
+.practiceProblemList .table .colPoints {
+    width: 170px;
+}
+.practiceProblemList .table tbody .colPoints {
+    padding-left: 7px;
+}
+.practiceProblemList .table .colDifficulty {
+    width: 147px;
+}
+.practiceProblemList .table tbody .colDifficulty {
+    padding-left: 2px;
+}
+.practiceProblemList .table .colStatus {
+    width: 153px;
+}
+.practiceProblemList .table tbody .colStatus {
+    padding-left: 2px;
+}
+.practiceProblemList .table>tbody>tr>.colStatus {
+    padding-left: 0;
+}
+.practiceProblemList .table tbody .colMyPoints {
+    padding-right: 61px;
+    text-align: center;
+    width: 118px;
+}
+.practiceProblemList .statusIcon {
+    padding-left: 24px;
+    position: relative;
+    margin-bottom: 0;
+}
+.practiceProblemList .statusIcon:before {
+    content: '';
+    display: block;
+    height: 22px;
+    width: 20px;
+    position: absolute;
+    top: 2px;
+    left: 0;
+}
+.practiceProblemList .iconNew:before {
+    background-position: 0 0px;
+}
+.practiceProblemList .iconViewed:before {
+    background-position: 0 -25px;
+}
+.practiceProblemList .iconSolved:before {
+    background-position: 0 -50px;
+}
+.practiceFilterTo {
+    vertical-align: top;
+    display: inline-block;
+    padding-top: 10px;
 }
 @media only screen and (max-width: 1245px) {
     .inner { padding: 0;}

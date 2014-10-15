@@ -28,6 +28,7 @@ module.exports = {
     tweetUrl: '@@TWEET_URL',
     facebookLink: '@@FACEBOOK_LINK',
     divsionLearderBoardLimit:'@@DIVISION_LEADERBOARD_LIMIT',
-    summaryTopCoderCount:'@@SUMMARY_TOPCODER_COUNT'
+    summaryTopCoderCount:'@@SUMMARY_TOPCODER_COUNT',
+    practiceProblemListPageSize: '@@PRACTICE_PROBLEM_LIST_PAGE_SIZE'
 };
 
