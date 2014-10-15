@@ -129,8 +129,16 @@ body{
 .problemAssignmentPanel .searchIcon:before,
 .problemAssignmentPanel .searchArea .tags .closeIcon:before,
 .problemAssignmentPanel .dropdown .arrow,
-.problemAssignmentPanel .colAction .delBtn:before  {
+.problemAssignmentPanel .colAction .delBtn:before,
+.problemListPanel .searchIcon:before,
+.problemListPanel .searchArea .tags .closeIcon:before,
+.problemListPanel .dropdown .arrow {
     background-image: url(../img/light/sprite-contestManagement.png);
+    background-repeat: no-repeat;
+}
+.practiceProblemFilter.qtip-default,
+.problemListPanel .statusIcon:before{
+    background-image: url(../img/light/sprite-practiceRoom.png);
     background-repeat: no-repeat;
 }
 /***************header style*/
@@ -833,8 +841,16 @@ footer .right .sponsorLogo {
 .filterPanel .closeLink {
     color: #316f99;
 }
+.practiceProblemFilter .closeLink,
 .contestFilter .closeLink {
     color: #75a5c8;
+}
+.filterPanel .contentWrapper label,
+.practiceProblemFilter .pointRow span {
+    color: #316f99;
+}
+.contestFilter .contentWrapper label {
+    color: #636d70;
 }
 .filterPanel .contentWrapper label {
     color: #316f99;
@@ -1024,7 +1040,8 @@ footer .right .sponsorLogo {
 }
 .contestManagement .table .viewBtn,
 .problemAssignmentPanel .tags label,
-.problemAssignmentPanel .colAction .editBtn {
+.problemAssignmentPanel .colAction .editBtn,
+.problemListPanel .tags label {
     background: #eaeaea;
     color: #75a5c8;
 }
@@ -1060,12 +1077,26 @@ footer .right .sponsorLogo {
     color: #fff;
 }
 .problemAssignmentPanel .dropdown-toggle,
-.problemAssignmentPanel .search input {
+.problemAssignmentPanel .search input,
+.problemListPanel .search input {
+    color: #316f99;
+}
+.problemListPanel .search input::-webkit-input-placeholder{
+    color: #316f99;
+}
+.problemListPanel .search input:-moz-placeholder{
+    color: #316f99;
+}
+.problemListPanel .search input::-moz-placeholder{
+    color: #316f99;
+}
+.problemListPanel .search input:-ms-input-placeholder{
     color: #316f99;
 }
 .problemAssignmentPanel .dropdown,
 .problemAssignmentPanel .inputBorder,
-.problemAssignmentPanel .searchArea .search{
+.problemAssignmentPanel .searchArea .search,
+.problemListPanel .searchArea .search{
     border-color: #b7c9d7;
 }
 .problemAssignmentPanel .panel-footer,
@@ -1075,6 +1106,37 @@ footer .right .sponsorLogo {
 }
 .problemAssignmentPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
     background: #75a5c8;
+}
+.practiceProblemList .resultCount {
+    color: #555;
+}
+.practiceProblemList .table a {
+    color: #0e9bbf;
+}
+.practiceProblemList .table tbody .colDifficulty,
+.practiceProblemList .table tbody .colType {
+    color: #316f99;
+}
+.practiceProblemList .table tbody .colMyPoints {
+    color: #319999;
+}
+.practiceProblemList .table tbody .colPoints.red {
+    color: #c60909;
+}
+.practiceProblemList .table tbody .colPoints.yellow {
+    color: #fed73a;
+}
+.practiceProblemList .table tbody .colPoints.blue {
+    color: #3477ff;
+}
+.practiceProblemList .iconNew {
+    color: #e09d0e;
+}
+.practiceProblemList .iconViewed {
+    color: #008888;
+}
+.practiceProblemList .iconSolved {
+    color: #a2eb23;
 }
 @media only screen and (max-width: 1121px) {
     .panelCodeEditor .panel-body .toolBar {

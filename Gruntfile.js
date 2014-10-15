@@ -29,8 +29,11 @@
  * Changes in version 1.6 (Module Assembly - Web Arena UI - Match Summary Widget):
  * - Added SUMMARY_TOPCODER_COUNT setting to limit number of coders in match summary leaderboard table.
  *
+ * Changes in version 1.7 (Module Assembly - Practice Problem Listing Page):
+ * - Added PRACTICE_PROBLEM_LIST_PAGE_SIZE setting.
+ *
  * @author amethystlei, flytoj2ee, dexy
- * @version 1.6
+ * @version 1.7
  */
 'use strict';
 /*global module, process*/
@@ -82,7 +85,8 @@ module.exports = function (grunt) {
                         { match : 'TWEET_URL', replacement: process.env.TWEET_URL },
                         { match : 'FACEBOOK_LINK', replacement: process.env.FACEBOOK_LINK },
                         { match : 'DIVISION_LEADERBOARD_LIMIT', replacement: process.env.DIVISION_LEADERBOARD_LIMIT },
-                        { match : 'SUMMARY_TOPCODER_COUNT', replacement: process.env.SUMMARY_TOPCODER_COUNT }
+                        { match : 'SUMMARY_TOPCODER_COUNT', replacement: process.env.SUMMARY_TOPCODER_COUNT },
+                        { match : 'PRACTICE_PROBLEM_LIST_PAGE_SIZE', replacement: process.env.PRACTICE_PROBLEM_LIST_PAGE_SIZE }
                     ]
                 },
                 files : [

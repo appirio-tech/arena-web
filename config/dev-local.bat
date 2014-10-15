@@ -60,3 +60,5 @@ set DIVISION_LEADERBOARD_LIMIT=20
 
 :: The number of top coders shown in Match Summary widget
 set SUMMARY_TOPCODER_COUNT=4
+
+set PRACTICE_PROBLEM_LIST_PAGE_SIZE=10

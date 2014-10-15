@@ -72,8 +72,11 @@
  * - Updated routing to user.viewCode and user.contest including the last view and page visited
  *   to support better forward/back navigation.
  *
+ * Changes in version 1.20 (Module Assembly - Practice Problem Listing Page):
+ * - Updated to include resources for Practice Problem List page.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.19
+ * @version 1.20
  */
 'use strict';
 /*jshint -W097*/
@@ -162,6 +165,7 @@ controllers.contestManagementCtrl = require('./controllers/contestManagementCtrl
 controllers.activeUsersCtrl = require('./controllers/activeUsersCtrl');
 controllers.overviewLeaderboardCtrl = require('./controllers/overviewLeaderboardCtrl');
 controllers.userCodingTimeCtrl = require('./controllers/userCodingTimeCtrl');
+controllers.practiceProblemListCtrl = require('./controllers/practiceProblemListCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -220,6 +224,7 @@ main.factory('notificationService', factories.notificationService);
 main.filter('showByMonth', filters.showByMonth);
 main.filter('startFrom', filters.startFrom);
 main.filter('highlight', filters.highlight);
+main.filter('practiceProblemFilter', filters.practiceProblemFilter);
 
 /////////////////
 // CONTROLLERS //
@@ -249,6 +254,7 @@ main.controller('contestManagementCtrl', controllers.contestManagementCtrl);
 main.controller('activeUsersCtrl', controllers.activeUsersCtrl);
 main.controller('overviewLeaderboardCtrl', controllers.overviewLeaderboardCtrl);
 main.controller('userCodingTimeCtrl', controllers.userCodingTimeCtrl);
+main.controller('practiceProblemListCtrl', controllers.practiceProblemListCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -364,6 +370,15 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             },
             templateUrl: 'partials/user.contest.detail.html',
             controller: 'userContestDetailCtrl'
+        })
+        .state('user.practiceProblemList', {
+            url: '/practiceProblemList',
+            data: {
+                pageTitle: 'Practice Problems',
+                pageMetaKeywords: "practice problems"
+            },
+            templateUrl: 'partials/user.practiceProblemList.html',
+            controller: 'practiceProblemListCtrl'
         })
         .state('user.contestManagement', {
             url: '/contestManagement',
