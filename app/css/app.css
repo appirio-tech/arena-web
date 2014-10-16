@@ -85,9 +85,9 @@ body a {cursor: pointer;}
 /* topcoder logo */
 .anon-header .navbar .navbar-brand,
 .navbar-brand {
-    background-position: -14px -25px;
+    background-image: url(../img/tc-arena-logo.png);
     background-repeat: no-repeat;
-    padding: 24px 0 0 176px;
+    padding: 24px 0 0 203px;
     height: 0;
     overflow: hidden;
     display: inline-block;
@@ -359,9 +359,9 @@ body a {cursor: pointer;}
 .header .navIcons .themePanel .closeBtn:before {
     content: '';
     display: block;
-    height: 8px;
-    width: 9px;
-    background-position: 0 -25px;
+    height: 10px;
+    width: 16px;
+    background-position: -340px 0;
     position: absolute;
     bottom: 11px;
     left: 10px;
@@ -398,7 +398,7 @@ body a {cursor: pointer;}
     position: absolute;
     top: 21px;
     left: 0;
-    background-position: 0 -40px;
+    background-position: right -10px;
 }
 .header .navIcons .themePanel .themeItem .themeRadio {display: none;}
 .header .navIcons .themePanel .btn {

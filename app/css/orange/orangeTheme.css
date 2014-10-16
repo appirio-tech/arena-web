@@ -51,8 +51,7 @@ body{
 .panelCodeEditor .panel-body .settingsPanel {
     background-image: url(../img/orange/popup-bg.png);
 }
-.anon-header .navbar .navbar-brand,
-.header .navbar-brand,
+
 .header .navIcons>li>.icon:before,
 .header .pastNoti,
 .userInfo .notification,
@@ -61,6 +60,7 @@ body{
 .header .navIcons .themePanel .themeItem .themeRadio:checked ~ .themeLbl:before {
     background-image: url(../img/sprite-new-header.png);
 }
+
 .anon-header,
 .header {
     background-image: url(../img/black-header.png);

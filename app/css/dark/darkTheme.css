@@ -51,8 +51,7 @@ body{
 .panelCodeEditor .panel-body .settingsPanel {
     background-image: url(../img/dark/popup-bg.png);
 }
-.anon-header .navbar .navbar-brand,
-.header .navbar-brand,
+
 .header .navIcons>li>.icon:before,
 .header .pastNoti,
 .userInfo .notification,
