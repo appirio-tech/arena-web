@@ -140,7 +140,6 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
         // get current date information from list view, 
         // go to that date and refresh the whole calendar
         $scope.renderCalendar = function () {
-            if ($scope.viewNow === 'calendar') { return false; }
             $scope.contestPlan.fullCalendar('gotoDate', $scope.currentDate.year, $scope.currentDate.month);
             $scope.contestPlan.fullCalendar('render');
         };
