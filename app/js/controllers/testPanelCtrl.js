@@ -12,8 +12,11 @@
  * Changes in version 1.2 (Module Assembly - Web Arena - Code With Practice Problem)
  *  - Added checking logic for practice code state.
  *
- * @author TCASSEMBLER
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
+ * - Fixed issues of the challenge popup.
+ *
+ * @author amethystlei
+ * @version 1.3
  */
 'use strict';
 /*jshint -W097*/
@@ -109,10 +112,10 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($ro
 
         for (paramNum = 0; paramNum < allArgTypes.length; paramNum += 1) {
             html += '<li>(' + (paramNum + 1) + ') <span class="argType">' + allArgTypes[paramNum].typeMapping[$scope.lang($scope.langIdx).id] + '</span>';
-            html += '&nbsp;<span>' + testCase[paramNum].value + '</span>';
+            html += '&nbsp;<span class="argContent">' + testCase[paramNum].value + '</span>';
             html += '</li>';
         }
-        return '<ul>' + html + '</ul>';
+        return '<ul class="confirmPara">' + html + '</ul>';
     }
 
     /**

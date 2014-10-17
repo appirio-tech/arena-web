@@ -68,7 +68,9 @@
     if(this.options.fadeOut.enabled)
       this.$note.delay(this.options.fadeOut.delay || 3000).fadeOut('slow', $.proxy(onClose, this));
 
-    this.$element.append(this.$note);
+    // 'append' will add new notifs to the bottom.
+    // 'prepend' will add new notifs to the top.
+    this.$element.prepend(this.$note);
     this.$note.alert();
   };
 

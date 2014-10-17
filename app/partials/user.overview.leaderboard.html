@@ -9,14 +9,19 @@
     <div class="rounds" data-ng-show="getRounds().length > 0">
       <span class="lbl">Rounds:</span>
       <div class="val">
-
-        <ul class="customDropdown">
-          <li class="dropdown"><a class="dropdown-toggle" data-ng-click="rebuildAll()">{{getActiveRound()}}</a>
-            <ul class="dropdown-menu" id="methodsList" data-ng-scrollbar data-rebuild-on="rebuild:leaderBoardMethods" data-rebuild-on-resize>
-              <li data-ng-repeat="round in getRounds()"><a data-ng-click="updateRound(round)"
+        <div class="customDropdown">
+          <a class="dropdown-toggle toggle" id="customDDToggle">{{getActiveRound()}}</a>
+          <div>
+            <div class="dropdown-menu menu" id="methodsList">
+              <div class="scrollArea" data-ng-scrollbar data-rebuild-on="rebuild:leaderBoardMethods" data-rebuild-on-resize data-reload-on="reload:leaderBoardMethods">
+                <ul>
+                  <li data-ng-repeat="round in getRounds()"><a data-ng-click="updateRound(round)"
                 data-ng-class="{current: activeRound === round}">{{getRoundName(round)}}</a></li>
-            </ul></li>
-        </ul>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
