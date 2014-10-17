@@ -6970,3 +6970,6 @@ table thead .sort.desc{
     padding-left: 10px;
     width: 138px!important;
 }
+.rightPart .other .marginLeft {
+    margin-left: 90px;
+}

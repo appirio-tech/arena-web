@@ -252,7 +252,7 @@
                     <span class="taglineSum">{{tagline}}</span>
                 </div>
                 <div class="other">
-                    <p><label>Status:</label><span>Active</span></p>
+                    <p><label>Status:</label><span>Active</span><label class="marginLeft">Official rated Match:</label><span>{{ officialRated === true ? 'Yes' : 'No' }}</span></p>
                     <div><label for="notes">Add Notes</label><div class="inputBorder"><input type="text" id="notes" name="notes" data-ng-model="$parent.notes" maxlength="250"></div></div>
                 </div>
             </div>
