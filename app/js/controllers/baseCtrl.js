@@ -68,8 +68,11 @@
  *   for room/division leaderboard table.
  * - Added handling leaderboard events from userContestDetailCtrl.js.
  *
+ * Changes in version 1.16 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
+ * - Fixed issues of the Message Arena.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.15
+ * @version 1.16
  */
 'use strict';
 /*jshint -W097*/
@@ -516,14 +519,16 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     type: 'round',
                     roundName: roundName,
                     time: Date.now(),
-                    message: '',
+                    message: data.message,
                     popUpContent: data.message,
                     action : {
-                        question: data.message,
+                        question: '',
                         target: '#/u/contests/' + phaseChangeRoundId
                     }
                 });
             }
+            // must reload after adding new messages to support custom scrollbar.
+            $scope.$broadcast('reload:messages');
         } else if (data.title === helper.POP_UP_TITLES.CoderInfo) {
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
@@ -603,28 +608,18 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     $scope.notificationService = notificationService;
     // the notification list is a qtip, see directives/meesageArena.js for details
     $scope.qtipNoti = $('#qtipNoti');
-    $scope.qtipPastNoti = $('#qtipPastNoti');
     // close the notification list
     $scope.closeQtip = function () {
         $scope.qtipNoti.qtip('toggle', false);
     };
-    $scope.closePastNoti = function () {
-        $scope.qtipPastNoti.qtip('toggle', false);
-    };
     window.onresize = function () {
         $scope.closeQtip();
-        $scope.closePastNoti();
     };
     // notification ends
     // check window size, reset message arena's position
     function checkPosition() {
         if (document.body.clientWidth > 991) {
             $scope.qtipNoti.qtip('api').set({
-                'position.my': 'top right',
-                'position.at': 'bottom right',
-                'position.adjust.x': 46
-            });
-            $scope.qtipPastNoti.qtip('api').set({
                 'position.my': 'top right',
                 'position.at': 'bottom right',
                 'position.adjust.x': 46
@@ -636,34 +631,20 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 'position.at': 'bottom center',
                 'position.adjust.x': -2
             });
-            $scope.qtipPastNoti.qtip('api').set({
-                'position.my': 'top center',
-                'position.at': 'bottom center',
-                'position.adjust.x': -2
-            });
         }
         if (document.body.clientWidth < 361) {
             $scope.qtipNoti.qtip('api').set({
                 'position.adjust.x': -25
-            });
-            $scope.qtipPastNoti.qtip('api').set({
-                'position.adjust.x': 0
             });
         }
         if (document.body.clientWidth < 332) {
             $scope.qtipNoti.qtip('api').set({
                 'position.adjust.x': -37
             });
-            $scope.qtipPastNoti.qtip('api').set({
-                'position.adjust.x': -15
-            });
         }
     }
     $scope.onClickMessageArena = function () {
         notificationService.clearUnRead();
-        checkPosition();
-    };
-    $scope.onClickPastNotifications = function () {
         checkPosition();
     };
 

@@ -4,12 +4,16 @@
 /**
  * This controller handles leader board panel related logic.
  *
- * @author TCASSEMBLER
- * @version 1.0
+ * Changes in version 1.1 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
+ * - Fixed issues of the overview leaderboard.
+ *
+ * @author amethystlei
+ * @version 1.1
  */
 'use strict';
 /*global module, angular, require*/
 /*jslint plusplus: true*/
+/*global document, angular:false, $:false, module*/
 /**
  * The leader board controller.
  */
@@ -20,9 +24,9 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
      * @param roundB Round ID of other round to compare with
      * @returns {boolean} Returns 0, 1 or -1 based on comparison
      */
-    var compareRoundNames = function(roundA, roundB) {
+    var compareRoundNames = function (roundA, roundB) {
         return $scope.getRoundName(roundA).localeCompare($scope.getRoundName(roundB));
-    };
+    }, customDropdown = $('#customDDToggle');
     $scope.activeRound = "";
     $scope.isLoadingLbData = false;
 
@@ -110,16 +114,52 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
     $scope.updateRound = function (round) {
         $scope.activeRound = round;
         $scope.rebuildAll();
+        customDropdown.qtip('api').toggle(false);
     };
 
     /**
      * Rebuild all scroll bars.
      */
     $scope.rebuildAll = function () {
-        $scope.$broadcast('rebuild:leaderBoardMethods');
+        $rootScope.$broadcast('rebuild:leaderBoardMethods');
         $scope.$broadcast('rebuild:leaderBoardLeaders');
     };
-}
-    ];
+
+    // qtip here
+    /*jslint unparam:false*/
+    customDropdown.qtip({
+        content: {
+            text: customDropdown.next()
+        },
+        position: {
+            my: 'top center',
+            at: 'bottom center',
+            target: customDropdown
+        },
+        show: {
+            event: 'click',
+            solo: true,
+            modal: true
+        },
+        hide: 'click unfocus',
+        style: {
+            classes: 'customDropdownPanel'
+        },
+        events: {
+            show: function (event, api) {
+                /*jslint unparam:true*/
+                $rootScope.$broadcast('rebuild:leaderBoardMethods');
+            }
+        }
+    });
+    $.fn.qtip.zindex = 1030;
+    
+    /**
+     * triggle key action.
+     */
+    $scope.triggerKey = function (event) {
+        console.log(event);
+    };
+}];
 
 module.exports = overviewLeaderboardCtrl;

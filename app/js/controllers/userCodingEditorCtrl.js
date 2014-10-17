@@ -43,8 +43,11 @@
  * Changes in version 1.11 (Module Assembly - Web Arena Bug Fix 20140909):
  * - Fixed the issues in coding editor.
  *
- * @author tangzx, amethystlei, flytoj2ee, TCASSEMBLER
- * @version 1.11
+ * Changes in version 1.12 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
+ * - Fixed issues of the coding editor and the test report.
+ *
+ * @author tangzx, amethystlei, flytoj2ee
+ * @version 1.12
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -107,7 +110,16 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 }
             ],
             userInputDisabled = false,
-            modalTimeoutPromise = null;
+            modalTimeoutPromise = null,
+            /**
+             * Close the dropdown.
+             */
+            closeDropdown = function () {
+                var isOpen = angular.element('.dropdown').hasClass('open');
+                if (isOpen) {
+                    angular.element('.dropdown').trigger('click');
+                }
+            };
 
         $scope.gotoLine = "";
         $scope.markedSearched = [];
@@ -129,6 +141,13 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     $scope.markedSearched.push($scope.cm.markText(cursor.from(), cursor.to(), {className: "searched"}));
                 }
 
+                if ($scope.searchText.length > 0 && $scope.markedSearched.length === 0) {
+                    $scope.openModal({
+                        title: 'Warning',
+                        message: 'No matched text found!',
+                        enableClose: true
+                    });
+                }
             }
         };
 
@@ -396,6 +415,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.setThemeIdx = function (themeIdx) {
             $scope.themeIdx = themeIdx;
+            closeDropdown();
         };
 
         // init language settings
@@ -431,6 +451,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             $scope.langIdx = langIdx;
 
             updateArgTypeAndMethod($scope.lang($scope.langIdx).id);
+            closeDropdown();
         };
 
         // init show/hide line number settings

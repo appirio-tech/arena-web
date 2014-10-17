@@ -1,11 +1,27 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This is the resizer for the code editing and viewing page.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
+ * - Rebuild the scrollbar of the Problem Area when the resizer's position changed.
+ * - Fixed JSLint issues.
+ *
+ * @author amethystlei
+ * @version 1.1
+ */
 'use strict';
-/*global module*/
-var resizerCtrl = ['$scope', '$element', '$attrs', '$document', '$window', function ($scope, $element, $attrs, $document, $window) {
+/*jshint -W097*/
+/*jshint strict:false*/
+/*jslint plusplus: true*/
+/*global module, angular, document, $, window*/
+var resizerCtrl = ['$scope', '$element', '$attrs', '$document', '$rootScope', function ($scope, $element, $attrs, $document, $rootScope) {
     function mousemove(event) {
-        var resizer = document.getElementById('resizer');
-        var currentH = resizer.offsetTop - 43;
-        var delta = event.clientY - $scope.lastY;
-        var newH = currentH + delta;
+        var resizer = document.getElementById('resizer'),
+            currentH = resizer.offsetTop - 43,
+            delta = event.clientY - $scope.lastY,
+            newH = currentH + delta;
         if (newH >= 1 && newH <= $scope.originTotal) {
             $($attrs.resizerTop).css({
                 height: newH + 'px'
@@ -19,7 +35,7 @@ var resizerCtrl = ['$scope', '$element', '$attrs', '$document', '$window', funct
                 });
             } else {
                 $($attrs.resizerCodeMirror).css({
-                    height: 0 + 'px'
+                    height: '0px'
                 });
             }
             $scope.lastY = event.clientY;
@@ -32,17 +48,16 @@ var resizerCtrl = ['$scope', '$element', '$attrs', '$document', '$window', funct
         $document.unbind('mousemove', mousemove);
         $document.unbind('mouseup', mouseup);
         $scope.lastY = undefined;
-        if (($('#bottom-content').css('height') !== 1) || 
-            ($('#top-content').css('height') !== 2)) {
-                // console.log('normal');
-                $scope.topStatus = 'normal';
-                $scope.bottomStatus = 'normal';
-            }
+        if ($('#bottom-content').css('height') !== 1 ||
+                $('#top-content').css('height') !== 2) {
+            $scope.topStatus = 'normal';
+            $scope.bottomStatus = 'normal';
+        }
         event.preventDefault();
+        $rootScope.$broadcast('problem-loaded');
     }
 
     $element.on('mousedown', function (event) {
-        console.log('mousedown!!!');
         event.preventDefault();
         $document.on('mousemove', mousemove);
         $document.on('mouseup', mouseup);

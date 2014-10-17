@@ -2,6 +2,13 @@
  * This directive is cloned from https://github.com/asafdav/ng-scrollbar/blob/53a2b3e558c84182d6afe6bc62f17b8835b3387d/dist/ng-scrollbar.js
  * with some minor changes to fix UI issues when rebuilding.
  * Two options 'scrollTop' and 'keepBottom' are added to keep the scrollbar at top / bottom position when it is rebuilt.
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
+ * - Added the 'reload' functionality similar to ng-scrollbar.
+ * - The use of the 'reload' function is recommended, compared to the classic 'rebuild'.
+ *
+ * @author TCSASSEMBLER
+ * @version 1.1
  */
 'use strict';
 angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
@@ -16,6 +23,8 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
       link: function (scope, element, attrs) {
         var mainElm, transculdedContainer, tools, thumb, thumbLine, track;
         var win = angular.element($window);
+        var maxDraggerTop = 0;
+        scope.rebuildScroll = true;
         var dragger = { top: 0 }, page = { top: 0 };
         var scrollboxStyle, draggerStyle, draggerLineStyle, pageStyle;
         var calcStyles = function () {
@@ -47,6 +56,17 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
           thumb.css('top', dragger.top + 'px');
           var draggerOffset = dragger.top / page.height;
           page.top = -Math.ceil(page.scrollHeight * draggerOffset * 1.0013);
+          if ((attrs.hasOwnProperty('scrollTop') && dragger.top === 0) || dragger.top >= maxDraggerTop) {
+                if (dragger.top >= (page.height - Math.round(page.height / page.scrollHeight * page.height))) {
+                  dragger.top = page.height - Math.round(page.height / page.scrollHeight * page.height);
+                  dragger.height = Math.round(page.height / page.scrollHeight * page.height);
+                }
+                maxDraggerTop = dragger.top;
+                scope.rebuildScroll = true;
+                rebuild();
+            } else {
+                scope.rebuildScroll = false;
+            }
           transculdedContainer.css('top', page.top + 'px');
         };
         var trackClick = function (event) {
@@ -80,6 +100,11 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
                   deltaY = -60;
                   dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
                   redraw();
+              }
+              if (!!event.preventDefault) {
+                 event.preventDefault();
+              } else {
+                 return false;
               }
           };
         var lastOffsetY;
@@ -143,11 +168,9 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
             calcStyles();
             mainElm.css(scrollboxStyle);
             scope.showYScrollbar = false;
-            if (attrs.hasOwnProperty('scrollTop')) {
               transculdedContainer.css({
                 top: 0
               });
-            }
           }
         };
         var rebuildTimer;
@@ -155,15 +178,24 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
           if (rebuildTimer != null) {
             clearTimeout(rebuildTimer);
           }
+          scope.rebuildScroll = true;
           rebuildTimer = setTimeout(function () {
-           page.height = null;
+            if (scope.rebuildScroll) {
+              page.height = null;
 
-            buildScrollbar(attrs.hasOwnProperty('keepBottom'));
+              buildScrollbar(attrs.hasOwnProperty('keepBottom'));
 
-            if (!scope.$$phase) {
-              scope.$digest();
+              if (!scope.$$phase) {
+                scope.$digest();
+              }
             }
           }, 72);
+        };
+        var reload = function () {
+          maxDraggerTop = 0;
+          scope.rebuildScroll = true;
+          dragger = { top: 0 }, page = { top: 0 };
+          buildScrollbar();
         };
         buildScrollbar();
         if (!!attrs.rebuildOn) {
@@ -173,6 +205,11 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
         }
         if (attrs.hasOwnProperty('rebuildOnResize')) {
           win.on('resize', rebuild);
+        }
+        if (!!attrs.reloadOn) {
+          attrs.reloadOn.split(' ').forEach(function (eventName) {
+            scope.$on(eventName, reload);
+          });
         }
       },
         template: '<div>' + '<div class="ngsb-wrap">' + '<div class="ngsb-container" ng-transclude tabindex="100"></div>' + '<div class="ngsb-scrollbar" style="position: absolute; display: block;" ng-show="showYScrollbar">' + '<div class="ngsb-thumb-container">' + '<div class="ngsb-thumb-pos" oncontextmenu="return false;">' + '<div class="ngsb-thumb" ></div>' + '</div>' + '<div class="ngsb-track"></div>' + '</div>' + '</div>' + '</div>' + '</div>'

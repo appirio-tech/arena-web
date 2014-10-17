@@ -1297,6 +1297,7 @@ footer .left>span {
     }
 }
 
+>>>>>>> 3bb67444dd36fd929dfa94cebe116707c2f71188
 /* tooltip */
 .body .tooltip.bottom .tooltip-arrow{
     border-bottom-color: #ff8a00;
@@ -1314,10 +1315,8 @@ footer .left>span {
 .roomsDiv a:hover {
     color: #ff8a00;
 }
-.coder-history-span {
+.coderHistoryTblDiv .coderHistoryTable>tbody>tr>td {
     border-color: #ffe6c7;
-    border-top-width: 1px;
-    border-top-style: solid;
 }
 .registration-modal-body .title{
     padding-top: 10px;
@@ -1395,4 +1394,41 @@ footer .left>span {
 .leadarboardList .ngsb-scrollbar,
 .activeUserList .ngsb-scrollbar{
     background: #fff;
+}
+
+/*Media blocks should be placed after the normal code!!!*/
+/*bootstrap small devices tablets*/
+@media only screen and (max-width: 991px) {
+    .header .navIcons > li {
+        background-image: url(../img/black-header.png);
+    }
+    .header .timeItem,
+    .header .navbar-right .userInfo {
+        background-image: url(../img/black-header.png);
+    }
+}
+/* boostrap extra small devices */
+@media only screen and (max-width: 767px) {
+    .panel-custom .tabs .altNav .dropdown-toggle {
+        color: #ff8a00;
+    }
+    .panel-custom .tabs .altNav .dropdown-toggle:hover,
+    .panel-custom .tabs .altNav .open a:hover {
+        background: #ff8a00;
+    }
+    .hero .loginBox footer .sponsorLogo {
+        background-image: url(../img/orange/company_logo_small.png);
+    }
+}
+/* special sizes which widget will overflow */
+@media only screen and (max-width: 668px) {
+    .panelChatArea .membersInfo{
+        border-bottom: 1px solid #e7e7e7;
+    }
+}
+@media only screen and (max-width: 421px) {
+    .panelContestStat .breadcrumbHead {
+        white-space: normal;
+        height: 63px;
+    }
 }

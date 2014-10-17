@@ -20,8 +20,11 @@
  * - Updated phase messages for System Test.
  * - Removed redundant assignment of $scope.countdown.
  *
+ * Changes in version 1.6 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
+ * - Fixed issues of the message for the System Phase.
+ *
  * @author amethystlei, dexy
- * @version 1.5
+ * @version 1.6
  */
 'use strict';
 /*global module, angular*/
@@ -54,7 +57,7 @@ var contestCountdownCtrl = ['$scope', '$timeout', 'tcTimeService', function ($sc
         'Challenge Phase will start in:',
         'Challenge Phase will end in:',
         'Waiting for System Test Phase to start.',
-        'System Test Phase is in process: ',
+        'System Test Phase is in progress: ',
         'Match is complete.',
         'Voting Phase is started.',
         'Tie Breaking Voting Phase is started.',

@@ -66,8 +66,12 @@
  * Changes in version 1.15 (Module Assembly - Web Arena - Local Chat Persistence):
  * - Added set / get / clear data for local storage.
  *
+ * Changes in version 1.16 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
+ * - Fixed issues of the broadcast message format.
+ * - Fixed some JSLint format in other projects.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.15
+ * @version 1.16
  */
 ///////////////
 // RESOLVERS //
@@ -582,8 +586,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             linksArray = allLinks.split(' ');
 
             for (i = 0; i < linksArray.length; i++) {
-                if (linksArray[i].toLowerCase().indexOf('http://') === 0
-                    || linksArray[i].toLowerCase().indexOf('https://') === 0) {
+                if (linksArray[i].toLowerCase().indexOf('http://') === 0 ||
+                        linksArray[i].toLowerCase().indexOf('https://') === 0) {
                     flag = false;
                     for (j = 0; j < links.length; j++) {
                         if (links[j] === linksArray[i]) {
@@ -717,20 +721,60 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
     // handle phase data response
     socket.on(helper.EVENT_NAME.PhaseDataResponse, function (data) {
+        /**
+         * Format the time frame message for the given phase data.
+         *
+         * @param  {Object}  phaseData          the phase data
+         * @param  {Number}  now                the current time in milliseconds
+         * @return {string}                     the formatted string
+         */
+        function formatTimeFrameMessage(phaseData, now) {
+            /**
+             * Format the time given in milliseconds.
+             *
+             * @param  {Number} timeInMs the time given in milliseconds
+             * @return {string}          the formatted time
+             */
+            function formattedTime(timeInMs) {
+                return $filter('date')(timeInMs, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone;
+            }
+            // Match has completed.
+            if (phaseData.phaseType === helper.PHASE_TYPE_ID.ContestCompletePhase) {
+                return 'Match completed at ' + formattedTime(now);
+            }
+            // The next phase is the Registration Phase
+            if (phaseData.phaseType === helper.PHASE_TYPE_ID.StartsInPhase) {
+                return helper.PHASE_NAME[data.phaseData.phaseType + 1] + ' will start at ' + formattedTime(data.phaseData.endTime) + '.';
+            }
+
+            var msg = helper.PHASE_NAME[data.phaseData.phaseType];
+            if (data.phaseData.startTime > 0) {
+                // has 'started at' message
+                msg += ' started at ' + formattedTime(data.phaseData.startTime);
+            } else {
+                return msg + ' started at ' + formattedTime(now);
+            }
+
+            // Only if the ending time can be scheduled.
+            if (data.phaseData.endTime > 0 &&
+                    phaseData.phaseType >= helper.PHASE_TYPE_ID.RegistrationPhase &&
+                    phaseData.phaseType <= helper.PHASE_TYPE_ID.ChallengePhase) {
+                msg += ' and ends at ' + formattedTime(data.phaseData.endTime);
+            }
+            return msg + '.';
+        }
+        var now = Date.now();
         if ($rootScope.roundData[data.phaseData.roundID]) {
             $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
             $rootScope.$broadcast(helper.EVENT_NAME.PhaseDataResponse, data);
             notificationService.addNotificationMessage({
                 type: 'round',
-                time: Date.now(),
+                time: now,
                 roundName: $rootScope.roundData[data.phaseData.roundID].contestName,
-                message: $rootScope.roundData[data.phaseData.roundID].contestName + ': '
-                        + helper.PHASE_NAME[data.phaseData.phaseType] + ' starts at '
-                        + $filter('date')(data.phaseData.startTime, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone,
-                popUpContent: $rootScope.roundData[data.phaseData.roundID].contestName + ': '
-                        + helper.PHASE_NAME[data.phaseData.phaseType] + ' starts at '
-                        + $filter('date')(data.phaseData.startTime, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone
-                        + ' and ends at ' + $filter('date')(data.phaseData.endTime, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone + '.'
+                message: $rootScope.roundData[data.phaseData.roundID].contestName + ': ' +
+                    formatTimeFrameMessage(data.phaseData, now),
+                popUpContent: $rootScope.roundData[data.phaseData.roundID].contestName + ': ' +
+                    formatTimeFrameMessage(data.phaseData, now)
             });
         }
     });

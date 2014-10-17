@@ -3,7 +3,7 @@
         Active Matches
     </div>
     <div class="panel-body" data-ng-show="getContests().length > 0">
-        <div data-ng-repeat="contest in getContests() track by $index" data-ng-show="$index == currentContest" class="mainContent">
+        <div data-ng-repeat="contest in getContests() | orderBy: 'phases[0].startTime' track by $index" data-ng-show="$index == currentContest" class="mainContent">
             <p class="infoRow">
 <!--                <span >Single Round Match</span> -->
                 <span class="textWhite">{{ contest.contestName }}</span>

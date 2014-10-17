@@ -8,8 +8,11 @@
  * - Added $window and goTo function to the scope to handle going to other page.
  * - Removed previous notification demo code.
  *
- * @author dexy
- * @version 1.1
+ * Changes in version 1.2 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
+ * - Added actions to the notification tickers.
+ *
+ * @author dexy, amethystlei
+ * @version 1.2
  */
 'use strict';
 /*jshint -W097*/
@@ -29,22 +32,31 @@ var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', '$window', 
                 notificationService.clearUnRead();
             } else {
                 // animation
-                var target = document.getElementById('notiIndicator');
+                var target = document.getElementById('notiIndicator'), message;
                 angular.element(target).addClass('animationaAlert');
                 $timeout(function () {
                     angular.element(target).removeClass('animationaAlert');
                 }, 1000);
 
-                angular.forEach(notificationService.notifications, function(notification) {
-                    if(!notification.displayed) {
+                angular.forEach(notificationService.notifications, function (notification) {
+                    if (!notification.displayed) {
                         notification.displayed = true;
+                        if (angular.isDefined(notification.action)) {
+                            // notification has actions
+                            message = {
+                                html: notification.message + ' <a class="notifAction" href="' + notification.action.target +
+                                    '">Yes</a> or <a class="notifAction">No</a>?'
+                            };
+                        } else {
+                            message = notification.message;
+                        }
                         $('.top-right').notify({
-                            message: notification.message,
+                            message: message,
                             type: "green",
                             fadeOut: {
                                 enabled: false
                             }
-                        }).show();                        
+                        }).show();
                     }
                 });
             }
