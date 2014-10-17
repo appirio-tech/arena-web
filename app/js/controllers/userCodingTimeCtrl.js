@@ -4,8 +4,11 @@
 /**
  * This file provides the main controller for coding time directive.
  *
- * @author TCSASSEMBLER
- * @version 1.0
+ * Changes in version 1.1 (Module Assembly - Web Arena - Code With Practice Problem)
+ *  - Added checking logic for practice code state.
+ *
+ * @author flytoj2ee
+ * @version 1.1
  */
 'use strict';
 /*global module, require, $*/
@@ -29,7 +32,8 @@ var userCodingTimeCtrl = ['$scope', '$rootScope', '$timeout', '$stateParams', 't
             $scope.roundID = Number($stateParams.contestId);
             return;
         }
-        if ($rootScope.currentStateName() === helper.STATE_NAME.Coding || $rootScope.currentStateName() === helper.STATE_NAME.ViewCode) {
+        if ($rootScope.currentStateName() === helper.STATE_NAME.Coding || $rootScope.currentStateName() === helper.STATE_NAME.ViewCode
+            || $rootScope.currentStateName() === helper.STATE_NAME.PracticeCode) {
             $scope.roundID = Number($stateParams.roundId);
             return;
         }

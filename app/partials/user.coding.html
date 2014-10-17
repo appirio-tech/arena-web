@@ -3,10 +3,10 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left titleBar" id="titleBar">
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                 <div class="definition"><!-- avoid unnecessary whitespace
-                    --><span class="item">Class Name&nbsp;&nbsp;:&nbsp;<span class="textWhite">{{problem.className}}</span></span><!--
-                    --><span class="item">Method Name&nbsp;:&nbsp;<span class="textWhite">{{problem.methodName}}</span></span><br class="visible-xs"/><!--
-                    --><span class="item">Return Type&nbsp;:&nbsp;<span class="textWhite">{{problem.allReturnType.typeMapping[lang(langIdx).id]}}</span></span><!--
-                    --><span class="item">Arg Types&nbsp;:&nbsp;<span class="textWhite" data-ng-if="problemLoaded">({{problem.argTypeText}})</span></span><!--
+                    --><span class="item">Class Name&nbsp;&nbsp;:&nbsp;<span class="textWhite textBlack">{{problem.className}}</span></span><!--
+                    --><span class="item">Method Name&nbsp;:&nbsp;<span class="textWhite textBlack">{{problem.methodName}}</span></span><br class="visible-xs"/><!--
+                    --><span class="item">Return Type&nbsp;:&nbsp;<span class="textWhite textBlack">{{problem.allReturnType.typeMapping[lang(langIdx).id]}}</span></span><!--
+                    --><span class="item">Arg Types&nbsp;:&nbsp;<span class="textWhite textBlack" data-ng-if="problemLoaded">({{problem.argTypeText}})</span></span><!--
                 --></div>
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 connection">
@@ -26,7 +26,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" data-ng-hide="currentStateName()==='user.practiceCode'">
             <a data-ng-click="goBack()" class="btn btnBack">Back to Match</a>
         </div>
         <div class="container-fluid row-fluid mainContent">

@@ -43,8 +43,11 @@
  * Changes in version 1.11 (Module Assembly - Web Arena Bug Fix 20140909):
  * - Fixed the issues in coding editor.
  *
- * @author tangzx, amethystlei, flytoj2ee, TCASSEMBLER
- * @version 1.11
+ * Changes in version 1.12 (Module Assembly - Web Arena - Code With Practice Problem)
+ *  - Added checking logic for practice code state.
+ *
+ * @author tangzx, amethystlei, flytoj2ee
+ * @version 1.12
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -206,7 +209,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * Enable user inputs.
          */
         function enableUserInput() {
-            if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+            if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
                 userInputDisabled = false;
                 enableEditor();
             }
@@ -260,8 +263,8 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * Toggle settings.
          */
         $scope.toggleSettings = function () {
-            if ($scope.currentStateName() !== helper.STATE_NAME.Coding) {
-                // disable when it is not in the state user.coding
+            if ($scope.currentStateName() !== helper.STATE_NAME.Coding && $scope.currentStateName() !== helper.STATE_NAME.PracticeCode) {
+                // disable when it is not in the state user.coding or user.practiceCode
                 return;
             }
             $scope.settingsOpen = !$scope.settingsOpen;
@@ -443,7 +446,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         $scope.isTesting = false;
         $scope.caseIndex = null;
 
-        if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+        if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
             $scope.panelName = 'Test Panel';
         } else if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
             $scope.panelName = 'Challenge';
@@ -828,12 +831,13 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                         return false;
                     }
                 }
-                if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+                if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
                     if ($scope.userData.tests.length === 0 && $rootScope.userTests.length === 0) {
                         return false;
                     }
                 }
-                return $scope.currentStateName() === helper.STATE_NAME.Coding || !!$scope.customChecked;
+                return ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode)
+                    || !!$scope.customChecked;
             };
 
             /**
@@ -841,7 +845,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
              * @returns {boolean} the checked result.
              */
             $scope.isSelectedAllDisable = function () {
-                if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+                if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
                     if ($scope.userData.tests.length === 0 && $rootScope.userTests.length === 0) {
                         return true;
                     }
@@ -884,8 +888,8 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             // $scope.showLineNumber = $scope.userData.showLineNumber ? true : false;
 
             $scope.settingChanged();
-            // enable the editior only when it is at the state helper.STATE_NAME.Coding.
-            enableEditor($scope.currentStateName() === helper.STATE_NAME.Coding);
+            // enable the editior only when it is at the state helper.STATE_NAME.Coding or PracticeCode.
+            enableEditor($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode);
 
             // comment out auto-compile & auto-save related code for now
             /*

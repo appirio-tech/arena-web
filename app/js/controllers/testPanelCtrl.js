@@ -9,8 +9,11 @@
  * Changes in version 1.1 (Module Assembly - Web Arena Bug Fix 20140909):
  *  - Fixed the issues in test panel.
  *
+ * Changes in version 1.2 (Module Assembly - Web Arena - Code With Practice Problem)
+ *  - Added checking logic for practice code state.
+ *
  * @author TCASSEMBLER
- * @version 1.1
+ * @version 1.2
  */
 'use strict';
 /*jshint -W097*/
@@ -172,7 +175,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($ro
                 enableClose: true
             });
         } else {
-            if ($scope.currentStateName() === helper.STATE_NAME.Coding) {
+            if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
                 $scope.openModal({
                     title: 'Retrieving Test Result',
                     message: 'Please wait for test result.',

@@ -520,6 +520,18 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
     };
 
     /**
+     * Open practice problem.
+     */
+    $scope.openProblem = function (roundId, componentId, divisionId, roomId) {
+        $scope.$state.go(helper.STATE_NAME.PracticeCode, {
+            roundId: roundId,
+            divisionId: divisionId,
+            componentId: componentId,
+            roomId: roomId
+        }, {reload: true});
+    };
+
+    /**
      * Go to given page.
      * @param page - the given page.
      */

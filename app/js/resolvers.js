@@ -199,6 +199,14 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 $rootScope.roundData[contest.roundID] = contest;
             });
         }
+        if (data.type === 1) { // practice rooms
+            if (!$rootScope.practiceRoundData) {
+                $rootScope.practiceRoundData = {};
+            }
+            angular.forEach(data.roundData, function (contest) {
+                $rootScope.practiceRoundData[contest.roundID] = contest;
+            });
+        }
     });
 
     // handle the round schedule response
