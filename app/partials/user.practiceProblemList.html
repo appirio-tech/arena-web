@@ -115,7 +115,7 @@
                                     </thead>
                                     <tbody>
                                         <tr data-ng-repeat="item in problems">
-                                            <td class="colName"><a data-ng-bind-html="item.problemName | highlight:searchText:false"></a></td>
+                                            <td class="colName"><a data-ng-bind-html="item.problemName | highlight:searchText:false" data-ng-click="openProblem(item.roundId, item.componentId, item.divisionId, item.roomId)"></a></td>
                                             <td class="colType">{{item.problemType}}</td>
                                             <td class="colPoints {{item.pointsColor}}">{{item.points}}</td>
                                             <td class="colDifficulty">{{item.difficulty}}</td>
