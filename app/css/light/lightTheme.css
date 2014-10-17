@@ -630,7 +630,10 @@ footer .right .sponsorLogo {
     height: 40px;
     line-height: 40px;
 }
-.panelContestStat .breadcrumbHead .breadcrumb li:last-child {padding-right: 11px; }
+.panelContestStat .breadcrumbHead .breadcrumb li:last-child {
+    padding-right: 11px; 
+    float: right;
+}
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     opacity: 1;
     height: 10px;
@@ -731,6 +734,10 @@ footer .right .sponsorLogo {
 }
 .panelSummary .panel-heading {
     background: #75a5c8;
+}
+.panelChatArea .control-bar {
+    background: #dadada;
+    border-color: #b7c9d7;
 }
 .panelChatArea .lobbyDropdown .dropdown-toggle,
 .panelChatArea .methodDropdown .dropdown-toggle,
@@ -1168,6 +1175,7 @@ footer .right .sponsorLogo {
 @media only screen and (max-width: 425px) {
     .panelContestStat .breadcrumbHead {height: 80px; }
 }
+>>>>>>> 3bb67444dd36fd929dfa94cebe116707c2f71188
 
 /* tooltip */
 .body .tooltip.bottom .tooltip-arrow{
@@ -1183,10 +1191,8 @@ footer .right .sponsorLogo {
 .panel-custom .panel-body .textActive {
     color: grey;
 }
-.coder-history-span {
+.coderHistoryTblDiv .coderHistoryTable>tbody>tr>td {
     border-color: #b7c9d7;
-    border-top-width: 1px;
-    border-top-style: solid;
 }
 .registration-modal-body .title{
     padding-top: 10px;
@@ -1252,4 +1258,58 @@ footer .right .sponsorLogo {
 .leadarboardList .ngsb-scrollbar,
 .activeUserList .ngsb-scrollbar{
     background: #F5F8FA;
+}
+
+/*Media blocks should be placed after the normal code!!!*/
+@media only screen and (max-width: 1121px) {
+    .panelCodeEditor .panel-body .toolBar {
+        padding-top: 30px;
+    }
+}
+@media only screen and (max-width: 1199px) {
+    .panelContestStat .breadcrumbHead .breadcrumb li {
+        width: 25%;
+    }
+    .panelContestStat .breadcrumbHead .breadcrumb li:last-child {
+        width: 24%;
+    }
+}
+/*bootstrap small devices tablets*/
+@media only screen and (max-width: 991px) {
+    .header .navIcons > li {
+        background-image: url(../img/black-header.png);
+    }
+    .header .timeItem,
+    .header .navbar-right .userInfo {
+        background-image: url(../img/black-header.png);
+    }
+}
+/* boostrap extra small devices */
+@media only screen and (max-width: 767px) {
+    .hero .loginBox footer .sponsorLogo {
+        background-image: url(../img/light/company_logo_small.png);
+    }
+}
+/* special sizes which widget will overflow */
+@media only screen and (max-width: 668px) {
+    .panelChatArea .membersInfo{
+        border-bottom: 1px solid #b7c9d7;
+    }
+}
+@media only screen and (max-width: 607px) {
+    .panelContestStat .breadcrumbHead .breadcrumb li {
+        width: 24%;
+    }
+}
+@media only screen and (max-width: 519px) {
+    .panelContestStat .breadcrumbHead .breadcrumb li,
+    .panelContestStat .breadcrumbHead .breadcrumb li:last-child {
+        width: auto;
+    }
+}
+@media only screen and (max-width: 419px) {
+    .panelContestStat .breadcrumbHead {height: 80px; }
+    .panelContestStat .breadcrumbHead .breadcrumb li:last-child {
+        float: none;
+    }
 }

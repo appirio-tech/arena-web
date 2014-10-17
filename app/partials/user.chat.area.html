@@ -29,7 +29,7 @@
         <div class="infoSection" data-ng-show="showRatingKey">
             <header><a data-ng-click="collapseRatingKey=!collapseRatingKey; rebuildScrollbar('info');" data-ng-class="{collapsed: collapseRatingKey}">Rating Key</a></header>
             <ul class="scrollable {{ratingKeyScrollHeight}}" data-ng-hide="collapseRatingKey" data-ng-custom-scrollbar data-rebuild-on="rebuild:ratingKey" data-rebuild-on-resize data-scroll-top>
-                <li data-ng-repeat="key in ratingKeyArray" data-ng-class="key.class">{{key.name}}</li>
+                <li data-ng-repeat="key in ratingKeyArray" data-ng-class="key.class" class="ratingItem">{{key.name}}</li>
             </ul>
         </div>
         <div class="infoSection" data-ng-show="showRegistrant">

@@ -1098,14 +1098,13 @@ footer .right .sponsorLogo {
 @media only screen and (max-width: 421px) {
     .panelContestStat .breadcrumbHead {height: 63px; }
 }
+>>>>>>> 3bb67444dd36fd929dfa94cebe116707c2f71188
 .coder-history-modal-header {
     background-color:#1f444e!important;
 }
-.coder-history-span {
+.coderHistoryTblDiv .coderHistoryTable>tbody>tr>td {
     color: #ffffff;
     border-color: #1f444e;
-    border-top-width: 1px;
-    border-top-style: solid;
 }
 .textColor {
     color: #ffffff!important;
@@ -1138,3 +1137,30 @@ footer .right .sponsorLogo {
     min-height: 80px;
 }
 .testReportPanel .reportItem .textGray {color: #687376; }
+
+/*Media blocks should be placed after the normal code!!!*/
+/*bootstrap small devices tablets*/
+@media only screen and (max-width: 991px) {
+    .header .navIcons > li {
+        background-image: url(../img/black-header.png);
+    }
+    .header .timeItem,
+    .header .navbar-right .userInfo {
+        background-image: url(../img/black-header.png);
+    }
+}
+/* boostrap extra small devices */
+@media only screen and (max-width: 767px) {
+    .hero .loginBox footer .sponsorLogo {
+        background-image: url(../img/dark/company_logo_small.png);
+    }
+}
+/* special sizes which widget will overflow */
+@media only screen and (max-width: 668px) {
+    .panelChatArea .membersInfo{
+        border-bottom: 1px solid #1f444e;
+    }
+}
+@media only screen and (max-width: 421px) {
+    .panelContestStat .breadcrumbHead {height: 63px; }
+}

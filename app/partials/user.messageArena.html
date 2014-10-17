@@ -8,13 +8,13 @@
         <label class="iRound">Round</label>
     </p>
 </div><!--/.panelHeader -->
-<div class="messageBox visible-lg visible-md" data-ng-custom-scrollbar data-rebuild-on="rebuild:messages">
+<div class="messageBox visible-lg visible-md" data-ng-custom-scrollbar data-rebuild-on="rebuild:messages" data-reload-on="reload:messages">
     <div class="messageWrapper">
         <div data-ng-repeat="item in notificationService.notifications track by $index " class="mItem {{item.type}}" data-ng-click="showNotificationDetails(item)">
             <p class="topRow">
                 {{item.date}}    |    Status {{item.status}}
             </p>
-            <p class="bottomRow">{{item.message}}<br/>
+            <p class="bottomRow">{{item.message}}
                 <span class="actionPart" data-ng-show="item.action">{{item.action.question}} <a data-ng-click="goTo(item.action.target);closeQtip();$event.stopPropagation()">Yes</a> or <a data-ng-click="closeQtip();$event.stopPropagation()">no</a>?</span>
             </p>
         </div>
@@ -26,7 +26,7 @@
             <p class="topRow">
                 {{item.date}}    |    Status {{item.status}}
             </p>
-            <p class="bottomRow">{{item.message}}<br/>
+            <p class="bottomRow">{{item.message}}
                 <span class="actionPart" data-ng-show="item.action">{{item.action.question}} <a data-ng-click="goTo(item.action.target);closeQtip();$event.stopPropagation()">Yes</a> or <a data-ng-click="closeQtip();$event.stopPropagation()">no</a>?</span>
             </p>
         </div>

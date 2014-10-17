@@ -4,7 +4,7 @@
         <div class="navbar navbar-top" role="navigation">
             <div class="container-fluid">
               <h1 class="navbar-title">
-                <a class="navbar-brand" href="http://www.topcoder.com">topcoder</a>
+                <a class="navbar-brand" data-ui-sref="user.dashboard">topcoder</a>
               </h1>
            </div>
         </div>
@@ -18,7 +18,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <h1 class="navbar-title"> <a class="navbar-brand" href="http://www.topcoder.com">topcoder</a></h1>
+                    <h1 class="navbar-title"> <a class="navbar-brand" data-ui-sref="user.dashboard">topcoder</a></h1>
                 </div>
 
                 <div data-collapse="navCollapsed" class="collapse navbar-collapse">
@@ -75,7 +75,7 @@
                         <li class="userItem">
                             <ul class="nav navbar-nav userInfo">
                                 <li class="userName">Welcome&nbsp;<span class="{{getRatingClass(userInfo().rating)}}">{{ username() }}</span></li>
-                                <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Messages"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
+                                <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="{{isReading ? null : 'Messages'}}"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
                                 <li><a data-ui-sref="user.logout" class="arrow" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Logout"></a></li>
                             </ul>
                         </li>
@@ -148,7 +148,7 @@
         {{ title }}
         <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
+    <div class="modal-body overflowX" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
         <p ng-bind-html="message"></p>
         <input type="text" class="fbMsg-input" data-ng-model="$root.facebookMessage" name="facebookMessage"/>
     </div>
