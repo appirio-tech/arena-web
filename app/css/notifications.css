@@ -44,7 +44,7 @@
   display: block;
   height: 17px;
   width: 15px;
-  background-position: -260px -25px;
+  background-position: -304px -6px;
   position: absolute;
   top: 50%;
   margin-top: -9px;
@@ -67,9 +67,9 @@
 .notifications .close:before {
   content: '';
   display: block;
-  height: 8px;
-  width: 9px;
-  background-position: -260px -42px;
+  height: 10px;
+  width: 10px;
+  background-position: -326px 0;
   position: absolute;
   top: 8px;
   left: 8px;
