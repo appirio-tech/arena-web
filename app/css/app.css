@@ -5776,8 +5776,7 @@ footer .right>span:nth-child(2) {
 }
 .panelSummary .panel-body .summaryWrapper,
 .panelSummary .summaryWrapper .sumDiv {
-    height: 20px !important;
-    overflow: hidden;
+    height: 0px !important;
 }
 *:focus {
     outline: none;
