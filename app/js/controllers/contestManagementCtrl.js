@@ -4,11 +4,13 @@
 /**
  * Handles all Round Management related logic
  *
+ * Changes in version 1.1 (Module Assembly - Web Arena - Match Configurations)
+ * - Round questions will be loaded on page load itself
+ * - Added methods openTerms, openSchedule, openRegistrationQuestions to navigate user to appropriate popup
+ *
  * @author TCASSEMBLER
- * @version 1.0
+ * @version 1.1
  */
-/*jshint -W097*/
-/*jshint strict:false*/
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -93,41 +95,6 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
          */
         assignmentFilter = $('#assignmentFilter'),
         /**
-         * Open's popup based on provided panel
-         * @param panel Name of panel to open
-         */
-        showPopup = function (panel) {
-            switch (panel) {
-            case 'assignmentPanel':
-                $('#problemAssignmentPanel').show();
-                $('body').addClass('popupOpen');
-                break;
-            case 'assignment':
-                $('#problemAssignment').show();
-                $('body').addClass('popupOpen');
-                break;
-            default:
-                return;
-            }
-        },
-        /**
-         * Close popup based on provided panel
-         * @param panel Name of panel to close
-         */
-        hidePopup = function (panel) {
-            switch (panel) {
-            case 'assignmentPanel':
-                $('#problemAssignmentPanel').hide();
-                $('body').removeClass('popupOpen');
-                break;
-            case 'assignment':
-                $('#problemAssignment').hide();
-                break;
-            default:
-                return;
-            }
-        },
-        /**
          * Closes Filter dialog
          */
         clearFilter = function () {
@@ -187,6 +154,32 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
         clearSelection = function () {
             $scope.problemCheckedID = -1;
         };
+    /**
+     * Stack of opened popups
+     * @type {Array}
+     */
+    $scope.popupStack = [];
+
+    /**
+     * Open's popup based on provided panel
+     * @param panel Name of panel to open
+     */
+    $scope.showPopup = function (panelID) {
+        $('#' + panelID).show();
+        $scope.popupStack.push(panelID);
+        $('body').addClass('popupOpen');
+    };
+    /**
+     * Close popup based on provided panel
+     * @param panel Name of panel to close
+     */
+    $scope.hidePopup = function (panelID) {
+        $('#' + panelID).hide();
+        $scope.popupStack.pop();
+        if ($scope.popupStack.length === 0) {
+            $('body').removeClass('popupOpen');
+        }
+    };
 
     /**
      * Get Keys to display various filter dropdowns
@@ -562,6 +555,16 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
             enableClose: true
         });
     }
+
+    /**
+     * Listens to errors across all contest management controllers like
+     * contestTermsConfigCtrl, contestScheduleConfigCtrl, manageQuestionCtrl, registrationQuestionCtrl and manageAnswerCtrl
+     * When there is genericApiError broadcase genericErrorHandler will be called.
+     * Any specific errors will be handled in respective controllers itself
+     */
+    $scope.$on('genericApiError', function (data) {
+        genericErrorHandler(data);
+    });
     /**
      * It loads all rounds from $scope.allRounds to array to use in ng-repeat
      * Make sure to call this method whenever there is change in $scope.allRounds
@@ -622,7 +625,23 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
         }
         loadRoundsArray();
     }
-
+    /**
+     * Retrieves response of all registration qustions to given round as ajax response
+     * Save them to respective rounds
+     * @param data Ajax response of all registration questions assigned to given round
+     */
+    function saveRoundQustions(data) {
+        if (data.error) {
+            genericErrorHandler(data);
+            return;
+        }
+        if (data.error) {
+            genericErrorHandler(data);
+            return;
+        }
+        $scope.allRounds[data.roundId].questions = data.questions;
+        loadRoundsArray();
+    }
     /**
      * Retrieves response of all rounds to given contest as ajax response
      * Once round data is received, requests will be sent to retrieve respective problems and problem components
@@ -650,11 +669,13 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
 
             $scope.allRounds[rounds.data[i].id].status = helper.ROUND_STATUS[rounds.data[i].status];
             $scope.allRounds[rounds.data[i].id].start =
-                    undefined === rounds.data[i].segments ? '' : Date.parse(rounds.data[i].segments.registrationStart);
+                    undefined === rounds.data[i].segments ? '' : rounds.data[i].segments.registrationStartTime;
             $http.get(config.apiDomain + '/data/srm/rounds/' + rounds.data[i].id + '/problems', header).
                 success(saveRoundProblems).error(genericErrorHandler);
             $http.get(config.apiDomain + '/data/srm/rounds/' + rounds.data[i].id + '/components', header).
                 success(saveRoundComponents).error(genericErrorHandler);
+            $http.get(config.apiDomain + '/data/srm/rounds/' + rounds.data[i].id + '/questions', header).
+                success(saveRoundQustions).error(genericErrorHandler);
         }
         loadRoundsArray();
     }
@@ -728,7 +749,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
                 }
             }
         }
-        showPopup('assignmentPanel');
+        $scope.showPopup('problemAssignmentPanel');
         $timeout(function () {
             $scope.$broadcast('reload:assignedProblems');
             $scope.$broadcast('reload:availableProblems');
@@ -769,7 +790,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
             $scope.problemToAssign = angular.copy($scope.allProblems[$scope.problemCheckedID]);
             $scope.problemToAssign.status = $scope.problemToAssign.status.description;
             $scope.problemToAssign.type = $scope.problemToAssign.type.description;
-            showPopup('assignment');
+            $scope.showPopup('problemAssignment');
         }
     };
     /**
@@ -812,7 +833,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
                 if ($scope.assignedProblems[i].division.desc === $scope.problemToAssign.division.desc) {
                     // update problem configuration
                     angular.extend($scope.assignedProblems[i], $scope.problemToAssign);
-                    hidePopup('assignment');
+                    $scope.hidePopup('problemAssignment');
                     return;
                 }
             }
@@ -826,7 +847,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
 //                $scope.problemsToAssign.splice(i, 1);
 //            }
 //        }
-        hidePopup('assignment');
+        $scope.Popup('assignment');
         $timeout(function () {
             $scope.$broadcast('reload:assignedProblems');
             $scope.$broadcast('reload:availableProblems');
@@ -862,7 +883,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
                 $http.get(config.apiDomain + '/data/srm/rounds/' + $scope.currentRound.id + '/components', header).
                     success(saveRoundComponents).error(genericErrorHandler);
                 $scope.currentRound = undefined;
-                hidePopup('assignmentPanel');
+                $scope.hidePopup('problemAssignmentPanel');
             }).error(genericErrorHandler);
 
     };
@@ -872,7 +893,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
      */
     $scope.startEditProblem = function (problem) {
         $scope.problemToAssign = angular.copy(problem);
-        showPopup('assignment');
+        $scope.showPopup('problemAssignment');
     };
     /**
      * Removes problem from assigned problem list
@@ -897,7 +918,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
      */
     $scope.cancelProblemAssignments = function () {
         $scope.currentRound = undefined;
-        hidePopup('assignmentPanel');
+        $scope.hidePopup('problemAssignmentPanel');
     };
     // By default clears all selection when assignment panel opens
     clearSelection();
@@ -908,7 +929,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
     $scope.cancelProblemAssignment = function () {
         // clear problem configuration
         $scope.problemToAssign = {};
-        hidePopup('assignment');
+        $scope.hidePopup('problemAssignment');
     };
     /**
      * Return division Name provided with division ID
@@ -927,7 +948,20 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
             return '';
         }
     };
+    // terms
+    $scope.openTerms = function (round) {
+        $scope.$broadcast('setContestTerms', {round: round});
+    };
 
+    // schedule
+    $scope.openSchedule = function (round) {
+        $scope.$broadcast('setContestSchedule', {round: round});
+    };
+
+    // registration questions
+    $scope.openRegistrationQuestions = function (round) {
+        $scope.$broadcast('setRegistrationQuestions', {round: round, questionKeys: $scope.questionKeys});
+    };
 }];
 
 module.exports = contestManagementCtrl;

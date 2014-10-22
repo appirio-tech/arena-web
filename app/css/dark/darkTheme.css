@@ -106,17 +106,26 @@ body{
 .wizardBody .pager .btn:before,
 .wizardBody .dropdown-toggle:before,
 .wizardBody .numberInput>div>a:before,
+.contestManagementPanel .numberInput>div>a:before,
 .wizardBody .checkboxLbl:before,
+.contestManagementPanel .checkboxLbl:before,
 .step-2 .logoUpload .thumbnail {
     background-image: url(../img/dark/sprite-wizard.png);
     background-repeat: no-repeat;
 }
 .contestManagement .tabs .textActive:before,
 .contestManagement .filterToggle:before,
+.contestManagementPanel .filterToggle:before,
 .problemAssignmentPanel .filterToggle:before,
 .contestFilter.qtip-default,
 .contestManagement .table .viewBtn:before,
 .contestManagement .colHide span,
+.contestManagement .sortableHeading span,
+.contestManagementPanel .panel-heading .close:before,
+.contestManagementPanel .searchIcon:before,
+.contestManagementPanel .searchArea .tags .closeIcon:before,
+.contestManagementPanel .dropdown .arrow,
+.contestManagementPanel .colAction .delBtn:before,
 .contestManagement .sortableHeading span.up,
 .contestManagement .sortableHeading span.down,
 .problemAssignmentPanel .panel-heading .close:before,
@@ -282,9 +291,13 @@ footer .right .sponsorLogo {
 .wizardBody .tabContent {
     border-color: #1f444e;
 }
+.contestManagementPanel .errorInfo,
 .wizardBody .errorInfo {
     color: #ff0f00;
 }
+.contestManagementPanel .inputBorder,
+.contestManagementPanel .numberInput>div,
+.contestManagementPanel .phaseSchedule hr,
 .wizardBody .inputBorder,
 .wizardBody .dropdown-menu,
 .wizardBody .numberInput>div,
@@ -296,9 +309,11 @@ footer .right .sponsorLogo {
     border-color: rgba(255, 255, 255, 0.16);
 }
 .wizardBody .error .inputBorder,
+.contestManagementPanel .error .inputBorder,
 .wizardBody .error .radioLbl:before {
     border-color: #ff0f00;
 }
+.contestManagementPanel .inputBorder>input,
 .wizardBody .inputBorder>input {
     background: transparent;
     border-width: 0;
@@ -324,6 +339,7 @@ footer .right .sponsorLogo {
 .wizardBody .panel-body {
     border-color: #1f444e;
 }
+.contestManagementPanel .phaseSchedule .info,
 .wizardBody .info {
     color: #636d70;
 }
@@ -972,50 +988,79 @@ footer .right .sponsorLogo {
 .contestManagement .table .colTitle a{
     color: #0e9bbf;
 }
-.contestManagement .table>thead>tr>th {
+.contestManagement .table>thead>tr>th,
+.contestManagementPanel .table>thead>tr>th {
     color: #636d70;
 }
 .contestManagement .table>tbody>tr>td {
     color: #fff;
 }
+.contestManagementPanel .panel,
 .problemAssignmentPanel .panel {
     border-color: #1f444e;
 }
+.contestManagementPanel .panel-heading,
 .problemAssignmentPanel .panel-heading {
     background: #1f444e;
     color: #fff;
 }
+.contestManagementPanel .btn {
+    background: #0f9abd;
+}
 .problemAssignmentPanel .btn {
     background: #0999d1;
 }
+.contestManagementPanel .btnCancel,
+.contestManagementPanel .btnSave,
 .problemAssignmentPanel .btnCancel,
 .problemAssignmentPanel .btnSave {
     background: #12596b;
     color: #fff;
     color: rgba(255,255,255,0.5);
 }
+.contestManagementPanel .btnSave,
 .problemAssignmentPanel .btnSave {
     color: #fff;
 }
+.contestManagementPanel .btnSubmit,
 .problemAssignmentPanel .btnSubmit {
     background: #0f9abd;
 }
 .problemAssignment form,
+.contestManagementPanel .search input,
+.contestManagementPanel .keyword input,
+.contestManagementPanel textarea,
+.contestManagementPanel .panel-custom .panel-body,
 .problemAssignmentPanel .search input,
 .problemAssignmentPanel h4 {
     color: #fff;
 }
+.contestManagementPanel .dropdown,
+.contestManagementPanel .inputBorder,
+.contestManagementPanel .keyword input,
+.contestManagementPanel .searchArea .search,
+.contestManagementPanel textarea,
 .problemAssignmentPanel .dropdown,
 .problemAssignmentPanel .inputBorder,
 .problemAssignmentPanel .searchArea .search {
     border-color: #fff;
     border-color: rgba(255,255,255,0.16);
 }
+.contestManagementPanel .panel-footer,
+.contestManagementPanel .assignedProblems,
+.contestManagementPanel .availableProblems .tableDiv,
+.registrationQuestionsPanel .panel-body .content,
+.manageQuestionPanel .panel-body .content,
 .problemAssignmentPanel .panel-footer,
 .problemAssignmentPanel .assignedProblems,
 .problemAssignmentPanel .availableProblems .tableDiv {
     border-color: #1f444e;
 }
+.contestManagementPanel .tags label {
+    background: #343434;
+    color: #fff;
+}
+.contestManagementPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb,
 .problemAssignmentPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
     background: #1f444e;
 }

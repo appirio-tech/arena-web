@@ -10,15 +10,19 @@
  * Changes in version 1.2 (Module Assembly - Web Arena - Contest Creation Wizard Bug Fix):
  *  - Fixed the issues in create contest popup dialog.
  *
- * @author flytoj2ee
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena - Match Configurations)
+ *  - Changed date format to save segments to match with API changes in srmRoundSegments.js
+ *  - Fixed JSLINT errors
+ *
+ * @author flytoj2ee, TCSASSEMBLER
+ * @version 1.3
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
 /*jslint plusplus: true*/
 /*jslint unparam: true*/
-/*global FileReader, document, console, angular, $:false, module*/
+/*global FileReader, document, console, angular, $:false, module, require*/
 var config = require('../config');
 var helper = require('../helper');
 
@@ -99,7 +103,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 item.language = language.text;
                 item.id = language.id;
                 if (language.text === 'Java' || language.text === 'C#' || language.text === 'VB'
-                    || language.text === 'C++' || language.text === 'Python') {
+                        || language.text === 'C++' || language.text === 'Python') {
                     item.checked = true;
                 } else {
                     item.checked = false;
@@ -196,10 +200,10 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             languageData.languages = [];
 
             segment = {};
-            segment.registrationStart = $filter('date')(date, 'yyyy-MM-dd HH:mm:ss');
+            segment.registrationStart = $filter('date')(date, 'yyyy-MM-dd HH:mm:ssZ');
             segment.registrationLength = (+$scope.regStartH) * 60 + (+$scope.regStartMm);
             segment.codingStart = $filter('date')(new Date(date.getTime() + ((+$scope.regStartH) * 60
-                + (+$scope.regStartMm) + 1) * 60 * 1000), 'yyyy-MM-dd HH:mm:ss');
+                + (+$scope.regStartMm) + 1) * 60 * 1000), 'yyyy-MM-dd HH:mm:ssZ');
             segment.codingLength = (+$scope.codeLengthH) * 60 + (+$scope.codeLengthMm);
             if (!!$scope.removeInter) {
                 segment.intermissionLength = 0;
@@ -326,8 +330,8 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                                             $scope.closeDetailDialog();
                                             $scope.openDetailModal({'title': 'Success', 'detail': 'Contest created successfully.', 'enableClose': true});
                                         }
-                                    }).error(function (data, status, headers, config) {
-                                            showDetailModal(data, status);
+                                    }).error(function (data, status) {
+                                        showDetailModal(data, status);
                                     });
                                 }
                             }).error(function (data, status, headers, config) {
@@ -602,13 +606,13 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 // the depth of DOM tree rooted at the element with id 'themePanel'
                 var panelDOMDepth = 4;
                 if (appHelper.clickOnTarget(event.target, 'selectAllLabel', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'selectAll', panelDOMDepth)
-                    || appHelper.clickOnTarget(event.target, 'selectSetLabel', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'selectSet', panelDOMDepth)
-                    || appHelper.clickOnTarget(event.target, 'language-0', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-0-label', panelDOMDepth)
-                    || appHelper.clickOnTarget(event.target, 'language-1', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-1-label', panelDOMDepth)
-                    || appHelper.clickOnTarget(event.target, 'language-2', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-2-label', panelDOMDepth)
-                    || appHelper.clickOnTarget(event.target, 'language-3', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-3-label', panelDOMDepth)
-                    || appHelper.clickOnTarget(event.target, 'language-4', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-4-label', panelDOMDepth)
-                    || appHelper.clickOnTarget(event.target, 'language-5', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-5-label', panelDOMDepth)) {
+                        || appHelper.clickOnTarget(event.target, 'selectSetLabel', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'selectSet', panelDOMDepth)
+                        || appHelper.clickOnTarget(event.target, 'language-0', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-0-label', panelDOMDepth)
+                        || appHelper.clickOnTarget(event.target, 'language-1', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-1-label', panelDOMDepth)
+                        || appHelper.clickOnTarget(event.target, 'language-2', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-2-label', panelDOMDepth)
+                        || appHelper.clickOnTarget(event.target, 'language-3', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-3-label', panelDOMDepth)
+                        || appHelper.clickOnTarget(event.target, 'language-4', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-4-label', panelDOMDepth)
+                        || appHelper.clickOnTarget(event.target, 'language-5', panelDOMDepth) || appHelper.clickOnTarget(event.target, 'language-5-label', panelDOMDepth)) {
                     return;
                 }
                 if (!appHelper.clickOnTarget(event.target, 'langPanel', panelDOMDepth)) {
@@ -932,7 +936,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
         $scope.validateInput = function (target) {
             $scope.formValid[target] = isValid(target) ? true : false;
             $scope.hasError = !$scope.formValid[target];
-        }
+        };
     }];
 
 module.exports = contestCreationCtrl;
