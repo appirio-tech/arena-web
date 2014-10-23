@@ -413,7 +413,6 @@ body a {cursor: pointer;}
     opacity: 0.9;
 }
 .signup,.signin{
-    margin-top:66px;
 }
 .form .radio label {display: block;}
 .form .radio input[type="radio"] {width: auto;}
