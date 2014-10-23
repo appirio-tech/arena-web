@@ -18,6 +18,8 @@
  */
 'use strict';
 
+var config = require('../config');
+
 var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$rootScope', 'appHelper', function ($scope, $state, $window, sessionHelper, auth0, $rootScope, appHelper) {
     // whether the login has error
     $scope.hasError = false;
@@ -26,6 +28,10 @@ var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$r
     $scope.isPasswordEmpty = false;
     $scope.username = '';
     $scope.password = '';
+
+    $scope.register = function() {
+        window.location = config.registrationUrl;
+    }
 
     $scope.accountLogin = function () {
         $scope.hasError = false;
