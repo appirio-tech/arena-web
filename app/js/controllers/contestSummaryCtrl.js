@@ -21,8 +21,10 @@
  * - Updated setViewOn to handle division leaderboard retrieval.
  * - Added getCurrentLeaderboard, getTopCoderCount, viewCode to handle leaderboard table.
  *
- * @author amethystlei, flytoj2ee, dexy
- * @version 1.5
+ * Changes in version 1.6 (Sort is not retained in room summary):
+ * - Reset isKeepSort to false.
+ * @author amethystlei, flytoj2ee, dexy, savon_cn
+ * @version 1.6
  */
 'use strict';
 /*global module, angular*/
@@ -177,6 +179,8 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
     };
     $scope.viewDetail = function (contest) {
         preserveLastDivSummary = true;
+        //should discard the key sort
+        $rootScope.isKeepSort = false;
         $state.go('user.contestSummary', {contestId : contest.roundID, divisionId : $scope.divisionID, viewOn : $scope.viewOn});
     };
 
