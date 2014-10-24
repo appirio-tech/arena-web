@@ -982,9 +982,7 @@ footer .right>span:nth-child(2) {
     }
 }
 .modal .modal-lg {
-    padding-top: 15.74%;
     width: 892px;
-    margin-top: 0;
 }
 .modal .modal-content {
     border: 1px solid #234760;
@@ -5608,7 +5606,7 @@ footer .right>span:nth-child(2) {
 contestManagementPanel .panel-footer .btn {
     width: 116px;
     font-size: 16px;
-
+}
 .contestManagementPanel .panel-body .btnRow {
     text-align: right;
     padding-right: 26px;
@@ -6129,7 +6127,7 @@ contestManagementPanel .panel-footer .btn {
 }
 .contestScheduleConfigPanel .panel-footer .btnSubmit {
     width: 116px;
-}}
+}
 /*practice problem list*/
 .practiceProblemList .titleBar {
     height: 113px;
@@ -6319,22 +6317,604 @@ contestManagementPanel .panel-footer .btn {
     width: 20px;
     position: absolute;
     top: 2px;
-    left: 0;.practiceProblemList .iconNew:before {
+    left: 0;
+}
+.practiceProblemList .iconNew:before {
     background-position: 0 0px;
 }
 .practiceProblemList .iconViewed:before {
     background-position: 0 -25px;
-}}.practiceProblemList .iconSolved:before {
-    background-position: 0 -50px;
-}.practiceProblemList .iconSolved:before {
+}
+.practiceProblemList .iconSolved:before {
     background-position: 0 -50px;
 }
 .practiceFilterTo {
     vertical-align: top;
     display: inline-block;
     padding-top: 10px;
-}}
+}
 
+.showDisableLBLbl {
+    color: #636d70;
+}
+.searched {background: yellow;}
+
+.coderHistoryTblDiv {
+    padding: 0 31px;
+}
+.coderHistoryTable {
+    text-align: center;
+}
+.coderHistoryTblDiv .coderHistoryTable>thead>tr>th,
+.coderHistoryTblDiv .coderHistoryTable>tbody>tr>td {
+    text-align: center;
+    border-bottom-width: 0;
+}
+.coderHistoryTblDiv .coderHistoryTable>thead>tr>th {
+    padding-top: 2px;
+    padding-bottom: 3px;
+}
+.coderHistoryTblDiv .coderHistoryTable>tbody>tr>td {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 26px;
+    border-top: 1px solid;
+}
+.coderHistoryColTime {
+    width: 130px;
+}
+.coderHistoryColAction {
+    width: 95px;
+}
+.coderHistoryColRating {
+    width: 40px;
+}
+.coderHistoryColHandle {
+    width: 100px;
+}
+.coderHistoryColHandle .ratingIcon {
+    width: 19px;
+}
+.coderHistoryColScore {
+    width: 85px;
+}
+.roomsDiv {
+    text-align: center;
+}
+.roomsDiv ul {
+    padding-left: 0px;
+    margin-bottom: 1px;
+}
+.roomsDiv li {
+    display:inline;
+    width: 70px;
+    float: left;
+}
+.panelSummary .summaryWrapper .sumDiv,
+.roomsPanel .roomsDivScroll {
+    margin-right: -5px !important;
+}
+.roomsDivScroll {
+    height: 115px;
+}
+.roomsDiv .pagination {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-top: 5px;
+    text-align: center;
+}
+.roomsPanel .pagination {
+    margin-top: 10px !important;
+}
+.panelSummary .panel-body .summaryWrapper,
+.panelSummary .summaryWrapper .sumDiv {
+    height: 0px !important;
+}
+*:focus {
+    outline: none;
+}
+.disableLink {
+    color : grey;
+    cursor: default !important;
+}
+.disableLink:hover {
+    color : grey !important;
+}
+.smallFont {
+    font-size: small;
+}
+.mediumFont {
+    font-size: medium;
+}
+.largeFont {
+    font-size: large;
+}
+.dropdown-menu-up {
+    margin: -134px 0 0;
+}
+.chat-highlight {
+    color:black;
+    background:yellow;
+}
+.textAlign {
+    text-align: center;
+}
+.coder-history-height {
+    min-height: 400px;
+    height: 400px
+}
+.coder-history-textMargin {
+    /*margin-top: 50px!important;*/
+}
+.coder-history-td-red {
+    color: rgb(255, 0, 51)!important;
+}
+.coder-history-td-green {
+    color: #0f0!important;
+}
+.coder-history-td-italic {
+    font-style: italic!important;
+}
+.panel-custom .panel-heading .search-input {
+    width: 450px;
+}
+.registration-modal-body {
+    min-height: 400px;
+    padding: 0!important;
+}
+.registration-modal-body .questionText{
+    margin: 5px!important;
+}
+.registration-modal-body .surveyDiv{
+    padding-top: 10px;
+    padding-left: 20px;
+}
+.registration-modal-body .surveyDiv p {
+    margin:5px !important;
+}
+.registration-modal-body .surveyDiv .answerText {
+    padding-left: 45px;
+    margin-right: 18px;
+}
+.registration-modal-body .surveyDiv .answerText .radio {
+    margin-right: 5px;
+    display: inline;
+    min-height: 10px;
+    vertical-align: middle;
+    margin-bottom: 6px;
+}
+.registration-modal-body .surveyDiv .answerText .longText {
+    margin-top: 10px;
+    width: 515px;
+    height: 80px;
+}
+.registration-modal-body .surveyDiv .answerText .shortText {
+    margin-top: 10px;
+    width: 515px;
+}
+.registration-modal-body .bottomQuestionDiv{
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+.validation-modal-body {
+    padding: 0!important;
+}
+
+.modal-body .fbMsg-input {
+    width: 550px;
+    margin: 5px 5px 5px 15px;
+}
+.challengerWrapper .table .colR,
+.challengeWrapper .table .colR {
+    width: 30px;
+    font-weight: 100;
+}
+.challengerWrapper .table .colRHeader,
+.challengeWrapper .table .colRHeader {
+    width: 30px;
+    padding-left: 0;
+    padding-right: 0;
+}
+.challengeWrapper .table .col4
+{
+    width: 9%;
+    padding-left: 0;
+    padding-right: 0;
+}
+.detailPage .challengeWrapper .table .col1 {
+    width: 24px;
+}
+.challengeWrapper .table .col1 .arrow {
+    margin-left: 3px!important;
+}
+.header .navIcons .lastLi {
+    border-right: 1px solid #2d2f30;
+}
+
+.wizardBody .step-3 .errorNumber {
+    border: 1px solid red!important;
+}
+
+/* active user */
+.tableWrap table{
+    width: 100%;
+}
+.panelOverview .activeUsers .panel-body .contentWrapper{
+    padding: 4px 5px 4px 10px;
+    position: relative;
+}
+.panelOverview .leaderboard .panel-body .contentWrapper{
+    padding: 4px 5px 2px 10px;
+    position: relative;
+}
+.activeUsers .tableWrap,
+.leaderboard .tableWrap{
+    height: 100%;
+}
+.activeUsers .activeUserList{
+    height: 182px;
+}
+.leaderboard .leadarboardList{
+    height: 140px;
+}
+.leaderboard .leaderBoardTable.heading{
+    width: 100%;
+}
+.activeUsers .activeUserTable{
+    width: 100%;
+}
+.activeUsers .activeUserTable th{
+    border-bottom: 1px solid #1b3238;
+    height: 30px;
+    vertical-align: middle;
+    color: #d3d3d3;
+    font-weight: normal;
+}
+.activeUsers .activeUserTable .colR{
+    width: 35px;
+    padding-left: 12px;
+    background-color: transparent;
+}
+.activeUsers .activeUserTable .colHandle{
+    padding-left: 5px;
+    background-color: transparent;
+}
+.activeUsers .activeUserTable tr{
+    border-bottom: 1px solid #1b3238;
+    height: 30px;
+    vertical-align: middle;
+}
+.activeUsers .activeUserTable .user:hover{
+    text-decoration: none;
+}
+.activeUsers .refreshData{
+    position: absolute;
+    cursor: pointer;
+    right: 8px;
+    top: 6px;
+    height: 26px;
+    width: 26px;
+    background:url(../img/loading.png) 50% 50% no-repeat;
+    z-index: 999;
+
+}
+.activeUsers .refreshData.loading{
+    -webkit-animation: rotating 2s linear infinite;
+    -moz-animation: rotating 2s linear infinite;
+    -ms-animation: rotating 2s linear infinite;
+    animation: rotating 2s linear infinite;
+}
+.tableWrap .ng-table-pager{
+    display: none;
+}
+.activeUserTable thead th,
+.leaderBoardTable thead th{
+    -webkit-user-select: none;
+}
+.leaderBoardTable thead th{
+    background: transparent;
+    border-bottom: 1px solid #1b3238;
+    color: #fff;
+    font-weight: normal;
+    height: 30px;
+}
+.leaderBoardTable  td{
+    border-bottom: 1px solid #1b3238;
+    height: 30px;
+    vertical-align: middle;
+    color: #d3d3d3;
+}
+.leaderBoardTable .colRoom{
+    width: 63px;
+    text-align: center;
+}
+.leaderBoardTable .colR{
+    width: 24px;
+}
+.leaderBoardTable .colHandle{
+    width: 145px;
+}
+.leaderBoardTable .colScore{
+    width: auto;
+    background-position: 38px 52%;
+}
+
+.leaderBoardTable .user:hover{
+    text-decoration: none;
+}
+
+/* customDropdown */
+.customDropdown {
+    display: inline-block;
+    list-style: none;
+    padding-left: 0;
+    font-size: 14px;
+    margin: -3px 4px 0 0;
+}
+.customDropdown .dropdown-toggle{
+    color: #ffffff;
+}
+.customDropdown .dropdown-toggle {
+    height: 36px;
+    width: 138px;
+    display: block;
+    background-image: url(../img/select.png);
+    background-position: 103% 50%;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border-radius: 2px;
+    border: 1px solid #38393a;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    padding: 0 0 0 10px;
+}
+.customDropdown .dropdown-toggle {
+    width: auto;
+    min-width: 138px;
+    padding-right: 20px;
+    line-height: 36px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.customDropdown .dropdown-toggle:hover {
+    text-decoration: none;
+    opacity: 0.7;
+}
+.customDropdownPanel {
+    background: transparent;
+    border-width: 0;
+    padding: 0;
+    max-width: 316px;
+    line-height: 25px;
+}
+.customDropdownPanel .qtip-content {
+    padding: 0;
+    width: 314px;
+    max-height: 130px;
+}
+.customDropdownPanel .menu{
+    min-width:138px;
+    display: block;
+    width: 314px;
+    position: relative;
+    top: auto;
+    left: auto;
+    max-height: 130px;
+}
+.customDropdown .dropdown-toggle+div {
+    display: none;
+}
+.customDropdownPanel .scrollArea {
+    max-height: 120px;
+}
+.customDropdownPanel .menu ul {
+    -webkit-padding-start: 0;
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+}
+.customDropdownPanel .menu li .current{
+    background: #999;
+    color: #fff;
+}
+.customDropdownPanel .menu li a.current:hover{
+    background: #999;
+}
+.customDropdownPanel .menu li a{
+    color: #333;
+    padding: 3px 9px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+    overflow : hidden;
+    text-overflow: ellipsis;
+}
+.customDropdownPanel .menu li a {
+    padding-left: 9px;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.customDropdownPanel .menu li a:hover{
+    text-decoration: none;
+    background: #e7e7e7;
+}
+
+.rounds .customDropdown{
+    width: 314px;
+    margin-right: 0;
+    margin-top: 0;
+}
+.leadarboardList .tableWrap .leaderBoardTable span,
+.activeUserList .tableWrap .activeUserTable span,
+.anchor{
+    cursor: pointer;
+}
+.leaderboard .rounds{
+    height: 38px;
+    color: #fff;
+    padding-left: 14px;
+}
+.leaderboard .rounds .lbl{
+    float: left;
+    line-height: 36px;
+    color: #fff;
+}
+.leaderboard .rounds .val{
+    margin-left: 56px;
+}
+@-webkit-keyframes rotating {
+    from{
+        -webkit-transform: rotate(0deg);
+    }
+    to{
+        -webkit-transform: rotate(360deg);
+    }
+}
+@-moz-keyframes rotating {
+    from{
+        -moz-transform: rotate(0deg);
+    }
+    to{
+        -moz-transform: rotate(360deg);
+    }
+}
+@-ms-keyframes rotating {
+    from{
+        -ms-transform: rotate(0deg);
+    }
+    to{
+        -ms-transform: rotate(360deg);
+    }
+}
+@keyframes rotating {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+table thead .sort{
+    background-image: url(../img/dn.png);
+    background-repeat: no-repeat;
+    background-position: 90% 52%;
+    padding-right: 10px;
+}
+table thead .sort.colHandle{
+    background-position: 48px 52%;
+}
+.activeUsers .activeUserTable thead .sort.colHandle{
+    background-position: 52px 52%;
+}
+.activeUsers .activeUserTable thead .sort.colR{
+    background-position: 95% 52%;
+}
+table thead .sort.desc{
+    background-image: url(../img/up.png);
+}
+
+.leadarboardList .ngsb-scrollbar,
+.activeUserList .ngsb-scrollbar{
+    background: #151717;
+}
+
+.hl-matched {
+    text-decoration: underline;
+}
+.marginTop {
+    margin-top: -30px;
+}
+.upScrollButton {
+    background-image: url(../img/dark/sprite-room-summary.png);
+    position: absolute;
+    top: -1px;
+    right: 4px;
+    z-index: 1;
+    width: 7px;
+    height: 9px;
+    background-position: -34px -56px;
+    cursor:pointer;
+    margin-bottom: 10px;
+}
+
+.downScrollButton {
+    background-image: url(../img/dark/sprite-room-summary.png);
+    position: absolute;
+    top:calc(100% - 8px);
+    right: 4px;
+    width: 9px;
+    height: 9px;
+    z-index:1;
+    background-position: -33px -51px;
+    cursor:pointer;
+}
+
+.ngsb-wrap .ngsb-scrollbar {
+    top: 10px;
+}
+.panel-body .mainContent .infoRow {
+    margin: 0 0 -10px;
+}
+.panel-body .mainContent .tabsMargin {
+    margin: 0 0 -5px;
+}
+.panel-body .mainContent .minSocialHeight {
+    min-height: 28px;
+}
+.facebookWrap {
+    background: linear-gradient(#4c69ba, #3b55a0) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: none;
+    border-radius: 2px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
+    padding: 0;
+    text-shadow: 0 -1px 0 #354c8c;
+    white-space: nowrap;
+}
+.facebookWrap .icon {
+    background-image: url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/y1/r/LVx-xkvaJ0b.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 14px;
+    width: 14px;
+    background-position: 0 -42px;
+    left: 0;
+    margin: 0 4px 0 4px;
+    position: relative;
+    top: 7px;
+    vertical-align: top;
+}
+.facebookWrap .text {
+    color: #fff;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0 4px 0 0;
+    line-height: 20px;
+    text-shadow: 0 -1px 0 #354c8c;
+    white-space: nowrap;
+    font-family: 'Helvetica Neue', Helvetica, Arial, 'lucida grande',tahoma,verdana,arial,sans-serif;
+}
+.twitter-custom {
+    position: relative;
+    top: 4px;
+}
+.calendarBottom {
+    padding-bottom: 2px;
+}
+.roomAssign .roomAssignDiv .method {
+    padding-left: 10px;
+    width: 138px!important;
 }
 .rightPart .other .marginLeft {
     margin-left: 90px;
@@ -6437,9 +7017,9 @@ contestManagementPanel .panel-footer .btn {
         height: auto;
     }
 }
-    .contestManagement .table .colBtn,
-    .contestManagement .table .colStatus {
-        width: 90px;
+@media only screen and (max-width: 1141px) {
+    .header .navbar-brand {
+        padding-left: 0;
     }
 }
 @media only screen and (max-width: 1121px) {
@@ -6618,7 +7198,6 @@ contestManagementPanel .panel-footer .btn {
     .contestManagement .table .colStart {
         width: auto;
     
-}
 }
 @media only screen and (max-width: 789px) {
     /* fix size of active contests */
@@ -7100,616 +7679,3 @@ contestManagementPanel .panel-footer .btn {
         left: 159px;
     }
 }
-
-.problemStatementRow {
-    width: 100%;
-    height: 22px;
-}
-
-.statementName {
-    width: 150px;
-    float: left;
-}
-
-.problemStatementRow .textWhite {
-    float: left;
-}
-/* rating indicator */
-.ratingIcon,
-.ratingIcon>span {
-    display: inline-block;
-}
-.ratingIcon {
-    vertical-align: middle;
-    position: relative;
-    min-width: 14px;
-    min-height: 14px;
-}
-.ratingIcon>svg,
-.ratingIcon>span {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-.targetIndicator {
-    height: 14px;
-    width: 14px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-}
-.panelOverview .ratingRow .ratingIcon {
-    margin-right: 3px;
-    margin-left: 2px;
-    height: 20px;
-    width: 14px;
-}
-.panelOverview .ratingRow .ratingIcon>svg,
-.panelOverview .ratingRow .ratingIcon>span{
-    top: 2px;
-}
-.panelChatArea .membersInfo .infoSection .scrollable li a .ratingIcon {
-    width: 21px;
-    height: 20px;
-    position: absolute;
-    left: 0;
-    top: 5px;
-}
-.detailPage section .table td .ratingIcon {
-    width: 18px;
-    height: 20px;
-}
-.detailPage section .table td .ratingIcon>svg,
-.detailPage section .table td .ratingIcon>span {
-    top: 2px;
-}
-.showDisableLBLbl {
-    color: #636d70;
-}
-.searched {background: yellow;}
-.coderHistoryTimeField {
-    width: 130px;
-    float: left;
-    white-space: nowrap;
-    overflow: hidden;
-}
-.coderHistoryActionField {
-    width: 95px;
-    float: left;
-    white-space: nowrap;
-    overflow: hidden;
-}
-.coderHistoryHandleField {
-    width: 140px;
-    float: left;
-    white-space: nowrap;
-    overflow: hidden;
-}
-.coderHistoryScoreField {
-    width: 85px;
-    float: left;
-    white-space: nowrap;
-    overflow: hidden;
-}
-.roomsDiv {
-    text-align: center;
-}
-.roomsDiv ul {
-    padding-left: 0px;
-    margin-bottom: 1px;
-}
-.roomsDiv li {
-    display:inline;
-    width: 70px;
-    float: left;
-}
-.panelSummary .summaryWrapper .sumDiv,
-.roomsPanel .roomsDivScroll {
-    margin-right: -5px !important;
-}
-.roomsDivScroll {
-    height: 115px;
-}
-.roomsDiv .pagination {
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0px;
-    margin-top: 5px;
-    text-align: center;
-}
-.roomsPanel .pagination {
-    margin-top: 10px !important;
-}
-.panelSummary .panel-body .summaryWrapper,
-.panelSummary .summaryWrapper .sumDiv {
-    height: 20px !important;
-}
-*:focus {
-    outline: none;
-}
-.disableLink {
-    color : grey;
-    cursor: default !important;
-}
-.disableLink:hover {
-    color : grey !important;
-}
-.smallFont {
-    font-size: small;
-}
-.mediumFont {
-    font-size: medium;
-}
-.largeFont {
-    font-size: large;
-}
-.dropdown-menu-up {
-    margin: -134px 0 0;
-}
-.chat-highlight {
-    color:black;
-    background:yellow;
-}
-.textAlign {
-    text-align: center;
-}
-.coder-history-height {
-    min-height: 400px;
-    height: 400px
-}
-.coder-history-li {
-    list-style: none;
-}
-.coder-history-textMargin {
-    margin-top: 50px!important;
-}
-.coder-history-span-red {
-    color: rgb(255, 0, 51)!important;
-}
-.coder-history-span-green {
-    color: #0f0!important;
-}
-.coder-history-span-italic {
-    font-style: italic!important;
-}
-.panel-custom .panel-heading .search-input {
-    width: 450px;
-}
-.registration-modal-body {
-    min-height: 400px;
-    padding: 0!important;
-}
-.registration-modal-body .questionText{
-    margin: 5px!important;
-}
-.registration-modal-body .surveyDiv{
-    padding-top: 10px;
-    padding-left: 20px;
-}
-.registration-modal-body .surveyDiv p {
-    margin:5px !important;
-}
-.registration-modal-body .surveyDiv .answerText {
-    padding-left: 45px;
-    margin-right: 18px;
-}
-.registration-modal-body .surveyDiv .answerText .radio {
-    margin-right: 5px;
-    display: inline;
-    min-height: 10px;
-    vertical-align: middle;
-    margin-bottom: 6px;
-}
-.registration-modal-body .surveyDiv .answerText .longText {
-    margin-top: 10px;
-    width: 515px;
-    height: 80px;
-}
-.registration-modal-body .surveyDiv .answerText .shortText {
-    margin-top: 10px;
-    width: 515px;
-}
-.registration-modal-body .bottomQuestionDiv{
-    margin-top: 50px;
-}
-.validation-modal-body {
-    padding: 0!important;
-}
-
-.modal-body .fbMsg-input {
-    width: 550px;
-    margin: 5px 5px 5px 15px;
-}
-
-.challengerWrapper .table .colR,
-.challengeWrapper .table .colR {
-    width: 30px;
-    font-weight: 100;
-}
-.challengerWrapper .table .colRHeader {
-    width: 30px;
-}
-.challengeWrapper .table .colRHeader {
-    width: 31px;
-    padding-left: 0;
-    padding-right: 0;
-}
-.challengeWrapper .table .col1 {
-    width: 29px !important;
-}
-.challengeWrapper .table .col4
-{
-    width: 11%;
-}
-.challengeWrapper .table .col1 {
-    width: 23px;
-}
-.challengeWrapper .table .col1 .arrow {
-    margin-left: 3px!important;
-}
-.header .navIcons .lastLi {
-    border-right: 1px solid #2d2f30;
-}
-
-.errorNumber {
-    border: 1px solid red!important;
-}
-
-/* active user */
-.tableWrap table{
-    width: 100%;
-}
-.panelOverview .activeUsers .panel-body .contentWrapper{
-    padding: 4px 5px 4px 10px;
-    position: relative;
-}
-.panelOverview .leaderboard .panel-body .contentWrapper{
-    padding: 4px 5px 2px 10px;
-    position: relative;
-}
-.activeUsers .tableWrap,
-.leaderboard .tableWrap{
-    height: 100%;
-}
-.activeUsers .activeUserList{
-    height: 182px;
-}
-.leaderboard .leadarboardList{
-    height: 140px;
-}
-.leaderboard .leaderBoardTable.heading{
-    width: 100%;
-}
-.activeUsers .activeUserTable{
-    width: 100%;
-}
-.activeUsers .activeUserTable th{
-    border-bottom: 1px solid #1b3238;
-    height: 30px;
-    vertical-align: middle;
-    color: #d3d3d3;
-    font-weight: normal;
-}
-.activeUsers .activeUserTable .colR{
-    width: 35px;
-    padding-left: 12px;
-    background-color: transparent;
-}
-.activeUsers .activeUserTable .colHandle{
-    padding-left: 5px;
-    background-color: transparent;
-}
-.activeUsers .activeUserTable tr{
-    border-bottom: 1px solid #1b3238;
-    height: 30px;
-    vertical-align: middle;
-}
-.activeUsers .activeUserTable .user:hover{
-    text-decoration: none;
-}
-.activeUsers .refreshData{
-    position: absolute;
-    cursor: pointer;
-    right: 8px;
-    top: 6px;
-    height: 26px;
-    width: 26px;
-    background:url(../img/loading.png) 50% 50% no-repeat;
-    z-index: 99999;
-
-}
-.activeUsers .refreshData.loading{
-    -webkit-animation: rotating 2s linear infinite;
-    -moz-animation: rotating 2s linear infinite;
-    -ms-animation: rotating 2s linear infinite;
-    animation: rotating 2s linear infinite;
-}
-.tableWrap .ng-table-pager{
-    display: none;
-}
-.activeUserTable thead th,
-.leaderBoardTable thead th{
-    -webkit-user-select: none;
-}
-.leaderBoardTable thead th{
-    background: transparent;
-    border-bottom: 1px solid #1b3238;
-    color: #fff;
-    font-weight: normal;
-    height: 30px;
-}
-.leaderBoardTable  td{
-    border-bottom: 1px solid #1b3238;
-    height: 30px;
-    vertical-align: middle;
-    color: #d3d3d3;
-}
-.leaderBoardTable .colRoom{
-    width: 63px;
-    text-align: center;
-}
-.leaderBoardTable .colR{
-    width: 24px;
-}
-.leaderBoardTable .colHandle{
-    width: 145px;
-}
-.leaderBoardTable .colScore{
-    width: auto;
-    background-position: 38px 52%;
-}
-
-.leaderBoardTable .user:hover{
-    text-decoration: none;
-}
-
-/* customDropdown */
-.customDropdown {
-    display: inline-block;
-    list-style: none;
-    padding-left: 0;
-    font-size: 14px;
-    margin: -3px 4px 0 0;
-}
-.customDropdown .dropdown-toggle{
-    color: #ffffff;
-}
-.customDropdown .dropdown-toggle {
-    height: 36px;
-    width: 138px;
-    display: block;
-    background-image: url(../img/select.png);
-    background-position: 103% 50%;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border-radius: 2px;
-    border: 1px solid #38393a;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    padding: 0 0 0 10px;
-}
-.customDropdown .dropdown-toggle {
-    width: auto;
-    min-width: 138px;
-    padding-right: 20px;
-    line-height: 36px;
-
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-.customDropdown .dropdown-toggle:hover {
-    text-decoration: none;
-    opacity: 0.7;
-}
-.customDropdown .dropdown-menu{
-    min-width:138px;
-}
-.customDropdown .dropdown-menu li .current{
-    background: #999;
-    color: #fff;
-}
-.customDropdown .dropdown-menu li a.current:hover{
-    background: #999;
-}
-.customDropdown .dropdown-menu li a{
-    color: #333;
-    padding: 0 9px;
-    display: block;
-    width: 100%;
-    height: 100%;
-    white-space: nowrap;
-    overflow : hidden;
-    text-overflow: ellipsis;
-}
-.customDropdown .dropdown-menu li a {
-    padding-left: 9px;
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-.customDropdown .dropdown-menu li a:hover{
-    text-decoration: none;
-    background: #e7e7e7;
-}
-
-.rounds .customDropdown{
-    width: 314px;
-    margin-right: 0;
-    margin-top: 0;
-}
-.rounds .customDropdown .dropdown-menu{
-    width: 314px;
-    max-height: 120px;
-}
-.leadarboardList .tableWrap .leaderBoardTable span,
-.activeUserList .tableWrap .activeUserTable span,
-.anchor{
-    cursor: pointer;
-}
-.leaderboard .rounds{
-    height: 38px;
-    color: #fff;
-    padding-left: 14px;
-}
-.leaderboard .rounds .lbl{
-    float: left;
-    line-height: 36px;
-    color: #fff;
-}
-.leaderboard .rounds .val{
-    margin-left: 56px;
-}
-@-webkit-keyframes rotating {
-    from{
-        -webkit-transform: rotate(0deg);
-    }
-    to{
-        -webkit-transform: rotate(360deg);
-    }
-}
-@-moz-keyframes rotating {
-    from{
-        -moz-transform: rotate(0deg);
-    }
-    to{
-        -moz-transform: rotate(360deg);
-    }
-}
-@-ms-keyframes rotating {
-    from{
-        -ms-transform: rotate(0deg);
-    }
-    to{
-        -ms-transform: rotate(360deg);
-    }
-}
-@keyframes rotating {
-    from{
-        transform: rotate(0deg);
-    }
-    to{
-        transform: rotate(360deg);
-    }
-}
-
-table thead .sort{
-    background-image: url(../img/dn.png);
-    background-repeat: no-repeat;
-    background-position: 90% 52%;
-    padding-right: 10px;
-}
-table thead .sort.colHandle{
-    background-position: 48px 52%;
-}
-.activeUsers .activeUserTable thead .sort.colHandle{
-    background-position: 52px 52%;
-}
-.activeUsers .activeUserTable thead .sort.colR{
-    background-position: 95% 52%;
-}
-table thead .sort.desc{
-    background-image: url(../img/up.png);
-}
-
-.leadarboardList .ngsb-scrollbar,
-.activeUserList .ngsb-scrollbar{
-    background: #151717;
-}
-
-.hl-matched {
-    text-decoration: underline;
-}
-.marginTop {
-    margin-top: -30px;
-}
-.upScrollButton {
-    background-image: url(../img/dark/sprite-room-summary.png);
-    position: absolute;
-    top: -1px;
-    right: 4px;
-    z-index: 1;
-    width: 7px;
-    height: 9px;
-    background-position: -34px -56px;
-    cursor:pointer;
-    margin-bottom: 10px;
-}
-
-.downScrollButton {
-    background-image: url(../img/dark/sprite-room-summary.png);
-    position: absolute;
-    top:calc(100% - 8px);
-    right: 4px;
-    width: 9px;
-    height: 9px;
-    z-index:1;
-    background-position: -33px -51px;
-    cursor:pointer;
-}
-
-.ngsb-wrap .ngsb-scrollbar {
-    top: 10px;
-}
-.panel-body .mainContent .infoRow {
-    margin: 0 0 -10px;
-}
-.panel-body .mainContent .tabsMargin {
-    margin: 0 0 -5px;
-}
-.panel-body .mainContent .minSocialHeight {
-    min-height: 28px;
-}
-.facebookWrap {
-    background: linear-gradient(#4c69ba, #3b55a0) repeat scroll 0 0 rgba(0, 0, 0, 0);
-    border: none;
-    border-radius: 2px;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    height: 20px;
-    line-height: 20px;
-    padding: 0;
-    text-shadow: 0 -1px 0 #354c8c;
-    white-space: nowrap;
-}
-.facebookWrap .icon {
-    background-image: url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/y1/r/LVx-xkvaJ0b.png);
-    background-size: auto;
-    background-repeat: no-repeat;
-    display: inline-block;
-    height: 14px;
-    width: 14px;
-    background-position: 0 -42px;
-    left: 0;
-    margin: 0 4px 0 4px;
-    position: relative;
-    top: 7px;
-    vertical-align: top;
-}
-.facebookWrap .text {
-    color: #fff;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: bold;
-    margin: 0 4px 0 0;
-    line-height: 20px;
-    text-shadow: 0 -1px 0 #354c8c;
-    white-space: nowrap;
-    font-family: 'Helvetica Neue', Helvetica, Arial, 'lucida grande',tahoma,verdana,arial,sans-serif;
-}
-.twitter-custom {
-    position: relative;
-    top: 4px;
-}
-.calendarBottom {
-    padding-bottom: 2px;
-}
-.roomAssign .roomAssignDiv .method {
-    padding-left: 10px;
-    width: 138px!important;
-}
-
-.hl-matched {
-    text-decoration: underline;
-}}
