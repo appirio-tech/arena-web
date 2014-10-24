@@ -1,0 +1,88 @@
+<div id="contestScheduleConfig" class="contestManagementPanel contestScheduleConfigPanel detailPage">
+    <div class="content">
+        <div class="panel panel-custom phaseSchedule">
+            <div class="panel-heading">Customize Phase Schedule<a class="close" data-ng-click="closeContestScheduleConfig()"></a>
+            </div>
+            <div class="panel-body">
+                <fieldset>
+                    <div class="regStart">
+                        <label>Registration Start</label><!--
+                        --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.regStartH}">
+                            <input type="text" name="regStartH" id="regStartHEdit" data-ng-model="displaySchedule.regStartH" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3" data-ng-change="validateInput('regStartH')">
+                            <div>
+                                <a data-ng-click="add('regStartH')" class="addTri"></a>
+                                <a data-ng-click="minus('regStartH')" class="subTri"></a>
+                            </div>
+                        </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.regStartMm}">
+                            <input type="text" name="regStartMm" id="regStartMmEdit" data-ng-model="displaySchedule.regStartMm" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2" data-ng-change="validateInput('regStartMm')">
+                            <div>
+                                <a data-ng-click="addStr('regStartMm')" class="addTri"></a>
+                                <a data-ng-click="minusStr('regStartMm')" class="subTri"></a>
+                            </div>
+                        </div><span>prior to contest</span>
+                    </div>
+                    <div class="codeLength">
+                        <label>Coding Length</label><!--
+                        --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.codeLengthH}">
+                            <input type="text" name="codeLengthH" id="codeLengthHEdit" data-ng-model="displaySchedule.codeLengthH" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3" data-ng-change="validateInput('codeLengthH')">
+                            <div>
+                                <a data-ng-click="add('codeLengthH')" class="addTri"></a>
+                                <a data-ng-click="minus('codeLengthH')" class="subTri"></a>
+                            </div>
+                        </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.codeLengthMm}">
+                            <input type="text" name="codeLengthMm" id="codeLengthMmEdit" data-ng-model="displaySchedule.codeLengthMm" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2" data-ng-change="validateInput('codeLengthMm')">
+                            <div>
+                                <a data-ng-click="addStr('codeLengthMm')" class="addTri"></a>
+                                <a data-ng-click="minusStr('codeLengthMm')" class="subTri"></a>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset><!--
+                --><div class="info spec">Registration will open specified amount of time prior to contest . Also Registration will always close five minutes before the contest start.</div>
+                <hr data-ng-class="{disabled:displaySchedule.removeInter}"/>
+                <fieldset data-ng-class="{disabled:displaySchedule.removeInter}">
+                    <div class="intermissionLength">
+                        <label>Intermission Length</label><!--
+                        --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.intermissionLengthH}">
+                            <input type="text" name="intermissionLengthH" id="intermissionLengthHEdit" data-ng-model="displaySchedule.intermissionLengthH" data-ng-disabled="displaySchedule.removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3" data-ng-change="validateInput('intermissionLengthH')">
+                            <div>
+                                <a data-ng-click="add('intermissionLengthH')" class="addTri"></a>
+                                <a data-ng-click="minus('intermissionLengthH')" class="subTri"></a>
+                            </div>
+                        </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.intermissionLengthMm}">
+                            <input type="text" name="intermissionLengthMm" id="intermissionLengthMmEdit" data-ng-model="displaySchedule.intermissionLengthMm" data-ng-disabled="displaySchedule.removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2" data-ng-change="validateInput('intermissionLengthMm')">
+                            <div>
+                                <a data-ng-click="addStr('intermissionLengthMm')" class="addTri"></a>
+                                <a data-ng-click="minusStr('intermissionLengthMm')" class="subTri"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="challengeLength">
+                        <label>Challenge Length</label><!--
+                        --><div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.challengeLengthH}">
+                            <input type="text" name="challengeLengthH" id="challengeLengthHEdit" data-ng-model="displaySchedule.challengeLengthH" data-ng-disabled="displaySchedule.removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="3" data-ng-change="validateInput('challengeLengthH')">
+                            <div>
+                                <a data-ng-click="add('challengeLengthH')" class="addTri"></a>
+                                <a data-ng-click="minus('challengeLengthH')" class="subTri"></a>
+                            </div>
+                        </div>:<div class="inputBorder numberInput" data-ng-class="{errorNumber: !formValid.challengeLengthMm}">
+                            <input type="text" name="challengeLengthMm" id="challengeLengthMmEdit" data-ng-model="displaySchedule.challengeLengthMm" data-ng-disabled="displaySchedule.removeInter" data-ng-pattern="/^\+?[0-9]*$/" maxlength="2" data-ng-change="validateInput('challengeLengthMm')">
+                            <div>
+                                <a data-ng-click="addStr('challengeLengthMm')" class="addTri"></a>
+                                <a data-ng-click="minusStr('challengeLengthMm')" class="subTri"></a>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset><!--
+                --><div class="removeInter"><input type="checkbox" id="removeInterEdit" name="removeInterEdit" data-ng-model="displaySchedule.removeInter" class="checkboxInput"><label for="removeInterEdit" class="checkboxLbl">Remove Intermission and Challenge</label></div>
+                <p class="errorInfo" data-ng-show="hasError"><span>Please correct the errors and try again.</span></p>
+            </div>
+            <div class="panel-footer">
+                <div class="btnRow">
+                    <a data-ng-click="closeContestScheduleConfig()" class="btn btnCancel btnLeft">Cancel</a>
+                    <a data-ng-click="submitContestScheduleConfig()" class="btn btnSubmit btnRight">Submit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

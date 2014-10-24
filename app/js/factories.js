@@ -199,7 +199,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
     return service;
 }];
 
-factories.appHelper = ['$rootScope', 'localStorageService', function ($rootScope, localStorageService) {
+factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', function ($rootScope, localStorageService, sessionHelper) {
     var retHelper = {};
 
     // return an empty array of fixed length
@@ -461,6 +461,15 @@ factories.appHelper = ['$rootScope', 'localStorageService', function ($rootScope
                 localStorageService.remove(helper.LOCAL_STORAGE.ROOM_LIST);
             }
         }
+    };
+
+    /**
+     * Header to be added to all http requests to api
+     * @returns {{headers: {Content-Type: string, Authorization: string}}}
+     */
+    retHelper.getHeader = function () {
+        return {headers: {'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + sessionHelper.getJwtToken()}};
     };
 
     return retHelper;

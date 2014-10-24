@@ -51,5 +51,27 @@
             "Ready",
             "Used"
         ]
+    },
+    "question": {
+        "type": [
+            {"description": "SRM Survey", "id": 1},
+            {"description": "Eligible", "id": 2},
+            {"description": "Personal", "id": 3},
+            {"description": "Tournament Travel Info", "id": 4},
+            {"description": "Tournament Survey Question", "id": 5},
+            {"description": "General Survey No results", "id": 6},
+            {"description": "Shulze Election", "id": 7}
+        ],
+        "style": [
+            {"description": "Single Choice", "id": 1},
+            {"description": "Multiple Choice", "id": 2},
+            {"description": "Short Answer", "id": 3},
+            {"description": "Long Answer", "id": 4}
+        ],
+        "status": [
+            {"description": "INACTIVE", "id": 82},
+            {"description": "ACTIVE", "id": 83}
+        ]
+
     }
 }
