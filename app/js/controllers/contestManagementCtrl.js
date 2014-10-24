@@ -20,7 +20,7 @@
 var config = require('../config');
 var helper = require('../helper');
 
-var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', function ($scope, $http, $timeout, sessionHelper) {
+var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'appHelper', function ($scope, $http, $timeout, sessionHelper, appHelper) {
     /**
      * Keys for management page filter
      * @type {Array}
@@ -77,8 +77,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
          * Header to be added to all http requests to api
          * @type {{headers: {Content-Type: string, Authorization: string}}}
          */
-        header = {headers: {'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + sessionHelper.getJwtToken()}},
+        header = appHelper.getHeader(),
         /**
          * Handle to Filter
          * @type {*|jQuery|HTMLElement}
@@ -530,6 +529,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
      * @param data Error data comes from API
      */
     function genericErrorHandler(data) {
+        var message = 'Unexpected error occurred while accessing api. Please refresh this page and try again later';
         if (!data.error) {
             // No Error to handle
             return;
@@ -549,9 +549,12 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
             });
             return;
         }
+        if (data.error.details) {
+            message = data.error.details;
+        }
         $scope.openModal({
             title: 'Error',
-            message: 'Unexpected error occurred while accessing api. Please refresh this page and try again later',
+            message: message,
             enableClose: true
         });
     }
@@ -562,7 +565,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
      * When there is genericApiError broadcase genericErrorHandler will be called.
      * Any specific errors will be handled in respective controllers itself
      */
-    $scope.$on('genericApiError', function (data) {
+    $scope.$on('genericApiError', function (event, data) {
         genericErrorHandler(data);
     });
     /**
@@ -847,7 +850,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', fun
 //                $scope.problemsToAssign.splice(i, 1);
 //            }
 //        }
-        $scope.Popup('assignment');
+        $scope.hidePopup('assignment');
         $timeout(function () {
             $scope.$broadcast('reload:assignedProblems');
             $scope.$broadcast('reload:availableProblems');

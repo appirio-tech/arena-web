@@ -14,14 +14,13 @@
 /*global $:false, angular:false, module, require*/
 
 var config = require('../config');
-var registrationQuestionsCtrl = ['$scope', '$timeout', '$http', 'sessionHelper', function ($scope, $timeout, $http, sessionHelper) {
+var registrationQuestionsCtrl = ['$scope', '$timeout', '$http', 'sessionHelper', 'appHelper', '$rootScope', function ($scope, $timeout, $http, sessionHelper, appHelper, $rootScope) {
     var
         /**
          * Header to be added to all http requests to api
          * @type {{headers: {Content-Type: string, Authorization: string}}}
          */
-        header = {headers: {'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + sessionHelper.getJwtToken()}};
+        header = appHelper.getHeader();
 
     /**
      * Refresh Registration Questions table's scrollbar
@@ -42,13 +41,13 @@ var registrationQuestionsCtrl = ['$scope', '$timeout', '$http', 'sessionHelper',
         $http.get(config.apiDomain + '/data/srm/rounds/' + $scope.round.id + '/questions', header).
             success(function (data) {
                 if (data.error) {
-                    $scope.$broadcast('genericApiError', data);
+                    $rootScope.$broadcast('genericApiError', data);
                     return;
                 }
                 $scope.round.questions = data.questions;
                 refreshScrollbar();
             }).error(function (data) {
-                $scope.$broadcast('genericApiError', data);
+                $rootScope.$broadcast('genericApiError', data);
             });
     }
     /*jslint unparam: true*/

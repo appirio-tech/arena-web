@@ -224,8 +224,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                     languageData.languages.push($scope.languageChoice[i].id);
                 }
             }
-            header = {headers: {'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + sessionHelper.getJwtToken()}};
+            header = appHelper.getHeader();
 
             popupDetailModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', 'cancel', function ($scope, $modalInstance, data, ok, cancel) {
                 $scope.title = data.title;

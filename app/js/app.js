@@ -64,11 +64,16 @@
  * Changes in version 1.17 (F2F Web Arena - Match Clock Visibility)
  * - Added new directory codingTime
  * - Added new controller userCodingTimeCtrl
+ *
  * Changes in version 1.18 (Module Assembly - Web Arena UI - Contest Management and Problem Assignment v1.0)
  * - Added contestManagementCtrl
  *
+ * Changes in version 1.19 (Module Assembly - Web Arena UI - Match Configurations
+ * - Added controllers -- contestTermsConfigCtrl, contestScheduleConfigCtrl, registrationQuestionsCtrl, manageQuestionCtrl, manageAnswerCtrl
+ * - Added Directives -- contestTermsConfig, contestScheduleConfig, registrationQuestions, manageQuestion, manageAnswer
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.17
+ * @version 1.19
  * 
  */
 'use strict';

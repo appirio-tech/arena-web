@@ -13,14 +13,13 @@
 /*jslint plusplus: true*/
 /*global require*/
 var config = require('../config');
-var contestTermsConfigCtrl = ['$scope', '$http', 'sessionHelper', function ($scope, $http, sessionHelper) {
+var contestTermsConfigCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '$rootScope', function ($scope, $http, sessionHelper, appHelper, $rootScope) {
     var
         /**
          * Header to be added to all http requests to api
          * @type {{headers: {Content-Type: string, Authorization: string}}}
          */
-        header = {headers: {'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + sessionHelper.getJwtToken()}};
+        header = appHelper.getHeader();
 
     /**
      * Initialize fields
@@ -55,7 +54,7 @@ var contestTermsConfigCtrl = ['$scope', '$http', 'sessionHelper', function ($sco
         $http.post(config.apiDomain + '/data/srm/rounds/' + $scope.round.id + '/terms', {terms: $scope.roundTerms}, header).
             success(function (data) {
                 if (data.error) {
-                    $scope.$broadcast('genericApiError', data);
+                    $rootScope.$broadcast('genericApiError', data);
                     return;
                 }
                 $scope.openModal({
@@ -66,7 +65,7 @@ var contestTermsConfigCtrl = ['$scope', '$http', 'sessionHelper', function ($sco
                 // close the popup
                 $scope.closeContestTermsConfig();
             }).error(function (data) {
-                $scope.$broadcast('genericApiError', data);
+                $rootScope.$broadcast('genericApiError', data);
             });
     };
     /**

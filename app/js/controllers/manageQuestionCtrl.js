@@ -14,14 +14,13 @@
 /*global $:false, angular:false, module, require*/
 
 var config = require('../config');
-var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionHelper', function ($scope, $rootScope, $timeout, $http, sessionHelper) {
+var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionHelper', 'appHelper', function ($scope, $rootScope, $timeout, $http, sessionHelper, appHelper) {
     var
         /**
          * Header to be added to all http requests to api
          * @type {{headers: {Content-Type: string, Authorization: string}}}
          */
-        header = {headers: {'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + sessionHelper.getJwtToken()}};
+        header = appHelper.getHeader();
     /**
      * Get Keys to display various question dropdowns
      */
@@ -59,13 +58,13 @@ var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionH
             $http.get(config.apiDomain + '/data/srm/rounds/' + $scope.question.id + '/answers', header).
                 success(function (data) {
                     if (data.error) {
-                        $scope.$broadcast('genericApiError', data);
+                        $rootScope.$broadcast('genericApiError', data);
                         return;
                     }
                     $scope.question.answers = data.answers;
                     refreshScrollbar();
                 }).error(function (data) {
-                    $scope.$broadcast('genericApiError', data);
+                    $rootScope.$broadcast('genericApiError', data);
                 });
         }
     }
@@ -93,10 +92,7 @@ var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionH
      * Push answer to existing list when new answer is created
      */
     $scope.$on('answerCreated', function (event, data) {
-        if (!angular.isArray($scope.question.answers)) {
-            $scope.question.answers = [];
-        }
-        $scope.question.answers.push(data.answer);
+        initFields($scope.question);
         refreshScrollbar();
     });
     /**
@@ -185,7 +181,7 @@ var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionH
             $http.post(config.apiDomain + '/data/srm/rounds/' + $scope.question.id + '/question', $scope.question, header).
                 success(function (data) {
                     if (data.error) {
-                        $scope.$broadcast('genericApiError', data);
+                        $rootScope.$broadcast('genericApiError', data);
                         return;
                     }
                     $scope.openModal({
@@ -196,7 +192,7 @@ var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionH
                     // close the popup
                     $scope.closeManageQuestion();
                 }).error(function (data) {
-                    $scope.$broadcast('genericApiError', data);
+                    $rootScope.$broadcast('genericApiError', data);
                 });
         } else {
             // Submits new question
@@ -206,7 +202,7 @@ var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionH
             $http.post(config.apiDomain + '/data/srm/rounds/' + $scope.round.id + '/questions', $scope.question, header).
                 success(function (data) {
                     if (data.error) {
-                        $scope.$broadcast('genericApiError', data);
+                        $rootScope.$broadcast('genericApiError', data);
                         return;
                     }
 
@@ -221,7 +217,7 @@ var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionH
                     // close the popup
                     $scope.closeManageQuestion();
                 }).error(function (data) {
-                    $scope.$broadcast('genericApiError', data);
+                    $rootScope.$broadcast('genericApiError', data);
                 });
         }
     };

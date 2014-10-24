@@ -14,7 +14,7 @@
 /*jslint unparam: true*/
 /*global $:false, angular:false, module, require*/
 var config = require('../config');
-var contestScheduleConfigCtrl = ['$scope', '$http', 'sessionHelper', '$filter', function ($scope, $http, sessionHelper, $filter) {
+var contestScheduleConfigCtrl = ['$scope', '$http', 'sessionHelper', '$filter', 'appHelper', '$rootScope', function ($scope, $http, sessionHelper, $filter, appHelper, $rootScope) {
     /**
      * Limits defined for various schedule length
      * @type {{regLimit: {min: number, max: number},
@@ -84,8 +84,7 @@ var contestScheduleConfigCtrl = ['$scope', '$http', 'sessionHelper', '$filter', 
          * Header to be added to all http requests to api
          * @type {{headers: {Content-Type: string, Authorization: string}}}
          */
-        header = {headers: {'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + sessionHelper.getJwtToken()}};
+        header = appHelper.getHeader();
     /**
      * Used for validation of fields
      * @type {boolean}
@@ -105,7 +104,11 @@ var contestScheduleConfigCtrl = ['$scope', '$http', 'sessionHelper', '$filter', 
         challengeLengthH: true,
         challengeLengthMm: true
     };
-
+    /**
+     * Checks whether the target has valid data
+     * @param target Target to which validity to be checked
+     * @returns {boolean} Returns whether data is valid or not
+     */
     function isValid(target) {
         var str = '', value;
         if (($scope.displaySchedule[target] + str).trim() === str) {
@@ -284,7 +287,7 @@ var contestScheduleConfigCtrl = ['$scope', '$http', 'sessionHelper', '$filter', 
         $http.post(config.apiDomain + '/data/srm/rounds/' + $scope.round.id + '/segments', segments, header).
             success(function (data) {
                 if (data.error) {
-                    $scope.$broadcast('genericApiError', data);
+                    $rootScope.$broadcast('genericApiError', data);
                     return;
                 }
 
@@ -296,7 +299,7 @@ var contestScheduleConfigCtrl = ['$scope', '$http', 'sessionHelper', '$filter', 
                 // close the popup
                 $scope.closeContestScheduleConfig();
             }).error(function (data) {
-                $scope.$broadcast('genericApiError', data);
+                $rootScope.$broadcast('genericApiError', data);
             });
     };
     /**

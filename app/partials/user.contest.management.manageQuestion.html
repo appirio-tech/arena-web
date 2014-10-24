@@ -69,7 +69,7 @@
                             <div>
                                 <table class="table table-condensed problemTable">
                                 <tbody>
-                                    <tr data-ng-repeat="item in question.answers | orderBy:'sortOrder'">
+                                    <tr data-ng-repeat="item in question.answers | orderBy:'+sortOrder'">
                                         <td class="colSortOrder">{{item.sortOrder}}</td>
                                         <td class="colCorrect"><input disabled="disabled" type="checkbox"
                                             id="answerCorrect-{{item.id}}" name="answerCorrect" data-ng-model="item.correct" class="checkboxInput"><label

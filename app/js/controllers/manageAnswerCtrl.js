@@ -14,14 +14,13 @@
 /*global $:false, angular:false, module, require*/
 
 var config = require('../config');
-var manageAnswerCtrl = ['$scope', '$http', 'sessionHelper', function ($scope, $http, sessionHelper) {
+var manageAnswerCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '$rootScope', function ($scope, $http, sessionHelper, appHelper, $rootScope) {
     var
         /**
          * Header to be added to all http requests to api
          * @type {{headers: {Content-Type: string, Authorization: string}}}
          */
-        header = {headers: {'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + sessionHelper.getJwtToken()}};
+        header = appHelper.getHeader();
 
     /**
      * Initialize answer to edit or empty object if add
@@ -92,7 +91,7 @@ var manageAnswerCtrl = ['$scope', '$http', 'sessionHelper', function ($scope, $h
             $http.post(config.apiDomain + '/data/srm/questions/' + $scope.answer.questionId + '/answers', answer, header).
                 success(function (data) {
                     if (data.error) {
-                        $scope.$broadcast('genericApiError', data);
+                        $rootScope.$broadcast('genericApiError', data);
                         return;
                     }
 
@@ -106,7 +105,7 @@ var manageAnswerCtrl = ['$scope', '$http', 'sessionHelper', function ($scope, $h
                     // close the popup
                     $scope.hidePopup('manageAnswer');
                 }).error(function (data) {
-                    $scope.$broadcast('genericApiError', data);
+                    $rootScope.$broadcast('genericApiError', data);
                 });
         }
     };
