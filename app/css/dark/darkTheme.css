@@ -1164,3 +1164,7 @@ footer .right .sponsorLogo {
 @media only screen and (max-width: 421px) {
     .panelContestStat .breadcrumbHead {height: 63px; }
 }
+/* Registrants table > Country rows */
+.registrants-modal tbody .col2 {
+    color: #A0A0A0!important;
+}
