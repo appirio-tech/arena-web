@@ -80,7 +80,7 @@
         </div>
         <!-- step 2. Sponsorship -->
         <div class="tabContent step-2" data-ng-show="index==2">
-            <fieldset class="officialRated"><input type="checkbox" name="officialRated" id="officialRated" data-ng-model="officialRated" class="checkboxInput"><label for="officialRated" class="checkboxLbl">Official rated Match</label></fieldset>
+            <fieldset class="officialRated"><input type="checkbox" name="officialRated" id="officialRated" data-ng-model="officialRated" class="checkboxInput"><label for="officialRated" class="checkboxLbl">Officially rated Match</label></fieldset>
             <div class="panel sponsorInfo">
                 <a data-ng-click="toggle('openSponsorInfo')" class="panel-heading" data-ng-class="{open:openSponsorInfo}"><span>Add Sponsorship Info</span></a>
                 <div class="panel-body" data-ng-show="openSponsorInfo">
@@ -252,7 +252,7 @@
                     <span class="taglineSum">{{tagline}}</span>
                 </div>
                 <div class="other">
-                    <p><label>Status:</label><span>Active</span><label class="marginLeft">Official rated Match:</label><span>{{ officialRated === true ? 'Yes' : 'No' }}</span></p>
+                    <p><label>Status:</label><span>Active</span><label class="marginLeft">Officially rated Match:</label><span>{{ officialRated === true ? 'Yes' : 'No' }}</span></p>
                     <div><label for="notes">Add Notes</label><div class="inputBorder"><input type="text" id="notes" name="notes" data-ng-model="$parent.notes" maxlength="250"></div></div>
                 </div>
             </div>
