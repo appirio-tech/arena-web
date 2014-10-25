@@ -6201,7 +6201,7 @@ table thead .sort.desc{
     background-image: url(../img/dark/sprite-room-summary.png);
     position: absolute;
     top: -1px;
-    right: 4px;
+    right: 5px;
     z-index: 1;
     width: 7px;
     height: 9px;
@@ -6224,6 +6224,10 @@ table thead .sort.desc{
 
 .ngsb-wrap .ngsb-scrollbar {
     top: 10px;
+}
+
+.ngsb-wrap .ngsb-scrollbar .ngsb-thumb-container {
+    right: 1px;
 }
 .panel-body .mainContent .infoRow {
     margin: 0 0 -10px;
