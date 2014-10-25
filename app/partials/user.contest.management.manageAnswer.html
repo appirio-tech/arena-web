@@ -1,0 +1,32 @@
+<div id="manageAnswer" class="contestManagementPanel manageAnswerPanel detailPage">
+    <div class="content">
+        <div class="panel panel-custom panel-manage-answer">
+            <div class="panel-heading">
+                {{editingAnswer ?  'Update Answers' : 'Create New Answer'}}
+                <a class="close" data-ng-click="closeManageAnswer()"></a>
+            </div>
+            <div class="panel-body">
+                <form class="info">
+                    <fieldset class="sortField">
+                        <label>Sort Order</label>
+                        <div class="inputBorder"><input type="text" name="sortOrder" id="answerSortOrder" required="" data-ng-pattern="/^\d+$/" data-ng-model="answer.sortOrder" maxlength="3"/></div>
+                    </fieldset>
+                    <fieldset class="correctField">
+                        <label>Correct</label>
+                        <input type="checkbox" id="answerCorrect" name="answerCorrect" data-ng-model="answer.correct" class="checkboxInput"><label for="answerCorrect" class="checkboxLbl"></label>
+                    </fieldset>
+                    <fieldset class="textField">
+                        <label>Text</label>
+                        <textarea name="answerText" data-ng-model="answer.text"></textarea>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="panel-footer">
+                <div class="btnRow">
+                    <a class="btn btnLeft btnCancel" data-ng-click="closeManageAnswer()">Cancel</a>
+                    <a class="btn btnRight btnSubmit" data-ng-click="submitManageAnswer()">{{editingAnswer ?  'Update Answer' : 'Add Answer'}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

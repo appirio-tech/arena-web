@@ -64,6 +64,7 @@
  * Changes in version 1.17 (F2F Web Arena - Match Clock Visibility)
  * - Added new directory codingTime
  * - Added new controller userCodingTimeCtrl
+ *
  * Changes in version 1.18 (Module Assembly - Web Arena UI - Contest Management and Problem Assignment v1.0)
  * - Added contestManagementCtrl
  *
@@ -77,9 +78,12 @@
  *
  * Changes in version 1.21 (Module Assembly - Web Arena - Code With Practice Problem)
  * - Added user.practiceCode state.
- *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.21
+
+ * Changes in version 1.22 (Module Assembly - Web Arena UI - Match Configurations
+ * - Added controllers -- contestTermsConfigCtrl, contestScheduleConfigCtrl, registrationQuestionsCtrl, manageQuestionCtrl, manageAnswerCtrl
+ * - Added Directives -- contestTermsConfig, contestScheduleConfig, registrationQuestions, manageQuestion, manageAnswer
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.22
  */
 'use strict';
 /*jshint -W097*/
@@ -167,6 +171,11 @@ controllers.testPanelCtrl = require('./controllers/testPanelCtrl');
 controllers.contestManagementCtrl = require('./controllers/contestManagementCtrl');
 controllers.activeUsersCtrl = require('./controllers/activeUsersCtrl');
 controllers.overviewLeaderboardCtrl = require('./controllers/overviewLeaderboardCtrl');
+controllers.contestTermsConfigCtrl = require('./controllers/contestTermsConfigCtrl');
+controllers.contestScheduleConfigCtrl = require('./controllers/contestScheduleConfigCtrl');
+controllers.registrationQuestionsCtrl = require('./controllers/registrationQuestionsCtrl');
+controllers.manageQuestionCtrl = require('./controllers/manageQuestionCtrl');
+controllers.manageAnswerCtrl = require('./controllers/manageAnswerCtrl');
 controllers.userCodingTimeCtrl = require('./controllers/userCodingTimeCtrl');
 controllers.practiceProblemListCtrl = require('./controllers/practiceProblemListCtrl');
 
@@ -196,6 +205,11 @@ directives.activeUser = require('./directives/activeUser');
 directives.overviewLeaderboard = require('./directives/overviewLeaderboard');
 directives.twitter = require('./directives/twitter');
 directives.codingTime = require('./directives/codingTime');
+directives.contestTermsConfig = require('./directives/contestTermsConfig');
+directives.contestScheduleConfig = require('./directives/contestScheduleConfig');
+directives.registrationQuestions = require('./directives/registrationQuestions');
+directives.manageQuestion = require('./directives/manageQuestion');
+directives.manageAnswer = require('./directives/manageAnswer');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -258,6 +272,11 @@ main.controller('activeUsersCtrl', controllers.activeUsersCtrl);
 main.controller('overviewLeaderboardCtrl', controllers.overviewLeaderboardCtrl);
 main.controller('userCodingTimeCtrl', controllers.userCodingTimeCtrl);
 main.controller('practiceProblemListCtrl', controllers.practiceProblemListCtrl);
+main.controller('contestTermsConfigCtrl', controllers.contestTermsConfigCtrl);
+main.controller('contestScheduleConfigCtrl', controllers.contestScheduleConfigCtrl);
+main.controller('registrationQuestionsCtrl', controllers.registrationQuestionsCtrl);
+main.controller('manageQuestionCtrl', controllers.manageQuestionCtrl);
+main.controller('manageAnswerCtrl', controllers.manageAnswerCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -287,6 +306,11 @@ main.directive('activeuser', directives.activeUser);
 main.directive('overviewleaderboard', directives.overviewLeaderboard);
 main.directive('twitter', directives.twitter);
 main.directive('codingTime', directives.codingTime);
+main.directive('contestTermsConfig', directives.contestTermsConfig);
+main.directive('contestScheduleConfig', directives.contestScheduleConfig);
+main.directive('registrationQuestions', directives.registrationQuestions);
+main.directive('manageQuestion', directives.manageQuestion);
+main.directive('manageAnswer', directives.manageAnswer);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //

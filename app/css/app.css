@@ -982,9 +982,7 @@ footer .right>span:nth-child(2) {
     }
 }
 .modal .modal-lg {
-    padding-top: 15.74%;
     width: 892px;
-    margin-top: 0;
 }
 .modal .modal-content {
     border: 1px solid #234760;
@@ -1202,6 +1200,7 @@ footer .right>span:nth-child(2) {
     left: 10px;
     background-position: -40px -20px;
 }
+.contestManagementPanel .errorInfo,
 .wizardBody .errorInfo {
     position: absolute;
     bottom: 33px;
@@ -1209,6 +1208,7 @@ footer .right>span:nth-child(2) {
     padding-left: 15px;
     text-align: center;
 }
+.contestManagementPanel .inputBorder,
 .wizardBody .inputBorder {
     display: inline-block;
     border: 1px solid #fff;
@@ -1217,11 +1217,17 @@ footer .right>span:nth-child(2) {
     border-radius: 2px;
     height: 36px;
 }
+.contestManagementPanel .inputBorder>input,
 .wizardBody .inputBorder>input {
     padding-left: 8px;
     height: 34px;
-    font-weight: 300;
 }
+.contestManagementPanel textarea,
+.contestManagementPanel .inputBorder>input,
+.wizardBody .inputBorder>input {
+    font-weight: 300;    
+}
+
 .wizardBody .inputBorder>input[name="startDate"] {
     padding-left: 13px;
     width: 90px;
@@ -1234,6 +1240,7 @@ footer .right>span:nth-child(2) {
     min-width: 59px;
     position: relative;
 }
+.contestManagementPanel .numberInput>div>a:before,
 .wizardBody .dropdown-toggle:before,
 .wizardBody .numberInput>div>a:before {
     content: '';
@@ -1294,10 +1301,12 @@ footer .right>span:nth-child(2) {
     margin-bottom: 6px;
 }
 /*numberInput*/
+.contestManagementPanel .numberInput,
 .wizardBody .numberInput {
     position: relative;
     padding-right: 30px;
 }
+.contestManagementPanel .numberInput>div,
 .wizardBody .numberInput>div {
     position: absolute;
     right: 0;
@@ -1306,6 +1315,7 @@ footer .right>span:nth-child(2) {
     width: 30px;
     border-left: 1px solid #fff;
 }
+.contestManagementPanel .numberInput>div>a,
 .wizardBody .numberInput>div>a {
     display: block;
     height: 10px;
@@ -1313,27 +1323,34 @@ footer .right>span:nth-child(2) {
     position: absolute;
     right: 4px;
 }
+.contestManagementPanel .numberInput .addTri,
 .wizardBody .numberInput .addTri {
     top: 4px;
 }
+.contestManagementPanel .numberInput .subTri,
 .wizardBody .numberInput .subTri {
     bottom: 3px;
 }
+.contestManagementPanel .numberInput>div>a:before,
 .wizardBody .numberInput>div>a:before {
     top: 2px;
     right: 5px;
 }
+.contestManagementPanel .numberInput .addTri:before,
 .wizardBody .numberInput .addTri:before {
     background-position: -100px -20px;
 }
 /*checkbox*/
+.contestManagementPanel .checkboxInput,
 .wizardBody .checkboxInput {
     display: none;
 }
+.contestManagementPanel .checkboxLbl,
 .wizardBody .checkboxLbl {
     padding-left: 31px;
     position: relative;
 }
+.contestManagementPanel .checkboxLbl:before,
 .wizardBody .checkboxLbl:before {
     content: '';
     display: block;
@@ -1344,6 +1361,7 @@ footer .right>span:nth-child(2) {
     top: 3px;
     background-position: -60px -20px;
 }
+.contestManagementPanel .checkboxInput:checked ~ .checkboxLbl:before,
 .wizardBody .checkboxInput:checked ~ .checkboxLbl:before {
     background-position: -60px 0;
 }
@@ -1652,34 +1670,44 @@ footer .right>span:nth-child(2) {
     padding-left: 9px;
     margin-bottom: 18px;
 }
+.contestManagementPanel .phaseSchedule .panel-body,
 .step-3 .phaseSchedule .panel-body {
     padding-top: 10px;
     padding-bottom: 12px;
 }
+.contestManagementPanel .phaseSchedule fieldset,
 .step-3 .phaseSchedule fieldset {
     width: 438px;
     display: inline-block;
 }
+.contestManagementPanel .phaseSchedule .disabled,
 .step-3 .phaseSchedule .disabled {
     opacity: 0.2;
 }
+.contestManagementPanel .phaseSchedule .disabled a,
 .step-3 .phaseSchedule .disabled a {
     cursor: text;
 }
+.contestManagementPanel .phaseSchedule fieldset+div,
 .step-3 .phaseSchedule fieldset+div {
     display: inline-block;
 }
+.contestManagementPanel .phaseSchedule .removeInter,
 .step-3 .phaseSchedule .removeInter {
     vertical-align: top;
     margin-top: 29px;
 }
+.contestManagementPanel .phaseSchedule fieldset>label,
+.contestManagementPanel .phaseSchedule fieldset>div>label,
 .step-3 .phaseSchedule fieldset>div>label,
 .step-3 fieldset>label {
     width: 169px;
 }
+.contestManagementPanel .phaseSchedule fieldset .inputBorder>input,
 .step-3 .phaseSchedule fieldset .inputBorder>input {
     width: 34px;
 }
+.contestManagementPanel .phaseSchedule .spec,
 .wizardBody .step-3 .phaseSchedule .spec {
     width: 277px;
     padding-left: 0;
@@ -1692,17 +1720,22 @@ footer .right>span:nth-child(2) {
     margin-bottom: 0;
     border-color: transparent;
 }
+.contestManagementPanel .phaseSchedule hr,
 .step-3 .phaseSchedule hr {
     margin-top: 6px;
     margin-bottom: 7px;
 }
+.phaseSchedule .regStart,
+.phaseSchedule .intermissionLength,
 .step-3 .regStart,
 .step-3 .intermissionLength {
     margin-bottom: 10px;
 }
+.phaseSchedule .numberInput,
 .step-3 .numberInput {
     margin-right: 10px;
 }
+.phaseSchedule .numberInput+.numberInput,
 .step-3 .numberInput+.numberInput {
     margin-left: 9px;
     margin-right: 8px;
@@ -4995,8 +5028,17 @@ footer .right>span:nth-child(2) {
 .contestManagement thead .colTerm {
     padding-left: 18px;
 }
+.contestManagement .colSchedule {
+    width: 106px;
+}
+.contestManagement thead .colSchedule {
+    padding-left: 10px;
+}
 .contestManagement .colRegQuestion {
     width: 112px;
+}
+.contestManagement thead .colRegQuestion {
+    padding-left: 9px;
 }
 .contestManagement .colSurvey {
     width: 116px;
@@ -5038,7 +5080,7 @@ footer .right>span:nth-child(2) {
     left: 0;
     background: #050505;
     background: rgba(0, 0, 0, 0.8);
-    z-index: 100;
+    z-index: 1030;
     overflow: hidden;
 }
 .problemAssignment {
@@ -5110,6 +5152,25 @@ footer .right>span:nth-child(2) {
 .problemAssignmentPanel .panel-heading .close:hover {
     opacity: 0.7;
 }
+.problemAssignment>.content {
+    width: 464px;
+    margin: 217px auto 0;
+}
+.problemAssignment .panel {
+    width: 464px;
+    height: 522px;
+    position: relative;
+}
+@media only screen and (min-height: 523px) {
+    .problemAssignment>.content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -261px;
+        margin-left: -232px;
+    }
+}
+.contestManagementPanel .dropdown,
 .problemAssignmentPanel .dropdown {
     display: inline-block;
     height: 36px;
@@ -5121,6 +5182,7 @@ footer .right>span:nth-child(2) {
     border-radius: 2px;
     position: relative;
 }
+.contestManagementPanel .dropdown-toggle,
 .problemAssignmentPanel .dropdown-toggle {
     color: #FFF;
     display: block;
@@ -5132,6 +5194,7 @@ footer .right>span:nth-child(2) {
     font-weight: 300;
     text-align: left;
 }
+.contestManagementPanel .dropdown .arrow,
 .problemAssignmentPanel .dropdown .arrow {
     display: block;
     height: 5px;
@@ -5140,6 +5203,9 @@ footer .right>span:nth-child(2) {
     position: absolute;
     right: 10px;
     top: 15px;
+}
+.problemAssignmentPanel .availableProblems { 
+    position: relative;
 }
 .problemAssignment form {
     padding-left: 41px;
@@ -5217,14 +5283,21 @@ footer .right>span:nth-child(2) {
     margin-bottom: 19px;
     margin-top: 12px;
 }
-.problemAssignmentPanel .btnLeft {
+.problemAssignmentPanel .btnLeft,
+.contestManagementPanel .btnLeft {
     float: left;
 }
+.contestManagementPanel .btnRight,
 .problemAssignmentPanel .btnRight {
     float: right;
 }
+.contestManagementPanel h4,
 .problemAssignmentPanel h4 {
     font-size: 16px;
+}
+/*assignedProblems*/
+.problemAssignmentPanel .assignedProblems {
+    border-top: 1px solid;
 }
 .problemAssignmentPanel .editBtn{
     height: 24px;
@@ -5493,6 +5566,567 @@ footer .right>span:nth-child(2) {
 }
 .problemAssignmentPanel .radioInput {
     display: none;
+}
+
+/*contest terms*/
+.popupOpen .contestManagementPanel {
+    overflow-x: hidden;
+    overflow-y: auto;  
+}
+.contestManagementPanel {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #050505;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1030;
+    overflow: hidden;
+}
+.contestManagementPanel {
+    background: #0e1010;
+    background: rgba(0, 0, 0, 0.32);
+}
+.contestManagementPanel .panel {
+    position: relative;
+}
+.contestManagementPanel .panel-footer {
+    background-color: transparent;
+    height: 72px;
+    padding-top: 21px;
+    padding-left: 28px;
+    padding-right: 32px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+.
+contestManagementPanel .panel-footer .btn {
+    width: 116px;
+    font-size: 16px;
+}
+.contestManagementPanel .panel-body .btnRow {
+    text-align: right;
+    padding-right: 26px;
+}
+.contestManagementPanel textarea {
+    border-width: 1px;
+    background: transparent;
+}
+.contestManagementPanel .tHead {
+    margin-bottom: 0;
+}
+
+.contestManagementPanel .table>tbody>tr>td:last-child, 
+.contestManagementPanel .table>thead>tr>th:last-child {
+    text-align: left;
+}
+.contestManagementPanel .panel-heading .close {
+    height: 25px;
+    width: 29px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 1;
+}
+.contestManagementPanel .panel-heading .close:hover {
+    opacity: 0.7;
+}
+.contestManagementPanel .panel-heading .close:before {
+    content: '';
+    display: block;
+    height: 10px;
+    width: 11px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-position: -160px 0;
+}
+/*contestTermsConfigPanel*/
+.contestTermsConfigPanel>.content {
+    width: 789px;
+    margin: 202px auto 0;
+}
+.contestTermsConfigPanel .panel {
+    width: 789px;
+    height: 526px;
+}
+@media only screen and (min-height: 526px) {
+    .contestTermsConfigPanel>.content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -263px;
+        margin-left: -395px;
+    }
+}
+.contestTermsConfigPanel .panel-heading {
+    height: 39px;
+    padding-top: 6px;
+    padding-left: 29px;
+}
+.contestTermsConfigPanel .panel-heading .close {
+    right: 1px;
+}
+.contestTermsConfigPanel .panel-heading .close:before {
+    bottom:  1px;
+}
+.contestManagementPanel .panel-body {
+    padding-top: 7px;
+}
+.contestTermsConfigPanel textarea {
+    width: 636px;
+    height: 309px;
+    margin-top: 22px;
+    resize: none;
+    overflow: auto;
+    display: block;
+    padding: 34px 37px;
+    line-height: 1.285em;
+}
+.contestTermsConfigPanel .termContent {
+    padding-top: 6px;
+}
+.contestTermsConfigPanel .termContent,
+.contestTermsConfigPanel label {
+    display: inline-block;
+    margin-left: 52px;
+}
+.contestTermsConfigPanel label {
+    vertical-align: top;
+    margin-top: 18px;
+    margin-left: 32px;
+}
+.contestTermsConfigPanel .panel-body .btnRow {
+    padding-top: 15px;
+}
+.contestTermsConfigPanel .btnCancel {
+    margin-left: 1px;
+    padding-top: 4px;
+}
+.contestTermsConfigPanel .btnRight {
+    margin-right: -10px;
+}
+.contestTermsConfigPanel .btnLoadPrevious {
+    height: 31px;
+    width: 205px;
+    font-size: 15px;
+    padding-top: 4px;
+}
+.contestTermsConfigPanel .panel-footer {
+    padding-top: 20px;
+    height: 74px;
+}
+/*registrationQuestionsPanel*/
+.registrationQuestionsPanel>.content {
+    margin: 151px auto 0;
+    width: 876px;
+}
+.registrationQuestionsPanel .panel {
+    height: 413px;
+    width: 876px;
+    border-bottom-width: 2px;
+}
+@media only screen and (min-height: 413px) {
+    .registrationQuestionsPanel>.content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -207px;
+        margin-left: -438px;
+    }
+}
+.registrationQuestionsPanel .panel-heading {
+    padding: 7px 26px;
+    height: 41px;
+}
+.registrationQuestionsPanel .panel-heading .close {
+    right: -4px;
+}
+.registrationQuestionsPanel .panel-heading .close:before {
+    bottom: 1px
+}
+.registrationQuestionsPanel h4 {
+    margin-bottom: 14px;
+    padding-left: 8px;
+    padding-right: 15px;
+}
+.registrationQuestionsPanel .panel-body .content {
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+}
+.registrationQuestionsPanel .table>thead>tr>th {
+    padding-top: 14px;
+    padding-bottom: 12px;
+    padding-left: 0;
+}
+.registrationQuestionsPanel .tableDiv {
+    max-height: 199px;
+    height: 199px;
+    width: 846px;
+    margin-right: -17px;
+}
+.registrationQuestionsPanel .tableDiv>div {
+    padding-right: 17px;
+}
+.registrationQuestionsPanel .manageQuestions {
+    padding-top: 1px;
+    padding-left: 30px;
+    padding-right: 15px;
+}
+.registrationQuestionsPanel .table>tbody>tr>td {
+    padding: 10px 0 7px;
+}
+.registrationQuestionsPanel .table>tbody>tr:last-child>td {
+    border-bottom-width: 0; 
+}
+.registrationQuestionsPanel .table .colKeyword {
+    padding-left: 9px;
+    word-break: break-all;
+}
+.registrationQuestionsPanel .table .colType {
+    width: 197px;
+}
+.registrationQuestionsPanel .table tbody .colType {
+    padding-left: 4px;
+}
+.registrationQuestionsPanel .table .colStyle {
+    width: 157px;
+}
+.registrationQuestionsPanel .table .colStatus {
+    width: 109px;
+}
+.registrationQuestionsPanel .table .colAction {
+    width: 236px;
+}
+.registrationQuestionsPanel .table thead .colAction {
+    padding-left: 97px;
+}
+.registrationQuestionsPanel .colAction .btn {
+    width: 94px;
+    height: 32px;
+    margin-right: 16px;
+    padding-top: 5px;
+}
+.registrationQuestionsPanel .panel-footer {
+    border-top-width: 0;
+    padding-top: 18px; 
+}
+.registrationQuestionsPanel .panel-footer .btnRow {
+    padding-left: 7px;
+}
+.registrationQuestionsPanel .panel-footer .btnRow .btn {
+    height: 32px;
+    width: 127px;
+    font-size: 14px;
+    padding-top: 5px;
+}
+/*manageQuestionPanel*/
+.manageQuestionPanel>.content {
+    margin: 126px auto 10px;
+    width: 769px;
+}
+.manageQuestionPanel .panel {
+    height: 724px;
+    width: 769px;
+}
+.manageQuestionPanel .contentHalf .panel {
+    height: 522px;
+}
+@media only screen and (min-height: 724px) {
+    .manageQuestionPanel>.content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -362px;
+        margin-left: -385px;
+    }
+}
+@media only screen and (min-height: 522px) {
+    .manageQuestionPanel>.contentHalf {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -261px;
+        margin-left: -385px;
+    }
+}
+.manageQuestionPanel .panel-heading {
+    padding: 7px 26px;
+}
+.manageQuestionPanel .panel-heading .close {
+    right: -2px;
+}
+.manageQuestionPanel .panel-heading .close:before {
+    bottom: 1px
+}
+.manageQuestionPanel .panel-body {
+    padding-top: 22px;
+    padding-left: 30px;
+    padding-right: 46px;
+}
+.manageQuestionPanel form label:first-child {
+    width: 100px;
+    padding-left: 11px;
+    vertical-align: top;
+    padding-top: 6px;
+    height: 36px;
+    margin-bottom: 0;
+}
+.manageQuestionPanel form fieldset {
+    margin-bottom: 10px;
+}
+.manageQuestionPanel .inputBorder>input,
+.manageQuestionPanel .dropdown-toggle {
+    padding-left: 12px;
+}
+.manageQuestionPanel .keywordField .inputBorder {
+    width: 437px;
+}
+.manageQuestionPanel .keywordField .inputBorder>input {
+    width: 435px;
+}
+.manageQuestionPanel .typeField .dropdown {
+    width: 250px;
+}
+.manageQuestionPanel .typeField .dropdown-toggle {
+    width: 248px;
+}
+.manageQuestionPanel .styleField .dropdown {
+    width: 252px;
+}
+.manageQuestionPanel .styleField .dropdown-toggle {
+    width: 250px;
+}
+.manageQuestionPanel .statusField .dropdown {
+    width: 135px;
+}
+.manageQuestionPanel .statusField .dropdown-toggle {
+    width: 133px;
+}
+.manageQuestionPanel .textField label {
+    line-height: 1em;
+    padding-top: 1px;
+}
+.manageQuestionPanel .textField textarea {
+    height: 73px;
+    width: 587px;
+    resize: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    line-height: 1.215em;
+}
+.manageQuestionPanel .answers .btnRow {
+    height: 33px;
+    padding-left: 101px;
+    padding-top: 1px;
+}
+.manageQuestionPanel .answers .btnRow .btn {
+    height: 32px;
+    width: 129px;
+}
+.manageQuestionPanel h4 {
+    margin-bottom: 16px;
+    padding-right: 15px;
+    margin-top: 38px;
+}
+.manageQuestionPanel .panel-body .content {
+    border-top: 1px solid;
+}
+.manageQuestionPanel .table>thead>tr>th {
+    padding-top: 14px;
+    padding-bottom: 12px;
+    padding-left: 0;
+}
+.manageQuestionPanel .tableDiv {
+    max-height: 160px;
+    min-height: 150px;
+    width: 708px;
+    margin-right: -17px;
+}
+.manageQuestionPanel .tableDiv>div {
+    padding-right: 17px;
+}
+.manageQuestionPanel .table>tbody>tr>td {
+    padding: 10px 0 7px;
+}
+.manageQuestionPanel .table>tbody>tr:last-child>td {
+    border-bottom-width: 0; 
+}
+.manageQuestionPanel .table .colSortOrder {
+    padding-left: 9px;
+}
+.manageQuestionPanel .table .colCorrect {
+    width: 78px;
+}
+.manageQuestionPanel .table .colCorrect label {
+    vertical-align: top;
+}
+.manageQuestionPanel .table .colCorrect label:before {
+    top: 0;
+}
+.manageQuestionPanel .table tbody .colCorrect {
+    padding-left: 4px;
+}
+.manageQuestionPanel .table .colText {
+    width: 306px;
+}
+.manageQuestionPanel .table .colAction {
+    width: 205px;
+}
+.manageQuestionPanel .colAction .btn {
+    width: 94px;
+    height: 32px;
+    padding-top: 5px;
+}
+.manageQuestionPanel .colAction .btn+.btn {
+    margin-left: 13px;
+}
+.manageQuestionPanel .panel-footer {
+    padding-top: 20px; 
+    height: 70px;
+    padding-left: 20px;
+    padding-right: 22px;
+}
+.manageQuestionPanel .panel-footer .btnRow {
+    padding-left: 7px;
+}
+.manageQuestionPanel .panel-footer .btnRow .btn {
+    height: 36px;
+    width: 116px;
+    font-size: 16px;
+    /*padding-top: 4px;*/
+    padding-top: 6px;
+}
+/*manageAnswerPanel*/
+.manageAnswerPanel>.content {
+    margin: 200px auto 0;
+    width: 507px;
+}
+.manageAnswerPanel .panel {
+    height: 414px;
+    width: 507px;
+}
+@media only screen and (min-height: 414px) {
+    .manageAnswerPanel>.content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -207px;
+        margin-left: -253px;
+    }
+}
+.manageAnswerPanel .panel-heading {
+    padding: 7px 27px;
+}
+.manageAnswerPanel .panel-heading .close {
+    right: -3px;
+}
+.manageAnswerPanel .panel-body {
+    padding-top: 26px;
+    padding-left: 39px; 
+}
+.manageAnswerPanel .panel-body fieldset>label:first-child {
+    width: 87px;
+    vertical-align: top;
+}
+.manageAnswerPanel .sortField {
+    margin-bottom: 17px;
+}
+.manageAnswerPanel .sortField label {
+    padding-top: 5px;
+}
+.manageAnswerPanel .panel-body .inputBorder {
+    width: 51px;
+}
+.manageAnswerPanel .panel-body .inputBorder>input {
+    width: 49px;
+}
+.manageAnswerPanel .panel-body .checkboxLbl {
+    height: 27px;
+}
+.manageAnswerPanel .checkboxLbl:before {
+    top: 7px;
+}
+.manageAnswerPanel .panel-body textarea {
+    height: 137px;
+    width: 334px;
+    resize: none;
+    margin-top: 4px;
+}
+.manageAnswerPanel .panel-footer {
+    height: 73px;
+    padding-top: 20px;
+    padding-left: 27px;
+    padding-right: 19px;
+}
+.manageAnswerPanel .panel-footer .btnSubmit {
+    width: 146px;
+}
+/*contestScheduleConfigPanel*/
+.contestScheduleConfigPanel>.content {
+    margin: 144px auto 0;
+    width: 892px;
+}
+.contestScheduleConfigPanel .panel {
+    height: 361px;
+    width: 892px;
+}
+@media only screen and (min-height: 361px) {
+    .contestScheduleConfigPanel>.content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -180px;
+        margin-left: -446px;
+    }
+}
+.contestScheduleConfigPanel .panel-heading {
+    padding: 6px 28px;
+    height: 39px;
+}
+.contestScheduleConfigPanel .panel-heading .close {
+    right: 10px;
+    top: -1px;
+}
+.contestScheduleConfigPanel .panel .panel-body {
+    padding-top: 24px;
+    padding-left: 30px;
+    padding-right: 101px;
+}
+.contestScheduleConfigPanel .phaseSchedule fieldset {
+    width: 439px;
+}
+.contestScheduleConfigPanel .phaseSchedule .info {
+    line-height: 1.22em;
+}
+.contestScheduleConfigPanel .numberInput {
+    margin-right: 8px;
+}
+.contestScheduleConfigPanel .numberInput:first-child>input {
+    padding-left: 10px;
+}
+.contestScheduleConfigPanel .numberInput + .numberInput {
+    margin-right: 7px;
+}
+.contestScheduleConfigPanel .panel .removeInter {
+    padding-left: 2px;
+}
+.contestScheduleConfigPanel .checkboxLbl {
+    padding-left: 30px;
+}
+.contestScheduleConfigPanel .panel-footer {
+    height: 73px;
+    padding-top: 10px;
+    padding-left: 29px;
+    padding-right: 20px;
+    border-top-width: 0;
+}
+.contestScheduleConfigPanel .panel-footer .btnSubmit {
+    width: 116px;
 }
 /*practice problem list*/
 .practiceProblemList .titleBar {
@@ -6557,6 +7191,13 @@ table thead .sort.desc{
     .detailPage .panelSummary .panel-body .leftSec {
         border-right-width: 0;
     }
+    .contestManagement .table .colBtn,
+    .contestManagement .table .colStatus {
+        width: 80px;
+    }
+    .contestManagement .table .colStart {
+        width: auto;
+    
 }
 @media only screen and (max-width: 789px) {
     /* fix size of active contests */
@@ -6593,6 +7234,14 @@ table thead .sort.desc{
         width: 100%;
         min-width: 250px;
     }
+    /* Specific to contest management */
+    .dashboard .panel-custom.panelSummary.contestPanel {
+        min-width: 750px;
+    }
+    .contestManagement .table {
+        margin-top: 10px;
+    }
+    /* ./Specific to contest management */
     .dashboard .mainContent {
         width: 100%;
     }

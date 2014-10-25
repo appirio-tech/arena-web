@@ -1,0 +1,26 @@
+<div id="contestTermsConfig" class="contestManagementPanel contestTermsConfigPanel detailPage">
+    <div class="content">
+        <div class="panel panel-custom">
+            <div class="panel-heading">
+                Set Terms
+                <a class="close" data-ng-click="closeContestTermsConfig()"></a>
+            </div>
+            <div class="panel-body">
+                <label>Terms</label>
+                <div class="termContent">
+                    <textarea name="roundTerms" data-ng-model="roundTerms"><!-- avoid unexpected spaces
+                  --></textarea><!-- avoid unexpected spaces
+                  --><div class="btnRow">
+                        <a data-ng-click="loadPreviousTerm()" class="btn btnLeft btnLoadPrevious">Load Previous Term</a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="btnRow">
+                    <a data-ng-click="closeContestTermsConfig()" class="btn btnCancel btnLeft">Cancel</a>
+                    <a data-ng-click="submitContestTermsConfig()" class="btn btnSubmit btnRight">Submit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

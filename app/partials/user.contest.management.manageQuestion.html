@@ -1,0 +1,97 @@
+<div id="manageQuestion" class="contestManagementPanel manageQuestionPanel detailPage">
+    <div class="content" data-ng-class="{contentHalf: !editingQuestion}">
+        <div class="panel panel-custom panel-manage-question">
+            <div class="panel-heading">
+                {{editingQuestion ?  'Manage Question' : 'Create New Question'}}
+                <a class="close" data-ng-click="closeManageQuestion()"></a>
+            </div>
+            <div class="panel-body">
+                <form class="info">
+                    <fieldset class="keywordField">
+                        <label>Keyword</label>
+                        <div class="inputBorder"><input type="text" class="keyword" data-ng-model="question.keyword"/></div>
+                    </fieldset>
+                    <fieldset class="typeField">
+                        <label>Type</label>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">{{question.type.description}}<span class="arrow"></span></button>
+                            <ul class="dropdown-menu">
+                                <li data-ng-repeat="key in questionKeys.type"
+                                    data-ng-class="{active: question.type.id==key.id}"><a dropdown-toggle data-ng-click="question.type=key;">{{key.description}}</a>
+                                </li>
+                            </ul>
+                        </div><!--/.dropdown-->
+                    </fieldset>
+                    <fieldset class="styleField">
+                        <label>Style</label>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">{{question.style.description}}<span class="arrow"></span></button>
+                            <ul class="dropdown-menu">
+                                <li data-ng-repeat="key in questionKeys.style"
+                                    data-ng-class="{active: question.style.id==key.id}"><a dropdown-toggle data-ng-click="question.style=key;">{{key.description}}</a>
+                                </li>
+                            </ul>
+                        </div><!--/.dropdown-->
+                    </fieldset>
+                    <fieldset class="statusField">
+                        <label>Status</label>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">{{question.status.description}}<span class="arrow"></span></button>
+                            <ul class="dropdown-menu">
+                                <li data-ng-repeat="key in questionKeys.status"
+                                    data-ng-class="{active: question.status.id==key.id}"><a dropdown-toggle data-ng-click="question.status=key;">{{key.description}}</a>
+                                </li>
+                            </ul>
+                        </div><!--/.dropdown-->
+                    </fieldset>
+                    <fieldset class="textField">
+                        <label>Text</label>
+                        <textarea name="questionText" data-ng-model="question.text"></textarea>
+                    </fieldset>
+                </form>
+                <div class="answers" data-ng-show="!!editingQuestion">
+                    <div class="btnRow">
+                        <a class="btn btnLeft btnAddAnswers" data-ng-click="openAddAnswer()">Add Answers</a>
+                    </div>
+                    <h4>Assigned Answers</h4>
+                    <div class="content">
+                        <table class="table table-condensed problemTable tHead">
+                            <thead>
+                                <tr>
+                                    <th class="colSortOrder">Sort Order</th>
+                                    <th class="colCorrect">Correct</th>
+                                    <th class="colText">Text</th>
+                                    <th class="colAction"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="tableDiv" data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:assignedAnswers" data-reload-on="reload:assignedAnswers">
+                            <div>
+                                <table class="table table-condensed problemTable">
+                                <tbody>
+                                    <tr data-ng-repeat="item in question.answers | orderBy:'+sortOrder'">
+                                        <td class="colSortOrder">{{item.sortOrder}}</td>
+                                        <td class="colCorrect"><input disabled="disabled" type="checkbox"
+                                            id="answerCorrect-{{item.id}}" name="answerCorrect" data-ng-model="item.correct" class="checkboxInput"><label
+                                            for="answerCorrect-{{item.id}}" class="checkboxLbl"></label>
+                                        </td>
+                                        <td class="colText">{{item.text}}</td>
+                                        <td class="colAction"><a data-ng-click="openManageAnswer(item)" class="btn editBtn">Edit</a><a data-ng-click="deleteAnswer(item)" class="btn editBtn">Delete</a></td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="btnRow">
+                    <a class="btn btnLeft btnCancel" data-ng-click="closeManageQuestion()">Cancel</a>
+                    <a class="btn btnRight btnSubmit" data-ng-click="submitManageQuestion()">Submit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div data-manage-answer></div>
