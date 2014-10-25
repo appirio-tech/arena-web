@@ -581,7 +581,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * Clear the editor.
          */
         $scope.clearEditor = function () {
-            if (userInputDisabled) {
+            if (userInputDisabled || $scope.disableSubmit()) {
                 return;
             }
             $scope.openModal({

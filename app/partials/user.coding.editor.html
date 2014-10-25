@@ -40,7 +40,7 @@
             <div class="middlePart">
                 <ul class="actionIcons"><!-- avoid unnecessary blank
                 <li class="link saveLink"  data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Save</li>  avoid unnecessary blank
-                --><li class="link clearLink" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Clear</li><!--  avoid unnecessary blank
+                --><li class="link clearLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Clear</li><!--  avoid unnecessary blank
                 --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Compile</li><!--
                 --><li class="link submitLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Submit</li>
                 </ul><!--  avoid unnecessary blank
