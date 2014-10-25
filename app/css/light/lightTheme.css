@@ -1191,6 +1191,10 @@ footer .right .sponsorLogo {
 .panel-custom .panel-body .textActive {
     color: grey;
 }
+.panel > .panel-body > .paginator > .textActive {
+    color: #000 !important;
+    font-weight: bold;
+}
 .coderHistoryTblDiv .coderHistoryTable>tbody>tr>td {
     border-color: #b7c9d7;
 }
