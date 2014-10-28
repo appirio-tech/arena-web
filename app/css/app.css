@@ -5727,6 +5727,9 @@ footer .right>span:nth-child(2) {
     height: 26px;
     border-top: 1px solid;
 }
+.coderHistoryTblDiv .coderHistoryTable>tbody>tr {
+    cursor: pointer !important;
+}
 .coderHistoryColTime {
     width: 150px;
 }
