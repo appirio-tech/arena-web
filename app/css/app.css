@@ -7038,3 +7038,6 @@ table thead .sort.desc{
         left: 159px;
     }
 }
+.panelCodeEditor .settingsPanel .editorDropDown .dropdown-toggle {
+    cursor: not-allowed;
+}

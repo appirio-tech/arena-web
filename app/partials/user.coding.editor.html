@@ -10,7 +10,7 @@
                     <a data-ng-click="toggleSettings()" class="closeIcon"></a>
                     <div class="editorRow">
                         <label class="textWhite">Editor</label>
-                        <ul class="editorDropDown settingDropDown"><li class="dropdown"><a class="dropdown-toggle">{{getThemeName(themeIdx)}}</a><!-- 
+                        <ul class="editorDropDown settingDropDown"><li class="dropdown"><a class="dropdown-toggle disabled">{{getThemeName(themeIdx)}}</a><!--
                          --><ul class="dropdown-menu">
                                 <li data-ng-repeat="t in themes track by $index"><a data-ng-click="setThemeIdx($index)" data-ng-class="{current: $index === themeIdx}">{{t.name}}</a></li>
                             </ul></li><!-- 
