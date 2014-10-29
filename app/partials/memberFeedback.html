@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="row-fluid dashboard">
+        <div class="container mainContent">
+            <div class="panelFeedback {{mode}}">
+                <div class="feedbackHead {{mouseenter}}">
+                    <button class="btn btnFeedback btn-{{mode}}" data-ng-click="collapse()" data-ng-mouseenter="mouseenter=true;" data-ng-mouseleave="mouseenter=false;">Feedback<span class="arrow"></span></button>
+                </div>
+                <!-- /.feedbackHead -->
+                <div class="feedbackBody" data-ng-show="mode == 'modeFloating'">
+                    <form>
+                        <!-- input field -->
+                        <fieldset class="contentWrapper">
+                            <p>Have some feedback? Encountered an Issue?</p>
+                            <p>Please share with us</p>
+                            <div class="border"><textarea data-ng-model="feedbackText" class="feedbackInput" placeholder="Well I think you can...." data-ng-focus="showError(false);"></textarea></div>
+                            <p class="errorMessage"><span data-ng-show="hasError">The feedback should not be empty.</span></p>
+                        </fieldset>
+                        <!-- button field -->
+                        <fieldset class="btnRow">
+                            <button class="btn btnLeft btnCancel" data-ng-click="cancel()">Cancel</button><button class="btn btnRight btnSubmit" data-ng-click="submit()">Submit</button>
+                        </fieldset>
+                    </form>
+                    <!-- /form -->
+                </div>
+                <!-- /.feedbackBody -->
+            </div>
+            <!-- /.panelFeedback -->
+        </div>
+    </div>
+</div>
+            

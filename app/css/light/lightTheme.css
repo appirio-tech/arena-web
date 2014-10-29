@@ -1196,6 +1196,7 @@ footer .right .sponsorLogo {
 .practiceProblemList .iconSolved {
     color: #a2eb23;
 }
+
 @media only screen and (max-width: 1121px) {
     .panelCodeEditor .panel-body .toolBar {
         padding-top: 30px;
@@ -1314,6 +1315,39 @@ footer .right .sponsorLogo {
     background: #F5F8FA;
 }
 
+/*member feedback widget*/
+.feedbackBody,
+.panelFeedback .btnRow {
+    background: #fff;
+    border-color: #0999d1;
+}
+.btnFeedback {
+    background: #0999d1;
+}
+.panelFeedback .btnRow .btn {
+    background: #0999d1;
+}
+.panelFeedback .border {
+    border-color: #b7c9d7;
+}
+.panelFeedback {
+    color: #636d70;
+}
+.panelFeedback .feedbackInput {
+    color: #636d70;
+}
+.panelFeedback .feedbackInput::-webkit-input-placeholder{
+    color: #848686;
+}
+.panelFeedback .feedbackInput:-moz-placeholder{
+    color: #848686;
+}
+.panelFeedback .feedbackInput::-moz-placeholder{
+    color: #848686;
+}
+.panelFeedback .feedbackInput:-ms-input-placeholder{
+    color: #848686;
+}
 /*Media blocks should be placed after the normal code!!!*/
 @media only screen and (max-width: 1121px) {
     .panelCodeEditor .panel-body .toolBar {
