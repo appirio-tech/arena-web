@@ -3170,6 +3170,9 @@ footer .right>span:nth-child(2) {
     right: 29px;
     top: 14px;
 }
+.panelContestPlan .panel-heading .iconsWrapper .disabled {
+    cursor: default;
+}
 .panelContestPlan .iconsWrapper li {display: inline-block;}
 .panelContestPlan .iconsWrapper li + li {margin-left: 10px;}
 .panelContestPlan .iconsWrapper .viewRadio {display: none;}
@@ -3343,10 +3346,18 @@ footer .right>span:nth-child(2) {
 .calendar .fc-header-right .fc-button-month:hover {
     text-decoration: underline;
 }
+.calendar .fc-event-inner .fc-event-title {
+    float: right;
+    width: 294px;
+}
 .calendar .fc-view-basicDay .fc-event-container .fc-event {
     border-width: 0;
     background-color: transparent;
     font-size: 14px;
+}
+.calendar .fc-view-basicDay {
+    height: 228px;
+    overflow-y: auto;
 }
 .calendar .fc-view-basicDay thead .fc-day-header {
     text-align: center;
@@ -3362,7 +3373,10 @@ footer .right>span:nth-child(2) {
     margin-right: 16px;
 }
 .listView .eventsContent {
-    max-height: 219px;
+    height: 219px;
+}
+.listView .eventsContent .tableDiv .eventDate {
+    width: 90px;
 }
 .listView .eventsContent .tableDiv {
     padding-right: 16px;
@@ -3386,6 +3400,9 @@ footer .right>span:nth-child(2) {
     padding-right: 0;
     text-align: right;
     color: #687376;
+}
+.fc-grid .fc-event-time {
+    font-weight: 500;
 }
 /* style of message arena */
 .body .messageArena {
@@ -5184,7 +5201,7 @@ footer .right>span:nth-child(2) {
     right: 10px;
     top: 15px;
 }
-.problemAssignmentPanel .availableProblems { 
+.problemAssignmentPanel .availableProblems {
     position: relative;
 }
 .problemAssignment form {
@@ -7062,6 +7079,11 @@ table thead .sort.desc{
     .panelContestStat .panel-body .scheduleContent {
         height: auto;
     }
+    .calendar .fc-event-inner .fc-event-title {
+        float: none;
+        width: 100%;
+    }
+    .panelContestPlan .listView .default .tableDiv {height: 100%; overflow-x: hidden; overflow-y: hidden;}
 }
 @media only screen and (max-width: 1141px) {
     .header .navbar-brand {
