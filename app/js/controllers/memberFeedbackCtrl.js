@@ -8,26 +8,22 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
     // modeMinimized is default mode.
     $scope.mode = 'modeMinimized';
     var count = 0,
-        fadeTime = 3000,
+        fadeTime = 3,
         dashboardTimer = function () {
-            console.log($scope.mode);
             if ($scope.mode === 'modeDashboard') {
                 if ($scope.mouseenter) {
                     count = 0;
                     $timeout(dashboardTimer, 1000);
-                }
-                else {
+                } else {
                     count += 1;
-                    console.log('count: ' + count);
-                    if (count === 3) {
-                        console.log('change mode');
+                    if (count === fadeTime) {
                         $scope.mode = 'modeMinimized';
                         $timeout.cancel();
                         count = 0;
                     } else {
-                        console.log('******');
                         $timeout(dashboardTimer, 1000);
-                    }}
+                    }
+                }
             }
         },
         addAnimationForBody = function (isShow) {
@@ -90,7 +86,6 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
     };
     // stay mode
     $scope.stayMode = function () {
-        console.log('stay mode and cancel timer');
         if ($scope.mode === 'modeMinimized') {
             // change mode
             $timeout(function () {
@@ -99,7 +94,9 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
         }
     };
     // watch mode
+    /*jslint unparam:false*/
     $scope.$watch('mode', function (newValue, oldValue) {
+        /*jslint unparam:true*/
         if (newValue === 'modeDashboard') {
             $timeout(dashboardTimer, 1000);
         }
