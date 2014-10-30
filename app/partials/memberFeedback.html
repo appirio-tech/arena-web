@@ -3,7 +3,7 @@
         <div class="container mainContent">
             <div class="panelFeedback {{mode}}">
                 <div class="feedbackHead {{mouseenter}}">
-                    <button class="btn btnFeedback btn-{{mode}}" data-ng-click="collapse()" data-ng-mouseenter="mouseenter=true;" data-ng-mouseleave="mouseenter=false;">Feedback<span class="arrow"></span></button>
+                    <button class="btn btnFeedback btn-{{mode}}" data-ng-click="collapse()" data-ng-mouseenter="mouseenter=true;stayMode();" data-ng-mouseleave="mouseenter=false;">Feedback<span class="arrow"></span></button>
                 </div>
                 <!-- /.feedbackHead -->
                 <div class="feedbackBody" data-ng-show="mode == 'modeFloating'">

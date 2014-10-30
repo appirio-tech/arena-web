@@ -7,13 +7,28 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
     // mode of feedback panel: modeFloating, modeDashboard, modeMinimized
     // modeMinimized is default mode.
     $scope.mode = 'modeMinimized';
-    var fadeTime = 3000,
-        timerForDashboard = function () {
-            $timeout(function () {
-                if ($scope.mode === 'modeDashboard' && $scope.mouseenter === false) {
-                    $scope.mode = 'modeMinimized';
+    var count = 0,
+        fadeTime = 3000,
+        dashboardTimer = function () {
+            console.log($scope.mode);
+            if ($scope.mode === 'modeDashboard') {
+                if ($scope.mouseenter) {
+                    count = 0;
+                    $timeout(dashboardTimer, 1000);
                 }
-            }, fadeTime);
+                else {
+                    count += 1;
+                    console.log('count: ' + count);
+                    if (count === 3) {
+                        console.log('change mode');
+                        $scope.mode = 'modeMinimized';
+                        $timeout.cancel();
+                        count = 0;
+                    } else {
+                        console.log('******');
+                        $timeout(dashboardTimer, 1000);
+                    }}
+            }
         },
         addAnimationForBody = function (isShow) {
             if (isShow) {
@@ -25,8 +40,8 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
                 angular.element('.feedbackBody').addClass('animationSlideDown');
                 $timeout(function () {
                     $scope.mode = 'modeDashboard';
-                    timerForDashboard();
-                }, 810);
+                    //timerForDashboard();
+                }, 100);
             }
         };
     // click to open/collapse the panel
@@ -34,7 +49,6 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
         if ($scope.mode === 'modeFloating') {
             addAnimationForBody(false);
         } else if ($scope.mode === 'modeDashboard') {
-            //$scope.mode = 'modeFloating';
             addAnimationForBody(true);
         }
     };
@@ -74,17 +88,20 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
             $scope.hasError = false;
         }
     };
-    // watch the button status
-    $scope.$watch('mouseenter', function (newValue, oldValue) {
-        if (newValue === true) {
-            // mouse enter 
-            if ($scope.mode === 'modeMinimized') {
-                // change mode
-                $timeout(function () {
-                    $scope.mode = 'modeDashboard';
-                    timerForDashboard();
-                }, 10);
-            }
+    // stay mode
+    $scope.stayMode = function () {
+        console.log('stay mode and cancel timer');
+        if ($scope.mode === 'modeMinimized') {
+            // change mode
+            $timeout(function () {
+                $scope.mode = 'modeDashboard';
+            }, 10);
+        }
+    };
+    // watch mode
+    $scope.$watch('mode', function (newValue, oldValue) {
+        if (newValue === 'modeDashboard') {
+            $timeout(dashboardTimer, 1000);
         }
     });
 }];
