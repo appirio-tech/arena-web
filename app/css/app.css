@@ -1971,27 +1971,7 @@ footer .right>span:nth-child(2) {
     cursor: pointer;
     line-height: 36px;
 }
-.fb-btn-post {
-    display: inline-block;
-    background-image: url(../img/facebook.png);
-    background-repeat: no-repeat;
-    background-size: 53px 19px;
-    content: '';
-    display: inline-block;
-    width: 55px;
-    height: 20px;
-    cursor: pointer;
-    border: 1px solid;
-    border-radius: 3px;
-}
 
-.fb-btn-post:hover {
-    opacity: 0.9;
-}
-
-.tweet-share {
-    display: inline-block;
-}
 .panel-custom .summaries {
     height: 115px;
     overflow-x: hidden;
@@ -6859,7 +6839,14 @@ table thead .sort.desc{
     top: 10px;
 }
 .panel-body .mainContent .infoRow {
-    margin: 0 0 -10px;
+    width: 434px;
+    display: inline-block;
+    margin: 10px 0 12px;
+}
+.panel-body .mainContent .infoRowEmpty {
+    width: 700px;
+    display: inline-block;
+    margin: 10px 0 12px;
 }
 .panel-body .mainContent .tabsMargin {
     margin: 0 0 -5px;
@@ -6867,47 +6854,106 @@ table thead .sort.desc{
 .panel-body .mainContent .minSocialHeight {
     min-height: 28px;
 }
+.socialButtons {
+    display: inline-block;
+    width: 267px;
+    height: 46px;
+    vertical-align: middle;
+    border: 1px solid;
+    padding-left: 9px;
+}
+.socialButtons .challenge {
+    width: 164px;
+    position: relative;
+    left: 7px;
+}
+.socialButtons .separator {
+    content: '';
+    width: 0px;
+    height: 46px;
+    border-left: 1px solid rgb(22, 24, 25);
+    border-right: 1px solid rgb(34, 36, 37);
+}
 .facebookWrap {
-    background: linear-gradient(#4c69ba, #3b55a0) repeat scroll 0 0 rgba(0, 0, 0, 0);
     border: none;
-    border-radius: 2px;
-    color: #fff;
     cursor: pointer;
-    font-weight: bold;
-    height: 20px;
-    line-height: 20px;
+    height: 28px;
+    width: 28px;
     padding: 0;
-    text-shadow: 0 -1px 0 #354c8c;
-    white-space: nowrap;
+    left: 30px;
+    top: 9px;
+    position: relative;
 }
 .facebookWrap .icon {
-    background-image: url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/y1/r/LVx-xkvaJ0b.png);
-    background-size: auto;
+    background-image: url(../img/facebook.png);
+    background-size: 28px 28px;
+    background-repeat: no-repeat;
+    height: 28px;
+    width: 28px;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    position: relative;
+}
+
+.twitter-custom {
+    height: 28px;
+    width: 28px;
+    left: 45px;
+    top: 9px;
+    vertical-align: top;
+    position: relative;
+    cursor: pointer;
+}
+.twitter-custom .tweet-share {
+    height: 28px;
+    width: 28px;
+    display: inline-block;
+}
+.twitter-custom .twitter-share-button {
+    background-image: url(../img/twitter.png);
+    background-size: 28px 28px;
     background-repeat: no-repeat;
     display: inline-block;
-    height: 14px;
-    width: 14px;
-    background-position: 0 -42px;
-    left: 0;
-    margin: 0 4px 0 4px;
-    position: relative;
-    top: 7px;
+    height: 29px;
+    width: 28px;
+}
+.twitter-overview .tweet-share {
+    height: 19px;
+    width: 19px;
+}
+.twitter-overview .twitter-share-button {
+    background-image: url(../img/twitter.png);
+    background-size: 19px 19px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 20px;
+    width: 19px;
+    left: 325px;
     vertical-align: top;
-}
-.facebookWrap .text {
-    color: #fff;
+    position: absolute;
     cursor: pointer;
-    font-size: 11px;
-    font-weight: bold;
-    margin: 0 4px 0 0;
-    line-height: 20px;
-    text-shadow: 0 -1px 0 #354c8c;
-    white-space: nowrap;
-    font-family: 'Helvetica Neue', Helvetica, Arial, 'lucida grande',tahoma,verdana,arial,sans-serif;
 }
-.twitter-custom {
-    position: relative;
-    top: 4px;
+.fb-btn-overview {
+    display: inline-block;
+    background-image: url(../img/facebook.png);
+    background-size: 19px 19px;
+    background-repeat: no-repeat;
+    content: '';
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    left: 300px;
+    cursor: pointer;
+    position: absolute;
+}
+
+.fb-btn-post:hover {
+    opacity: 0.9;
+}
+
+.tweet-share {
+    display: inline-block;
 }
 .calendarBottom {
     padding-bottom: 2px;

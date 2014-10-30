@@ -136,7 +136,7 @@ var overviewCtrl = ['$scope', '$rootScope', 'Facebook', function ($scope, $rootS
      * @since 1.4
      */
     $scope.getMemberStatusMessage = function () {
-        return formatStatusMessage($scope.userProfile.numRatedEvents, $scope.userProfile.rating);
+        return formatStatusMessage($scope.userProfile.numRatedEvents, $scope.userProfile.rating).replace('#', '%23');
     };
 
     /**

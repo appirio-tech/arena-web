@@ -1465,7 +1465,7 @@ footer .left>span {
 
 .dashboard .textBlack{
     color: #687376!important;
-
+}
 /*Media blocks should be placed after the normal code!!!*/
 /*bootstrap small devices tablets*/
 @media only screen and (max-width: 991px) {
@@ -1501,4 +1501,12 @@ footer .left>span {
         white-space: normal;
         height: 63px;
     }
+}
+
+.socialButtons {
+    border-color: rgb(255, 160, 48);
+    background-color: rgb(240,240,240);
+}
+.socialButtons .challenge {
+    color: rgb(49, 111, 153);
 }

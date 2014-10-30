@@ -83,7 +83,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.getPhaseTime = appHelper.getPhaseTime;
     $scope.range = appHelper.range;
     $scope.currentContest = 0;
-    $scope.tweetText = config.tweetText;
+    $scope.tweetText = config.tweetText.replace('#', '%23');
     $scope.tweetUrl = config.tweetUrl;
 
     /**
