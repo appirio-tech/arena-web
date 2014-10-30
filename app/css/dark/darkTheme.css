@@ -1209,3 +1209,11 @@ footer .right .sponsorLogo {
 @media only screen and (max-width: 421px) {
     .panelContestStat .breadcrumbHead {height: 63px; }
 }
+
+.socialButtons {
+    border-color: rgb(45, 47, 48);
+    background-color: rgb(28, 30, 31);
+}
+.socialButtons .challenge {
+    color: rgb(146, 147, 148);
+}

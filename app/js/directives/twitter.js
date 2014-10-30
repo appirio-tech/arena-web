@@ -30,19 +30,28 @@
  * @type {*[]}
  */
 /*jslint unparam:true*/
-var twitter = ['$rootScope', '$timeout', function ($rootScope, $timeout) {
+var twitter = ['$rootScope', '$timeout', '$window', function ($rootScope, $timeout, $window) {
     return {
         restrict: 'A',
+        scope: {
+            message: '@',
+            url: '@'
+        },
         link: function (scope, element, attrs) {
             var twitterType = attrs.type || 'share',
                 createButton = function () {
                     if ($rootScope.twitterLoaded) {
-                        if (twitterType === 'share') {
-                            twttr.widgets.createShareButton(attrs.url, element[0], function () { return; }, {
-                                count: attrs.count || 'none',
-                                text: attrs.message,
-                                size: attrs.size || 'small'
+                        if (!scope.message) {
+                            scope.$watch('message', function () {
+                                createButton();
                             });
+                        } else {
+                            if (twitterType === 'share') {
+                                var html = '<a class="twitter-share-button" href="#" onclick="popUp=window.open(&quot;https://twitter.com/share?text='
+                                        + attrs.message + '&url=' + attrs.url + '&count=' + (attrs.count || 'none')
+                                        + '&quot;,&quot;popupwindow&quot;,&quot;scrollbar=yes,width=600,height=300&quot;);popUp.focus();return false;"></a>';
+                                element.html(html);
+                            }
                         }
                     } else {
                         $timeout(createButton, 1000);

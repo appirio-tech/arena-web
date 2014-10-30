@@ -1363,3 +1363,11 @@ footer .right .sponsorLogo {
         float: none;
     }
 }
+
+.socialButtons {
+    border-color: rgb(52, 170, 222);
+    background-color: rgb(230, 234, 237);
+}
+.socialButtons .challenge {
+    color: rgb(48, 110, 157);
+}
