@@ -785,33 +785,31 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
         $scope.contestCalendarEvents = [];
         $scope.contestCalendarEventSources = [$scope.contestCalendarEvents];
 
-        $http.get('data/contest-plan.json').success(function (data) {
-            // config calendar plugin
-            $scope.contestCalConfig = {
-                calendar: {
-                    height: 241,
-                    editable: false,
-                    header: {
-                        left: 'title',
-                        center: '',
-                        right: 'month, prev, next'
-                    },
-                    titleFormat: {
-                        month: 'MMMM yyyy',
-                        day: 'MMM d, yyyy'
-                    },
-                    eventRender: $scope.eventRender, // add color tag and events number qtip to day number when events are loading
-                    dayClick: $scope.selectDay, // change to day view when clicking day number
-                    viewRender: function (view, element) {
-                        $scope.currentStartMonth = view.start;
-                        $scope.currentEndMonth = view.end;
-                        if ($scope.currentSelectedDate !== null) {
-                            $scope.selectDay($scope.currentSelectedDate, null, null, null);
-                        }
+        // config calendar plugin
+        $scope.contestCalConfig = {
+            calendar: {
+                height: 241,
+                editable: false,
+                header: {
+                    left: 'title',
+                    center: '',
+                    right: 'month, prev, next'
+                },
+                titleFormat: {
+                    month: 'MMMM yyyy',
+                    day: 'MMM d, yyyy'
+                },
+                eventRender: $scope.eventRender, // add color tag and events number qtip to day number when events are loading
+                dayClick: $scope.selectDay, // change to day view when clicking day number
+                viewRender: function (view, element) {
+                    $scope.currentStartMonth = view.start;
+                    $scope.currentEndMonth = view.end;
+                    if ($scope.currentSelectedDate !== null) {
+                        $scope.selectDay($scope.currentSelectedDate, null, null, null);
                     }
                 }
-            };
-        });
+            }
+        };
         /*jslint unparam: true*/
         /**
          * Add color info to day number.
