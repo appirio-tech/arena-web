@@ -6983,6 +6983,28 @@ table thead .sort.desc{
     margin-left: 90px;
 }
 
+.matchSchedule .fc-content .fc-view .fc-day-header,
+.matchSchedule .fc-content .fc-view .fc-day {
+    border-color: #1f444e;
+}
+
+.matchSchedule .fc-content .fc-view .fc-day-header {
+    color: darkgrey;
+}
+.matchSchedule .fc-state-highlight {
+    background-color: #999;
+}
+.matchSchedule .fc-view-basicWeek .fc-event .fc-event-inner,
+.matchSchedule .fc-view-month .fc-event .fc-event-inner {
+    cursor: pointer;
+}
+.matchSchedule .fc-week {
+    line-height: 1.7em;
+}
+.container-fluid .detailPage .paddingTop {
+    padding-top: 10px
+}
+
 /*Media blocks should be placed after the normal code!!!*/
 @media only screen and (max-width: 1245px) {
     .inner { padding: 0;}
@@ -7523,6 +7545,13 @@ table thead .sort.desc{
         display: block;
         padding-top: 5px;
     }
+    .matchSchedule .fc-header-center .fc-header-title h2 {
+        font-size: 15px;
+    }
+    .matchSchedule .fc-header-left .fc-button,
+    .matchSchedule .fc-header-right .fc-button {
+        padding: 0 .1em;
+    }
 }
 @media only screen and (max-width: 540px) {
     .panelChatArea .control-bar{
@@ -7699,6 +7728,9 @@ table thead .sort.desc{
     }
     .panelChatArea .chatInput{
         width: 85%;
+    }
+    .matchSchedule .fc-header-center .fc-header-title {
+        display: none;
     }
 }
 @media only screen and (max-width: 348px) {

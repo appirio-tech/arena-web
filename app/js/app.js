@@ -82,8 +82,12 @@
  * Changes in version 1.22 (Module Assembly - Web Arena UI - Match Configurations
  * - Added controllers -- contestTermsConfigCtrl, contestScheduleConfigCtrl, registrationQuestionsCtrl, manageQuestionCtrl, manageAnswerCtrl
  * - Added Directives -- contestTermsConfig, contestScheduleConfig, registrationQuestions, manageQuestion, manageAnswer
+ *
+ * Changes in version 1.23 (PoC Assembly - Web Arena - Match Schedule Page)
+ * - Added resources for match schedule page.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.22
+ * @version 1.23
  */
 'use strict';
 /*jshint -W097*/
@@ -178,6 +182,7 @@ controllers.manageQuestionCtrl = require('./controllers/manageQuestionCtrl');
 controllers.manageAnswerCtrl = require('./controllers/manageAnswerCtrl');
 controllers.userCodingTimeCtrl = require('./controllers/userCodingTimeCtrl');
 controllers.practiceProblemListCtrl = require('./controllers/practiceProblemListCtrl');
+controllers.matchScheduleCtrl = require('./controllers/matchScheduleCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -277,6 +282,7 @@ main.controller('contestScheduleConfigCtrl', controllers.contestScheduleConfigCt
 main.controller('registrationQuestionsCtrl', controllers.registrationQuestionsCtrl);
 main.controller('manageQuestionCtrl', controllers.manageQuestionCtrl);
 main.controller('manageAnswerCtrl', controllers.manageAnswerCtrl);
+main.controller('matchScheduleCtrl', controllers.matchScheduleCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -415,6 +421,15 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             },
             templateUrl: 'partials/user.practiceProblemList.html',
             controller: 'practiceProblemListCtrl'
+        })
+        .state('user.matchSchedule', {
+            url: '/matchSchedule',
+            data: {
+                pageTitle: 'Match Schedule',
+                pageMetaKeywords: "match schedule"
+            },
+            templateUrl: 'partials/user.matchSchedule.html',
+            controller: 'matchScheduleCtrl'
         })
         .state('user.contestManagement', {
             url: '/contestManagement',
