@@ -2709,10 +2709,11 @@ footer .right>span:nth-child(2) {
     width: 530px;
     min-height: 306px;
     max-height: 516px;
-    position: absolute;
-    top: 43px;
+    position: fixed;
+    top: 0;
     left: 50%;
     margin-left: -260px;
+    margin-top: 5%;
     border: 1px solid #2d2f30;
     z-index: 100;
 }

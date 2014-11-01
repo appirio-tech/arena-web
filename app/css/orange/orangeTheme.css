@@ -641,6 +641,11 @@ footer .left>span {
 .testReportPanel .modalHeader>span {
     color: #636d70;
 }
+.testReportPanel .modalHeader {
+    background-color: #ff8a00;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+}
 .testReportPanel .infoBar {
     background: #F0F0F0;
     color: #333;
