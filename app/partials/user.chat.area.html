@@ -4,11 +4,11 @@
     <div class="panel-heading">
         Now chatting in: <span>{{getRoomTitle()}}</span>
         <span class="inlineSpan">
-        <ul class="lobbyDropdown">
+        <ul class="lobbyDropdown" ng-hide="currentRoomInfo.roundID">
             <li class="dropdown">
                 <a class="dropdown-toggle">{{getRoomTitle()}}</a>
                 <ul class="dropdown-menu pull-right">
-                    <li data-ng-repeat="lobby in roomMenu" style="box-sizing: border-box;list-style: none;"><a dropdown-toggle data-ng-click="setRoom(lobby.roomID);" data-ng-class="{current: getCurrentRoomID()===lobby.roomID}">{{lobby.roomTitle}}</a></li>
+                    <li data-ng-repeat="lobby in roomMenu" style="box-sizing: border-box;list-style: none;"><a dropdown-toggle data-ng-click="setRoom(lobby.roomID);" data-ng-class="{hidden: getCurrentRoomID()===lobby.roomID}">{{lobby.roomTitle}}</a></li>
                 </ul>
             </li>
         </ul>
