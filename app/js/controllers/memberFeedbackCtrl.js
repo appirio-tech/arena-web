@@ -4,9 +4,6 @@
 /*global angular, $, module, console*/
 // member feedback widget
 var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
-    // mode of feedback panel: modeFloating, modeDashboard, modeMinimized
-    // modeMinimized is default mode.
-    $scope.mode = 'modeMinimized';
     var count = 0,
         fadeTime = 3,
         dashboardTimer = function () {
@@ -40,6 +37,10 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
                 }, 100);
             }
         };
+    // mode of feedback panel: modeFloating, modeDashboard, modeMinimized
+    // modeMinimized is default mode.
+    $scope.mode = 'modeDashboard';
+    $timeout(dashboardTimer, 1000);
     // click to open/collapse the panel
     $scope.collapse = function () {
         if ($scope.mode === 'modeFloating') {
@@ -56,7 +57,7 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
     // submit
     $scope.submit = function () {
         var text = $scope.feedbackText,
-            messageSent = 'Feedback sent successfully! ';
+            messageSent = 'Thank you for your feedback!';
         $scope.feedbackText = '';
         if (angular.isUndefined(text) || text === '') {
             $scope.showError(true);
@@ -65,11 +66,11 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
             console.log('Feedback message: ' + text);
             // message
             $('.bottom-right').notify({
-                message: messageSent + 'And feedback message: ' + text,
-                type: "green",
+                message: messageSent,
+                type: "blue",
                 fadeOut: {
                     enabled: true,
-                    delay: 2500
+                    delay: 5000
                 }
             }).show();
         }

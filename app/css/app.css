@@ -7059,7 +7059,7 @@ table thead .sort.desc{
 .memberFeedback {
     position: fixed;
     bottom: 0;
-    width: 100%;
+    right: 5px;
     z-index: 2;
 }
 .panelFeedback {
@@ -7255,9 +7255,6 @@ table thead .sort.desc{
 /*Media blocks should be placed after the normal code!!!*/
 @media only screen and (max-width: 1245px) {
     .inner { padding: 0;}
-    .memberFeedback .container-fluid {
-        padding: 0;
-    }
     .dashboard .titleBar .brand,
     .contest .titleBar .shareLink {right: 15px; }
     .dashboard .titleBar{padding-left: 15px; }
@@ -7265,8 +7262,7 @@ table thead .sort.desc{
 }
 @media only screen and (min-width: 1200px) {
     /* fix dashboard content size */
-    .dashboard .mainContent,
-    .memberFeedback .mainContent {
+    .dashboard .mainContent {
         width: 1186px;
         margin: 0 auto;
         padding: 0;
@@ -7306,8 +7302,7 @@ table thead .sort.desc{
 }
 /* when device or screen is middle size, force hide navbar-collapse*/
 @media only screen and (max-width: 1199px) {
-    .dashboard .mainContent ,
-    .memberFeedback .mainContent {width: 789px; margin: 0 auto; }
+    .dashboard .mainContent {width: 789px; margin: 0 auto; }
     .dashboard .mainContent .rightBox {width: 759px; }
     .dashboard .mainContent .rightBox img {display: block; margin: 0 auto; }
     .panelContestStat {width: auto; }
@@ -7694,9 +7689,6 @@ table thead .sort.desc{
     }
     /*.inner {padding: 0 5px 60px;}*/
     .inner {padding: 0 5px;}
-    .memberFeedback .container-fluid {
-        padding: 0 5px;
-    }
     .codeArea .mainContent {padding: 0;}
     .codeArea .titleBar>div:first-child,.codeArea .connection {padding-left: 0;padding-right: 65px;}
     .codeArea .shareLink>ul>li>a {right: 5px;}

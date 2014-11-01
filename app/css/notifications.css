@@ -82,6 +82,14 @@
   overflow: hidden;
   color: white;
 }
+.alert-blue {
+  background: #087fc3;
+  background: rgba(8, 127, 195, 0.882);
+  border: 1px solid #0765a7;
+  border-color: rgba(7, 101, 167, 0.882);
+  overflow: hidden;
+  color: white;
+}
 .alert-gray {
   background: #3e3e3e;
   border: 1px solid #fff;
