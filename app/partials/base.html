@@ -122,7 +122,7 @@
         {{ title }}
         <span class="cancel-x" data-ng-click="ok()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body textAlign textColor">
+    <div class="modal-body textAlign textColor" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:popupModalDetail">
         <p ng-bind-html="message" class="coder-history-textMargin"></p>
     </div>
     <div class="modal-footer textAlign">

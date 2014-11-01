@@ -7,8 +7,11 @@
  * - Added the 'reload' functionality similar to ng-scrollbar.
  * - The use of the 'reload' function is recommended, compared to the classic 'rebuild'.
  *
+ * Changes in version 1.2 (Module Assembly - Web Arena Bug Fix 14.10 - 2):
+ * - Added skip prevent default event flag.
+ *
  * @author TCSASSEMBLER
- * @version 1.1
+ * @version 1.2
  */
 'use strict';
 angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
@@ -101,10 +104,12 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
                   dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
                   redraw();
               }
-              if (!!event.preventDefault) {
-                 event.preventDefault();
-              } else {
-                 return false;
+              if (!attrs.hasOwnProperty('skipPreventEvent')) {
+                  if (!!event.preventDefault) {
+                     event.preventDefault();
+                  } else {
+                     return false;
+                  }
               }
           };
         var lastOffsetY;

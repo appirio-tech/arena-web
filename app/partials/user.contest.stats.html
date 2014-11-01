@@ -112,7 +112,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr data-ng-repeat="problem in contest.problems[divisionID] track by $index">
+                    <tr data-ng-repeat="problem in contest.problems[divisionID] | orderBy:'primaryComponent.pointValue' track by $index">
                         <td>{{ $index + 1 }}</td>
                         <td class="textGreen textBold">{{ problem.primaryComponent.pointValue }}</td>
                         <td class="textWhite">{{ problem.name }}</td>
