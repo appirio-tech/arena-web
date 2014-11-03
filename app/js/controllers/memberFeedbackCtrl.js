@@ -70,7 +70,7 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
                 type: "blue",
                 fadeOut: {
                     enabled: true,
-                    delay: 5000
+                    delay: 3000
                 }
             }).show();
         }
