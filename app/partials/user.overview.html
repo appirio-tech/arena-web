@@ -7,7 +7,7 @@
             <div class="contentWrapper" data-ng-show="showSection==='overview'">
                 <div class="profile">
                     <img data-ng-src="{{userProfile.avatar}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="{{userProfile.handle}}"/>
-                    <p class="userNameRow"><span class="{{getRatingClass(userProfile.rating)}}">{{userProfile.handle}}</span></p>
+                    <p class="userNameRow"><span class="{{getRatingClass(userProfile.rating)}}">{{userProfile.handle}}</span><span class="fb-btn-overview" data-ng-click="postFacebookStatus()"></span> <span class='twitter-overview'><span class="tweet-share" twitter data-url="{{getMemberStatusUrl()}}" data-message="{{getMemberStatusMessage()}}"></span></span></p>
                     <p class="ratingRow" data-ng-show="userProfile.rating>0">
                         <label>Rating</label>:<span data-rating-indicator="{{userProfile.rating}}" data-username="{{userProfile.handle}}overview" class="ratingIcon"></span><span class="{{getRatingClass(userProfile.rating)}}">{{userProfile.rating}}</span>
                     </p>
@@ -20,7 +20,6 @@
                     <p class="lastLoginRow">
                         <label>Last Login</label>:&nbsp;<span>{{userProfile.lastLogin| date:'yyyy-MM-dd h:mm a'}} {{ timeZone }}</span>
                     </p>
-                    <div><span class="fb-btn-post" data-ng-click="postFacebookStatus()"></span> <span class="tweet-share" twitter data-url="{{getMemberStatusUrl()}}" data-message="{{getMemberStatusMessage()}}"></span></div>
                 </div><!--/.profile-->
                 <div class="messagesBox">
                     <table class="table">

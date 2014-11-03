@@ -56,15 +56,12 @@
                 <div class="" ng-repeat="test in examples track by $index" data-ng-init="testNum=$index">
                     <span>{{testNum}})</span>
                     <div class="problemStatementRow" ng-repeat="param in test.params">
-                        <div class="statementName">&nbsp;</div>
                         <div class="textWhite">{{param.value}}</div>
                     </div>
                     <div class="problemStatementRow">
-                        <div class="statementName">&nbsp;</div>
                         <div class="textWhite">Returns: {{test.output}}</div>
                     </div>
                     <div class="problemStatementRow" ng-if="test.annotation.annotationHtml">
-                        <div class="statementName">&nbsp;</div>
                         <div class="textWhite" ng-bind-html="test.annotationHtml">
                         </div>
                     </div>
