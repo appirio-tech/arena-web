@@ -978,13 +978,11 @@ footer .right>span:nth-child(2) {
         left: 50%;
         margin: 0;
         margin-top: -254px;
-        margin-left: -300px; /*min-width: 768px;*/
+        margin-left: -450px; /*min-width: 768px;*/
     }
 }
 .modal .modal-lg {
-    padding-top: 15.74%;
     width: 892px;
-    margin-top: 0;
 }
 .modal .modal-content {
     border: 1px solid #234760;
@@ -5744,6 +5742,10 @@ footer .right>span:nth-child(2) {
 .coderHistoryColScore {
     width: 85px;
 }
+.coderHistoryColProblemPoint {
+    cursor: pointer;
+    padding-left: 1px!important;
+}
 .roomsDiv {
     text-align: center;
 }
@@ -5821,6 +5823,9 @@ footer .right>span:nth-child(2) {
 }
 .coder-history-td-italic {
     font-style: italic!important;
+}
+.coder-history-height .coderHistoryTblDiv .coderHistoryTable .coder-history-td {
+    cursor: pointer;
 }
 .panel-custom .panel-heading .search-input {
     width: 450px;

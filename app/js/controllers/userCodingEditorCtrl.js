@@ -49,8 +49,11 @@
  * Changes in version 1.13 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
  * - Fixed issues of the coding editor and the test report.
  *
- * @author tangzx, amethystlei, flytoj2ee
- * @version 1.13
+ * Changes in version 1.14 (Module Assembly - Web Arena Bug Fix 14.10 - 2):
+ * - Fixed the go to line issue.
+ *
+ * @author tangzx, amethystlei, flytoj2ee, TCASSEMBLER
+ * @version 1.14
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -198,9 +201,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.inputGotoText = function (keyEvent) {
             if (keyEvent.which === 13) {
-                $timeout(function () {
-                    angular.element('#gotoByText').trigger('click');
-                }, 10);
+                $scope.jumpToLine();
             }
         };
 

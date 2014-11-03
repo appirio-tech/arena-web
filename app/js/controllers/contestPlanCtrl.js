@@ -7,8 +7,11 @@
  * Changes in version 1.1 (Module Assembly - Web Arena UI - Phase I Bug Fix 3):
  *  - Updated the code to show current date in calendar.
  *
+ * Changes in version 1.2 (Module Assembly - Web Arena Bug Fix 14.10 - 2):
+ *  - Added default configuration for calendar.
+ *
  * @author TCASSEMBLER
- * @version 1.1
+ * @version 1.2
  */
 'use strict';
 /*jshint -W097*/
@@ -25,6 +28,25 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
         year: 2012,
         month: 1,
         day: 1
+    };
+    $scope.uiConfig = {
+        calendar: {
+            height: 255,
+            editable: true,
+            header: {
+                left: 'title',
+                center: '',
+                right: 'month, prev, next'
+            },
+            titleFormat: {
+                month: 'MMMM yyyy',
+                day: 'MMM d, yyyy'
+            },
+            buttonText: {
+                month: 'Back'
+            },
+            timeFormat: 'H(:mm)'
+        }
     };
     $scope.viewNow = 'calendar';
     function parseDate(dateString) {
@@ -83,67 +105,67 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
             }
         };
         $scope.currentDate = data.today;
-        // it will get current date information from calendar when list view is loaded
-        $scope.getCurrentMonth = function () {
-            if ($scope.viewNow === 'list') { return false; }
-            var d = $scope.contestPlan.fullCalendar('getDate');
-            $scope.currentDate = {
-                year: d.getFullYear(),
-                month: d.getMonth(),
-                day: d.getDate()
-            };
-            listRender($scope.events, $scope.currentDate);
-        };
-        // according to currentDate create a new header string for list view
-        $scope.showMonth = function () {
-            var monthString = $scope.currentDate.year + '-' +
-                ($scope.currentDate.month > 8 ? '' : '0') + ($scope.currentDate.month + 1) + '-' +
-                ($scope.currentDate.day > 9 ? '' : '0') + $scope.currentDate.day;
-            return monthString;
-        };
-        // go to the previous month in list view
-        $scope.calendarPrev = function () {
-            var d = $scope.currentDate;
-            if (d.month === 0) {
-                $scope.currentDate = {
-                    year: d.year - 1,
-                    month: 11,
-                    day: d.day
-                };
-            } else {
-                $scope.currentDate = {
-                    year: d.year,
-                    month: d.month - 1,
-                    day: d.day
-                };
-            }
-            listRender($scope.events, $scope.currentDate);
-        };
-        // go to the next month in list view
-        $scope.calendarNext = function () {
-            var d = $scope.currentDate;
-            if (d.month === 11) {
-                $scope.currentDate = {
-                    year: d.year + 1,
-                    month: 0,
-                    day: d.day
-                };
-            } else {
-                $scope.currentDate = {
-                    year: d.year,
-                    month: d.month + 1,
-                    day: d.day
-                };
-            }
-            listRender($scope.events, $scope.currentDate);
-        };
-        // get current date information from list view, 
-        // go to that date and refresh the whole calendar
-        $scope.renderCalendar = function () {
-            $scope.contestPlan.fullCalendar('gotoDate', $scope.currentDate.year, $scope.currentDate.month);
-            $scope.contestPlan.fullCalendar('render');
-        };
     });
+    // it will get current date information from calendar when list view is loaded
+    $scope.getCurrentMonth = function () {
+        if ($scope.viewNow === 'list') { return false; }
+        var d = $scope.contestPlan.fullCalendar('getDate');
+        $scope.currentDate = {
+            year: d.getFullYear(),
+            month: d.getMonth(),
+            day: d.getDate()
+        };
+        listRender($scope.events, $scope.currentDate);
+    };
+    // according to currentDate create a new header string for list view
+    $scope.showMonth = function () {
+        var monthString = $scope.currentDate.year + '-' +
+            ($scope.currentDate.month > 8 ? '' : '0') + ($scope.currentDate.month + 1) + '-' +
+            ($scope.currentDate.day > 9 ? '' : '0') + $scope.currentDate.day;
+        return monthString;
+    };
+    // go to the previous month in list view
+    $scope.calendarPrev = function () {
+        var d = $scope.currentDate;
+        if (d.month === 0) {
+            $scope.currentDate = {
+                year: d.year - 1,
+                month: 11,
+                day: d.day
+            };
+        } else {
+            $scope.currentDate = {
+                year: d.year,
+                month: d.month - 1,
+                day: d.day
+            };
+        }
+        listRender($scope.events, $scope.currentDate);
+    };
+    // go to the next month in list view
+    $scope.calendarNext = function () {
+        var d = $scope.currentDate;
+        if (d.month === 11) {
+            $scope.currentDate = {
+                year: d.year + 1,
+                month: 0,
+                day: d.day
+            };
+        } else {
+            $scope.currentDate = {
+                year: d.year,
+                month: d.month + 1,
+                day: d.day
+            };
+        }
+        listRender($scope.events, $scope.currentDate);
+    };
+    // get current date information from list view,
+    // go to that date and refresh the whole calendar
+    $scope.renderCalendar = function () {
+        $scope.contestPlan.fullCalendar('gotoDate', $scope.currentDate.year, $scope.currentDate.month);
+        $scope.contestPlan.fullCalendar('render');
+    };
     // add color info to day number
     $scope.eventRender = function (event, element, monthView) {
         var date = event.start.getFullYear() + '-' +

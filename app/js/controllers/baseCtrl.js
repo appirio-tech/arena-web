@@ -71,8 +71,13 @@
  * Changes in version 1.16 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
  * - Fixed issues of the Message Arena.
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.16
+ * Changes in version 1.17 (Module Assembly - Web Arena Bug Fix 14.10 - 2):
+ * - Added sort function in problem field of coder history popup.
+ * - Fixed notification url issue.
+ * - Added the scroll bar for popup modal detail panel.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
+ * @version 1.17
  */
 'use strict';
 /*jshint -W097*/
@@ -184,11 +189,35 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 $modalInstance.dismiss('cancel');
             };
 
+            $scope.orderField = 'componentValue';
+
+            /**
+             * Sort by problem default point.
+             */
+            $scope.sortByProblemPoint = function () {
+                if ($scope.orderField.indexOf('-') === 0) {
+                    $scope.orderField = $scope.orderField.substring(1);
+                } else {
+                    $scope.orderField = '-' + $scope.orderField;
+                }
+            };
+
+            /**
+             * The problem default point sort order.
+             * @returns {boolean} the sort order.
+             */
+            $scope.isSortByProblemPoint = function () {
+                return ($scope.orderField.indexOf('-') === 0);
+            };
+
             popupDetailModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', function ($scope, $modalInstance, data, ok) {
                 $scope.title = data.title;
                 $scope.message = data.detail;
                 $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
                 $scope.enableClose = true;
+                $timeout(function () {
+                    $scope.$broadcast('rebuild:popupModalDetail');
+                }, 100);
 
                 $scope.ok = function () {
                     ok();
@@ -649,7 +678,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     };
 
     /**
-     * Opens pop up with notificatino details.
+     * Opens pop up with notification details.
      *
      * @param notification the notification being opened
      */
@@ -657,7 +686,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         var okClicked = function () {
                 if (angular.isDefined(notification.action) && angular.isDefined(notification.action.target)
                         && notification.action.target.length > 0) {
-                    $window.location.href = notification.action.target;
+                    $window.location.href = notification.action.target + "/";
                 }
             },
             buttons = ((angular.isDefined(notification.action) && angular.isDefined(notification.action.target)

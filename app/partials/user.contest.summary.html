@@ -71,7 +71,7 @@
                                             <th class="col2 sortableHeading">
                                                 Handle
                                             </th>
-                                            <th data-ng-repeat="problem in contest.problems[viewDivisionID] track by $index" class="colProblem sortableHeading">
+                                            <th data-ng-repeat="problem in contest.problems[viewDivisionID] | orderBy:'primaryComponent.pointValue' track by $index" class="colProblem sortableHeading">
                                                 {{ problem.primaryComponent.pointValue }}
                                             </th>
                                             <th class="col6 sortableHeading">
@@ -99,7 +99,7 @@
                                                 --><span data-ng-click="showCoderInfo(coder.userName, coder.userType);" class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
                                                 <a class="rating" data-ng-click="getCoderHistory(coder)"><img src="../img/history.png"/></a>
                                             </td>
-                                            <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
+                                            <td data-ng-repeat="component in coder.components | orderBy:'defaultPoint' track by $index" class="colProblem">
                                                 <a data-ng-show="isViewable(contest.phaseData.phaseType, component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span></a>
                                                 <span data-ng-hide="isViewable(contest.phaseData.phaseType, component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span>
                                             </td>
@@ -123,7 +123,7 @@
                                                 --><!-- avoid blank
                                                 --><span class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
                                             </td>
-                                            <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
+                                            <td data-ng-repeat="component in coder.components | orderBy:'defaultPoint' track by $index" class="colProblem">
                                                 <a data-ng-show="isViewable(contest.phaseData.phaseType, component)" data-ng-click=""><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span></a>
                                                 <span data-ng-hide="isViewable(contest.phaseData.phaseType, component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span>
                                             </td>

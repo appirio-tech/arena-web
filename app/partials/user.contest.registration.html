@@ -2,7 +2,7 @@
     {{ title }}
     <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
 </div>
-<div class="modal-body registration-modal-body" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:userRegistration">
+<div class="modal-body registration-modal-body" data-ng-custom-scrollbar data-rebuild-on-resize data-skip-prevent-event data-rebuild-on="rebuild:userRegistration">
     <p class="title" data-ng-show="surveyMessage && surveyMessage !== ''">Important Notice</p>
     <div class="questionDiv" data-ng-show="surveyMessage && surveyMessage !== ''">
         <p class="questionText" ng-bind-html="surveyMessage"></p>
