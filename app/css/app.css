@@ -5726,6 +5726,7 @@ footer .right>span:nth-child(2) {
     padding-bottom: 0;
     height: 26px;
     border-top: 1px solid;
+    border-bottom: 1px solid;
 }
 .coderHistoryTblDiv .coderHistoryTable>tbody>tr {
     cursor: pointer !important;
