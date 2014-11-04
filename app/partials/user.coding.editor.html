@@ -10,7 +10,7 @@
                     <a data-ng-click="toggleSettings()" class="closeIcon"></a>
                     <div class="editorRow">
                         <label class="textWhite">Editor</label>
-                        <ul class="editorDropDown settingDropDown"><li class="dropdown"><a class="dropdown-toggle">{{getThemeName(themeIdx)}}</a><!-- 
+                        <ul class="editorDropDown settingDropDown"><li class="dropdown"><a class="dropdown-toggle disabled">{{getThemeName(themeIdx)}}</a><!--
                          --><ul class="dropdown-menu">
                                 <li data-ng-repeat="t in themes track by $index"><a data-ng-click="setThemeIdx($index)" data-ng-class="{current: $index === themeIdx}">{{t.name}}</a></li>
                             </ul></li><!-- 
@@ -40,12 +40,12 @@
             <div class="middlePart">
                 <ul class="actionIcons"><!-- avoid unnecessary blank
                 <li class="link saveLink"  data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Save</li>  avoid unnecessary blank
-                --><li class="link clearLink" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Clear</li><!--  avoid unnecessary blank
+                --><li class="link clearLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Clear</li><!--  avoid unnecessary blank
                 --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Compile</li><!--
                 --><li class="link submitLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Submit</li>
                 </ul><!--  avoid unnecessary blank
                 --><div data-ng-show="currentStateName()==='user.viewCode'">{{languages[langIdx].name}}</div><!--
-                --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" data-ng-model="searchText" data-ng-keypress="inputSearchText($event)"/><a id="searchByText" data-ng-click="searchByText()" class="searchIcon"></a></div><!--  avoid unnecessary blank
+                --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" data-ng-model="searchText" data-ng-keypress="inputSearchText($event)" data-ng-change="searchByText()"/><a id="searchByText" data-ng-click="searchByText()" class="searchIcon"></a></div><!--  avoid unnecessary blank
                 --><div class="gotoInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><label for="goto">Go To</label><input type="text" name="goto" id="goto" data-ng-model="gotoLine" data-ng-keypress="inputGotoText($event)"/></div>
             </div>
             <div class="rightPart">

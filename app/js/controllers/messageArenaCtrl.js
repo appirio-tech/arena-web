@@ -57,7 +57,8 @@ var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', '$window', 
                             message: message,
                             type: "green",
                             fadeOut: {
-                                enabled: false
+                                enabled: true,
+                                delay: 60000
                             }
                         }).show();
                     }

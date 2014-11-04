@@ -968,7 +968,7 @@ footer .right>span:nth-child(2) {
 /* ** /.Fix to page move right ** */
 
 .modal .modal-dialog {
-    padding-top: 10%;
+    /*padding-top: 10%;*/
 }
 @media only screen and (min-height: 509px) and (min-width: 768px) {
     .modal .modal-dialog {
@@ -6356,9 +6356,13 @@ contestManagementPanel .panel-footer .btn {
     padding-bottom: 0;
     height: 26px;
     border-top: 1px solid;
+    border-bottom: 1px solid;
+}
+.coderHistoryTblDiv .coderHistoryTable>tbody>tr {
+    cursor: pointer !important;
 }
 .coderHistoryColTime {
-    width: 130px;
+    width: 150px;
 }
 .coderHistoryColAction {
     width: 95px;
@@ -6527,7 +6531,7 @@ contestManagementPanel .panel-footer .btn {
     padding-right: 0;
 }
 .detailPage .challengeWrapper .table .col1 {
-    width: 24px;
+    width: 30px;
 }
 .challengeWrapper .table .col1 .arrow {
     margin-left: 3px!important;
@@ -6838,7 +6842,7 @@ table thead .sort.desc{
     background-image: url(../img/dark/sprite-room-summary.png);
     position: absolute;
     top: -1px;
-    right: 4px;
+    right: 5px;
     z-index: 1;
     width: 7px;
     height: 9px;
@@ -6855,12 +6859,16 @@ table thead .sort.desc{
     width: 9px;
     height: 9px;
     z-index:1;
-    background-position: -33px -51px;
+    background-position: -33px -52px;
     cursor:pointer;
 }
 
 .ngsb-wrap .ngsb-scrollbar {
     top: 10px;
+}
+
+.ngsb-wrap .ngsb-scrollbar .ngsb-thumb-container {
+    right: 1px;
 }
 .panel-body .mainContent .infoRow {
     width: 434px;
@@ -7785,4 +7793,7 @@ table thead .sort.desc{
     .pastNotifications:after {
         left: 159px;
     }
+}
+.panelCodeEditor .settingsPanel .editorDropDown .dropdown-toggle {
+    cursor: not-allowed;
 }

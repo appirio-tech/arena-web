@@ -24,8 +24,11 @@
  * Changes in version 1.6 (Module Assembly - Web Arena Bug Fix 14.10 - 2):
  * - Populated the component default point value.
  *
+ * Changes in version 1.7 (Sort is not retained in room summary):
+ * - Reset isKeepSort to false.
+ *
  * @author amethystlei, flytoj2ee, dexy, TCASSEMBLER
- * @version 1.6
+ * @version 1.7
  */
 'use strict';
 /*global module, angular*/
@@ -210,6 +213,8 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
     };
     $scope.viewDetail = function (contest) {
         preserveLastDivSummary = true;
+        //should discard the key sort
+        $rootScope.isKeepSort = false;
         $state.go('user.contestSummary', {contestId : contest.roundID, divisionId : $scope.divisionID, viewOn : $scope.viewOn});
     };
 

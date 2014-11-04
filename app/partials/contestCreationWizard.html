@@ -1,10 +1,10 @@
-<div class="modal-header wizardHeader">Match Wizard<a class="cancel" data-ng-click="cancel();"></a></div>
+<div class="modal-header wizardHeader">Match Creation Wizard<a class="cancel" data-ng-click="cancel();"></a></div>
 <div class="modal-body wizardBody">
     <ul class="nav indicator" role="tablist">
         <li data-ng-class="{active: index==1, clickable: index==4}" class="item-1" data-ng-click="navTo(1)"><span>Step 1. Overview</span></li><!-- avoid whitespace
         --><li data-ng-class="{active: index==2, clickable: index==4}" class="item-2" data-ng-click="navTo(2)"><span>Step 2. Sponsorship</span></li><!-- avoid whitespace
         --><li data-ng-class="{active: index==3, clickable: index==4}" class="item-3" data-ng-click="navTo(3)"><span>Step 3. Advance Setting</span></li><!-- avoid whitespace
-        --><li data-ng-class="{active: index==4}" class="item-4"><span>Summary Screen</span></li>
+        --><li data-ng-class="{active: index==4}" class="item-4"><span>Summary</span></li>
     </ul>
     <form name="contestForm" class="contestForm">
         <!-- step 1. Overview-->
@@ -80,7 +80,7 @@
         </div>
         <!-- step 2. Sponsorship -->
         <div class="tabContent step-2" data-ng-show="index==2">
-            <fieldset class="officialRated"><input type="checkbox" name="officialRated" id="officialRated" data-ng-model="officialRated" class="checkboxInput"><label for="officialRated" class="checkboxLbl">Official rated Match</label></fieldset>
+            <fieldset class="officialRated"><input type="checkbox" name="officialRated" id="officialRated" data-ng-model="officialRated" class="checkboxInput"><label for="officialRated" class="checkboxLbl">Officially rated Match</label></fieldset>
             <div class="panel sponsorInfo">
                 <a data-ng-click="toggle('openSponsorInfo')" class="panel-heading" data-ng-class="{open:openSponsorInfo}"><span>Add Sponsorship Info</span></a>
                 <div class="panel-body" data-ng-show="openSponsorInfo">
@@ -143,7 +143,7 @@
                             </div>
                         </div>
                     </fieldset><!--
-                    --><div class="info spec">Registration will open specified amount of time prior to match . Also Registration will always close five minutes before the match start.</div>
+                    --><div class="info spec">Registration will open specified amount of time prior to match. Also Registration will always close five minutes before the match starts.</div>
                     <hr data-ng-class="{disabled:removeInter}"/>
                     <fieldset data-ng-class="{disabled:removeInter}">
                         <div class="intermissionLength">
@@ -219,10 +219,10 @@
             <div class="leftPart col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <section class="schedule">
                     <h3>Phase Schedule (prior to contest)</h3>
-                    <p><label>Registration Start</label><span><span data-ng-hide="$parent.regStartH==0">{{$parent.regStartH}} hour<span data-ng-hide="$parent.regStartH==1">s</span> </span><span data-ng-hide="$parent.regStartMm=='0' || $parent.regStartMm==0">{{trimLeadingZero($parent.regStartMm)}} minute<span data-ng-hide="$parent.regStartMm=='1'">s</span></span></span></p>
-                    <p><label>Coding Length</label><span><span data-ng-hide="$parent.codeLengthH==0">{{$parent.codeLengthH}} hour </span><span data-ng-hide="$parent.codeLengthMm=='0' || $parent.codeLengthMm==0">{{trimLeadingZero(codeLengthMm)}} minute<span data-ng-hide="$parent.codeLengthMm=='1'">s</span></span></span></p>
-                    <p><label>Intermission Length</label><span data-ng-hide="removeInter"><span data-ng-hide="$parent.intermissionLengthH==0">{{intermissionLengthH}} hour </span><span data-ng-hide="$parent.intermissionLengthMm=='0' || $parent.intermissionLengthMm==0">{{trimLeadingZero(intermissionLengthMm)}} minute<span data-ng-hide="$parent.intermissionLengthMm=='1'">s</span></span></span></p>
-                    <p><label>Challenge Length</label><span data-ng-hide="removeInter"><span data-ng-hide="$parent.challengeLengthH==0">{{challengeLengthH}} hour </span><span data-ng-hide="$parent.challengeLengthMm=='0' || $parent.challengeLengthMm==0">{{trimLeadingZero(challengeLengthMm)}} minute<span data-ng-hide="$parent.challengeLengthMm=='1'">s</span></span></span></p>
+                    <p><label>Registration Start</label><span><span data-ng-hide="$parent.regStartH==0">{{$parent.regStartH}} hour<span data-ng-hide="$parent.regStartH==1">s</span> </span><span data-ng-hide="$parent.regStartMm=='0' || $parent.regStartMm==0">{{trimLeadingZero($parent.regStartMm)}} minute<span data-ng-hide="$parent.regStartMm=='1' || $parent.regStartMm=='01'">s</span></span></span></p>
+                    <p><label>Coding Length</label><span><span data-ng-hide="$parent.codeLengthH==0">{{$parent.codeLengthH}} hour<span data-ng-hide="$parent.codeLengthH==1">s</span> </span><span data-ng-hide="$parent.codeLengthMm=='0' || $parent.codeLengthMm==0">{{trimLeadingZero(codeLengthMm)}} minute<span data-ng-hide="$parent.codeLengthMm=='1' || $parent.codeLengthMm=='01'">s</span></span></span></p>
+                    <p><label>Intermission Length</label><span data-ng-hide="removeInter"><span data-ng-hide="$parent.intermissionLengthH==0">{{intermissionLengthH}} hour<span data-ng-hide="$parent.intermissionLengthH==1">s</span> </span><span data-ng-hide="$parent.intermissionLengthMm=='0' || $parent.intermissionLengthMm==0">{{trimLeadingZero(intermissionLengthMm)}} minute<span data-ng-hide="$parent.intermissionLengthMm=='1' || $parent.intermissionLengthMm=='01'">s</span></span></span></p>
+                    <p><label>Challenge Length</label><span data-ng-hide="removeInter"><span data-ng-hide="$parent.challengeLengthH==0">{{challengeLengthH}} hour<span data-ng-hide="$parent.challengeLengthH==1">s</span> </span><span data-ng-hide="$parent.challengeLengthMm=='0' || $parent.challengeLengthMm==0">{{trimLeadingZero(challengeLengthMm)}} minute<span data-ng-hide="$parent.challengeLengthMm=='1' || $parent.challengeLengthMm=='01'">s</span></span></span></p>
                 </section>
                 <section class="roomAssign">
                     <h3>Room Assignment</h3>
@@ -243,7 +243,7 @@
                             <label>Type: </label><span>{{type}}</span>
                         </p>
                     </div>
-                    <p><label>Allowed Language</label><span>{{getChoice()}}</span></p>
+                    <p><label>Allowed Language(s)</label><span>{{getChoice()}}</span></p>
                     <p class="regLimitRow"><label>Registration Limit</label><span>{{regLimit}}</span></p>
                 </div>
                 <div class="sponsorPart">
@@ -252,12 +252,12 @@
                     <span class="taglineSum">{{tagline}}</span>
                 </div>
                 <div class="other">
-                    <p><label>Status:</label><span>Active</span><label class="marginLeft">Official rated Match:</label><span>{{ officialRated === true ? 'Yes' : 'No' }}</span></p>
+                    <p><label>Status:</label><span>Active</span><label class="marginLeft">Officially rated Match:</label><span>{{ officialRated === true ? 'Yes' : 'No' }}</span></p>
                     <div><label for="notes">Add Notes</label><div class="inputBorder"><input type="text" id="notes" name="notes" data-ng-model="$parent.notes" maxlength="250"></div></div>
                 </div>
             </div>
         </div>
-        <p class="errorInfo" data-ng-show="hasError"><span>Please correct the errors and try again.</span></p>
+        <p class="errorInfo" data-ng-show="hasError"><span>Please correct the error(s) and try again.</span></p>
         <ul class="pager">
             <li class="previous" data-ng-hide="index==1 || index==4"><a class="btn btn-primary btnPrev" data-ng-click="prev();">Previous</a></li>
             <li class="next" data-ng-hide="index==4"><a class="btn btn-primary btnNext" data-ng-click="next(contestForm);">Next</a></li>

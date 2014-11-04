@@ -119,11 +119,12 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             modalTimeoutPromise = null,
             /**
              * Close the dropdown.
+             * @param elem - the drop down element.
              */
-            closeDropdown = function () {
-                var isOpen = angular.element('.dropdown').hasClass('open');
+            closeDropdown = function (elem) {
+                var isOpen = elem.hasClass('open');
                 if (isOpen) {
-                    angular.element('.dropdown').trigger('click');
+                    elem.removeClass('open');
                 }
             };
 
@@ -419,7 +420,10 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.setThemeIdx = function (themeIdx) {
             $scope.themeIdx = themeIdx;
-            closeDropdown();
+            var _elem = angular.element('ul.editorDropDown > li.dropdown');
+            if (_elem) {
+                closeDropdown(_elem);
+            }
         };
 
         // init language settings
@@ -455,7 +459,10 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             $scope.langIdx = langIdx;
 
             updateArgTypeAndMethod($scope.lang($scope.langIdx).id);
-            closeDropdown();
+            var _elem = angular.element('ul.languageDropDown > li.dropdown');
+            if (_elem) {
+                closeDropdown(_elem);
+            }
         };
 
         // init show/hide line number settings
@@ -582,7 +589,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * Clear the editor.
          */
         $scope.clearEditor = function () {
-            if (userInputDisabled) {
+            if (userInputDisabled || $scope.disableSubmit()) {
                 return;
             }
             $scope.openModal({

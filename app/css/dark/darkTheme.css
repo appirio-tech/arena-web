@@ -1217,3 +1217,8 @@ footer .right .sponsorLogo {
 .socialButtons .challenge {
     color: rgb(146, 147, 148);
 }
+
+/* Registrants table > Country rows */
+.registrants-modal tbody .col2 {
+    color: #A0A0A0!important;
+}

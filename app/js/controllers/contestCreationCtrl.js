@@ -299,7 +299,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 $scope.openDetailModal({'title': 'Error', 'detail': 'Failed to create match: ' + getErrorDetail(data, status), 'enableClose': true});
             };
 
-            $scope.openDetailModal({'title': 'Saving match data', 'detail': 'Please wait for saving match data.', 'enableClose': false});
+            $scope.openDetailModal({'title': 'Saving match data', 'detail': 'Please wait while saving match data.', 'enableClose': false});
 
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
