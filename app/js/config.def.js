@@ -8,13 +8,13 @@ module.exports = {
     callbackURL: '@@CALLBACK_URL',
     webSocketURL: '@@WEB_SOCKET_URL',
     ssoKey: '@@SSO_KEY',
-    connectionTimeout: @@CONNECTION_TIMEOUT,
+    connectionTimeout: '@@CONNECTION_TIMEOUT',
     googleAnalyticsTrackingId: '@@GOOGLE_ANALYTICS_TRACKING_ID',
     staticFileHost: '@@STATIC_FILE_HOST',
     memberPhotoHost: '@@MEMBER_PHOTO_HOST',
     jwtToken: '@@JWT_TOKEN',
     chatLength: '@@CHAT_LENGTH',
-    localStorageExpireTime: @@LOCAL_STORAGE_EXPIRE_TIME,
+    localStorageExpireTime: '@@LOCAL_STORAGE_EXPIRE_TIME',
     facebookApiId: '@@FACEBOOK_API_ID',
     social: {
         statusTemplate: '@@SOCIAL_STATUS_TEMPLATE',
@@ -27,10 +27,11 @@ module.exports = {
     tweetText: '@@TWEET_TEXT',
     tweetUrl: '@@TWEET_URL',
     facebookLink: '@@FACEBOOK_LINK',
-    divsionLearderBoardLimit:'@@DIVISION_LEADERBOARD_LIMIT',
-    summaryTopCoderCount:'@@SUMMARY_TOPCODER_COUNT',
-    practiceProblemListPageSize: '@@PRACTICE_PROBLEM_LIST_PAGE_SIZE',
     registrationUrl: '@@REGISTRATION_URL',
-    spinnerTimeout: @@SPINNER_TIMEOUT
+    spinnerTimeout: '@@SPINNER_TIMEOUT',
+    divsionLearderBoardLimit: '@@DIVISION_LEADERBOARD_LIMIT',
+    summaryTopCoderCount: '@@SUMMARY_TOPCODER_COUNT',
+    practiceProblemListPageSize: '@@PRACTICE_PROBLEM_LIST_PAGE_SIZE',
+    feedbackSpreadsheetUrl: '@@FEEDBACK_SPREADSHEET_URL'
 };
 

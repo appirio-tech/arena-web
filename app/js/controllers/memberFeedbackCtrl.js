@@ -3,7 +3,10 @@
 /*jshint strict:false*/
 /*global angular, $, module, console*/
 // member feedback widget
-var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
+
+var config = require('../config');
+
+var memberFeedbackCtrl = ['$http', '$scope', '$timeout', function ($http, $scope, $timeout) {
     var count = 0,
         fadeTime = 3,
         dashboardTimer = function () {
@@ -57,6 +60,7 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
     // submit
     $scope.submit = function () {
         var text = $scope.feedbackText,
+            handle = $scope.username(),
             messageSent = 'Thank you for your feedback!';
         $scope.feedbackText = '';
         if (angular.isUndefined(text) || text === '') {
@@ -64,6 +68,22 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
         } else {
             addAnimationForBody(false);
             console.log('Feedback message: ' + text);
+            /*jslint unparam: true*/
+            $http({
+                method: 'POST',
+                url: config.feedbackSpreadsheetUrl,
+                // turn request into simple request from preflighted request and encode accordingly
+                // https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                data: $.param({handle: handle, feedback: text})
+            }).
+                  success(function (data, status, headers, config) {
+                    console.log(data.result); // can be success or error
+                }).
+                  error(function (data, status, headers, config) {
+                    console.log('Error');
+                });
+            /*jslint unparam: false*/
             // message
             $('.bottom-right').notify({
                 message: messageSent,
