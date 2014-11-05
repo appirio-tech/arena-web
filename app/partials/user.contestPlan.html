@@ -12,6 +12,7 @@
         </ul>
     </div><!--/.panel-heading-->
     <div class="panel-body">
+        <div class="preloader-window" data-preloader data-num-requests='{{numCalendarRequests}}' text='Loading Calendar...'></div>
         <div class="calendarView">
             <div data-ui-calendar="uiConfig.calendar" data-ng-model="eventSources" data-calendar="contestPlan" class="calendar" data-ng-show="viewNow==='calendar'" id="calendar"></div><!--/.calendar-->
         </div>
