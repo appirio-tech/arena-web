@@ -30,6 +30,7 @@ module.exports = {
     divsionLearderBoardLimit:'@@DIVISION_LEADERBOARD_LIMIT',
     summaryTopCoderCount:'@@SUMMARY_TOPCODER_COUNT',
     practiceProblemListPageSize: '@@PRACTICE_PROBLEM_LIST_PAGE_SIZE',
-    registrationUrl: '@@REGISTRATION_URL'
+    registrationUrl: '@@REGISTRATION_URL',
+    spinnerTimeout: @@SPINNER_TIMEOUT
 };
 

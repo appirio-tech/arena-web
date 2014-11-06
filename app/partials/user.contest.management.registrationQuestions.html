@@ -22,6 +22,7 @@
                             <div>
                                 <table class="table table-condensed problemTable">
                                 <tbody>
+                                    <div class="preloader-window" data-preloader data-num-requests='{{numQuestionsRequests}}' text='Loading Questions...'></div>
                                     <tr data-ng-repeat="item in round.questions">
                                         <td class="colKeyword">{{item.keyword}}</td>
                                         <td class="colType">{{item.type.description}}</td>
