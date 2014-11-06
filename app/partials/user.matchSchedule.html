@@ -6,6 +6,7 @@
             </div>
         </div>
         <div class="container-fluid row-fluid mainContent paddingTop">
+            <div class="preloader-window" data-preloader data-num-requests='{{numScheduleRequests}}' text='Loading Schedule...'></div>
             <div data-ui-calendar="matchScheduleConfig.calendar" data-ng-model="eventSources" data-calendar="matchSchedule" class="matchSchedule" id="matchSchedule"></div><!--/.calendar-->
         </div>
     </div>
