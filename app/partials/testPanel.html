@@ -1,7 +1,7 @@
 <div data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-skip-prevent-event data-rebuild-on="test-panel-loaded" id="testPanelDiv">
     <div class="btnRow">
         <input type="checkbox" id="testCase-all" class="caseCheck" data-ng-disabled="isSelectedAllDisable()" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()" /><label for="testCase-all" data-ng-if="currentStateName()=='user.coding' || currentStateName()=='user.practiceCode'" class="caseLbl">Check All</label><!--
-        --><a data-ng-click="runTests()" data-ng-if="currentStateName()=='user.viewCode' || currentStateName()=='user.practiceCode'" data-ng-show="!isTesting" class="btn challengeBtn">Challenge</a><!-- avoid whitespace
+        --><a data-ng-click="runTests()" data-ng-if="currentStateName()=='user.viewCode'" data-ng-show="!isTesting" class="btn challengeBtn">Challenge</a><!-- avoid whitespace
         --><a data-ng-click="runCheckedTests()" data-ng-if="currentStateName()=='user.coding' || currentStateName()=='user.practiceCode'" data-ng-show="!isTesting" class="btn testBtn">Run Test</a><!-- avoid whitespace
         --><a data-ng-click="addTestCase();toggleTextCase();" data-ng-if="currentStateName()=='user.coding'" data-ng-show="!isTesting" class="btn addBtn"><b>+</b> Add</a>
         <i data-ng-show="isTesting" class="loadIcon"></i>

@@ -2636,8 +2636,7 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeEditor .testPanel .btnRow label {
     display: inline-block;
-    width: 55px;
-    margin-right: 45px;
+    margin-right: 25px;
     height: 36px;
     padding-top: 15px;
     margin-bottom: 6px;
@@ -2646,7 +2645,7 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .testPanel .btnRow .btn {margin-bottom: 0;}
 .panelCodeEditor .testPanel .btnRow .testBtn,
 .panelCodeEditor .testPanel .btnRow .addBtn {
-    width: 76px;
+    width: 90px;
     padding: 5px 6px 7px 10px;
     font-weight: 300;
     text-align: left;
