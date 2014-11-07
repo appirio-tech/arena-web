@@ -114,8 +114,10 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
         };
     }
 
+    $scope.numCalendarRequests = 1;
     // Call tc-api server to get srm schedule
     $http.get(config.apiDomain + '/data/srm/schedule?pageIndex=-1&sortColumn=startDate&sortOrder=asc').success(function (data, status, headers) {
+        $scope.numCalendarRequests -= 1;
         if (data.data) {
             data.data.forEach(function (item) {
                 $scope.eventSources[0].push({
@@ -127,6 +129,7 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
         }
         initCalendar();
     }).error(function (data, status, headers, config) {
+        $scope.numCalendarRequests -= 1;
         //skip the error, simply print to console
         console.log(data);
     });

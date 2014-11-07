@@ -64,3 +64,6 @@ set SUMMARY_TOPCODER_COUNT=4
 set PRACTICE_PROBLEM_LIST_PAGE_SIZE=10
 
 set REGISTRATION_URL=http://tcqa1.topcoder.com/?action=callback
+
+:: The time (in ms) after which the loading spinner times out if there is no activity.
+set SPINNER_TIMEOUT=10000

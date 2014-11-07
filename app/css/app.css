@@ -163,7 +163,13 @@ body a {cursor: pointer;}
     background-position: -175px 0;
 }
 .navIcons .iconCM:before {
-    background-position: -275px 0;
+    background-position: -75px 0;
+}
+.navIcons .iconPP:before {
+    background-position: -150px 0;
+}
+.navIcons .iconMS:before {
+    background-position: -25px 0;
 }
 .header .navbar .navIcons>li>.iconCC:before {
     background-image: url(../img/wizard-icon.png);
@@ -649,6 +655,36 @@ body a {cursor: pointer;}
 .rating-admin:hover{
     color: #ff9900;
 }
+/********** Loading spinner *****/
+.preloader-window {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    width: 180px;
+    height: 40px;
+    z-index: 1000;
+    background-color: #000000;
+    opacity: 1;
+    border: 1px solid #0bbbe7;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #ffffff;
+    display: inline-block;
+}
+
+.preloader-window .preloader-indicator {
+    position: absolute;
+    display: inline-block !important;
+    padding: 5px 0px 0px 5px;
+}
+
+.preloader-window .preloader-indicator>img {
+    display: inline-block !important;
+    vertical-align: middle;
+    padding: 2px 4px 2px 2px;
+}
+
 /*************** dashboard page */
 /* basical stucture, title, breadcrumb and connection */
 .inner{

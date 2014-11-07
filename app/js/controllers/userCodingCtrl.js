@@ -541,16 +541,18 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 });
             }, 100);
         } else if ($scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
-            $scope.componentID = Number($stateParams.componentId);
-            socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
-                problemID: $scope.componentID
-            });
-            $timeout(function () {
-                socket.emit(helper.EVENT_NAME.OpenComponentForCodingRequest, {
-                    componentID: $scope.componentID,
-                    handle: $scope.username()
+            $scope.$on(helper.EVENT_NAME.RoomInfoResponse, function () {
+                $scope.componentID = Number($stateParams.componentId);
+                socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
+                    problemID: $scope.componentID
                 });
-            }, 100);
+                $timeout(function () {
+                    socket.emit(helper.EVENT_NAME.OpenComponentForCodingRequest, {
+                        componentID: $scope.componentID,
+                        handle: $scope.username()
+                    });
+                }, 100);
+            });
             socket.emit(helper.EVENT_NAME.MoveRequest, { moveType: helper.ROOM_TYPE_ID.PracticeRoom, roomID: $stateParams.roomId });
             socket.emit(helper.EVENT_NAME.EnterRequest, { roomID: -1 });
         }

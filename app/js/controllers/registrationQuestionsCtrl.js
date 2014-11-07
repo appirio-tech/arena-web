@@ -32,6 +32,7 @@ var registrationQuestionsCtrl = ['$scope', '$timeout', '$http', 'sessionHelper',
         }, 50);
     }
 
+    $scope.numQuestionsRequests = 1;
     /**
      * Initialize round to manage its questions
      * @param round
@@ -40,6 +41,7 @@ var registrationQuestionsCtrl = ['$scope', '$timeout', '$http', 'sessionHelper',
         $scope.round = round;
         $http.get(config.apiDomain + '/data/srm/rounds/' + $scope.round.id + '/questions', header).
             success(function (data) {
+                $scope.numQuestionsRequests -= 1;
                 if (data.error) {
                     $rootScope.$broadcast('genericApiError', data);
                     return;
@@ -47,6 +49,7 @@ var registrationQuestionsCtrl = ['$scope', '$timeout', '$http', 'sessionHelper',
                 $scope.round.questions = data.questions;
                 refreshScrollbar();
             }).error(function (data) {
+                $scope.numQuestionsRequests -= 1;
                 $rootScope.$broadcast('genericApiError', data);
             });
     }

@@ -20,7 +20,7 @@
 var config = require('../config');
 var helper = require('../helper');
 
-var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'appHelper', function ($scope, $http, $timeout, sessionHelper, appHelper) {
+var contestManagementCtrl = ['$scope', '$http', '$timeout', 'appHelper', function ($scope, $http, $timeout, appHelper) {
     /**
      * Keys for management page filter
      * @type {Array}
@@ -559,6 +559,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
         });
     }
 
+    /*jslint unparam:true*/
     /**
      * Listens to errors across all contest management controllers like
      * contestTermsConfigCtrl, contestScheduleConfigCtrl, manageQuestionCtrl, registrationQuestionCtrl and manageAnswerCtrl
@@ -568,6 +569,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
     $scope.$on('genericApiError', function (event, data) {
         genericErrorHandler(data);
     });
+    /*jslint unparam:false*/
     /**
      * It loads all rounds from $scope.allRounds to array to use in ng-repeat
      * Make sure to call this method whenever there is change in $scope.allRounds
@@ -652,6 +654,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
      */
     function saveContestRounds(rounds) {
         var i = 0;
+        $scope.numContestRequests -= 1;
         if (rounds.error) {
             genericErrorHandler(rounds);
             return;
@@ -684,26 +687,42 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
     }
 
     /**
+     * Handles error when loading rounds from server.
+     *
+     * @param data the data received
+     */
+    function errorLoadingRounds(data) {
+        $scope.numContestRequests -= 1;
+        genericErrorHandler(data);
+    }
+
+    $scope.numContestRequests = 1;
+    /**
      * Sends request to api to get all contests
      * Once contests are received request will be sent to retrieve respective rounds
      */
     $http.get(config.apiDomain + '/data/srm/contests', header).success(function (contests) {
         var i = 0;
+        $scope.numContestRequests -= 1;
         if (contests.error) {
             genericErrorHandler(contests);
             return;
         }
         for (i = 0; i < contests.length; i++) {
             $scope.allContests[contests[i].contestId] = contests[i];
-            $http.get(config.apiDomain + '/data/srm/rounds/' + contests[i].contestId, header).
-                success(saveContestRounds).error(genericErrorHandler);
+            $scope.numContestRequests += 1;
+            $http.get(config.apiDomain + '/data/srm/rounds/' + contests[i].contestId, header)
+                .success(saveContestRounds)
+                .error(errorLoadingRounds);
         }
     });
     /**
      * Sends api request to ret
      */
+    $scope.numContestRequests += 1;
     $http.get(config.apiDomain + '/data/srm/problems', header).success(function (data) {
         var i = 0;
+        $scope.numContestRequests -= 1;
         if (data.error) {
             genericErrorHandler(data);
             return;
@@ -712,7 +731,11 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
         for (i = 0; i < data.problems.length; i++) {
             $scope.allProblems[data.problems[i].id] = data.problems[i];
         }
-    }).error(genericErrorHandler);
+    }).error(function (data) {
+        $scope.numContestRequests -= 1;
+        genericErrorHandler(data);
+    });
+
     // --------------- Problem Assignment panel ---------------------
     /**
      * Array of problems assigned to selected round

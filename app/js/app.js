@@ -215,6 +215,7 @@ directives.contestScheduleConfig = require('./directives/contestScheduleConfig')
 directives.registrationQuestions = require('./directives/registrationQuestions');
 directives.manageQuestion = require('./directives/manageQuestion');
 directives.manageAnswer = require('./directives/manageAnswer');
+directives.preloader = require('./directives/preloader');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -317,6 +318,7 @@ main.directive('contestScheduleConfig', directives.contestScheduleConfig);
 main.directive('registrationQuestions', directives.registrationQuestions);
 main.directive('manageQuestion', directives.manageQuestion);
 main.directive('manageAnswer', directives.manageAnswer);
+main.directive('preloader', directives.preloader);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
