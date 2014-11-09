@@ -34,6 +34,7 @@
  *
  * Changes in version 1.8 (Member Feedback Widget Assembly):
  * - Added FEEDBACK_SPREADSHEET_URL setting.
+ * - Added FEEDBACK_MAXLENGTH for feedback text
  *
  * @author amethystlei, flytoj2ee, dexy, shubhendus
  * @version 1.8
@@ -90,12 +91,10 @@ module.exports = function (grunt) {
                         { match : 'DIVISION_LEADERBOARD_LIMIT', replacement: process.env.DIVISION_LEADERBOARD_LIMIT },
                         { match : 'SUMMARY_TOPCODER_COUNT', replacement: process.env.SUMMARY_TOPCODER_COUNT },
                         { match : 'PRACTICE_PROBLEM_LIST_PAGE_SIZE', replacement: process.env.PRACTICE_PROBLEM_LIST_PAGE_SIZE },
-<<<<<<< HEAD
                         { match : 'REGISTRATION_URL', replacement: process.env.REGISTRATION_URL },
-                        { match : 'SPINNER_TIMEOUT', replacement: process.env.SPINNER_TIMEOUT }
-=======
-                        { match : 'FEEDBACK_SPREADSHEET_URL', replacement: process.env.FEEDBACK_SPREADSHEET_URL }
->>>>>>> saving feedbacks to google spreadsheets
+                        { match : 'SPINNER_TIMEOUT', replacement: process.env.SPINNER_TIMEOUT },
+                        { match : 'FEEDBACK_SPREADSHEET_URL', replacement: process.env.FEEDBACK_SPREADSHEET_URL },
+                        { match : 'FEEDBACK_MAXLENGTH', replacement: process.env.FEEDBACK_MAXLENGTH }
                     ]
                 },
                 files : [

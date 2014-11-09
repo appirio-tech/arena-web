@@ -76,6 +76,8 @@ var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
     // mode of feedback panel: modeFloating, modeDashboard, modeMinimized
     // modeMinimized is default mode.
     $scope.mode = 'modeDashboard';
+    // maxlength for feedback text
+    $scope.feedbackMaxlength = config.feedbackMaxlength;
     $timeout(dashboardTimer, 1000);
     // click to open/collapse the panel
     $scope.collapse = function () {
