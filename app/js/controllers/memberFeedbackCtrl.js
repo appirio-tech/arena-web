@@ -1,3 +1,15 @@
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * This file provides the member feedback controller.
+ *
+ * Changes in version 1.1 (Member Feedback Widget Assembly):
+ * - Added function submitFeedbackRequest to save feedback.
+ *
+ * @author shubhendus
+ * @version 1.1
+ */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -6,9 +18,10 @@
 
 var config = require('../config');
 
-var memberFeedbackCtrl = ['$http', '$scope', '$timeout', function ($http, $scope, $timeout) {
+var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
     var count = 0,
         fadeTime = 3,
+        // the dashboard timer for minimizing widget
         dashboardTimer = function () {
             if ($scope.mode === 'modeDashboard') {
                 if ($scope.mouseenter) {
@@ -26,6 +39,7 @@ var memberFeedbackCtrl = ['$http', '$scope', '$timeout', function ($http, $scope
                 }
             }
         },
+        // add animation classes for widget 
         addAnimationForBody = function (isShow) {
             if (isShow) {
                 $scope.mode = 'modeFloating';
@@ -39,6 +53,25 @@ var memberFeedbackCtrl = ['$http', '$scope', '$timeout', function ($http, $scope
                     //timerForDashboard();
                 }, 100);
             }
+        },
+
+        // save feedback to google docs using jquery
+        submitFeedbackRequest = function (handle, text) {
+            var data = {
+                handle: handle,
+                feedback: text
+            };
+            $.ajax({
+                url: config.feedbackSpreadsheetUrl,
+                type: 'POST',
+                data: data,
+                success: function (data) {
+                    console.log(data.result);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error', xhr.status, textStatus, errorThrown);
+                }
+            });
         };
     // mode of feedback panel: modeFloating, modeDashboard, modeMinimized
     // modeMinimized is default mode.
@@ -52,12 +85,12 @@ var memberFeedbackCtrl = ['$http', '$scope', '$timeout', function ($http, $scope
             addAnimationForBody(true);
         }
     };
-    // cancel
+    // cancel sending feedback, reset feedback text, disable animation
     $scope.cancel = function () {
         addAnimationForBody(false);
         $scope.feedbackText = '';
     };
-    // submit
+    // submit feedback handler, check for text, send feedback and show notifier
     $scope.submit = function () {
         var text = $scope.feedbackText,
             handle = $scope.username(),
@@ -67,23 +100,8 @@ var memberFeedbackCtrl = ['$http', '$scope', '$timeout', function ($http, $scope
             $scope.showError(true);
         } else {
             addAnimationForBody(false);
-            console.log('Feedback message: ' + text);
-            /*jslint unparam: true*/
-            $http({
-                method: 'POST',
-                url: config.feedbackSpreadsheetUrl,
-                // turn request into simple request from preflighted request and encode accordingly
-                // https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                data: $.param({handle: handle, feedback: text})
-            }).
-                  success(function (data, status, headers, config) {
-                    console.log(data.result); // can be success or error
-                }).
-                  error(function (data, status, headers, config) {
-                    console.log('Error');
-                });
-            /*jslint unparam: false*/
+            // save message
+            submitFeedbackRequest(handle, text);
             // message
             $('.bottom-right').notify({
                 message: messageSent,

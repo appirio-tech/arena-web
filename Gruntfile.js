@@ -32,8 +32,11 @@
  * Changes in version 1.7 (Module Assembly - Practice Problem Listing Page):
  * - Added PRACTICE_PROBLEM_LIST_PAGE_SIZE setting.
  *
- * @author amethystlei, flytoj2ee, dexy
- * @version 1.7
+ * Changes in version 1.8 (Member Feedback Widget Assembly):
+ * - Added FEEDBACK_SPREADSHEET_URL setting.
+ *
+ * @author amethystlei, flytoj2ee, dexy, shubhendus
+ * @version 1.8
  */
 'use strict';
 /*global module, process*/
