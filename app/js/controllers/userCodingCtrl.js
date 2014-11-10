@@ -40,8 +40,10 @@
  * Changes in version 1.10 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
  * - Fixed issues of the coding editor and the test report.
  *
- * @author dexy, amethystlei
- * @version 1.10
+ * Changes in version 1.11 (Sort is not retained in room summary):
+ * - Set isKeepSort to true
+ * @author dexy, amethystlei, savon_cn
+ * @version 1.11
  */
 'use strict';
 /*global module, angular, document, $*/
@@ -431,6 +433,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
          * Go back to the contest summary page when user is viewing others' code.
          */
         $scope.goBack = function () {
+            $rootScope.isKeepSort = true;
             if ($stateParams.page && $stateParams.page === 'contest') {
                 $scope.$state.go(helper.STATE_NAME.Contest, {
                     contestId : $scope.roundID,
@@ -538,16 +541,18 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 });
             }, 100);
         } else if ($scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
-            $scope.componentID = Number($stateParams.componentId);
-            socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
-                problemID: $scope.componentID
-            });
-            $timeout(function () {
-                socket.emit(helper.EVENT_NAME.OpenComponentForCodingRequest, {
-                    componentID: $scope.componentID,
-                    handle: $scope.username()
+            $scope.$on(helper.EVENT_NAME.RoomInfoResponse, function () {
+                $scope.componentID = Number($stateParams.componentId);
+                socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
+                    problemID: $scope.componentID
                 });
-            }, 100);
+                $timeout(function () {
+                    socket.emit(helper.EVENT_NAME.OpenComponentForCodingRequest, {
+                        componentID: $scope.componentID,
+                        handle: $scope.username()
+                    });
+                }, 100);
+            });
             socket.emit(helper.EVENT_NAME.MoveRequest, { moveType: helper.ROOM_TYPE_ID.PracticeRoom, roomID: $stateParams.roomId });
             socket.emit(helper.EVENT_NAME.EnterRequest, { roomID: -1 });
         }

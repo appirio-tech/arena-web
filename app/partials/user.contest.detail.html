@@ -358,7 +358,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="paginator"  data-ng-show='isShowPage()' >
+                                        <div class="paginator"  data-ng-show='isShowPage() && ((getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter ).length / numOfPage > 1)'>
                                             <span      data-ng-repeat="n in range((getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter ), numOfPage)" data-ng-class="{'textActive': n.i == currentPage}" data-ng-click="setCurrentPage(n.i)">{{n.show}}</span>
                                         </div>
                                     </div><!-- /.tableDiv .scroll -->

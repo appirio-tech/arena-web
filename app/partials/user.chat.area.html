@@ -4,11 +4,11 @@
     <div class="panel-heading">
         Now chatting in: <span>{{getRoomTitle()}}</span>
         <span class="inlineSpan">
-        <ul class="lobbyDropdown">
+        <ul class="lobbyDropdown" ng-hide="currentRoomInfo.roundID">
             <li class="dropdown">
                 <a class="dropdown-toggle">{{getRoomTitle()}}</a>
                 <ul class="dropdown-menu pull-right">
-                    <li data-ng-repeat="lobby in roomMenu" style="box-sizing: border-box;list-style: none;"><a dropdown-toggle data-ng-click="setRoom(lobby.roomID);" data-ng-class="{current: getCurrentRoomID()===lobby.roomID}">{{lobby.roomTitle}}</a></li>
+                    <li data-ng-repeat="lobby in roomMenu" style="box-sizing: border-box;list-style: none;"><a dropdown-toggle data-ng-click="setRoom(lobby.roomID);" data-ng-class="{hidden: getCurrentRoomID()===lobby.roomID}">{{lobby.roomTitle}}</a></li>
                 </ul>
             </li>
         </ul>
@@ -81,7 +81,7 @@
                     <input class="memberInput" data-ng-model="talkToUser" data-ng-change="inputUser()" data-ng-show="!disableSelect && !disableInput" />
                     <a id="usersDropdownList" class="dropdown-toggle onlyTri" data-ng-show="!disableSelect && !disableInput" data-ng-class="getMemberRatingClass(memberIdx)" data-ng-click="rebuildMembersScrollbar()"></a>
                     <ul class="dropdown-menu" data-ng-custom-scrollbar data-rebuild-on="rebuild:members" data-rebuild-on-resize id="usersList">
-                        <li data-ng-repeat="user in whosHereArray"><a dropdown-toggle data-ng-click="talkTo(user.name);setTalkTo(user.name);" data-ng-class="{current: memberIdx===user.name}" class="{{getRatingClass(user.rating)}}">{{user.name}}</a></li>
+                        <li data-ng-repeat="user in whosHereArray"><a dropdown-toggle data-ng-click="talkTo(user.name);setTalkTo(user.name);" data-ng-class="{current: memberIdx===user.name}" class="{{getRatingClass(user.rating)}}" ng-hide="userProfile.handle == user.name">{{user.name}}</a></li>
                     </ul>
                 </li>
             </ul>

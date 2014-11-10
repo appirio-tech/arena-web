@@ -21,11 +21,18 @@
  * - Updated setViewOn to handle division leaderboard retrieval.
  * - Added getCurrentLeaderboard, getTopCoderCount, viewCode to handle leaderboard table.
  *
- * @author amethystlei, flytoj2ee, dexy
- * @version 1.5
+ * Changes in version 1.6 (Module Assembly - Web Arena Bug Fix 14.10 - 2):
+ * - Populated the component default point value.
+ *
+ * Changes in version 1.7 (Sort is not retained in room summary):
+ * - Reset isKeepSort to false.
+ *
+ * @author amethystlei, flytoj2ee, dexy, TCASSEMBLER
+ * @version 1.7
  */
 'use strict';
 /*global module, angular*/
+/*jslint plusplus: true*/
 
 var helper = require('../helper'),
     config = require('../config');
@@ -130,7 +137,36 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
      * @returns {Array} the leader board
      */
     $scope.getCurrentLeaderboard = function () {
-        return $rootScope.getCurrentLeaderboard($scope.viewOn, $rootScope.competingRoomID);
+        var leaderboard = $rootScope.getCurrentLeaderboard($scope.viewOn, $rootScope.competingRoomID), i, j;
+
+        for (i = 0; i < leaderboard.length; i++) {
+            for (j = 0; j < leaderboard[i].components.length; j++) {
+                leaderboard[i].components[j].defaultPoint = $scope.getDefaultComponentValue(leaderboard[i].components[j].componentID);
+            }
+        }
+
+        return leaderboard;
+    };
+
+    /**
+     * Get default problem component point value by component id.
+     * @param componentId - the component id.
+     * @returns {number} - the point value.
+     */
+    $scope.getDefaultComponentValue = function (componentId) {
+        var result = 0, j, problems;
+        if ($scope.contest) {
+            problems = $scope.contest.problems;
+            if (problems) {
+                for (j = 0; j < problems[$scope.viewDivisionID].length; j++) {
+                    if (+componentId === +problems[$scope.viewDivisionID][j].primaryComponent.componentID) {
+                        result = problems[$scope.viewDivisionID][j].primaryComponent.pointValue;
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
     };
 
     $scope.getTopCoderCount = function () {
@@ -177,6 +213,8 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
     };
     $scope.viewDetail = function (contest) {
         preserveLastDivSummary = true;
+        //should discard the key sort
+        $rootScope.isKeepSort = false;
         $state.go('user.contestSummary', {contestId : contest.roundID, divisionId : $scope.divisionID, viewOn : $scope.viewOn});
     };
 

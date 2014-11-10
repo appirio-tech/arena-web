@@ -79,8 +79,11 @@
  * Changes in version 1.20 (Module Assembly - Web Arena - Code With Practice Problem)
  *  - Added PracticeCode state and PracticeRoom room type.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.20
+ * Changes in version 1.21 (Module Assembly - Web Arena Bug Fix 14.10 - 2):
+ *  - Updated LEADERBOARD_TABLE_REBUILT_TIMEGAP flag.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
+ * @version 1.21
  */
 
 module.exports = {
@@ -268,7 +271,7 @@ module.exports = {
     // maximum characters of a message can be sent in chat rooms.
     MAX_CHAT_LENGTH: 256,
     // Time gap between two leaderboad table rebuildings
-    LEADERBOARD_TABLE_REBUILT_TIMEGAP: 3000,
+    LEADERBOARD_TABLE_REBUILT_TIMEGAP: 0,
 
     // pop up titles
     POP_UP_TITLES: {

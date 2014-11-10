@@ -272,6 +272,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         }
 
         appHelper.getLocalStorage($rootScope.currentRoomInfo.roomID);
+        $rootScope.$broadcast(helper.EVENT_NAME.RoomInfoResponse);
     });
 
     // Handle the CreateLeaderBoardResponse event.

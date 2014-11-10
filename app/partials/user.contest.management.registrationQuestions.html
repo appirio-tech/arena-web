@@ -1,0 +1,49 @@
+<div id="registrationQuestions" class="contestManagementPanel registrationQuestionsPanel detailPage">
+    <div class="content">
+        <div class="panel panel-custom">
+            <div class="panel-heading">Registration Questions<a class="close" data-ng-click="closeRegistrationQuestions()"></a>
+            </div>
+            <div class="panel-body">
+                <div class="manageQuestions">
+                    <h4>Manage Questions</h4>
+                    <div class="content">
+                        <table class="table table-condensed problemTable tHead">
+                            <thead>
+                                <tr>
+                                    <th class="colKeyword">Keyword</th>
+                                    <th class="colType">Type</th>
+                                    <th class="colStyle">Style</th>
+                                    <th class="colStatus">Status</th>
+                                    <th class="colAction">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="tableDiv" data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:regQuestions" data-reload-on="reload:regQuestions">
+                            <div>
+                                <table class="table table-condensed problemTable">
+                                <tbody>
+                                    <div class="preloader-window" data-preloader data-num-requests='{{numQuestionsRequests}}' text='Loading Questions...'></div>
+                                    <tr data-ng-repeat="item in round.questions">
+                                        <td class="colKeyword">{{item.keyword}}</td>
+                                        <td class="colType">{{item.type.description}}</td>
+                                        <td class="colStyle">{{item.style.description}}</td>
+                                        <td class="colStatus">{{item.status.description}}</td>
+                                        <td class="colAction"><a data-ng-click="openManageQuestion(item)" class="btn editBtn">Manage</a><a data-ng-click="deleteQuestion(item)" class="btn editBtn">Delete</a></td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.manageQuestions -->
+            </div>
+            <div class="panel-footer">
+                <div class="btnRow">
+                    <a data-ng-click="openAddQuestionPopup()" class="btn btnAddQuestion btnLeft">Add Question</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div data-manage-question></div>

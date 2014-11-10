@@ -7,16 +7,16 @@
         <table class="table table-condesed coderHistoryTable">
             <thead>
                 <tr>
-                    <th class="coderHistoryColTime">Time</th>
+                    <th class="coderHistoryColTime">Date/Time</th>
                     <th class="coderHistoryColAction">Action</th>
                     <th class="coderHistoryColRating">R</th>
                     <th class="coderHistoryColHandle">Handle</th>
-                    <th class="coderHistoryColScore">Problem</th>
+                    <th class="coderHistoryColScore coderHistoryColProblemPoint" data-ng-class="{'sort':isSortByProblemPoint(), 'sort desc':!isSortByProblemPoint()}" data-ng-click="sortByProblemPoint()">Problem</th>
                     <th class="coderHistoryColScore">Score</th>
                 </tr>
             </thead>
             <tbody>
-                <tr data-ng-repeat="history in coderHistoryData" data-ng-click="openDetailModal({'title':'Coder History Info', 'detail': history.detail})">
+                <tr data-ng-repeat="history in coderHistoryData | orderBy:orderField" data-ng-click="openDetailModal({'title':'Coder History Info', 'detail': history.detail})">
                     <td class="coderHistoryColTime coder-history-td">{{history.time}}</td>
                     <td class="coderHistoryColAction coder-history-td">{{history.actionDescription}}</td>
                     <td class="coderHistoryColRating coder-history-td"><span data-rating-indicator="{{history.userRating}}" data-username="{{history.userName}}" class="ratingIcon"></span></td>

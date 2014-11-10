@@ -164,15 +164,6 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
     };
 
     /**
-     * Set timeout modal.
-     */
-    function setTimeoutModal() {
-        $scope.closeDetailDialog();
-        $scope.openDetailModal({'title': 'Timeout', 'detail': 'Sorry, the request is timeout.', 'enableClose': true});
-        modalTimeoutPromise = null;
-    }
-
-    /**
      * Get error detail.
      * @param data the data value.
      * @param status the status code
@@ -203,13 +194,6 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
      * Get practice problem list.
      */
     function getPracticeProblems() {
-        $scope.openDetailModal({'title': 'Getting practice problems', 'detail': 'Please wait for getting practice problems.', 'enableClose': false});
-
-        if (modalTimeoutPromise) {
-            $timeout.cancel(modalTimeoutPromise);
-        }
-        modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
-
         var url = '/data/srm/practice/problems?',
             sortColumn = $scope.problemKeys[0],
             sortOrder = 'asc',
@@ -243,7 +227,9 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
             url = url + '&problemName=' + encodeURIComponent($scope.searchText.replace(new RegExp("'", "gm"), "''").replace(new RegExp("%", "gm"), "\\%"));
         }
 
+        $scope.numPracticeProblemsRequests = 1;
         $http.get(config.apiDomain + url, header).success(function (data, status) {
+            $scope.numPracticeProblemsRequests -= 1;
             if (data.error && data.error !== '') {
                 showDetailModal(data, status);
             } else {
@@ -262,11 +248,11 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
                         }
                     }
                 }
-                $scope.closeDetailDialog();
                 $scope.problems = data.data;
                 $scope.totalRecords = data.total;
             }
         }).error(function (data, status) {
+            $scope.numPracticeProblemsRequests -= 1;
             showDetailModal(data, status);
         });
     }
@@ -536,7 +522,7 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
      * @param page - the given page.
      */
     $scope.gotoPage = function (page) {
-        if ($scope.currentPage == page) {
+        if ($scope.currentPage === page) {
             return;
         }
         $scope.currentPage = page;

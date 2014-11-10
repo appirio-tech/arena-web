@@ -112,7 +112,9 @@ body{
 .wizardBody .pager .btn:before,
 .wizardBody .dropdown-toggle:before,
 .wizardBody .numberInput>div>a:before,
+.contestManagementPanel .numberInput>div>a:before,
 .wizardBody .checkboxLbl:before,
+.contestManagementPanel .checkboxLbl:before,
 .step-2 .logoUpload .thumbnail {
     background-image: url(../img/light/sprite-wizard.png);
     background-repeat: no-repeat;
@@ -120,9 +122,16 @@ body{
 .contestManagement .tabs .textActive:before,
 .contestManagement .filterToggle:before,
 .problemAssignmentPanel .filterToggle:before,
+.contestManagementPanel .filterToggle:before,
 .contestFilter.qtip-default,
 .contestManagement .table .viewBtn:before,
 .contestManagement .colHide span,
+.contestManagement .sortableHeading span,
+.contestManagementPanel .panel-heading .close:before,
+.contestManagementPanel .searchIcon:before,
+.contestManagementPanel .searchArea .tags .closeIcon:before,
+.contestManagementPanel .dropdown .arrow,
+.contestManagementPanel .colAction .delBtn:before,
 .contestManagement .sortableHeading span.up,
 .contestManagement .sortableHeading span.down,
 .problemAssignmentPanel .panel-heading .close:before,
@@ -314,9 +323,13 @@ footer .right .sponsorLogo {
 .wizardBody .step-4 {
     background: #fff;
 }
+.contestManagementPanel .errorInfo,
 .wizardBody .errorInfo {
     color: #ff0f00;
 }
+.contestManagementPanel .inputBorder,
+.contestManagementPanel .numberInput>div,
+.contestManagementPanel .phaseSchedule hr,
 .wizardBody .inputBorder,
 .wizardBody .dropdown-menu,
 .wizardBody .numberInput>div,
@@ -327,9 +340,11 @@ footer .right .sponsorLogo {
     border-color: #b7c9d7;
 }
 .wizardBody .error .inputBorder,
+.contestManagementPanel .error .inputBorder,
 .wizardBody .error .radioLbl:before {
     border-color: #ff0f00;
 }
+.contestManagementPanel .inputBorder>input,
 .wizardBody .inputBorder>input {
     background: transparent;
     border-width: 0;
@@ -358,6 +373,7 @@ footer .right .sponsorLogo {
     border-color: #75a5c8;
     background: #fff;
 }
+.contestManagementPanel .phaseSchedule .info,
 .wizardBody .info {
     color: #316f99;
 }
@@ -1015,6 +1031,7 @@ footer .right .sponsorLogo {
     filter: "alpha(opacity=100)";
     -ms-filter: "alpha(opacity=100)";
 }
+.contestManagement .panel-custom,
 .contestManagement .panel {
     border-width: 0;
     background: #fff;
@@ -1055,7 +1072,8 @@ footer .right .sponsorLogo {
 .contestManagement .table .colTitle a{
     color: #75a5c8;
 }
-.contestManagement .table>thead>tr>th {
+.contestManagement .table>thead>tr>th,
+.contestManagementPanel .table>thead>tr>th {
     color: #636d70;
 }
 .contestManagement .table>tbody>tr>td {
@@ -1065,23 +1083,39 @@ footer .right .sponsorLogo {
     background: transparent;
     border-color: #e9e6e6;
 }
+.contestManagementPanel .panel,
 .problemAssignmentPanel .panel {
     border-color: #75a5c8;
+    background: #fff;
 }
+.contestManagementPanel .panel-heading,
 .problemAssignmentPanel .panel-heading {
     background: #75a5c8;
     color: #fff;
 }
+.contestManagementPanel .btn {
+    background: #0f9abd;
+}
 .problemAssignmentPanel .btn {
     background: #0999d1;
 }
+.contestManagementPanel .btnCancel,
+.contestManagementPanel .btnSave,
 .problemAssignmentPanel .btnCancel,
 .problemAssignmentPanel .btnSave {
     color: #fff;
     color: rgba(255,255,255,0.5);
 }
+.contestManagementPanel .btnSave,
 .problemAssignmentPanel .btnSave {
     color: #fff;
+}
+.contestManagementPanel .panel-body,
+.contestManagementPanel .dropdown-toggle,
+.contestManagementPanel .search input,
+.contestManagementPanel .inputBorder>input,
+.contestManagementPanel textarea {
+    color: #636d70;
 }
 .problemAssignmentPanel .dropdown-toggle,
 .problemAssignmentPanel .search input,
@@ -1100,19 +1134,36 @@ footer .right .sponsorLogo {
 .problemListPanel .search input:-ms-input-placeholder{
     color: #316f99;
 }
+.contestManagementPanel .dropdown,
+.contestManagementPanel .inputBorder,
+.contestManagementPanel .searchArea .search,
+.contestManagementPanel textarea,
 .problemAssignmentPanel .dropdown,
 .problemAssignmentPanel .inputBorder,
 .problemAssignmentPanel .searchArea .search,
 .problemListPanel .searchArea .search{
     border-color: #b7c9d7;
 }
+.contestManagementPanel .panel-footer,
+.contestManagementPanel .assignedProblems,
+.contestManagementPanel .availableProblems .tableDiv,
+.registrationQuestionsPanel .panel-body .content,
+.manageQuestionPanel .panel-body .content,
 .problemAssignmentPanel .panel-footer,
 .problemAssignmentPanel .assignedProblems,
 .problemAssignmentPanel .availableProblems .tableDiv {
     border-color: #b7c9d7;
 }
+.contestManagementPanel .tags label {
+    background: #343434;
+    color: #fff;
+}
+.contestManagementPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb ,
 .problemAssignmentPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
     background: #75a5c8;
+}
+.contestTermsConfigPanel textarea {
+    border-style: solid;
 }
 .practiceProblemList .resultCount {
     color: #555;
@@ -1175,7 +1226,6 @@ footer .right .sponsorLogo {
 @media only screen and (max-width: 425px) {
     .panelContestStat .breadcrumbHead {height: 80px; }
 }
->>>>>>> 3bb67444dd36fd929dfa94cebe116707c2f71188
 
 /* tooltip */
 .body .tooltip.bottom .tooltip-arrow{
@@ -1190,6 +1240,10 @@ footer .right .sponsorLogo {
 }
 .panel-custom .panel-body .textActive {
     color: grey;
+}
+.panel > .panel-body > .paginator > .textActive {
+    color: #000 !important;
+    font-weight: bold;
 }
 .coderHistoryTblDiv .coderHistoryTable>tbody>tr>td {
     border-color: #b7c9d7;
@@ -1312,4 +1366,12 @@ footer .right .sponsorLogo {
     .panelContestStat .breadcrumbHead .breadcrumb li:last-child {
         float: none;
     }
+}
+
+.socialButtons {
+    border-color: rgb(52, 170, 222);
+    background-color: rgb(230, 234, 237);
+}
+.socialButtons .challenge {
+    color: rgb(48, 110, 157);
 }

@@ -49,8 +49,11 @@
  * Changes in version 1.13 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
  * - Fixed issues of the coding editor and the test report.
  *
- * @author tangzx, amethystlei, flytoj2ee
- * @version 1.13
+ * Changes in version 1.14 (Module Assembly - Web Arena Bug Fix 14.10 - 2):
+ * - Fixed the go to line issue.
+ *
+ * @author tangzx, amethystlei, flytoj2ee, TCASSEMBLER
+ * @version 1.14
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -116,11 +119,12 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             modalTimeoutPromise = null,
             /**
              * Close the dropdown.
+             * @param elem - the drop down element.
              */
-            closeDropdown = function () {
-                var isOpen = angular.element('.dropdown').hasClass('open');
+            closeDropdown = function (elem) {
+                var isOpen = elem.hasClass('open');
                 if (isOpen) {
-                    angular.element('.dropdown').trigger('click');
+                    elem.removeClass('open');
                 }
             };
 
@@ -198,9 +202,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.inputGotoText = function (keyEvent) {
             if (keyEvent.which === 13) {
-                $timeout(function () {
-                    angular.element('#gotoByText').trigger('click');
-                }, 10);
+                $scope.jumpToLine();
             }
         };
 
@@ -418,7 +420,10 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.setThemeIdx = function (themeIdx) {
             $scope.themeIdx = themeIdx;
-            closeDropdown();
+            var _elem = angular.element('ul.editorDropDown > li.dropdown');
+            if (_elem) {
+                closeDropdown(_elem);
+            }
         };
 
         // init language settings
@@ -454,7 +459,10 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             $scope.langIdx = langIdx;
 
             updateArgTypeAndMethod($scope.lang($scope.langIdx).id);
-            closeDropdown();
+            var _elem = angular.element('ul.languageDropDown > li.dropdown');
+            if (_elem) {
+                closeDropdown(_elem);
+            }
         };
 
         // init show/hide line number settings
@@ -581,7 +589,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * Clear the editor.
          */
         $scope.clearEditor = function () {
-            if (userInputDisabled) {
+            if (userInputDisabled || $scope.disableSubmit()) {
                 return;
             }
             $scope.openModal({

@@ -87,7 +87,8 @@ module.exports = function (grunt) {
                         { match : 'DIVISION_LEADERBOARD_LIMIT', replacement: process.env.DIVISION_LEADERBOARD_LIMIT },
                         { match : 'SUMMARY_TOPCODER_COUNT', replacement: process.env.SUMMARY_TOPCODER_COUNT },
                         { match : 'PRACTICE_PROBLEM_LIST_PAGE_SIZE', replacement: process.env.PRACTICE_PROBLEM_LIST_PAGE_SIZE },
-                        { match : 'REGISTRATION_URL', replacement: process.env.REGISTRATION_URL }
+                        { match : 'REGISTRATION_URL', replacement: process.env.REGISTRATION_URL },
+                        { match : 'SPINNER_TIMEOUT', replacement: process.env.SPINNER_TIMEOUT }
                     ]
                 },
                 files : [

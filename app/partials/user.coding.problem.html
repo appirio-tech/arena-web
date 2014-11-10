@@ -3,6 +3,9 @@
         Problem Area<a data-ng-click="collapseOther('top-content')" class="collapseIcon" data-ng-class="{expand:getTopStatus()=='expand',normal:getTopStatus()=='normal'}"></a>
     </div>
     <div class="panel-body row" id="top-content" data-ng-custom-scrollbar data-rebuild-on="problem-loaded" data-reload-on="reload:problem" data-rebuild-on-resize>
+        <div class="statement" ng-if="!problemLoaded">
+            Please wait while the requested problem is loaded. This may take several minutes ...
+        </div>
         <div class="statement" ng-if="problemLoaded">
             <h2>Problem Statement</h2>
             <div ng-bind-html="problem.intro">
@@ -56,15 +59,12 @@
                 <div class="" ng-repeat="test in examples track by $index" data-ng-init="testNum=$index">
                     <span>{{testNum}})</span>
                     <div class="problemStatementRow" ng-repeat="param in test.params">
-                        <div class="statementName">&nbsp;</div>
                         <div class="textWhite">{{param.value}}</div>
                     </div>
                     <div class="problemStatementRow">
-                        <div class="statementName">&nbsp;</div>
                         <div class="textWhite">Returns: {{test.output}}</div>
                     </div>
                     <div class="problemStatementRow" ng-if="test.annotation.annotationHtml">
-                        <div class="statementName">&nbsp;</div>
                         <div class="textWhite" ng-bind-html="test.annotationHtml">
                         </div>
                     </div>

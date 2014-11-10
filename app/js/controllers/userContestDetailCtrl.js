@@ -54,8 +54,10 @@
  *   updateRoomSummary, formatScore, getStatusColor, showResult, isViewable, ldrbrdTimeoutPromise,
  *   getCoderHistory to baseCtrl.js to have global support for leaderboard tables.
  *
- * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 2.1
+ * Changes in version 2.2 (Sort is not retained in room summary):
+ * - Fix issue of Sort is not retained in room summary
+ * @author amethystlei, dexy, ananthhh, flytoj2ee, savon_cn
+ * @version 2.2
  */
 'use strict';
 /*jshint -W097*/
@@ -96,6 +98,8 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     $scope.setCurrentPage = function (index) {
         $scope.currentPage = index;
     };
+
+
 // limit the page item length
     function filterPageItem(items) {
 
@@ -187,7 +191,6 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         }
         return false;
     }
-    console.log('isTouch:' + isTouchSupported());
     if (isTouchSupported()) {
         $('.sumDiv .scroll, .tableDiv.scroll').hide();
         $('.sumDiv .default, .tableDiv.default').show();
@@ -198,12 +201,32 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
      */
     function rebuildScrollbars() {
         $('.ngsb-container').css('top', '0');
+        $scope.restoreSortKeys();
         $scope.$broadcast('rebuild:summary');
         $scope.$broadcast('rebuild:challengerTable');
         $scope.$broadcast('rebuild:challengeTable');
         $scope.$broadcast('rebuild:leaderboardTable');
     }
 
+    /**
+     * This function is to restore the sort keys.
+     */
+    $scope.restoreSortKeys = function() {
+        if (!$rootScope.isKeepSort) {
+            $rootScope.contestSortKeys = {};
+        } else {
+            angular.forEach($rootScope.contestSortKeys, function(status, panel) {
+                if (panel === 'challenger') {
+                    $scope.getKeys(status.viewOn).challengerKey = status.key;
+                } else if (panel === 'challenge') {
+                    $scope.getKeys(status.viewOn).challengeKey = status.key;
+                } else {
+                    $scope.getKeys(status.viewOn).leaderboardKey = status.key;
+                    $scope.setCurrentPage(0);
+                }
+            });
+        }
+    }
     // toggle key
     function toggleKey(target, key) {
         var val;
@@ -356,17 +379,23 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         return $scope.divTwoKeys;
     };
     $scope.toggleSortKey = function (viewOn, panel, key) {
+        var currentKey = "";
         if (panel === 'challenger') {
             $scope.getKeys(viewOn).challengerKey = toggleKey($scope.getKeys(viewOn).challengerKey, key);
+            currentKey = $scope.getKeys(viewOn).challengerKey;
             $scope.$broadcast('rebuild:challengerTable');
         } else if (panel === 'challenge') {
             $scope.getKeys(viewOn).challengeKey = toggleKey($scope.getKeys(viewOn).challengeKey, key);
+            currentKey = $scope.getKeys(viewOn).challengeKey;
             $scope.$broadcast('rebuild:challengeTable');
         } else {
             $scope.getKeys(viewOn).leaderboardKey = toggleKey($scope.getKeys(viewOn).leaderboardKey, key);
+            currentKey = $scope.getKeys(viewOn).leaderboardKey;
             $scope.$broadcast('rebuild:leaderboardTable');
             $scope.setCurrentPage(0);
         }
+        //store the current sort keys
+        $rootScope.contestSortKeys[panel] = {viewOn: viewOn, key: currentKey};
     };
 
     /**

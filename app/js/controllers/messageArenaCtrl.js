@@ -11,8 +11,11 @@
  * Changes in version 1.2 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
  * - Added actions to the notification tickers.
  *
- * @author dexy, amethystlei
- * @version 1.2
+ * Changes in version 1.3 (Module Assembly - Web Arena Bug Fix 14.10 - 2):
+ * - Fixed the notification url issue.
+ *
+ * @author dexy, amethystlei, TCASSEMBLER
+ * @version 1.3
  */
 'use strict';
 /*jshint -W097*/
@@ -23,7 +26,7 @@
  *
  * @type {*[]}
  */
-var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', '$window', function ($scope, $timeout, notificationService, $window) {
+var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', '$window', '$rootScope', function ($scope, $timeout, notificationService, $window, $rootScope) {
     $scope.$watch('notificationService.getUnRead()', function (newVal, oldVal) {
         $scope.$broadcast('rebuild:messages');
         if (newVal > oldVal) {
@@ -45,7 +48,7 @@ var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', '$window', 
                             // notification has actions
                             message = {
                                 html: notification.message + ' <a class="notifAction" href="' + notification.action.target +
-                                    '">Yes</a> or <a class="notifAction">No</a>?'
+                                    '/">Yes</a> or <a class="notifAction">No</a>?'
                             };
                         } else {
                             message = notification.message;
@@ -54,15 +57,21 @@ var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', '$window', 
                             message: message,
                             type: "green",
                             fadeOut: {
-                                enabled: false
+                                enabled: true,
+                                delay: 60000
                             }
                         }).show();
                     }
                 });
             }
         }
+        /**
+         * Go to the specified url.
+         * @param link the url link.
+         */
         $scope.goTo = function (link) {
-            $window.location.href = link;
+            $rootScope.competingRoomID = -1;
+            $window.location.href = link + "/";
         };
 
     });

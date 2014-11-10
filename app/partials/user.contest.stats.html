@@ -112,7 +112,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr data-ng-repeat="problem in contest.problems[divisionID] track by $index">
+                    <tr data-ng-repeat="problem in contest.problems[divisionID] | orderBy:'primaryComponent.pointValue' track by $index">
                         <td>{{ $index + 1 }}</td>
                         <td class="textGreen textBold">{{ problem.primaryComponent.pointValue }}</td>
                         <td class="textWhite">{{ problem.name }}</td>
@@ -122,7 +122,7 @@
                 </table>
             </div>
             <div data-ng-show="isChallengePhase(contest.phaseData) || isSystemTestPhase(contest.phaseData)">
-                <p>Please click View Details link in Room Summary to do further actions.</p>
+                <p>Please click the Challenges & Leaderboard link in Room Summary for details.</p>
             </div>
         </div>
     </div>

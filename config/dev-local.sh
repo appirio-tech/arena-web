@@ -68,4 +68,8 @@ export SUMMARY_TOPCODER_COUNT=4
 
 export PRACTICE_PROBLEM_LIST_PAGE_SIZE=10
 
-export REGISTRATION_URL=http://tcqa1.topcoder.com/?action=callback
+export REGISTRATION_URL='http://tcqa1.topcoder.com/?action=callback'
+
+# The time (in ms) after which the loading spinner times out if there is no activity.
+export SPINNER_TIMEOUT=10000
+

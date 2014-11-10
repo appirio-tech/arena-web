@@ -2,7 +2,7 @@
     <div class="row-fluid dashboard contest detailPage contestManagement practiceProblemList">
         <div class="col-lg-12 text-left titleBar">
             <div class="col-lg-6 col-md-7">
-                <h1 class="title">Practices Room</h1>
+                <h1 class="title">Practice Problems</h1>
             </div>
         </div>
         <div class="container-fluid row-fluid mainContent">
@@ -12,6 +12,7 @@
                         Topcoder Contests Problem List
                     </div>
                     <div class="panel-body">
+                        <div class="preloader-window" data-preloader data-num-requests='{{numPracticeProblemsRequests}}' text='Loading Problems...'></div>
                         <div class="searchArea">
                             <div class="search">
                                 <input placeholder="Search" data-ng-model="searchText" data-ng-keypress="searchByText($event)" maxlength="32"/>
@@ -27,6 +28,7 @@
                                 <div>
                                     <div class="linkRow"><a data-ng-click="closeQtip('problemFilter')" class="closeLink">Filter</a></div>
                                     <div class="contentWrapper">
+                                        <!--
                                         <div class="contentRow">
                                             <label>Type</label>
                                             <div class="dropdown">
@@ -36,8 +38,8 @@
                                                         data-ng-class="{active:filterShown.type==value,inactive:filterShown.type!=value}"><a data-ng-click="setFilterKey('type', value, $event)">{{value}}</a>
                                                     </li>
                                                 </ul>
-                                            </div><!--/.dropdown-->
-                                        </div>
+                                            </div>--><!--/.dropdown--><!--
+                                        </div>-->
                                         <div class="contentRow pointRow">
                                             <label>Points</label>
                                             <div class="dropdown minPointDD">

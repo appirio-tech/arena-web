@@ -57,6 +57,7 @@
                         </div>
                         <!-- /.tabs -->
                         <div class="content">
+                            <div class="preloader-window" data-preloader data-num-requests='{{numContestRequests}}' text='Loading Contests...'></div>
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
@@ -64,8 +65,8 @@
                                         <th class="colStart sortableHeading" data-ng-click="toggleSortKey(keys.managementKeys, 'start')">Contest Start<span data-ng-class="{up: keys.managementKeys.indexOf('start') == 0,down: keys.managementKeys.indexOf('-start') == 0}"></span></th>
                                         <th class="colBtn colProblem">Problem Assignment <span class="redStar">*</span></th>
                                         <th class="colBtn colTerm">Terms <span class="redStar">*</span></th>
+                                        <th class="colBtn colSchedule">Schedule</th>
                                         <th class="colBtn colRegQuestion">Registration Questions</th>
-                                        <th class="colBtn colSurvey">Add Survey</th>
                                         <th class="colStatus">Status</th>
                                         <th class="colHide">Hide Contest</th>
                                     </tr>
@@ -76,9 +77,9 @@
                                         <td class="colText colTitle"><a>{{round.title}}</a></td>
                                         <td class="colText colStart">{{round.start | date: 'MMM d, yyyy hh:mm a'}} <span data-ng-show="round.start != ''">{{timeZone}}</span></td>
                                         <td class="colBtn colProblem"><button class="btn" data-ng-class="{viewBtn: round.problems, addBtn: !round.problems}" data-ng-disabled="disableAssign" data-ng-click="openAssignProblem(round)">{{round.problems ? 'View' : 'Add'}}</button></td>
-                                        <td class="colBtn colTerm"><button class="btn" data-ng-class="{viewBtn: round.terms, addBtn: !round.terms}">{{round.terms ? 'View' : 'Add'}}</button></td>
-                                        <td class="colBtn colRegQuestion"><button class="btn" data-ng-class="{viewBtn: round.question, addBtn: !round.question}">{{round.question ? 'View' : 'Add'}}</button></td>
-                                        <td class="colBtn colSurvey"><button class="btn" data-ng-class="{viewBtn: round.survey, addBtn: !round.survey}">{{round.survey ? 'View' : 'Add'}}</button></td>
+                                        <td class="colBtn colTerm"><button class="btn" data-ng-class="{viewBtn: round.terms, addBtn: !round.terms}" data-ng-click="openTerms(round)">{{round.terms ? 'View' : 'Add'}}</button></td>
+                                        <td class="colBtn colSchedule"><button class="btn" data-ng-class="{viewBtn: round.segments, addBtn: !round.segments}" data-ng-click="openSchedule(round)">{{round.segments ? 'View' : 'Set'}}</button>
+                                        <td class="colBtn colRegQuestion"><button class="btn" data-ng-class="{viewBtn: round.questions.length, addBtn: !round.questions.length}" data-ng-click="openRegistrationQuestions(round)">{{round.questions.length ? 'View' : 'Add'}}</button></td>
                                         <td class="colText colStatus">{{round.status}}</td>
                                         <td class="colHide"><span data-ng-class="{on: item.isHide, off: !item.isHide}"></span></td>
                                     </tr>
@@ -311,4 +312,8 @@
     </div>
 </div>
 <!-- /.problemAssignment -->
+<div data-contest-terms-config></div>
+<div data-contest-schedule-config></div>
+<div data-registration-questions></div>
 <!-- content end -->
+
