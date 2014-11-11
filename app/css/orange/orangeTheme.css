@@ -139,10 +139,16 @@ body{
     background-image: url(../img/orange/sprite-contestManagement.png);
     background-repeat: no-repeat;
 }
-.practiceProblemFilter.qtip-default,
+
 .problemListPanel .statusIcon:before{
     background-image: url(../img/orange/sprite-practiceRoom.png);
     background-repeat: no-repeat;
+}
+.practiceProblemFilter.qtip-default
+{
+    background-image: url(../img/orange/sprite-practiceRoom.png);
+    background-repeat: no-repeat;
+    background-size: 289px 236px;
 }
 /***************header style*/
 .userInfo .rating-none {
