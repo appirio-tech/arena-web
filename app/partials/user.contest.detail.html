@@ -237,7 +237,7 @@
                                                             <td class="col4">{{challenge.language}}</td>
                                                             <td class="col5"><span>{{challenge.date | date: 'dd-MM-yyyy'}}</span></td>
                                                             <td class="col6"><i class="icon" data-ng-class="{iconSuccess: challenge.success, iconFail: !challenge.success}"></i></td>
-                                                            <td class="col7"><a class="icon iconViewDetail"></a></td>
+                                                            <td class="col7"><a class="icon iconViewDetail" data-ng-click="getCoderHistory({userName: challenge.challengerHandle, userType: challenge.challengerUserType})"></a></td>
                                                         </tr>
                                                         <tr ng-show="(filteredChallenges.length == 0) && (challengeHandleString)"><td class="noResult">Handle {{challengeHandleString}} not found!</td></tr>
                                                     </tbody>
@@ -258,7 +258,7 @@
                                                         <td class="col4">{{challenge.language}}</td>
                                                         <td class="col5"><span>{{challenge.date | date: 'dd-MM-yyyy'}}</span></td>
                                                         <td class="col6"><i class="icon" data-ng-class="{iconSuccess: challenge.success, iconFail: !challenge.success}"></i></td>
-                                                        <td class="col7"><a class="icon iconViewDetail"></a></td>
+                                                        <td class="col7"><a class="icon iconViewDetail" data-ng-click="getCoderHistory({userName: challenge.challengerHandle, userType: challenge.challengerUserType})"></a></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
