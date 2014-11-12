@@ -163,13 +163,13 @@ body a {cursor: pointer;}
     background-position: -175px 0;
 }
 .navIcons .iconCM:before {
-    background-position: -75px 0;
+    background-position: -380px 0;
 }
 .navIcons .iconPP:before {
-    background-position: -150px 0;
+    background-position: -430px 0;
 }
 .navIcons .iconMS:before {
-    background-position: -25px 0;
+    background-position: -405px 0;
 }
 .header .navbar .navIcons>li>.iconCC:before {
     background-image: url(../img/wizard-icon.png);
