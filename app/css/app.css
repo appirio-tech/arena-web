@@ -4365,6 +4365,10 @@ footer .right>span:nth-child(2) {
 .detailPage .tableWrapper {
     position: relative;
 }
+.detailPage .table>tbody>tr>td.noResult {
+    text-align: center !important;
+    color: #f00;
+}
 /* expand/collapse action */
 .detailPage .panel-body section.expand{
     position: absolute;
