@@ -59,7 +59,7 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
           thumb.css('top', dragger.top + 'px');
           var draggerOffset = dragger.top / page.height;
           page.top = -Math.ceil(page.scrollHeight * draggerOffset * 1.0013);
-          if ((attrs.hasOwnProperty('scrollTop') && dragger.top === 0) || dragger.top >= maxDraggerTop) {
+          if ((attrs.hasOwnProperty('scrollTop') && dragger.top === 0) || dragger.top > maxDraggerTop) {
                 if (dragger.top >= (page.height - Math.round(page.height / page.scrollHeight * page.height))) {
                   dragger.top = page.height - Math.round(page.height / page.scrollHeight * page.height);
                   dragger.height = Math.round(page.height / page.scrollHeight * page.height);
