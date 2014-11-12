@@ -134,6 +134,11 @@ body{
     background-image: url(../img/dark/sprite-practiceRoom.png);
     background-repeat: no-repeat;
 }
+.codeArea .chatWidget .panel-heading .expandIcon:before,
+.codeArea .leaderboardWidget .panel-heading .expandIcon:before {
+    background-image: url(../img/dark/expand-alt.png);
+    background-repeat: no-repeat;
+}
 /***************header style*/
 .header .navIcons .themePanel {
     border-color: #fff;
@@ -1073,32 +1078,6 @@ footer .right .sponsorLogo {
 .practiceProblemList .iconSolved {
     color: #a2eb23;
 }
-/*bootstrap small devices tablets*/
-@media only screen and (max-width: 991px) {
-    .header .navIcons > li {
-        background-image: url(../img/black-header.png);
-    }
-    .header .timeItem,
-    .header .navbar-right .userInfo {
-        background-image: url(../img/black-header.png);
-    }
-}
-/* boostrap extra small devices */
-@media only screen and (max-width: 767px) {
-    .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/dark/company_logo_small.png);
-    }
-}
-/* special sizes which widget will overflow */
-@media only screen and (max-width: 668px) {
-    .panelChatArea .membersInfo{
-        border-bottom: 1px solid #1f444e;
-    }
-}
-@media only screen and (max-width: 421px) {
-    .panelContestStat .breadcrumbHead {height: 63px; }
-}
->>>>>>> 3bb67444dd36fd929dfa94cebe116707c2f71188
 .coder-history-modal-header {
     background-color:#1f444e!important;
 }
@@ -1138,6 +1117,21 @@ footer .right .sponsorLogo {
 }
 .testReportPanel .reportItem .textGray {color: #687376; }
 
+.codeArea .docker .chatArea-normal .panel,
+.codeArea .docker .leaderboard-normal .panel,
+.codeArea .docker-max .panel {
+    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+}
+.codeArea .chatWidget .panel-heading .icon:hover,
+.codeArea .leaderboardWidget .panel-heading .icon:hover {
+    background-color: #162f36;
+}
+.codeArea .chatWidget .panel-heading .miniIcon:before,
+.codeArea .leaderboardWidget .panel-heading .miniIcon:before {
+    border-color: #fff;
+}
 /*Media blocks should be placed after the normal code!!!*/
 /*bootstrap small devices tablets*/
 @media only screen and (max-width: 991px) {

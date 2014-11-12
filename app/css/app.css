@@ -5,6 +5,9 @@
 .center{display:block;margin:0 auto;}
 .table-responsive {overflow-x: auto;}
 .auto-inline {float: left;width: auto !important;}
+#filterContent {
+    display: none;
+}
 html{height:100%;}
 body{
     background:url(../img/dark/bg.png) repeat 0 0 #DDE7F2;
@@ -413,7 +416,6 @@ body a {cursor: pointer;}
     opacity: 0.9;
 }
 .signup,.signin{
-    margin-top:66px;
 }
 .form .radio label {display: block;}
 .form .radio input[type="radio"] {width: auto;}
@@ -3652,6 +3654,12 @@ footer .right>span:nth-child(2) {
     text-decoration: none;
     background: #e7e7e7;
 }
+.panelChatArea .panel-body {
+    padding: 0;
+}
+.panelChatArea .inlineSpan {
+    display: inline;
+}
 .panelChatArea .membersInfo{
     display: inline-block;
     position: absolute;
@@ -3764,6 +3772,9 @@ footer .right>span:nth-child(2) {
     display: inline;
     white-space: pre-wrap;
     word-break: normal;
+}
+.panelChatArea .content .chatBoard ul li span {
+    word-wrap: break-word;
 }
 .panelChatArea .content .chatBoard .emph{
     font-weight: bold;
@@ -4537,7 +4548,7 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     -ms-word-break:break-all;
     word-break:break-all;
-    font-weight: 700!important;
+    font-weight: 700;
 }
 
 .leaderboardWrapper .table td.col2 .name{
@@ -5704,6 +5715,9 @@ footer .right>span:nth-child(2) {
 .showDisableLBLbl {
     color: #636d70;
 }
+.showDisableLBLbl:before {
+    opacity: 0.5;
+}
 .searched {background: yellow;}
 
 .coderHistoryTblDiv {
@@ -6287,6 +6301,306 @@ table thead .sort.desc{
     margin-left: 90px;
 }
 
+/*chat widget and leaderboard widget in coding page*/
+/*position*/
+.codeArea .docker {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 4;
+}
+.codeArea .chatWidget .dropdown-toggle,
+.codeArea .infoSection li {
+    font-size: 13px;
+}
+.codeArea .chatWidget,
+.codeArea .leaderboardWidget {
+    display: inline-block;
+    margin-right: 30px;
+    vertical-align: bottom;
+}
+.codeArea .chatWidget .panel,
+.codeArea .leaderboardWidget .panel{
+    margin-bottom: 0;
+}
+.codeArea .chatWidget .panel-heading,
+.codeArea .leaderboardWidget .panel-heading {
+    position: relative;
+}
+.codeArea .chatWidget .panel-heading .icon,
+.codeArea .leaderboardWidget .panel-heading .icon {
+    position: absolute;
+    top: 4px;
+    display: block;
+    height: 30px;
+    width: 33px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.codeArea .chatWidget .panel-heading .icon:before,
+.codeArea .leaderboardWidget .panel-heading .icon:before {
+    content: '';
+    display: block;
+    width: 21px;
+    position: absolute;
+    right: 6px;
+    left: 6px;
+}
+.codeArea .chatWidget .panel-heading .miniIcon:before,
+.codeArea .leaderboardWidget .panel-heading .miniIcon:before {
+    height: 1px;
+    border-top: 1px solid;
+    top: 15px;
+}
+.codeArea .chatWidget .panel-heading .expandIcon:before,
+.codeArea .leaderboardWidget .panel-heading .expandIcon:before {
+    height: 21px;
+    top: 5px;
+    background-position: 0 0;
+}
+.codeArea .chatWidget .panel-heading .collapseIcon:before,
+.codeArea .leaderboardWidget .panel-heading .collapseIcon:before {
+    background-position: -21px 0;
+}
+.codeArea .chatWidget .panel {
+    width: 500px;
+    height: 450px;
+    min-height: 450px;
+}
+.codeArea .chatWidget .mainHead {
+    padding-right: 89px;
+    padding-left: 29px;
+    padding-top: 7px;
+}
+.codeArea .chatWidget .panel-heading .miniIcon,
+.codeArea .leaderboardWidget .panel-heading .miniIcon {
+    right: 45px;
+}
+.codeArea .chatWidget .panel-heading .expandIcon {
+    right: 3px;
+}
+.codeArea .chatWidget .panel .membersInfo {
+    width: 150px;
+    height: 408px;
+}
+.codeArea .chatWidget .panel .content {
+    width: 349px;
+    height: 408px;
+}
+.codeArea .chatWidget .panel .content .panel-heading{
+    height: 79px;
+}
+.codeArea .chatWidget .panel .chatBoard {
+    height: 315px;
+}
+.codeArea .chatWidget .memberDropdown .dropdown-menu, 
+.codeArea .chatWidget .methodDropdown .dropdown-menu {
+    margin: -134px 0 0;
+}
+.codeArea .chatWidget .methodDropdown,
+.codeArea .chatWidget .chatInput,
+.codeArea .chatWidget .control-bar .findCheckLbl {
+    margin-left: 11px;
+}
+.codeArea .chatWidget .chatInput {
+    width: 302px;
+}
+.codeArea .chatWidget .chatInput input {
+    width: 292px;
+}
+.codeArea .leaderboardWidget .panel {
+    width: 595px;
+}
+.codeArea .leaderboardWidget .panel-heading .expandIcon {
+    right: 5px;
+}
+.codeArea .leaderboardWidget .panel-body {
+    padding-left: 16px;
+}
+.codeArea .leaderboardWidget .panel-body .summaryWrapper,
+.codeArea .leaderboardWidget .leaderboardWrapper .heading,
+.codeArea .leaderboardWidget .tHeadDiv .innerWrapper, 
+.codeArea .leaderboardWidget .tableDiv .innerWrapper {
+    padding-right: 14px;
+}
+.codeArea .leaderboardWidget .leaderboardWrapper {
+    height: 516px;
+}
+.codeArea .leaderboardWrapper .tableDiv {
+    max-height: 411px;
+    min-height: 411px;
+}
+.codeArea .leaderboardWidget .disabled {
+    opacity: 0.5;
+}
+.codeArea .leaderboardWidget .ratingNum {
+    color: #7f7f7f;
+}
+.codeArea .leaderboardWidget .table .name {
+    font-weight: 400;
+}
+.codeArea .leaderboardWrapper .table .col1 {
+    width: 66px;
+}
+/*min*/
+.codeArea .chatArea-min .panel,
+.codeArea .leaderboard-min .panel{
+    width: 300px;
+}
+.codeArea .chatArea-min .panel-heading {
+    padding-right: 26px;
+}
+.codeArea .chatArea-min .panel-heading .numOfMembers {
+    color: #0bbbe7;
+    float: right;
+}
+.codeArea .chatArea-min .panel-heading,
+.codeArea .leaderboard-min .panel-heading {
+    padding-left: 33px;
+    padding-top: 8px;
+}
+.codeArea .chatArea-min .panel-heading:hover,
+.codeArea .leaderboard-min .panel-heading:hover {
+    cursor: pointer;
+}
+.codeArea .chatArea-min .panel-body,
+.codeArea .leaderboard-min .panel-body{
+    display: none;
+}
+.codeArea .chatArea-min .panelChatArea {
+    min-height: 42px;
+    height: 42px;
+}
+/*max*/
+.codeArea .chatArea-max,
+.codeArea .leaderboard-max {
+    display: none;
+}
+.codeArea .docker-max {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #040505;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1030;
+    overflow: auto;
+}
+.codeArea .docker-max .chatWidget,
+.codeArea .docker-max .leaderboardWidget {
+    display: block;
+    margin: 10% 0 10px;
+}
+@media only screen and (min-height: 394px) {
+    .codeArea .docker-max .chatWidget {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-top: -197px;
+        margin-left: -379px;
+    }
+}
+.codeArea .docker-max .chatWidget .panel {
+    width: 758px;
+    height: 393px;
+    min-height: 393px;
+    margin: 0 auto;
+}
+.codeArea .docker-max .chatWidget .mainHead {
+    padding-right: 60px;
+}
+.codeArea .docker-max .chatWidget .mainHead .collapseIcon {
+    right: 16px;
+}
+.codeArea .docker-max .chatWidget .panel .membersInfo {
+    width: 150px;
+    height: 351px;
+}
+.codeArea .docker-max .chatWidget .panel .content {
+    width: 606px;
+    height: 351px;
+}
+.codeArea .docker-max .chatWidget .panel .content .panel-heading{
+    height: 40px;
+}
+.codeArea .docker-max .chatWidget .panel .chatBoard {
+    height: 296px;
+}
+.codeArea .docker-max .chatWidget .methodDropdown,
+.codeArea .docker-max .chatWidget .control-bar .findCheckLbl {
+    margin-left: 5px;
+}
+.codeArea .docker-max .chatWidget .chatInput {
+    width: 474px;
+    margin-left: 4px;
+}
+.codeArea .docker-max .chatWidget .chatInput input {
+    width: 474px;
+}
+@media only screen and (max-width: 758px) {
+    .codeArea .docker-max .chatWidget {
+        position: absolute;
+        left: 50%;
+        margin-left: -250px;
+    }
+    .codeArea .docker-max .chatWidget .panel {
+        width: 500px;
+    }
+    .codeArea .docker-max .chatWidget .panel .membersInfo {
+        width: 150px;
+    }
+    .codeArea .docker-max .chatWidget .panel .content {
+        width: 349px;
+    }
+    .codeArea .docker-max .chatWidget .chatInput {
+        width: 302px;
+    }
+    .codeArea .docker-max .chatWidget .chatInput input {
+        width: 292px;
+    }
+    .codeArea .docker-max .chatWidget .panel .content .panel-heading {
+        height: 79px;
+    }
+    .codeArea .docker-max .chatWidget .panel .chatBoard {
+        height: 257px;
+    }
+}
+@media only screen and (min-height: 655px) {
+    .codeArea .docker-max .leaderboardWidget {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -328px;
+        margin-left: -350px;
+    }
+}
+.codeArea .docker-max .leaderboardWidget .panel {
+    width: 699px;
+    margin: 0 auto;
+}
+@media only screen and (max-width: 699px) {
+    .codeArea .docker-max .leaderboardWidget {
+        position: absolute;
+        left: 50%;
+        margin-left: -160px;
+    }
+    .codeArea .docker-max .leaderboardWidget .panel {
+        width: 320px;
+    }
+}
+.codeArea .leaderboardWidget .panel-heading .collapseIcon {
+    right: 27px;
+}
+.codeArea .docker-max .leaderboardWidget .leaderboardWrapper {
+    height: 562px;
+}
+.codeArea .docker-max .leaderboardWrapper .tableDiv {
+    max-height: 457px;
+    min-height: 457px;
+}
+
 /*Media blocks should be placed after the normal code!!!*/
 @media only screen and (max-width: 1245px) {
     .inner { padding: 0;}
@@ -6559,6 +6873,27 @@ table thead .sort.desc{
         border-right-width: 0;
     }
 }
+@media only screen and (max-width: 955px) {
+    .codeArea .chatWidget, 
+    .codeArea .leaderboardWidget {
+        margin-right: 10px;
+    }
+    .codeArea .chatArea-min .panel, 
+    .codeArea .leaderboard-min .panel {
+        width: 249px;
+    }
+}
+@media only screen and (max-width: 865px) {
+    .codeArea .leaderboardWidget {
+        margin-right: 0;
+    }
+    .codeArea .leaderboardWidget .panel {
+        width: 500px;
+    }
+    .codeArea .leaderboard-min .panel {
+        width: 249px;
+    }
+}
 @media only screen and (max-width: 789px) {
     /* fix size of active contests */
     .panel-custom,
@@ -6743,6 +7078,20 @@ table thead .sort.desc{
         width: 90px;
     }
 }
+@media only screen and (max-width: 760px) {
+    .codeArea .leaderboardWidget .panel {
+        width: 400px;
+    }
+    .codeArea .chatArea-min .panel, 
+    .codeArea .leaderboard-min .panel{
+        width: 207px;
+        min-width: 207px;
+    }
+    .codeArea .chatArea-min .panel-heading, 
+    .codeArea .leaderboard-min .panel-heading {
+        padding: 8px 8px 10px;
+    }
+}
 /* special sizes which widget will overflow */
 @media only screen and (max-width: 741px) {
     .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 20px;}
@@ -6753,6 +7102,57 @@ table thead .sort.desc{
     }
     .panelCodeEditor .panel-body .middlePart .findInput input {width: 76px;}
     .panelCodeEditor .panel-body .middlePart .gotoInput input {width: 48px;}
+}
+@media only screen and (max-width: 718px) {
+    .codeArea .leaderboardWidget .panel {
+        width: 351px;
+    }
+    .codeArea .chatWidget .panel {
+        width: 351px;
+        height: auto;
+    }
+    .codeArea .chatWidget .mainHead {
+        height: 80px;
+    }
+    .codeArea .docker-max .chatWidget .mainHead {
+        height: 40px;
+    }
+    .codeArea .lobbyDropdown {
+        float: left;
+        margin-top: 4px;
+    }
+    .codeArea .docker-max .lobbyDropdown {
+        float: right;
+        margin-top: -3px;
+    }
+    .codeArea .chatWidget .panel .membersInfo,
+    .codeArea .chatWidget .panel .content {
+        width: 350px;
+        height: 300px;
+        display: block;
+        position: relative;
+    }
+    .codeArea .docker-max .chatWidget .panel .membersInfo,
+    .codeArea .docker-max .chatWidget .panel .content {
+        display: inline-block;
+        position: absolute;
+    }
+    .codeArea .docker-max .chatWidget .panel .content {
+        right: 0;
+    }
+    .codeArea .chatWidget .panel .membersInfo {
+        height: 200px;
+    }
+    .codeArea .chatWidget .panel .chatBoard {
+        height: 206px;
+    }
+    .codeArea .chatArea-min .panel,
+    .codeArea .leaderboard-min .panel {
+        width: 207px;
+    }
+    .codeArea .chatArea-min .mainHead {
+        height: 40px;
+    }
 }
 @media only screen and (max-width: 668px) {
     .panelChatArea .membersInfo{

@@ -39,6 +39,7 @@
 'use strict';
 /*global require, module, angular, $, window, document */
 /*jshint strict:false*/
+/*jshint -W097*/
 /*jslint plusplus: true*/
 /**
  * The helper.
@@ -60,7 +61,6 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
             $scope.rebuildScrollbar('info');
             $scope.$broadcast('rebuild:chatboard');
         };
-
     $scope.showRatingKey = true;
     $scope.showRegistrant = false;
     $scope.showMemberHere = true;
@@ -217,17 +217,47 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         //if user choose "Admins", "General", "Me",
         // there is no need to specify a user to talk to
         // in current arena implementation. so set memberIdx to null
-        if (index < 3) {
-            $rootScope.memberIdx = null;
-            $scope.disableSelect = true;
-            $scope.disableInput = true;
-            angular.element('#chatInputDiv').width(460);
-            angular.element('#chatInputText').width(460);
+        if (!$scope.coding) {
+            if (index < 3) {
+                $rootScope.memberIdx = null;
+                $scope.disableSelect = true;
+                $scope.disableInput = true;
+                angular.element('#chatInputDiv').width(460);
+                angular.element('#chatInputText').width(460);
+            } else {
+                $scope.disableSelect = false;
+                $scope.disableInput = false;
+                angular.element('#chatInputDiv').width(350);
+                angular.element('#chatInputText').width(350);
+            }
+        } else if ($scope.windowStatus.chatArea !== 'max') {
+            // for different window size
+            if (index < 3) {
+                $rootScope.memberIdx = null;
+                $scope.disableSelect = true;
+                $scope.disableInput = true;
+                angular.element('.chatInput').width(292);
+                angular.element('.chatInputText').width(292);
+            } else {
+                $scope.disableSelect = false;
+                $scope.disableInput = false;
+                angular.element('.chatInput').width(292);
+                angular.element('.chatInputText').width(292);
+            }
         } else {
-            $scope.disableSelect = false;
-            $scope.disableInput = false;
-            angular.element('#chatInputDiv').width(350);
-            angular.element('#chatInputText').width(350);
+            // for different window size
+            if (index < 3) {
+                $rootScope.memberIdx = null;
+                $scope.disableSelect = true;
+                $scope.disableInput = true;
+                angular.element('.chatInput').width(464);
+                angular.element('.chatInputText').width(464);
+            } else {
+                $scope.disableSelect = false;
+                $scope.disableInput = false;
+                angular.element('.chatInput').width(352);
+                angular.element('.chatInputText').width(352);
+            }
         }
     };
 

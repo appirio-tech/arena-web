@@ -86,7 +86,8 @@ module.exports = function (grunt) {
                         { match : 'FACEBOOK_LINK', replacement: process.env.FACEBOOK_LINK },
                         { match : 'DIVISION_LEADERBOARD_LIMIT', replacement: process.env.DIVISION_LEADERBOARD_LIMIT },
                         { match : 'SUMMARY_TOPCODER_COUNT', replacement: process.env.SUMMARY_TOPCODER_COUNT },
-                        { match : 'PRACTICE_PROBLEM_LIST_PAGE_SIZE', replacement: process.env.PRACTICE_PROBLEM_LIST_PAGE_SIZE }
+                        { match : 'PRACTICE_PROBLEM_LIST_PAGE_SIZE', replacement: process.env.PRACTICE_PROBLEM_LIST_PAGE_SIZE },
+                        { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT }
                     ]
                 },
                 files : [

@@ -38,11 +38,12 @@
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
  * @version 1.8
  */
+/*jshint -W097*/
+/*jshint strict:false*/
 'use strict';
 var config = require('./config');
 var Auth0 = require('auth0-js');
 var socket = require('socket.io-client').connect(config.webSocketURL);
-/*jshint -W097*/
 /*global $ : false, angular : false, require, module, document*/
 /*jslint plusplus: true*/
 
@@ -59,10 +60,10 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
         pastNotifications: []
     },
         sameMessage = function (msgA, msgB) {
-            return msgA.date === msgB.date && msgA.type === msgB.type && msgA.message === msgB.message
-                && ((!angular.isDefined(msgA.action) && !angular.isDefined(msgB.action))
-                    || (angular.isDefined(msgA.action) && angular.isDefined(msgB.action)
-                        && msgA.action.question === msgB.action.question && msgA.action.target === msgB.action.target));
+            return msgA.date === msgB.date && msgA.type === msgB.type && msgA.message === msgB.message &&
+                ((!angular.isDefined(msgA.action) && !angular.isDefined(msgB.action)) ||
+                    (angular.isDefined(msgA.action) && angular.isDefined(msgB.action) &&
+                        msgA.action.question === msgB.action.question && msgA.action.target === msgB.action.target));
         },
         /**
          * Formats the broadcat message into HTML format suitable for pop-up.
@@ -72,41 +73,41 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
          */
         formatMessage = function (message) {
             if (message.type === 'general') {
-                return "<div class = 'notificationPopup'>"
-                        + "<div>Broadcast information</div>"
-                        + "<table>"
-                        + "<tr><td><p>Time: <span>" + message.date + "</span></p></td></tr>"
-                        + "</table>"
-                        + "<div>Broadcast Message</div>"
-                        + "<p><span>" + message.popUpContent + "</span></p>"
-                        + "</div>";
+                return "<div class = 'notificationPopup'>" +
+                    "<div>Broadcast information</div>" +
+                    "<table>" +
+                    "<tr><td><p>Time: <span>" + message.date + "</span></p></td></tr>" +
+                    "</table>" +
+                    "<div>Broadcast Message</div>" +
+                    "<p><span>" + message.popUpContent + "</span></p>" +
+                    "</div>";
             }
             if (message.type === 'round') {
-                return "<div class = 'notificationPopup'>"
-                        + "<div>Broadcast information</div>"
-                        + "<table>"
-                        + "<tr><td><p>Time: <span>" + message.date + "</span></p></td></tr>"
-                        + "<tr><td><p>Round: <span>" + message.roundName + "</span></p></td></tr>"
-                        + "</table>"
-                        + "<div>Broadcast Message</div>"
-                        + "<p><span>" + message.popUpContent + "</span></p>"
-                        + "</div>";
+                return "<div class = 'notificationPopup'>" +
+                    "<div>Broadcast information</div>" +
+                    "<table>" +
+                    "<tr><td><p>Time: <span>" + message.date + "</span></p></td></tr>" +
+                    "<tr><td><p>Round: <span>" + message.roundName + "</span></p></td></tr>" +
+                    "</table>" +
+                    "<div>Broadcast Message</div>" +
+                    "<p><span>" + message.popUpContent + "</span></p>" +
+                    "</div>";
             }
             if (message.type === 'problem') {
-                return "<div class = 'notificationPopup'>"
-                        + "<div>Broadcast information</div>"
-                        + "<table>"
-                        + "<tr><td><p>Time: <span>" + message.date + "</span></p></td>"
-                        + "<td><p>Class: <span>" + message.className + "</span></p></td></tr>"
-                        + "<tr><td><p>Round: <span>" + message.roundName + "</span></p></td>"
-                        + "<td><p>Method: <span>" + message.methodSignature + "</span></p></td></tr>"
-                        + "<tr><td><p>Division: <span>" + message.division + "</span></p></td>"
-                        + "<td><p>Returns: <span>" + message.returnType + "</span></p></td></tr>"
-                        + "<tr><td><p>Point value: <span>" + message.pointValue + "</span></p></td></tr>"
-                        + "</table>"
-                        + "<div>Broadcast Message</div>"
-                        + "<p><span>" + message.popUpContent + "</span></p>"
-                        + "</div>";
+                return "<div class = 'notificationPopup'>" +
+                    "<div>Broadcast information</div>" +
+                    "<table>" +
+                    "<tr><td><p>Time: <span>" + message.date + "</span></p></td>" +
+                    "<td><p>Class: <span>" + message.className + "</span></p></td></tr>" +
+                    "<tr><td><p>Round: <span>" + message.roundName + "</span></p></td>" +
+                    "<td><p>Method: <span>" + message.methodSignature + "</span></p></td></tr>" +
+                    "<tr><td><p>Division: <span>" + message.division + "</span></p></td>" +
+                    "<td><p>Returns: <span>" + message.returnType + "</span></p></td></tr>" +
+                    "<tr><td><p>Point value: <span>" + message.pointValue + "</span></p></td></tr>" +
+                    "</table>" +
+                    "<div>Broadcast Message</div>" +
+                    "<p><span>" + message.popUpContent + "</span></p>" +
+                    "</div>";
             }
             return message.message;
         };
@@ -333,8 +334,8 @@ factories.appHelper = ['$rootScope', 'localStorageService', function ($rootScope
      */
     retHelper.isDivisionActive = function (contest, view) {
         var divisionID = helper.VIEW_ID[view];
-        if (angular.isUndefined(contest.problems) || angular.isUndefined(contest.problems[divisionID])
-                || contest.problems[divisionID].length === 0) {
+        if (angular.isUndefined(contest.problems) || angular.isUndefined(contest.problems[divisionID]) ||
+                contest.problems[divisionID].length === 0) {
             return false;
         }
         return true;
@@ -717,8 +718,8 @@ factories.socket = ['$rootScope', function ($rootScope) {
 factories.cookies = ['$document', function ($document) {
     var cookies = {};
     cookies.set = function (key, value, expires) {
-        $document[0].cookie = key + '=' + value + '; domain=topcoder.com; path=/'
-            + (expires === -1 ? '; expires=Tue, 19 Jan 2038 03:14:07 GMT' : '');
+        $document[0].cookie = key + '=' + value + '; domain=topcoder.com; path=/' +
+            (expires === -1 ? '; expires=Tue, 19 Jan 2038 03:14:07 GMT' : '');
     };
     cookies.remove = function (key) {
         $document[0].cookie = key + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=topcoder.com; path=/';
@@ -729,4 +730,259 @@ factories.cookies = ['$document', function ($document) {
     return cookies;
 }];
 
+// this code is from http://jsfiddle.net/firehist/nzUBg/
+// This service was based on OpenJS library available in BSD License
+// http://www.openjs.com/scripts/events/keyboard_shortcuts/index.php
+factories.keyboardManager = ['$window', '$timeout', function ($window, $timeout) {
+    var keyboardManagerService = {},
+        defaultOpt = {
+            type: 'keydown',
+            propagate: false,
+            inputDisabled: false,
+            target: $window.document,
+            keyCode: false
+        };
+    // Store all keyboard combination shortcuts
+    keyboardManagerService.keyboardEvent = {};
+    // Add a new keyboard combination shortcuts
+    keyboardManagerService.bind = function (label, callback, opt) {
+        // Initialize opt object
+        opt = angular.extend({}, defaultOpt, opt);
+        label = label.toLowerCase();
+        var code, k,
+            fct = function (e) {
+                e = e || $window.event;
+                var keys = label.split("+"),
+                    // Key Pressed - counts the number of valid keypresses 
+                    // - if it is same as the number of keys, the shortcut function is invoked
+                    kp = 0,
+                    // Work around for stupid Shift key bug created by using lowercase 
+                    // - as a result the shift+num combination was broken
+                    shift_nums = {
+                        "`": "~",
+                        "1": "!",
+                        "2": "@",
+                        "3": "#",
+                        "4": "$",
+                        "5": "%",
+                        "6": "^",
+                        "7": "&",
+                        "8": "*",
+                        "9": "(",
+                        "0": ")",
+                        "-": "_",
+                        "=": "+",
+                        ";": ":",
+                        "'": "\"",
+                        ",": "<",
+                        ".": ">",
+                        "/": "?",
+                        "\\": "|"
+                    },
+                    // Special Keys - and their codes
+                    special_keys = {
+                        'esc': 27,
+                        'escape': 27,
+                        'tab': 9,
+                        'space': 32,
+                        'return': 13,
+                        'enter': 13,
+                        'backspace': 8,
+
+                        'scrolllock': 145,
+                        'scroll_lock': 145,
+                        'scroll': 145,
+                        'capslock': 20,
+                        'caps_lock': 20,
+                        'caps': 20,
+                        'numlock': 144,
+                        'num_lock': 144,
+                        'num': 144,
+
+                        'pause': 19,
+                        'break': 19,
+
+                        'insert': 45,
+                        'home': 36,
+                        'delete': 46,
+                        'end': 35,
+
+                        'pageup': 33,
+                        'page_up': 33,
+                        'pu': 33,
+
+                        'pagedown': 34,
+                        'page_down': 34,
+                        'pd': 34,
+
+                        'left': 37,
+                        'up': 38,
+                        'right': 39,
+                        'down': 40,
+
+                        'f1': 112,
+                        'f2': 113,
+                        'f3': 114,
+                        'f4': 115,
+                        'f5': 116,
+                        'f6': 117,
+                        'f7': 118,
+                        'f8': 119,
+                        'f9': 120,
+                        'f10': 121,
+                        'f11': 122,
+                        'f12': 123
+                    },
+                    // Some modifiers key
+                    modifiers = {
+                        shift: {
+                            wanted: false,
+                            pressed: e.shiftKey ? true : false
+                        },
+                        ctrl : {
+                            wanted: false,
+                            pressed: e.ctrlKey ? true : false
+                        },
+                        alt  : {
+                            wanted: false,
+                            pressed: e.altKey ? true : false
+                        },
+                        meta : { //Meta is Mac specific
+                            wanted: false,
+                            pressed: e.metaKey ? true : false
+                        }
+                    },
+                    character = String.fromCharCode(code).toLowerCase(),
+                    i,
+                    l = keys.length,
+                    elt;
+                if (opt.inputDisabled) {
+                    // Disable event handler when focus input and textarea
+                    if (e.target) {
+                        elt = e.target;
+                    } else if (e.srcElement) {
+                        elt = e.srcElement;
+                    }
+                    if (elt.nodeType === 3) {
+                        elt = elt.parentNode;
+                    }
+                    if (elt.tagName === 'INPUT' || elt.tagName === 'TEXTAREA') {
+                        return;
+                    }
+                }
+                // Find out which key is press
+                if (e.keyCode) {
+                    code = e.keyCode;
+                } else if (e.which) {
+                    code = e.which;
+                }
+
+                if (code === 188) {
+                    character = ","; // If the user presses , when the type is onkeydown
+                }
+                if (code === 190) {
+                    character = "."; // If the user presses , when the type is onkeydown
+                }
+
+                // Foreach keys in label (split on +)
+                for (i = 0; i < l; i += 1) {
+                    k = keys[i];
+                    switch (k) {
+                    case 'ctrl':
+                    case 'control':
+                        kp += 1;
+                        modifiers.ctrl.wanted = true;
+                        break;
+                    case 'shift':
+                    case 'alt':
+                    case 'meta':
+                        kp += 1;
+                        modifiers[k].wanted = true;
+                        break;
+                    }
+
+                    if (k.length > 1) { // If it is a special key
+                        if (special_keys[k] === code) {
+                            kp += 1;
+                        }
+                    } else if (opt.keyCode) { // If a specific key is set into the config
+                        if (opt.keyCode === code) {
+                            kp += 1;
+                        }
+                    } else { // The special keys did not match
+                        if (character === k) {
+                            kp += 1;
+                        } else {
+                            if (shift_nums[character] && e.shiftKey) { // Stupid Shift key bug created by using lowercase
+                                character = shift_nums[character];
+                                if (character === k) {
+                                    kp += 1;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (kp === keys.length &&
+                        modifiers.ctrl.pressed === modifiers.ctrl.wanted &&
+                        modifiers.shift.pressed === modifiers.shift.wanted &&
+                        modifiers.alt.pressed === modifiers.alt.wanted &&
+                        modifiers.meta.pressed === modifiers.meta.wanted) {
+                    $timeout(function () {
+                        callback(e);
+                    }, 1);
+                    if (!opt.propagate) { // Stop the event
+                        // e.cancelBubble is supported by IE - this will kill the bubbling process.
+                        e.cancelBubble = true;
+                        e.returnValue = false;
+
+                        // e.stopPropagation works in Firefox.
+                        if (e.stopPropagation) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }
+                        return false;
+                    }
+                }
+            },
+            elt = opt.target;
+
+        if (typeof opt.target === 'string') {
+            elt = document.getElementById(opt.target);
+        }
+        // Store shortcut
+        keyboardManagerService.keyboardEvent[label] = {
+            'callback': fct,
+            'target':   elt,
+            'event':    opt.type
+        };
+        //Attach the function with the event
+        if (elt.addEventListener) {
+            elt.addEventListener(opt.type, fct, false);
+        } else if (elt.attachEvent) {
+            elt.attachEvent('on' + opt.type, fct);
+        } else {
+            elt['on' + opt.type] = fct;
+        }
+    };
+    // Remove the shortcut - just specify the shortcut and I will remove the binding
+    keyboardManagerService.unbind = function (label) {
+        label = label.toLowerCase();
+        var binding = keyboardManagerService.keyboardEvent[label], type, elt, callback;
+        delete (keyboardManagerService.keyboardEvent[label]);
+        if (!binding) {
+            return;
+        }
+        type = binding.event;
+        elt = binding.target;
+        callback = binding.callback;
+        if (elt.detachEvent) {
+            elt.detachEvent('on' + type, callback);
+        } else if (elt.removeEventListener) {
+            elt.removeEventListener(type, callback, false);
+        } else {
+            elt['on' + type] = false;
+        }
+    };
+    return keyboardManagerService;
+}];
 module.exports = factories;

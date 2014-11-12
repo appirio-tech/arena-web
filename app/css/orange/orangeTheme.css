@@ -135,6 +135,11 @@ body{
     background-image: url(../img/orange/sprite-practiceRoom.png);
     background-repeat: no-repeat;
 }
+.codeArea .chatWidget .panel-heading .expandIcon:before,
+.codeArea .leaderboardWidget .panel-heading .expandIcon:before {
+    background-image: url(../img/orange/expand-alt.png);
+    background-repeat: no-repeat;
+}
 /***************header style*/
 .userInfo .rating-none {
     color: #fff;
@@ -1261,41 +1266,6 @@ footer .left>span {
 .practiceProblemList .iconSolved {
     color: #a2eb23;
 }
-/*bootstrap small devices tablets*/
-@media only screen and (max-width: 991px) {
-    .header .navIcons > li {
-        background-image: url(../img/black-header.png);
-    }
-    .header .timeItem,
-    .header .navbar-right .userInfo {
-        background-image: url(../img/black-header.png);
-    }
-}
-/* boostrap extra small devices */
-@media only screen and (max-width: 767px) {
-    .panel-custom .tabs .altNav .dropdown-toggle {
-        color: #ff8a00;
-    }
-    .panel-custom .tabs .altNav .dropdown-toggle:hover,
-    .panel-custom .tabs .altNav .open a:hover {
-        background: #ff8a00;
-    }
-    .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/orange/company_logo_small.png);
-    }
-}
-/* special sizes which widget will overflow */
-@media only screen and (max-width: 668px) {
-    .panelChatArea .membersInfo{
-        border-bottom: 1px solid #e7e7e7;
-    }
-}
-@media only screen and (max-width: 421px) {
-    .panelContestStat .breadcrumbHead {
-        white-space: normal;
-        height: 63px;
-    }
-}
 
 /* tooltip */
 .body .tooltip.bottom .tooltip-arrow{
@@ -1394,9 +1364,29 @@ footer .left>span {
 .activeUserList .ngsb-scrollbar{
     background: #fff;
 }
-
 .dashboard .textBlack{
     color: #687376!important;
+}
+
+.codeArea .chatWidget .panel-heading,
+.codeArea .leaderboardWidget .panel-heading {
+    font-weight: 600;
+}
+.codeArea .chatArea-min .panel-heading .numOfMembers {
+    color: #656565;
+}
+.codeArea .chatWidget .panel-heading .icon:hover,
+.codeArea .leaderboardWidget .panel-heading .icon:hover {
+    background-color: #fff;
+}
+.codeArea .chatWidget .panel-heading .miniIcon:before,
+.codeArea .leaderboardWidget .panel-heading .miniIcon:before {
+    border-color: #656565;
+    opacity: 0.5;
+}
+.codeArea .leaderboardWidget .panel-heading .expandIcon {
+    opacity: 0.5;
+}
 
 /*Media blocks should be placed after the normal code!!!*/
 /*bootstrap small devices tablets*/

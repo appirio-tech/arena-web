@@ -53,14 +53,15 @@
  * @type {exports}
  */
 var helper = require('../helper');
+var config = require('../config');
 
 /**
  * The main controller.
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', 'tcTimeService',
-    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, tcTimeService) {
+var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', 'tcTimeService', 'keyboardManager',
+    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, tcTimeService, keyboardManager) {
         // shared between children scopes
         $scope.sharedObj = {};
         $scope.topStatus = 'normal';
@@ -551,6 +552,113 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             socket.emit(helper.EVENT_NAME.MoveRequest, { moveType: helper.ROOM_TYPE_ID.PracticeRoom, roomID: $stateParams.roomId });
             socket.emit(helper.EVENT_NAME.EnterRequest, { roomID: -1 });
         }
+
+        // default window status
+        $scope.windowStatus = {
+            chatArea: 'min',
+            leaderboard: 'min'
+        };
+        // bind keyboard shortcut shift + tab
+        keyboardManager.bind(config.keyboardShortcut, function () {
+            // actions here
+            $('#leaderboardFilter').qtip('api').toggle(false);
+            if ($scope.windowStatus.chatArea === 'min' && $scope.windowStatus.leaderboard === 'min') {
+                $scope.windowStatus.chatArea = 'normal';
+            } else if ($scope.windowStatus.chatArea === 'normal') {
+                $scope.windowStatus.chatArea = 'min';
+                $scope.windowStatus.leaderboard = 'normal';
+            } else if ($scope.windowStatus.leaderboard === 'normal') {
+                $scope.windowStatus.leaderboard = 'min';
+            }
+            $scope.$broadcast('rebuild:chatboard');
+        });
+        // open the panel
+        $scope.openPanel = function (panel) {
+            if ($scope.windowStatus[panel] !== 'min') {
+                return;
+            }
+            switch (panel) {
+            case 'chatArea':
+                $scope.windowStatus.chatArea = 'normal';
+                $scope.windowStatus.leaderboard = 'min';
+                break;
+            case 'leaderboard':
+                $scope.windowStatus.chatArea = 'min';
+                $scope.windowStatus.leaderboard = 'normal';
+                break;
+            default:
+                return;
+            }
+            $scope.$broadcast('rebuild:chatboard');
+        };
+        // close the panel
+        $scope.closePanel = function (panel) {
+            $timeout(function () {
+                $scope.windowStatus[panel] = 'min';
+                angular.element('body').removeClass('popupOpen');
+                angular.element('.docker-max').removeClass('docker-max');
+                angular.element('#chatWidget').removeClass('hide');
+                angular.element('#leaderboardWidget').removeClass('hide');
+                if (panel === 'chatArea') {
+                    // avoid the input overflow
+                    angular.element('.chatInput').width(292);
+                    angular.element('.chatInputText').width(282);
+                } else {
+                    $.fn.qtip.zindex = 1030;
+                }
+                $scope.$broadcast('rebuild:chatboard');
+            }, 100);
+        };
+        // back to normal 
+        $scope.collapsePanel = function (panel) {
+            $timeout(function () {
+                $scope.windowStatus[panel] = 'normal';
+                angular.element('body').removeClass('popupOpen');
+                angular.element('.docker-max').removeClass('docker-max');
+                angular.element('#chatWidget').removeClass('hide');
+                angular.element('#leaderboardWidget').removeClass('hide');
+                if (panel === 'chatArea') {
+                    // avoid the input overflow
+                    angular.element('.chatInput').width(292);
+                    angular.element('.chatInputText').width(282);
+                } else {
+                    $.fn.qtip.zindex = 1030;
+                }
+                $scope.$broadcast('rebuild:chatboard');
+            }, 100);
+        };
+        // set the panel to max 
+        $scope.expandPanel = function (panel) {
+            $timeout(function () {
+                $scope.windowStatus[panel] = 'max';
+                angular.element('body').addClass('popupOpen');
+                angular.element('.docker').addClass('docker-max');
+                if (panel === 'chatArea') {
+                    angular.element('#leaderboardWidget').addClass('hide');
+                    angular.element('#chatWidget').removeClass('hide');
+                    if ($window.innerWidth > 758) {
+                        if ($scope.methodIdx < 3) {
+                            // avoid the input to be too short
+                            angular.element('.chatInput').width(464);
+                            angular.element('.chatInputText').width(464);
+                        } else {
+                            // avoid the input to be too short
+                            angular.element('.chatInput').width(352);
+                            angular.element('.chatInputText').width(352);
+                        }
+                    } else {
+                        angular.element('.chatInput').width(292);
+                        angular.element('.chatInputText').width(292);
+                    }
+                } else {
+                    angular.element('#leaderboardWidget').removeClass('hide');
+                    angular.element('#chatWidget').addClass('hide');
+                    $('#leaderboardFilter').qtip('api').set('show.modal', true);
+                    $.fn.qtip.zindex = 1030;
+                }
+                $scope.$broadcast('rebuild:chatboard');
+            }, 100);
+        };
     }];
 
 module.exports = userCodingCtrl;
