@@ -564,6 +564,9 @@ footer .right .sponsorLogo {
 .testReportPanel .modalHeader>span {
     color: #636d70;
 }
+.testReportPanel .modalHeader {
+    background-color: #1f444e;
+}
 .testReportPanel .infoBar {
     background: #1a1c1d;
     color: #687376;
