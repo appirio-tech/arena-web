@@ -183,6 +183,7 @@ controllers.manageAnswerCtrl = require('./controllers/manageAnswerCtrl');
 controllers.userCodingTimeCtrl = require('./controllers/userCodingTimeCtrl');
 controllers.practiceProblemListCtrl = require('./controllers/practiceProblemListCtrl');
 controllers.matchScheduleCtrl = require('./controllers/matchScheduleCtrl');
+controllers.memberFeedbackCtrl = require('./controllers/memberFeedbackCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -216,6 +217,7 @@ directives.registrationQuestions = require('./directives/registrationQuestions')
 directives.manageQuestion = require('./directives/manageQuestion');
 directives.manageAnswer = require('./directives/manageAnswer');
 directives.preloader = require('./directives/preloader');
+directives.memberFeedback = require('./directives/memberFeedback');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -284,6 +286,7 @@ main.controller('registrationQuestionsCtrl', controllers.registrationQuestionsCt
 main.controller('manageQuestionCtrl', controllers.manageQuestionCtrl);
 main.controller('manageAnswerCtrl', controllers.manageAnswerCtrl);
 main.controller('matchScheduleCtrl', controllers.matchScheduleCtrl);
+main.controller('memberFeedbackCtrl', controllers.memberFeedbackCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -319,6 +322,7 @@ main.directive('registrationQuestions', directives.registrationQuestions);
 main.directive('manageQuestion', directives.manageQuestion);
 main.directive('manageAnswer', directives.manageAnswer);
 main.directive('preloader', directives.preloader);
+main.directive('memberFeedback', directives.memberFeedback);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //

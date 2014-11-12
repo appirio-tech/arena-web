@@ -1118,32 +1118,7 @@ footer .right .sponsorLogo {
 .practiceProblemList .iconSolved {
     color: #a2eb23;
 }
-/*bootstrap small devices tablets*/
-@media only screen and (max-width: 991px) {
-    .header .navIcons > li {
-        background-image: url(../img/black-header.png);
-    }
-    .header .timeItem,
-    .header .navbar-right .userInfo {
-        background-image: url(../img/black-header.png);
-    }
-}
-/* boostrap extra small devices */
-@media only screen and (max-width: 767px) {
-    .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/dark/company_logo_small.png);
-    }
-}
-/* special sizes which widget will overflow */
-@media only screen and (max-width: 668px) {
-    .panelChatArea .membersInfo{
-        border-bottom: 1px solid #1f444e;
-    }
-}
-@media only screen and (max-width: 421px) {
-    .panelContestStat .breadcrumbHead {height: 63px; }
-}
->>>>>>> 3bb67444dd36fd929dfa94cebe116707c2f71188
+
 .coder-history-modal-header {
     background-color:#1f444e!important;
 }
@@ -1183,6 +1158,34 @@ footer .right .sponsorLogo {
 }
 .testReportPanel .reportItem .textGray {color: #687376; }
 
+/*member feedback widget*/
+.feedbackBody,
+.panelFeedback .btnRow {
+    background: #151718;
+    border-color: #0999d1;
+}
+.btnFeedback {
+    background: #0999d1;
+}
+.panelFeedback .btnRow .btn {
+    background: #0f9bba;
+}
+.panelFeedback .border {
+    border-color: #363738;
+    border-color: rgba(255, 255, 255, 0.16);
+}
+.panelFeedback .feedbackInput::-webkit-input-placeholder{
+    color: #fff;
+}
+.panelFeedback .feedbackInput:-moz-placeholder{
+    color: #fff;
+}
+.panelFeedback .feedbackInput::-moz-placeholder{
+    color: #fff;
+}
+.panelFeedback .feedbackInput:-ms-input-placeholder{
+    color: #fff;
+}
 /*Media blocks should be placed after the normal code!!!*/
 /*bootstrap small devices tablets*/
 @media only screen and (max-width: 991px) {
