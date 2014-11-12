@@ -73,3 +73,6 @@ export REGISTRATION_URL='http://tcqa1.topcoder.com/?action=callback'
 # The time (in ms) after which the loading spinner times out if there is no activity.
 export SPINNER_TIMEOUT=10000
 
+# Google Docs Spreadsheet URL for saving feedbacks and its maxlength
+export FEEDBACK_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbxSDbXXaz5y1wDKWa_XToU2yyi0yAvAobXh8vF2WuT3VrFd14YN/exec
+export FEEDBACK_MAXLENGTH=10000

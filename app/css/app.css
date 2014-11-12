@@ -7055,6 +7055,203 @@ table thead .sort.desc{
     padding-top: 10px
 }
 
+/*member feedback widget*/
+.memberFeedback {
+    position: fixed;
+    bottom: 0;
+    right: 5px;
+    z-index: 2;
+}
+.panelFeedback {
+    width: 407px;
+    float: right;
+}
+.feedbackHead {
+    text-align: right;
+}
+/*btns*/
+.panelFeedback .btn {
+    border-width: 0;
+    color: #fff;
+    font-weight: 300;
+}
+.panelFeedback .btn:hover {
+    opacity: 0.9;
+}
+.panelFeedback .btn:focus {
+    outline: none;
+}
+.btnFeedback {
+    font-size: 14px;
+    width: 112px;
+    padding-top: 4px;
+    padding-left: 13px;
+    padding-right: 11px;
+    background: #0999d1;
+}
+.btnFeedback .arrow {
+    display: inline-block;
+    height: 8px;
+    width: 22px;
+    position: relative;
+}
+.btnFeedback .arrow:before {
+    content: "";
+    display: block;
+    height: 8px;
+    width: 15px;
+    background: url(../img/feedbackArrow.png) 0 0 no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.btn-modeDashboard .arrow:before {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.feedbackBody {
+    background: #151718;
+    border: 1px solid #0999d1;
+    height: 0;
+}
+.memberFeedback .feedbackBody.animationSlideUp {
+    animation: slideUp 0.1s ease-in-out;
+    -webkit-animation: slideUp 0.1s ease-in-out;
+    -moz-animation: slideUp 0.1s ease-in-out;
+    height: 371px;
+}
+@keyframes slideUp {
+    0% {height: 0;}
+    100% {height: 371px;}
+}
+@-webkit-keyframes slideUp {
+    0% {height: 0;}
+    100% {height: 371px;}
+}
+@-moz-keyframes slideUp {
+    0% {height: 0;}
+    100% {height: 371px;}
+}
+.memberFeedback .feedbackBody.animationSlideDown {
+    animation: slideDown 0.1s ease-in-out;
+    -webkit-animation: slideDown 0.1s ease-in-out;
+    -moz-animation: slideDown 0.1s ease-in-out;
+    height: 0;
+}
+@keyframes slideDown {
+    0% {height: 371px;}
+    100% {height: 0;}
+}
+@-webkit-keyframes slideDown {
+    0% {height: 371px;}
+    100% {height: 0;}
+}
+@-moz-keyframes slideDown {
+    0% {height: 371px;}
+    100% {height: 0;}
+}
+.panelFeedback .contentWrapper {
+    padding: 25px 27px 0 11px;
+}
+.panelFeedback p {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.panelFeedback .border {
+    border: 1px solid #fff;
+    margin-top: 15px;
+    margin-left: 2px;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+}
+.panelFeedback textarea {
+    display: block;
+    height: 184px;
+    width: 363px;
+    resize: none;
+    font-size: 14px;
+    border-width: 1px;
+    line-height: 1.2145em;
+    padding: 0;
+    padding: 4px 7px;
+    border-width: 0;
+    background: transparent;
+}
+.panelFeedback .feedbackBody .error {
+    border-color: #f40000;
+}
+.panelFeedback .errorMessage {
+    font-size: 14px;
+    height: 21px;
+    line-height: 1.5em;
+    overflow: hidden;
+    color: #f40000;
+    margin-bottom: 0;
+}
+.panelFeedback .feedbackInput::-webkit-input-placeholder{
+    opacity: 1;
+}
+.panelFeedback .feedbackInput:-moz-placeholder{
+    opacity: 1;
+}
+.panelFeedback .feedbackInput::-moz-placeholder{
+    opacity: 1;
+}
+.panelFeedback .feedbackInput:-ms-input-placeholder{
+    opacity: 1;
+}
+.panelFeedback .feedbackInput:focus::-webkit-input-placeholder{
+    color: transparent;
+}
+.panelFeedback .feedbackInput:focus:-moz-placeholder{
+    color: transparent;
+}
+.panelFeedback .feedbackInput:focus::-moz-placeholder{
+    color: transparent;
+}
+.panelFeedback .feedbackInput:focus:-ms-input-placeholder{
+    color: transparent;
+}
+.panelFeedback .btnRow {
+    border-top: 1px solid #0999d1;
+    height: 67px;
+    padding: 14px 27px 14px 13px;
+}
+.panelFeedback .btnRow .btn {
+    background: #0f9bba;
+    width: 116px;
+    font-size: 16px;
+}
+.panelFeedback .btnCancel {
+    opacity: 0.5;
+    padding-top: 2px;
+}
+.panelFeedback .btnSubmit {
+    margin-top: 2px;
+}
+/*modes */
+.modeMinimized .feedbackHead {
+    height: 8px;
+    overflow: hidden;
+}
+.modeDashboard .feedbackHead,
+.modeFloating .feedbackHead {
+    height: 35px;
+    overflow: hidden;
+}
+
+/**
+ * This hack targets the Webkit browser engine
+ * which includes Safari and Chrome.
+ */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .panelFeedback textarea {
+        padding-top: 5px;
+    }
+}
 /*Media blocks should be placed after the normal code!!!*/
 @media only screen and (max-width: 1245px) {
     .inner { padding: 0;}
@@ -7382,7 +7579,8 @@ table thead .sort.desc{
         margin-top: 10px;
     }
     /* ./Specific to contest management */
-    .dashboard .mainContent {
+    .dashboard .mainContent,
+    .memberFeedback .mainContent {
         width: 100%;
     }
     .codeArea .mainContent,
@@ -7666,6 +7864,15 @@ table thead .sort.desc{
         padding-left: 0;
     }
 }
+@media only screen and (max-width: 407px) {
+    .panelFeedback {
+        width: 320px;
+    }
+    .panelFeedback textarea {
+        width: 275px;
+        height: 159px;
+    }
+}
 @media only screen and (max-width: 428px) {
     .codeArea .titleBar {height: 125px;}
 }
@@ -7804,6 +8011,15 @@ table thead .sort.desc{
     .panelCodeEditor .panel-body .middlePart .findInput input {width: 84px;}
     .panelCodeEditor .panel-body .middlePart .gotoInput input {width: 68px;}
     .panelOverview .overviewAndMessage .profile {height: 137px;}
+}
+@media only screen and (max-width: 340px) {
+    .panelFeedback {
+        width: 298px;
+    }
+    .panelFeedback textarea {
+        width: 253px;
+        height: 159px;
+    }
 }
 @media only screen and (max-width: 331px) {
     .codeArea .titleBar {height: 165px;}
