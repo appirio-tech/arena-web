@@ -47,9 +47,9 @@
             <header><a data-ng-click="collapseMemberHere=!collapseMemberHere; rebuildScrollbar('info');" data-ng-class="{collapsed: collapseMemberHere}">Who's here <span>({{whosHereArrayFullList.length}})</span></a></header>
             <ul class="scrollable users {{whosHereScrollHeight}}" data-ng-hide="collapseMemberHere" data-ng-scrollbar data-rebuild-on="rebuild:whosHere" data-rebuild-on-resize data-scroll-top>
                 <li data-ng-repeat="member in whosHereArrayFullList | orderBy:whosHereOrderPredicate"><!-- avoid blank
-                    --><a sglclick="showCoderInfo(member.name, member.userListItem.userType);" data-ng-dblclick="setReplyToCoder(member.name)"><!-- avoid blank
+                    --><a sglclick="showCoderInfo(member.name, member.userListItem.userType);" data-ng-dblclick="setReplyToCoder(member.name)" title="{{member.name}}"><!-- avoid blank
                         --><span data-rating-indicator="{{member.rating}}" data-username="{{member.name}}Who" class="ratingIcon"></span><!-- avoid blank 
-                        --><span class="user {{getRatingClass(member.rating)}}" data-ng-class="{current: member.name == username()}">{{member.name}}</span>
+                        --><span class="user {{getRatingClass(member.rating)}}" data-ng-class="{current: member.name == username()}"><span>{{getMemberShortName(member.name)}}</span> <span class="userEnteringIcon" data-ng-show="userEnteringIcons[member.name]"></span><span class="userLeavingIcon" data-ng-show="userLeavingIcons[member.name]"></span></span>
                     </a>
                 </li>
             </ul>
@@ -81,7 +81,7 @@
                     <input class="memberInput" data-ng-model="talkToUser" data-ng-change="inputUser()" data-ng-show="!disableSelect && !disableInput" />
                     <a id="usersDropdownList" class="dropdown-toggle onlyTri" data-ng-show="!disableSelect && !disableInput" data-ng-class="getMemberRatingClass(memberIdx)" data-ng-click="rebuildMembersScrollbar()"></a>
                     <ul class="dropdown-menu" data-ng-custom-scrollbar data-rebuild-on="rebuild:members" data-rebuild-on-resize id="usersList">
-                        <li data-ng-repeat="user in whosHereArray"><a dropdown-toggle data-ng-click="talkTo(user.name);setTalkTo(user.name);" data-ng-class="{current: memberIdx===user.name}" class="{{getRatingClass(user.rating)}}" ng-hide="userProfile.handle == user.name">{{user.name}}</a></li>
+                        <li data-ng-repeat="user in getExistingUsers()"><a dropdown-toggle data-ng-click="talkTo(user.name);setTalkTo(user.name);" data-ng-class="{current: memberIdx===user.name}" class="{{getRatingClass(user.rating)}}" ng-hide="userProfile.handle == user.name">{{user.name}}</a></li>
                     </ul>
                 </li>
             </ul>
