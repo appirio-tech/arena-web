@@ -33,8 +33,12 @@
  * Changes in version 1.8 (Module Assembly - Web Arena - Local Chat Persistence):
  * - Clear the chat history while changing the room.
  *
+ * Changes in version 1.9 (PoC Assembly - Web Arena - Chat Widget Improvement):
+ * - Added getMemberName() method.
+ * - Prevent the double click event while user is leaving the room
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.8
+ * @version 1.9
  */
 'use strict';
 /*global require, module, angular, $, window, document */
@@ -270,7 +274,24 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
                 break;
             }
         }
+        if ($rootScope.userLeavingIcons && $rootScope.userLeavingIcons[msg]) {
+            msg = " ";
+        }
         return msg;
+    };
+
+    /**
+     * Filtered the leaving users.
+     * @returns {Array} - the existing users.
+     */
+    $scope.getExistingUsers = function () {
+        var result = [], i;
+        for (i = 0; i < $scope.whosHereArray.length; i++) {
+            if (!($rootScope.userLeavingIcons && $rootScope.userLeavingIcons[$scope.whosHereArray[i].name])) {
+                result.push($scope.whosHereArray[i]);
+            }
+        }
+        return result;
     };
 
     /**
@@ -408,6 +429,10 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
      * @param name - the coder handle.
      */
     $scope.setReplyToCoder = function (name) {
+        // if user is leaving, should not reply it
+        if ($rootScope.userLeavingIcons[name]) {
+            return;
+        }
         $scope.setChatMethod(4);
         $scope.talkTo(name);
         $scope.setTalkTo(name);
@@ -493,6 +518,19 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
     };
 
     /**
+     * Get the member name. Only show first 12 characters if user name is too long for entering/leaving icons.
+     * @param name - the member name.
+     * @returns {*} the processed name
+     */
+    $scope.getMemberShortName = function (name) {
+        if ((($rootScope.userLeavingIcons && $rootScope.userLeavingIcons[name]) || ($rootScope.userEnteringIcons && $rootScope.userEnteringIcons[name]))
+            && name.length > 14) {
+            return name.substring(0, 12) + '...';
+        }
+        return name;
+    };
+
+    /**
      * Submits the text content according to the chat method selected.
      */
     $scope.chatSubmit = function () {
@@ -517,6 +555,9 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
                         break;
                     }
                 }
+            }
+            if ($rootScope.userLeavingIcons && $rootScope.userLeavingIcons[tmpName]) {
+                tmpName = '';
             }
             // Reply-To / Whisper chat must have a recipient.
             if ($scope.talkToUser === undefined || $scope.talkToUser === '' || tmpName === '') {
