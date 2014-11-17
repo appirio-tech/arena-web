@@ -72,5 +72,8 @@ set SPINNER_TIMEOUT=10000
 set FEEDBACK_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbxSDbXXaz5y1wDKWa_XToU2yyi0yAvAobXh8vF2WuT3VrFd14YN/exec
 set FEEDBACK_MAXLENGTH=10000
 
+:: keyboard shortcut configuration
+set KEYBOARD_SHORTCUT=shift+tab
+
 :: The time (in ms) to hide the entering / leaving icons in chat area
 set CHAT_ICON_DISAPPEAR_TIME=3000

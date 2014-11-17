@@ -144,6 +144,11 @@ body{
     background-image: url(../img/orange/sprite-practiceRoom.png);
     background-repeat: no-repeat;
 }
+.codeArea .chatWidget .panel-heading .expandIcon:before,
+.codeArea .leaderboardWidget .panel-heading .expandIcon:before {
+    background-image: url(../img/orange/expand-alt.png);
+    background-repeat: no-repeat;
+}
 /***************header style*/
 .userInfo .rating-none {
     color: #fff;
@@ -1432,7 +1437,6 @@ footer .left>span {
 .activeUserList .ngsb-scrollbar{
     background: #fff;
 }
-
 .dashboard .textBlack{
     color: #687376!important;
 }
@@ -1467,6 +1471,36 @@ footer .left>span {
 .panelFeedback .feedbackInput:-ms-input-placeholder{
     color: #848686;
 }
+
+/*match level multi tasking*/
+.codeArea .chatWidget .panel-heading,
+.codeArea .leaderboardWidget .panel-heading {
+    font-weight: 600;
+}
+.codeArea .chatArea-min .panel-heading .numOfMembers {
+    color: #656565;
+}
+.codeArea .chatWidget .panel-heading .icon:hover,
+.codeArea .leaderboardWidget .panel-heading .icon:hover {
+    background-color: #fff;
+}
+.codeArea .chatWidget .panel-heading .miniIcon:before,
+.codeArea .leaderboardWidget .panel-heading .miniIcon:before {
+    border-color: #656565;
+    opacity: 0.5;
+}
+.codeArea .leaderboardWidget .panel-heading .expandIcon {
+    opacity: 0.5;
+}
+
+.socialButtons {
+    border-color: rgb(255, 160, 48);
+    background-color: rgb(240,240,240);
+}
+.socialButtons .challenge {
+    color: rgb(49, 111, 153);
+}
+
 /*Media blocks should be placed after the normal code!!!*/
 /*bootstrap small devices tablets*/
 @media only screen and (max-width: 991px) {
@@ -1502,12 +1536,4 @@ footer .left>span {
         white-space: normal;
         height: 63px;
     }
-}
-
-.socialButtons {
-    border-color: rgb(255, 160, 48);
-    background-color: rgb(240,240,240);
-}
-.socialButtons .challenge {
-    color: rgb(49, 111, 153);
 }

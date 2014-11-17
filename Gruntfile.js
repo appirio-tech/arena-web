@@ -98,6 +98,7 @@ module.exports = function (grunt) {
                         { match : 'SPINNER_TIMEOUT', replacement: process.env.SPINNER_TIMEOUT },
                         { match : 'FEEDBACK_SPREADSHEET_URL', replacement: process.env.FEEDBACK_SPREADSHEET_URL },
                         { match : 'FEEDBACK_MAXLENGTH', replacement: process.env.FEEDBACK_MAXLENGTH },
+                        { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT },
                         { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME }
                     ]
                 },
