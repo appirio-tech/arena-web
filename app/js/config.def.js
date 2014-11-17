@@ -34,6 +34,7 @@ module.exports = {
     practiceProblemListPageSize: '@@PRACTICE_PROBLEM_LIST_PAGE_SIZE',
     feedbackSpreadsheetUrl: '@@FEEDBACK_SPREADSHEET_URL',
     feedbackMaxlength: '@@FEEDBACK_MAXLENGTH',
-    keyboardShortcut: '@@KEYBOARD_SHORTCUT'
+    keyboardShortcut: '@@KEYBOARD_SHORTCUT',
+    chatIconDisappearTime: '@@CHAT_ICON_DISAPPEAR_TIME'
 };
 

@@ -7040,6 +7040,25 @@ table thead .sort.desc{
     opacity: 0.9;
 }
 
+.userEnteringIcon {
+    background-image: url(../img/entering.png);
+    content: '';
+    width: 10px;
+    height: 12px;
+    float: right;
+    margin-right: 4px;
+    margin-top: 7px;
+}
+.userLeavingIcon {
+    background-image: url(../img/leaving.png);
+    content: '';
+    width: 9px;
+    height: 12px;
+    float: right;
+    margin-right: 4px;
+    margin-top: 7px;
+}
+
 .tweet-share {
     display: inline-block;
 }

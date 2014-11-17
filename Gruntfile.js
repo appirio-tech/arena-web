@@ -36,8 +36,11 @@
  * - Added FEEDBACK_SPREADSHEET_URL setting.
  * - Added FEEDBACK_MAXLENGTH for feedback text
  *
+ * Changes in version 1.9 (PoC Assembly - Web Arena - Chat Widget Improvement):
+ * - Added CHAT_ICON_DISAPPEAR_TIME setting.
+ *
  * @author amethystlei, flytoj2ee, dexy, shubhendus
- * @version 1.8
+ * @version 1.9
  */
 'use strict';
 /*global module, process*/
@@ -95,7 +98,8 @@ module.exports = function (grunt) {
                         { match : 'SPINNER_TIMEOUT', replacement: process.env.SPINNER_TIMEOUT },
                         { match : 'FEEDBACK_SPREADSHEET_URL', replacement: process.env.FEEDBACK_SPREADSHEET_URL },
                         { match : 'FEEDBACK_MAXLENGTH', replacement: process.env.FEEDBACK_MAXLENGTH },
-                        { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT }
+                        { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT },
+                        { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME }
                     ]
                 },
                 files : [

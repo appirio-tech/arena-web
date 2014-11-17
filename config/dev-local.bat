@@ -74,3 +74,6 @@ set FEEDBACK_MAXLENGTH=10000
 
 :: keyboard shortcut configuration
 set KEYBOARD_SHORTCUT=shift+tab
+
+:: The time (in ms) to hide the entering / leaving icons in chat area
+set CHAT_ICON_DISAPPEAR_TIME=3000
