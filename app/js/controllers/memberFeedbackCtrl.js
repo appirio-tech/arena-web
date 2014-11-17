@@ -18,7 +18,7 @@
 
 var config = require('../config');
 
-var memberFeedbackCtrl = ['$scope', '$timeout', function ($scope, $timeout) {
+var memberFeedbackCtrl = ['$scope', '$timeout', '$rootScope', function ($scope, $timeout, $rootScope) {
     var count = 0,
         fadeTime = 3,
         // the dashboard timer for minimizing widget

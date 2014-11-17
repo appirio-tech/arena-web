@@ -94,7 +94,8 @@ module.exports = function (grunt) {
                         { match : 'REGISTRATION_URL', replacement: process.env.REGISTRATION_URL },
                         { match : 'SPINNER_TIMEOUT', replacement: process.env.SPINNER_TIMEOUT },
                         { match : 'FEEDBACK_SPREADSHEET_URL', replacement: process.env.FEEDBACK_SPREADSHEET_URL },
-                        { match : 'FEEDBACK_MAXLENGTH', replacement: process.env.FEEDBACK_MAXLENGTH }
+                        { match : 'FEEDBACK_MAXLENGTH', replacement: process.env.FEEDBACK_MAXLENGTH },
+                        { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT }
                     ]
                 },
                 files : [

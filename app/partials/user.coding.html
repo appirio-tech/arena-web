@@ -36,6 +36,10 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-codingeditor></div>
             </div>
         </div>
+        <div class="docker" data-ng-hide="$state.includes('user.practiceCode')">
+            <div data-chatarea data-chatarea-coding class="chatWidget chatArea chatArea-{{windowStatus.chatArea}}" id="chatWidget"></div><!-- avoid whitespace
+            --><div data-leaderboard class="leaderboardWidget leaderboard leaderboard-{{windowStatus.leaderboard}}" id="leaderboardWidget"></div>
+        </div>
     </div>
 </div>
 <!-- content end -->

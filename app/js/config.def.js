@@ -33,6 +33,7 @@ module.exports = {
     summaryTopCoderCount: '@@SUMMARY_TOPCODER_COUNT',
     practiceProblemListPageSize: '@@PRACTICE_PROBLEM_LIST_PAGE_SIZE',
     feedbackSpreadsheetUrl: '@@FEEDBACK_SPREADSHEET_URL',
-    feedbackMaxlength: '@@FEEDBACK_MAXLENGTH'
+    feedbackMaxlength: '@@FEEDBACK_MAXLENGTH',
+    keyboardShortcut: '@@KEYBOARD_SHORTCUT'
 };
 

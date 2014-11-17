@@ -184,6 +184,7 @@ controllers.userCodingTimeCtrl = require('./controllers/userCodingTimeCtrl');
 controllers.practiceProblemListCtrl = require('./controllers/practiceProblemListCtrl');
 controllers.matchScheduleCtrl = require('./controllers/matchScheduleCtrl');
 controllers.memberFeedbackCtrl = require('./controllers/memberFeedbackCtrl');
+controllers.leaderboardCtrl = require('./controllers/leaderboardCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -218,6 +219,7 @@ directives.manageQuestion = require('./directives/manageQuestion');
 directives.manageAnswer = require('./directives/manageAnswer');
 directives.preloader = require('./directives/preloader');
 directives.memberFeedback = require('./directives/memberFeedback');
+directives.leaderboard = require('./directives/leaderboard');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -243,6 +245,7 @@ main.factory('appHelper', factories.appHelper);
 main.factory('connectionService', factories.connectionService);
 main.factory('tcTimeService', factories.tcTimeService);
 main.factory('notificationService', factories.notificationService);
+main.factory('keyboardManager', factories.keyboardManager);
 
 /////////////
 // FILTERS //
@@ -287,6 +290,7 @@ main.controller('manageQuestionCtrl', controllers.manageQuestionCtrl);
 main.controller('manageAnswerCtrl', controllers.manageAnswerCtrl);
 main.controller('matchScheduleCtrl', controllers.matchScheduleCtrl);
 main.controller('memberFeedbackCtrl', controllers.memberFeedbackCtrl);
+main.controller('leaderboardCtrl', controllers.leaderboardCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -323,6 +327,7 @@ main.directive('manageQuestion', directives.manageQuestion);
 main.directive('manageAnswer', directives.manageAnswer);
 main.directive('preloader', directives.preloader);
 main.directive('memberFeedback', directives.memberFeedback);
+main.directive('leaderboard', directives.leaderboard);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
