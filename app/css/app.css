@@ -678,7 +678,6 @@ body a {cursor: pointer;}
 
 .preloader-window .preloader-indicator {
     position: absolute;
-    display: inline-block !important;
     padding: 5px 0px 0px 5px;
 }
 
@@ -1017,7 +1016,7 @@ footer .right>span:nth-child(2) {
         left: 50%;
         margin: 0;
         margin-top: -254px;
-        margin-left: -450px; /*min-width: 768px;*/
+        margin-left: -250px;
     }
 }
 .modal .modal-lg {
@@ -1091,7 +1090,6 @@ footer .right>span:nth-child(2) {
 }
 .modal .modal-content .modal-body p {
     margin: auto 20px;
-    overflow-x: auto; 
 }
 .modal .modal-content .wizardBody p {
     margin: 0;
@@ -4865,7 +4863,7 @@ footer .right>span:nth-child(2) {
 .contestManagement .titleBar .btn {
     width: 188px;
     font-size: 16px;
-    padding-left: 12px;
+    padding-left: 0px;
     padding-right: 0;
 }
 .contestManagement .panel-body .tabs, 
@@ -5020,6 +5018,10 @@ footer .right>span:nth-child(2) {
 .contestManagement .table .btn:focus {
     outline: 0;
 }
+.contestManagement .table .colLoadRound .btn:focus,
+.contestManagement .table .colChangeRound .btn:focus {
+    color: #ffffff !important;
+}
 .contestManagement .table .btn:hover {
     opacity: 0.7;
 }
@@ -5036,16 +5038,6 @@ footer .right>span:nth-child(2) {
     left: 10px;
     top: 8px;
     background-position: -10px -25px;
-}
-.contestManagement .colHide span {
-    display: block;
-    margin-top: 11px;
-    height: 22px;
-    width: 59px;
-    background-position: -35px 0;
-}
-.contestManagement .colHide .on {
-    background-position: -35px -25px;
 }
 .contestManagement .sortableHeading span {
     display: inline-block;
@@ -5097,12 +5089,15 @@ footer .right>span:nth-child(2) {
     padding-left: 8px;
 }
 .contestManagement .colStatus {
-    width: 108px;
+    width: 88px;
     min-width: 70px;
+}
+.contestManagement .colChangeRound {
+    width: 88px;
 }
 .contestManagement .table>thead>tr>th:last-child,
 .contestManagement .colHide {
-    width: 95px;
+    width: 75px;
     text-align: left;
 }
 .contestManagement .table>tbody>tr>.colHide {

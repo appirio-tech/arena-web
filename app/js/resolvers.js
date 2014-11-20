@@ -73,8 +73,12 @@
  * Changes in version 1.17 (PoC Assembly - Web Arena - Chat Widget Improvement):
  * - Added user entering / leaving room icon logic.
  *
- * @author amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.17
+ * Changes in version 1.18 (Module Assembly - Web Arena - Quick Fixes for Contest Management)
+ * - Added handling of ChangeRoundResponse, CommandSucceededResponse, CommandFailedResponse
+ *   and RoundAccessResponse events.
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee
+ * @version 1.18
  */
 ///////////////
 // RESOLVERS //
@@ -927,6 +931,26 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             message: data.text,
             popUpContent: data.text
         });
+    });
+
+    // handle change round response
+    socket.on(helper.EVENT_NAME.ChangeRoundResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.ChangeRoundResponse, data);
+    });
+
+    // handle command succeeded response
+    socket.on(helper.EVENT_NAME.CommandSucceededResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.CommandSucceededResponse, data);
+    });
+    // handle command failed response
+    socket.on(helper.EVENT_NAME.CommandFailedResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.CommandFailedResponse, data);
+    });
+
+
+    // handle round access response
+    socket.on(helper.EVENT_NAME.RoundAccessResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.RoundAccessResponse, data);
     });
 }];
 
