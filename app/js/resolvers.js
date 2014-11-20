@@ -73,7 +73,7 @@
  * Changes in version 1.17 (PoC Assembly - Web Arena - Chat Widget Improvement):
  * - Added user entering / leaving room icon logic.
  *
- * Changes in version 1.17 (Module Assembly - Web Arena - Quick Fixes for Contest Management)
+ * Changes in version 1.18 (Module Assembly - Web Arena - Quick Fixes for Contest Management)
  * - Added handling of ChangeRoundResponse, CommandSucceededResponse, CommandFailedResponse
  *   and RoundAccessResponse events.
  *

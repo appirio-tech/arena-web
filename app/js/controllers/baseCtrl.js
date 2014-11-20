@@ -828,8 +828,12 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
      * @returns {Array} the leader board
      */
     $rootScope.getCurrentLeaderboard = function (viewOn, roomID) {
+        if (angular.isUndefined($rootScope.roomData)
+                || angular.isUndefined($rootScope.roomData[roomID])) {
+            return [];
+        }
         if (viewOn === 'room') {
-            return $rootScope.roomData[roomID].coders;
+            return $rootScope.roomData[roomID].coders || [];
         }
         if (viewOn === 'divOne' || viewOn === 'divTwo') {
             return $rootScope.leaderboard;
