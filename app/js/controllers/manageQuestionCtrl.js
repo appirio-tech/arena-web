@@ -4,8 +4,11 @@
 /**
  * The controller for managing a single question.
  *
- * @author TCSASSEMBLER
- * @version 1.0
+ * Changes in version 1.1 (Module Assembly - Web Arena - Quick Fixes for Contest Management)
+ * - Added checking if $scope.question.id is defined number.
+ *
+ * @author TCSASSEMBLER, dexy
+ * @version 1.1
  */
 'use strict';
 /*jshint -W097*/
@@ -54,7 +57,7 @@ var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionH
             text: '',
             answers: []
         });
-        if ($scope.question.id) {
+        if ($scope.question.id && angular.isDefined($scope.question.id) && !isNaN($scope.question.id)) {
             $http.get(config.apiDomain + '/data/srm/rounds/' + $scope.question.id + '/answers', header).
                 success(function (data) {
                     if (data.error) {

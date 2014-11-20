@@ -14,8 +14,12 @@
  *  - Changed date format to save segments to match with API changes in srmRoundSegments.js
  *  - Fixed JSLINT errors
  *
- * @author flytoj2ee, TCSASSEMBLER
- * @version 1.3
+ * Changes in version 1.4 (Module Assembly - Web Arena - Quick Fixes for Contest Management)
+ * - Added roundDataIn to handle the case when contest will be updated and not created.
+ * - Adjusted parameters from the loaded contest if it is not undefined.
+ *
+ * @author flytoj2ee, dexy
+ * @version 1.4
  */
 'use strict';
 /*jshint -W097*/
@@ -30,8 +34,8 @@ var helper = require('../helper');
  * The create contest controller.
  * @type {*[]}
  */
-var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', '$timeout', '$filter', 'appHelper', '$rootScope', '$modal',  'sessionHelper', '$state',
-    function ($scope, $http, $modalInstance, ok, cancel, $timeout, $filter, appHelper, $rootScope, $modal, sessionHelper, $state) {
+var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', '$timeout', '$filter', 'appHelper', '$rootScope', '$modal', '$state', 'roundDataIn',
+    function ($scope, $http, $modalInstance, ok, cancel, $timeout, $filter, appHelper, $rootScope, $modal, $state, roundDataIn) {
         var limits = {
                 regLimit: {
                     min: 1,
@@ -86,7 +90,7 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             reader = new FileReader(),
             showDetailModal;
 
-
+        $scope.isUpdate = angular.isDefined(roundDataIn);
         $scope.contestName = '';
         $scope.notes = '';
 
@@ -110,7 +114,91 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 }
                 $scope.languageChoice.push(item);
             });
+            if ($scope.isUpdate) {
+                angular.forEach($scope.languageChoice, function (item) {
+                    item.checked = false;
+                    angular.forEach($scope.roundData.languages.languages, function (language) {
+                        if (language.id === item.id) {
+                            item.checked = true;
+                        }
+                    });
+                });
+            }
         });
+
+        // default value
+        $scope.officialRated = true;
+        $scope.assignByDiv = true;
+        // handle registration limit
+        $scope.regLimit = 1024;
+        $scope.regStartH = 2;
+        $scope.regStartMm = '00';
+        $scope.codeLengthH = 1;
+        $scope.codeLengthMm = '15';
+        $scope.intermissionLengthH = 0;
+        $scope.intermissionLengthMm = '05';
+        $scope.challengeLengthH = 0;
+        $scope.challengeLengthMm = 15;
+        $scope.coderPerRoom = 20;
+        $scope.startHh = 0;
+        $scope.startMm = 0;
+        // handle am/pm marker
+        $scope.marker = 'AM';
+        $scope.roomAssignmentMethod = {};
+
+        $scope.currentSelectedDate = null;
+        $scope.currentStartMonth = null;
+        $scope.currentEndMonth = null;
+
+        $scope.roundData = roundDataIn;
+        if ($scope.isUpdate) {
+            $scope.contestName = $scope.roundData.name;
+            if ($scope.contestName.indexOf(' Round', $scope.contestName.length - ' Round'.length) !== -1) {
+                $scope.contestName = $scope.contestName.substr(0, $scope.contestName.length - ' Round'.length);
+            }
+            $scope.roomAssignmentMethod.id = $scope.roundData.roomAssignment.type;
+            $scope.assignByRegion = $scope.roundData.roomAssignment.isByRegion === 1;
+            $scope.type = $scope.roundData.invitationalType === 0 ? 'Public' : 'Invitational';
+            $scope.assignByDiv = $scope.roundData.roomAssignment.isByDivision === 1;
+            $scope.regLimit = $scope.roundData.registrationLimit;
+            $scope.currentSelectedDate = new Date($scope.roundData.segments.registrationStartTime);
+            $scope.marker = 'AM';
+            $scope.startHh = $scope.currentSelectedDate.getHours();
+            if ($scope.startHh >= 12) {
+                $scope.marker = 'PM';
+                $scope.startHh -= 12;
+            }
+            if ($scope.currentSelectedDate.getMinutes() < 10) {
+                $scope.startMm = '0' + $scope.currentSelectedDate.getMinutes().toString();
+            } else {
+                $scope.startMm = $scope.currentSelectedDate.getMinutes().toString();
+            }
+            $scope.regStartH = Math.floor($scope.roundData.segments.registrationLength / 60).toString();
+            if (($scope.roundData.segments.registrationLength % 60) < 10) {
+                $scope.regStartMm = '0' + ($scope.roundData.segments.registrationLength % 60).toString();
+            } else {
+                $scope.regStartMm = ($scope.roundData.segments.registrationLength % 60).toString();
+            }
+            $scope.codeLengthH = Math.floor($scope.roundData.segments.codingLength / 60).toString();
+            if (($scope.roundData.segments.codingLength % 60) < 10) {
+                $scope.codeLengthMm = '0' + ($scope.roundData.segments.codingLength % 60).toString();
+            } else {
+                $scope.codeLengthMm = ($scope.roundData.segments.codingLength % 60).toString();
+            }
+            $scope.intermissionLengthH = Math.floor($scope.roundData.segments.intermissionLength / 60).toString();
+            if (($scope.roundData.segments.intermissionLength % 60) < 10) {
+                $scope.intermissionLengthMm = '0' + ($scope.roundData.segments.intermissionLength % 60).toString();
+            } else {
+                $scope.intermissionLengthMm = ($scope.roundData.segments.intermissionLength % 60).toString();
+            }
+            $scope.challengeLengthH = Math.floor($scope.roundData.segments.challengeLength / 60);
+            if (($scope.roundData.segments.challengeLength % 60) < 10) {
+                $scope.challengeLengthMm = '0' + ($scope.roundData.segments.challengeLength % 60).toString();
+            } else {
+                $scope.challengeLengthMm = ($scope.roundData.segments.challengeLength % 60).toString();
+            }
+            $scope.coderPerRoom = $scope.roundData.roomAssignment.codersPerRoom;
+        }
 
         /**
          * Close detail dialog.
@@ -305,46 +393,92 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 $timeout.cancel(modalTimeoutPromise);
             }
             modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
+            if ($scope.isUpdate) {
+                contestData.contestId = $scope.roundData.contest.id;
+                contestData.id = $scope.roundData.contest.id;
 
-            $http.post(config.apiDomain + '/data/srm/contests', contestData, header).success(function (data, status, headers) {
-                if (data.error && data.error !== '') {
-                    showDetailModal(data, status);
-                } else {
-                    roundData.contest_id = data.contestId;
-                    $http.post(config.apiDomain + '/data/srm/rounds', roundData, header).success(function (data, status, headers) {
-                        if (data.error && data.error !== '') {
-                            showDetailModal(data, status);
-                        } else {
-                            languageData.roundId = data.roundId;
-                            segment.roundId = data.roundId;
-                            roundId = data.roundId;
-                            $http.post(config.apiDomain + '/data/srm/rounds/' + roundId + '/languages', languageData, header).success(function (data, status, headers) {
-                                if (data.error && data.error !== '') {
-                                    showDetailModal(data, status);
-                                } else {
-                                    $http.post(config.apiDomain + '/data/srm/rounds/' + roundId + '/segments', segment, header).success(function (data, status, headers) {
-                                        if (data.error && data.error !== '') {
-                                            showDetailModal(data, status);
-                                        } else {
-                                            $scope.closeDetailDialog();
-                                            $scope.openDetailModal({'title': 'Success', 'detail': 'Contest created successfully.', 'enableClose': true});
-                                        }
-                                    }).error(function (data, status) {
-                                        showDetailModal(data, status);
-                                    });
-                                }
-                            }).error(function (data, status, headers, config) {
-                                showDetailModal(data, status);
-                            });
 
-                        }
-                    }).error(function (data, status, headers, config) {
+                $http.put(config.apiDomain + '/data/srm/contests/' + $scope.roundData.contest.id, contestData, header).success(function (data, status, headers) {
+                    if (data.error && data.error !== '') {
                         showDetailModal(data, status);
-                    });
-                }
-            }).error(function (data, status, headers, config) {
-                showDetailModal(data, status);
-            });
+                    } else {
+                        roundData.contest_id = $scope.roundData.contest.id;
+                        roundData.id = $scope.roundData.id;
+                        $http.put(config.apiDomain + '/data/srm/rounds/' + $scope.roundData.id, roundData, header).success(function (data, status, headers) {
+                            if (data.error && data.error !== '') {
+                                showDetailModal(data, status);
+                            } else {
+                                languageData.roundId = $scope.roundData.id;
+                                segment.roundId = $scope.roundData.id;
+                                roundId = $scope.roundData.id;
+                                $http.post(config.apiDomain + '/data/srm/rounds/' + roundId + '/languages', languageData, header).success(function (data, status, headers) {
+                                    if (data.error && data.error !== '') {
+                                        showDetailModal(data, status);
+                                    } else {
+                                        $http.post(config.apiDomain + '/data/srm/rounds/' + roundId + '/segments', segment, header).success(function (data, status, headers) {
+                                            if (data.error && data.error !== '') {
+                                                showDetailModal(data, status);
+                                            } else {
+                                                $scope.closeDetailDialog();
+                                                $scope.openDetailModal({'title': 'Success', 'detail': 'Match updated successfully.', 'enableClose': true});
+                                            }
+                                        }).error(function (data, status) {
+                                            showDetailModal(data, status);
+                                        });
+                                    }
+                                }).error(function (data, status, headers, config) {
+                                    showDetailModal(data, status);
+                                });
+
+                            }
+                        }).error(function (data, status, headers, config) {
+                            showDetailModal(data, status);
+                        });
+                    }
+                }).error(function (data, status, headers, config) {
+                    showDetailModal(data, status);
+                });
+            } else {
+                $http.post(config.apiDomain + '/data/srm/contests', contestData, header).success(function (data, status, headers) {
+                    if (data.error && data.error !== '') {
+                        showDetailModal(data, status);
+                    } else {
+                        roundData.contest_id = data.contestId;
+                        $http.post(config.apiDomain + '/data/srm/rounds', roundData, header).success(function (data, status, headers) {
+                            if (data.error && data.error !== '') {
+                                showDetailModal(data, status);
+                            } else {
+                                languageData.roundId = data.roundId;
+                                segment.roundId = data.roundId;
+                                roundId = data.roundId;
+                                $http.post(config.apiDomain + '/data/srm/rounds/' + roundId + '/languages', languageData, header).success(function (data, status, headers) {
+                                    if (data.error && data.error !== '') {
+                                        showDetailModal(data, status);
+                                    } else {
+                                        $http.post(config.apiDomain + '/data/srm/rounds/' + roundId + '/segments', segment, header).success(function (data, status, headers) {
+                                            if (data.error && data.error !== '') {
+                                                showDetailModal(data, status);
+                                            } else {
+                                                $scope.closeDetailDialog();
+                                                $scope.openDetailModal({'title': 'Success', 'detail': 'Match created successfully.', 'enableClose': true});
+                                            }
+                                        }).error(function (data, status) {
+                                            showDetailModal(data, status);
+                                        });
+                                    }
+                                }).error(function (data, status, headers, config) {
+                                    showDetailModal(data, status);
+                                });
+
+                            }
+                        }).error(function (data, status, headers, config) {
+                            showDetailModal(data, status);
+                        });
+                    }
+                }).error(function (data, status, headers, config) {
+                    showDetailModal(data, status);
+                });
+            }
         };
 
         /**
@@ -647,23 +781,6 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             }
         };
 
-        // default value
-        $scope.officialRated = true;
-        $scope.assignByDiv = true;
-        // handle registration limit
-        $scope.regLimit = 1024;
-        $scope.regStartH = 2;
-        $scope.regStartMm = '00';
-        $scope.codeLengthH = 1;
-        $scope.codeLengthMm = '15';
-        $scope.intermissionLengthH = 0;
-        $scope.intermissionLengthMm = '05';
-        $scope.challengeLengthH = 0;
-        $scope.challengeLengthMm = 15;
-        $scope.coderPerRoom = 20;
-        $scope.startHh = 0;
-        $scope.startMm = 0;
-
         /**
          * Check the value's limits.
          * @param value the value to check
@@ -785,6 +902,59 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
         $scope.contestCalendarEvents = [];
         $scope.contestCalendarEventSources = [$scope.contestCalendarEvents];
 
+        /*jslint unparam: true*/
+        /**
+         * Add color info to day number.
+         * @param event the event instance
+         * @param element the element instance
+         * @param monthView the month view
+         */
+        $scope.eventRender = function (event, element, monthView) {
+            var date = event.start.getFullYear() + '-' +
+                    (event.start.getMonth() > 8 ? '' : '0') + (event.start.getMonth() + 1) + '-' +
+                    (event.start.getDate() > 9 ? '' : '0') + event.start.getDate(),
+                target = $('#contestCalendar .fc-view-month').find('[data-date=' + date + ']');
+            target.addClass('eventColor');
+        };
+
+        /**
+         * Select the day
+         * @param date the date instance
+         * @param allDay the all day flag
+         * @param jsEvent the js event
+         * @param view the view
+         */
+        $scope.selectDay = function (date, allDay, jsEvent, view) {
+            var current = new Date(), dateSelect, day;
+            if (view && (+date < (+current - 60 * 1000 * 60 * 24))) {
+                return;
+            }
+
+            $scope.startDate = $filter('date')(date, 'MM/dd/yyyy');
+            $scope.startDateSum = $filter('date')(date, 'dd MMM yyyy');
+            dateSelect = $filter('date')(date, 'yyyy-MM-dd');
+            day = $filter('date')(date, 'd');
+            $('#contestCalendar').find('.selectedDate').removeClass('selectedDate');
+            $('#contestCalendar .fc-view-month')
+                .find('[data-date=' + dateSelect + ']')
+                .addClass('selectedDate')
+                .find('.fc-day-number')
+                .attr('day', day);
+
+            $scope.currentSelectedDate = date;
+
+            if (view !== null) {
+                if (date < $scope.currentStartMonth) {
+                    // click previous
+                    $('#contestCalendar .fc-header-right .fc-text-arrow').first().click();
+                }
+                if (date >= $scope.currentEndMonth) {
+                    // click next
+                    $('#contestCalendar .fc-header-right .fc-text-arrow').last().click();
+                }
+            }
+        };
+
         // config calendar plugin
         $scope.contestCalConfig = {
             calendar: {
@@ -810,67 +980,14 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 }
             }
         };
-        /*jslint unparam: true*/
-        /**
-         * Add color info to day number.
-         * @param event the event instance
-         * @param element the element instance
-         * @param monthView the month view
-         */
-        $scope.eventRender = function (event, element, monthView) {
-            var date = event.start.getFullYear() + '-' +
-                    (event.start.getMonth() > 8 ? '' : '0') + (event.start.getMonth() + 1) + '-' +
-                    (event.start.getDate() > 9 ? '' : '0') + event.start.getDate(),
-                target = $('#contestCalendar .fc-view-month').find('[data-date=' + date + ']');
-            target.addClass('eventColor');
-        };
 
-        $scope.currentSelectedDate = null;
-        $scope.currentStartMonth = null;
-        $scope.currentEndMonth = null;
-        /**
-         * Select the day
-         * @param date the date instance
-         * @param allDay the all day flag
-         * @param jsEvent the js event
-         * @param view the view
-         */
-        $scope.selectDay = function (date, allDay, jsEvent, view) {
-            var current = new Date(), dateSelect, day;
-            if (+date < (+current - 60 * 1000 * 60 * 24)) {
-                return;
-            }
-
-            $scope.startDate = $filter('date')(date, 'MM/dd/yyyy');
-            $scope.startDateSum = $filter('date')(date, 'dd MMM yyyy');
-            dateSelect = $filter('date')(date, 'yyyy-MM-dd');
-            day = $filter('date')(date, 'd');
-            $('#contestCalendar').find('.selectedDate').removeClass('selectedDate');
-            $('#contestCalendar .fc-view-month')
-                .find('[data-date=' + dateSelect + ']')
-                .addClass('selectedDate')
-                .find('.fc-day-number')
-                .attr('day', day);
-
-            $scope.currentSelectedDate = date;
-
-            if (view !== null) {
-                if (date < $scope.currentStartMonth) {
-                    // click previous
-                    $('#contestCalendar .fc-header-right .fc-text-arrow').first().click();
-                }
-                if (date > $scope.currentEndMonth) {
-                    // click next
-                    $('#contestCalendar .fc-header-right .fc-text-arrow').last().click();
-                }
-            }
-        };
         /*jslint unparam: false*/
         $timeout(function () {
-            $scope.selectDay(new Date(), null, null, null);
+            $scope.selectDay($scope.currentSelectedDate || new Date(), null, null, null);
+            $('#contestCalendar').fullCalendar('gotoDate', $scope.currentSelectedDate.getFullYear(),
+                    $scope.currentSelectedDate.getMonth());
         }, 400);
-        // handle am/pm marker
-        $scope.marker = 'AM';
+
         /**
          * Set the am/pm marker.
          * @param marker the marker flag
@@ -904,8 +1021,19 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
 
         // Get room assignment methods
         $http.get('data/assignmentMethod.json').success(function (data) {
+            var found = false;
             $scope.assignMethods = data;
-            $scope.roomAssignmentMethod = $scope.assignMethods[0];
+            if (angular.isDefined($scope.roomAssignmentMethod.id)) {
+                angular.forEach($scope.assignMethods, function (method) {
+                    if (method.id === $scope.roomAssignmentMethod.id) {
+                        found = true;
+                        $scope.roomAssignmentMethod = method;
+                    }
+                });
+            }
+            if (!found) {
+                $scope.roomAssignmentMethod = $scope.assignMethods[0];
+            }
         });
 
         /**
