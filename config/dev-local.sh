@@ -57,7 +57,7 @@ export SOCIAL_ARENA_DESCRIPTION='Algorithm matches for big brains. Solve these a
 # The Web Arena Title used in posting to Facebook wall
 export SOCIAL_ARENA_TITLE='TopCoder Arena'
 
-export TWEET_TEXT=I am about to participate in a #topcoder arena match, and I am challenging you! To register for the match click arena.topcoder.com.
+export TWEET_TEXT='I am about to participate in a #topcoder arena match, and I am challenging you! To register for the match click arena.topcoder.com.'
 export TWEET_URL=arena.topcoder.com
 export FACEBOOK_LINK=arena.topcoder.com
 
@@ -82,3 +82,12 @@ export KEYBOARD_SHORTCUT='shift+tab'
 
 # The time (in ms) to hide the entering / leaving icons in chat area
 export CHAT_ICON_DISAPPEAR_TIME=3000
+
+# Time interval between challenge changes in challenge advertising widget (milliseconds)
+export CHALLENGE_ADVERTISING_INTERVAL=5000
+
+# The time interval between updates of challenge advertising data from TC-API server (in ms)
+export CHALLENGE_ADVERTISING_UPDATE=300000
+
+# The TopCoder host name
+export TC_HOSTNAME=http://www.topcoder.com

@@ -1410,3 +1410,29 @@ footer .right .sponsorLogo {
         float: none;
     }
 }
+
+/* 
+*    Styles for challenges advertisement widget
+*/
+
+#challenges-advertiser {
+    border: 1px solid #b7c9d7;
+    background: #f5f8fa;   
+}
+
+#challenges-advertiser .challenge-technologies-wrapper {
+    color: #636d70;
+}
+
+#challenges-advertiser .challenge-timer {
+    color: #316f99;
+    border-color: #b7c9d7;
+}
+
+#challenges-advertiser .challenge-prize {
+    color: #316f99;
+}
+
+#challenges-advertiser .challenge-icon {
+    color: #e9f2db;
+}

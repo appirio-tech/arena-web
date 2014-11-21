@@ -378,7 +378,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
             }
 
             // remove one if reach the limit count
-            if (itemsJson.length >= (+config.chatLength)) {
+            if (itemsJson.length >= Number(config.chatLength)) {
                 itemsJson.shift();
             }
             angular.extend(value, {createdTime: Date.now()});
@@ -395,7 +395,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.getLocalStorage = function (roomId) {
         if (localStorageService.isSupported) {
-            var expire = Date.now() - ((+config.localStorageExpireTime) * 1000), roomList, newRoomList, k, roomItems, key, items, i, roomIdStr, str = '', newRoomItems, m;
+            var expire = Date.now() - (Number(config.localStorageExpireTime) * 1000), roomList, newRoomList, k, roomItems, key, items, i, roomIdStr, str = '', newRoomItems, m;
 
             roomIdStr = roomId + str;
 
