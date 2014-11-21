@@ -77,3 +77,12 @@ set KEYBOARD_SHORTCUT=shift+tab
 
 :: The time (in ms) to hide the entering / leaving icons in chat area
 set CHAT_ICON_DISAPPEAR_TIME=3000
+
+:: Time interval between challenge changes in challenge advertising widget (milliseconds)
+set CHALLENGE_ADVERTISING_INTERVAL=5000
+
+:: The time interval between updates of challenge advertising data from TC-API server (in ms)
+set CHALLENGE_ADVERTISING_UPDATE=300000
+
+:: The TopCoder host name
+set TC_HOSTNAME=http://www.topcoder.com

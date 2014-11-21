@@ -86,8 +86,12 @@
  * Changes in version 1.23 (PoC Assembly - Web Arena - Match Schedule Page)
  * - Added resources for match schedule page.
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.23
+ * Changes in version 1.24 (UI Prototype - Web Arena - Challenges Advertising Widget)
+ * - Added challengesAdvertisingCtrl controller
+ * - Added challengesAdvertiser directive
+ * 
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein
+ * @version 1.24
  */
 'use strict';
 /*jshint -W097*/
@@ -185,6 +189,7 @@ controllers.practiceProblemListCtrl = require('./controllers/practiceProblemList
 controllers.matchScheduleCtrl = require('./controllers/matchScheduleCtrl');
 controllers.memberFeedbackCtrl = require('./controllers/memberFeedbackCtrl');
 controllers.leaderboardCtrl = require('./controllers/leaderboardCtrl');
+controllers.challengesAdvertisingCtrl = require('./controllers/challengesAdvertisingCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -220,6 +225,7 @@ directives.manageAnswer = require('./directives/manageAnswer');
 directives.preloader = require('./directives/preloader');
 directives.memberFeedback = require('./directives/memberFeedback');
 directives.leaderboard = require('./directives/leaderboard');
+directives.challengesAdvertiser = require('./directives/challengesAdvertiser');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -291,6 +297,7 @@ main.controller('manageAnswerCtrl', controllers.manageAnswerCtrl);
 main.controller('matchScheduleCtrl', controllers.matchScheduleCtrl);
 main.controller('memberFeedbackCtrl', controllers.memberFeedbackCtrl);
 main.controller('leaderboardCtrl', controllers.leaderboardCtrl);
+main.controller('challengesAdvertisingCtrl', controllers.challengesAdvertisingCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -328,6 +335,7 @@ main.directive('manageAnswer', directives.manageAnswer);
 main.directive('preloader', directives.preloader);
 main.directive('memberFeedback', directives.memberFeedback);
 main.directive('leaderboard', directives.leaderboard);
+main.directive('challengesAdvertiser', directives.challengesAdvertiser);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //

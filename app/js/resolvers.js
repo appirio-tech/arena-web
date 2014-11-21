@@ -95,7 +95,7 @@ var helper = require('./helper');
  *
  * @type {number}
  */
-var connectionTimeout = config.connectionTimeout || 25000;
+var connectionTimeout = Number(config.connectionTimeout || 25000);
 /**
  * Represents the member photo host.
  *
@@ -728,7 +728,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         $rootScope.chatContent[roomId].push(tmp);
         appHelper.setLocalStorage(roomId, tmp);
 
-        if ($rootScope.chatContent[roomId].length > config.chatLength) {
+        if ($rootScope.chatContent[roomId].length > Number(config.chatLength)) {
             $rootScope.chatContent[roomId].shift();
         }
 

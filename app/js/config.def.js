@@ -6,6 +6,8 @@ module.exports = {
     auth0clientID: '@@AUTH0_CLIENT_ID',
     auth0connection: '@@AUTH0_CONNECTION',
     callbackURL: '@@CALLBACK_URL',
+    challengeAdvertisingInterval: '@@CHALLENGE_ADVERTISING_INTERVAL',
+    challengeAdvertisingUpdate: '@@CHALLENGE_ADVERTISING_UPDATE',
     webSocketURL: '@@WEB_SOCKET_URL',
     ssoKey: '@@SSO_KEY',
     connectionTimeout: '@@CONNECTION_TIMEOUT',
@@ -35,6 +37,7 @@ module.exports = {
     feedbackSpreadsheetUrl: '@@FEEDBACK_SPREADSHEET_URL',
     feedbackMaxlength: '@@FEEDBACK_MAXLENGTH',
     keyboardShortcut: '@@KEYBOARD_SHORTCUT',
-    chatIconDisappearTime: '@@CHAT_ICON_DISAPPEAR_TIME'
+    chatIconDisappearTime: '@@CHAT_ICON_DISAPPEAR_TIME',
+    tcHostName: '@@TC_HOSTNAME'
 };
 

@@ -39,8 +39,12 @@
  * Changes in version 1.9 (PoC Assembly - Web Arena - Chat Widget Improvement):
  * - Added CHAT_ICON_DISAPPEAR_TIME setting.
  *
+ * Changes in version 1.10 (Module Assembly - Web Arena - Challenges Advertising Widget):
+ * - Added TC_HOSTNAME and CHALLENGE_ADVERTISING_UPDATE
+ *   to handle showing and updating challenge advertising data.
+ *
  * @author amethystlei, flytoj2ee, dexy, shubhendus
- * @version 1.9
+ * @version 1.10
  */
 'use strict';
 /*global module, process*/
@@ -73,6 +77,8 @@ module.exports = function (grunt) {
                         { match : 'AUTH0_DOMAIN', replacement: process.env.AUTH0_DOMAIN },
                         { match : 'AUTH0_CONNECTION', replacement: process.env.AUTH0_CONNECTION },
                         { match : 'CALLBACK_URL', replacement: process.env.CALLBACK_URL },
+                        { match : 'CHALLENGE_ADVERTISING_INTERVAL', replacement: process.env.CHALLENGE_ADVERTISING_INTERVAL },
+                        { match : 'CHALLENGE_ADVERTISING_UPDATE', replacement: process.env.CHALLENGE_ADVERTISING_UPDATE },
                         { match : 'WEB_SOCKET_URL', replacement: process.env.WEB_SOCKET_URL },
                         { match : 'API_DOMAIN', replacement: process.env.API_DOMAIN },
                         { match : 'SSO_KEY', replacement: process.env.SSO_KEY },
@@ -99,7 +105,8 @@ module.exports = function (grunt) {
                         { match : 'FEEDBACK_SPREADSHEET_URL', replacement: process.env.FEEDBACK_SPREADSHEET_URL },
                         { match : 'FEEDBACK_MAXLENGTH', replacement: process.env.FEEDBACK_MAXLENGTH },
                         { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT },
-                        { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME }
+                        { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME },
+                        { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME }
                     ]
                 },
                 files : [

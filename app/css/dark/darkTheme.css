@@ -1250,3 +1250,33 @@ footer .right .sponsorLogo {
 @media only screen and (max-width: 421px) {
     .panelContestStat .breadcrumbHead {height: 63px; }
 }
+
+/* 
+*    Styles for challenges advertisement widget
+*/
+
+#challenges-advertiser {
+    border: 1px solid #1f444e;
+    background: #151718;   
+}
+
+#challenges-advertiser .challenge-technologies-wrapper {
+    color: #636d70;
+}
+
+#challenges-advertiser .challenge-timer {
+    border-color: #1f444e;
+}
+
+#challenges-advertiser .challenge-timer  > * {
+	color: #fff;
+	opacity: 0.7;
+}
+
+#challenges-advertiser .challenge-prize {
+    color: #fff;
+}
+
+#challenges-advertiser .challenge-icon {
+    color: #e9f2db;
+}

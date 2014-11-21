@@ -93,7 +93,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             }
         };
 // page for Division Leaderboard
-    $scope.numOfPage = config.divsionLearderBoardLimit;
+    $scope.numOfPage = Number(config.divsionLearderBoardLimit);
     $scope.currentPage = 0;
     $scope.setCurrentPage = function (index) {
         $scope.currentPage = index;
@@ -416,7 +416,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         if (view !== 'room') {
             $scope.divisionID = divID;
             $rootScope.getDivSummary($scope.contest.roundID, divID);
-            $scope.numOfPage = config.divsionLearderBoardLimit;
+            $scope.numOfPage = Number(config.divsionLearderBoardLimit);
         } else {
             $scope.divisionID = $stateParams.divisionId;
             $scope.numOfPage = 999999;
