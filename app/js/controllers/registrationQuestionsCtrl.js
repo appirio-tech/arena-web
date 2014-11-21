@@ -4,8 +4,11 @@
 /**
  * The controller for the registration questions table.
  *
+ * Changes in version 1.1 (Module Assembly - Web Arena -Match Management Update):
+ * - Added delete question logic.
+ *
  * @author TCSASSEMBLER
- * @version 1.0
+ * @version 1.1
  */
 'use strict';
 /*jshint -W097*/
@@ -20,7 +23,8 @@ var registrationQuestionsCtrl = ['$scope', '$timeout', '$http', 'sessionHelper',
          * Header to be added to all http requests to api
          * @type {{headers: {Content-Type: string, Authorization: string}}}
          */
-        header = appHelper.getHeader();
+        header = appHelper.getHeader(),
+        index;
 
     /**
      * Refresh Registration Questions table's scrollbar
@@ -79,14 +83,42 @@ var registrationQuestionsCtrl = ['$scope', '$timeout', '$http', 'sessionHelper',
         $scope.$broadcast('manageQuestion', {question: question});
     };
 
-    /*jslint todo: true */
     /**
-     * Deletes question
-     * @param question
+     * Delete question
+     * @param question - the question to delete
      */
     $scope.deleteQuestion = function (question) {
-        // TODO Implement it later when API is ready
-        return;
+
+        $scope.openModal({
+            title: 'Delete Question',
+            message: 'Are you sure you want to delete the question?',
+            buttons: ['Delete Question', 'Cancel'],
+            enableClose: true
+        }, function () {
+            $http.delete(config.apiDomain + '/data/srm/rounds/' + question.id + '/question', header).
+                success(function (data) {
+                    if (data.error) {
+                        $rootScope.$broadcast('genericApiError', data);
+                        return;
+                    }
+                    $scope.openModal({
+                        title: 'Delete Question',
+                        message: 'Question has been removed successfully.',
+                        enableClose: true
+                    });
+                    index = $scope.round.questions.indexOf(question);
+                    if (index >= 0) {
+                        $scope.round.questions.splice(index, 1);
+                        refreshScrollbar();
+                    }
+
+                }).error(function (data) {
+                    $rootScope.$broadcast('genericApiError', data);
+                });
+
+        });
+
+
     };
     /*jslint unparam: true*/
     /**

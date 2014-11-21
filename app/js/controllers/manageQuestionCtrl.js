@@ -4,8 +4,11 @@
 /**
  * The controller for managing a single question.
  *
+ * Changes in version 1.1 (Module Assembly - Web Arena -Match Management Update):
+ * - Added delete answer logic.
+ *
  * @author TCSASSEMBLER
- * @version 1.0
+ * @version 1.1
  */
 'use strict';
 /*jshint -W097*/
@@ -20,7 +23,8 @@ var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionH
          * Header to be added to all http requests to api
          * @type {{headers: {Content-Type: string, Authorization: string}}}
          */
-        header = appHelper.getHeader();
+        header = appHelper.getHeader(),
+        index;
     /**
      * Get Keys to display various question dropdowns
      */
@@ -95,6 +99,7 @@ var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionH
         initFields($scope.question);
         refreshScrollbar();
     });
+
     /**
      * Closes Manage question popup
      */
@@ -114,14 +119,42 @@ var manageQuestionCtrl = ['$scope', '$rootScope', '$timeout', '$http', 'sessionH
     $scope.openManageAnswer = function (answer) {
         $scope.$broadcast('manageAnswer', {questionId: $scope.question.id, answer: answer});
     };
-    /*jslint todo: true */
     /**
      * Method to delete answer
      * @param answer Answer to delete
      */
     $scope.deleteAnswer = function (answer) {
-        // TODO implement it when API is ready
-        return;
+        $scope.openModal({
+            title: 'Delete Answer',
+            message: 'Are you sure you want to delete the answer?',
+            buttons: ['Delete Answer', 'Cancel'],
+            enableClose: true
+        }, function () {
+
+            $http.delete(config.apiDomain + '/data/srm/answer/' + answer.id, header).
+                success(function (data) {
+                    if (data.error) {
+                        $rootScope.$broadcast('genericApiError', data);
+                        return;
+                    }
+                    $scope.openModal({
+                        title: 'Delete Answer',
+                        message: 'Answer has been removed successfully.',
+                        enableClose: true
+                    });
+
+                    index = $scope.question.answers.indexOf(answer);
+                    if (index >= 0) {
+                        $scope.question.answers.splice(index, 1);
+                        refreshScrollbar();
+                    }
+
+                }).error(function (data) {
+                    $rootScope.$broadcast('genericApiError', data);
+                });
+        });
+
+
     };
     /**
      * Submits new or edited question to backend

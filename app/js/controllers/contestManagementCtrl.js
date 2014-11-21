@@ -8,13 +8,17 @@
  * - Round questions will be loaded on page load itself
  * - Added methods openTerms, openSchedule, openRegistrationQuestions to navigate user to appropriate popup
  *
+ * Changes in version 1.2 (Module Assembly - Web Arena -Match Management Update):
+ * - Added load round terms logic.
+ *
  * @author TCASSEMBLER
- * @version 1.1
+ * @version 1.2
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
 /*jslint plusplus: true*/
+/*jslint unparam: true*/
 /*global document, angular:false, $:false, module, window, require, angular*/
 
 var config = require('../config');
@@ -534,6 +538,11 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
             // No Error to handle
             return;
         }
+        if (data.error.value === 400) {
+            // No need to handle this.
+            // some api such as get terms will return 400 instead of empty response
+            return;
+        }
         if (data.error.value === 404) {
             // No need to handle this.
             // This is normal to rest api to return 404 instead of empty response
@@ -598,7 +607,6 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
             $scope.allRounds[data.assignedProblems[i].problemData.roundId].
                 problems[data.assignedProblems[i].problemData.id] = data.assignedProblems[i].problemData;
         }
-        loadRoundsArray();
     }
 
     /**
@@ -608,10 +616,6 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
      */
     function saveRoundComponents(data) {
         var i = 0;
-        if (data.error) {
-            genericErrorHandler(data);
-            return;
-        }
         if (data.error) {
             genericErrorHandler(data);
             return;
@@ -626,7 +630,6 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
             $scope.allRounds[data.components[i].roundId].
                 components[data.components[i].componentData.problemId][data.components[i].division.id] = data.components[i];
         }
-        loadRoundsArray();
     }
     /**
      * Retrieves response of all registration qustions to given round as ajax response
@@ -638,20 +641,32 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
             genericErrorHandler(data);
             return;
         }
-        if (data.error) {
-            genericErrorHandler(data);
-            return;
-        }
         $scope.allRounds[data.roundId].questions = data.questions;
-        loadRoundsArray();
     }
+
+    /**
+     * Retrieves response of all terms to given round as ajax response
+     * Save them to respective rounds
+     * @param roundId - the round id.
+     * @return the funtion to get ajax response terms data.
+     */
+    function saveRoundTerms(roundId) {
+        return function (data) {
+            if (data.error) {
+                genericErrorHandler(data);
+                return;
+            }
+            $scope.allRounds[roundId].terms = data.roundTermsContent;
+        };
+    }
+
     /**
      * Retrieves response of all rounds to given contest as ajax response
      * Once round data is received, requests will be sent to retrieve respective problems and problem components
      * @param rounds Ajax response of all rounds assigned to given contest
      */
     function saveContestRounds(rounds) {
-        var i = 0;
+        var i = 0, roundId;
         if (rounds.error) {
             genericErrorHandler(rounds);
             return;
@@ -679,9 +694,16 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
                 success(saveRoundComponents).error(genericErrorHandler);
             $http.get(config.apiDomain + '/data/srm/rounds/' + rounds.data[i].id + '/questions', header).
                 success(saveRoundQustions).error(genericErrorHandler);
+            //Retrieves response of terms to given round
+            roundId = rounds.data[i].id;
+            $http.get(config.apiDomain + '/data/srm/rounds/' + roundId + '/terms', header).
+                success(saveRoundTerms(roundId)).error(genericErrorHandler);
         }
         loadRoundsArray();
     }
+
+
+
 
     /**
      * Sends request to api to get all contests
@@ -951,7 +973,10 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
             return '';
         }
     };
-    // terms
+    /**
+     * Open the terms panel of the round.
+     * @param round - the round to open terms
+     */
     $scope.openTerms = function (round) {
         $scope.$broadcast('setContestTerms', {round: round});
     };
