@@ -119,7 +119,7 @@
                                             <div class="innerWrapper">
                                                 <table class="table table-condensed">
                                                     <tbody>
-                                                        <tr data-ng-repeat="challenger in getAllChallengers() | filter: getKeys(viewOn).challengerFilter | orderBy: getKeys(viewOn).challengerKey">
+                                                        <tr data-ng-repeat="challenger in filteredChallengers = (getAllChallengers() | filter: getKeys(viewOn).challengerFilter) | orderBy: getKeys(viewOn).challengerKey">
                                                             <td class="col1">{{challenger.id}}</td>
                                                             <td class="colR"><span class="name {{getRatingClass(challenger.challengerRating)}}"><span data-ng-click="showCoderInfo(challenger.challengerHandle, challenger.challengerUserType);" data-rating-indicator="{{challenger.challengerRating}}" data-username="{{challenger.challengerHandle}}" class="ratingIcon"></span></span></td>
                                                             <td class="col2"><span data-ng-click="showCoderInfo(challenger.challengerHandle, challenger.challengerUserType);" class="name {{getRatingClass(challenger.challengerRating)}}">{{challenger.challengerHandle}}</span></td>
@@ -129,6 +129,7 @@
                                                             <td class="col6">{{challenger.rate}}%</td>
                                                             <td class="col7"><a class="icon iconViewDetail" data-ng-click="filterChallenges(viewOn, challenger.challengerHandle)"></a></td>
                                                         </tr>
+                                                        <tr ng-show="(filteredChallengers.length == 0) && (challengerHandleString)"><td class="noResult">Handle {{challengerHandleString}} not found!</td></tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -226,7 +227,7 @@
                                             <div class="innerWrapper">
                                                 <table class="table table-condensed">
                                                     <tbody>
-                                                        <tr data-ng-repeat="challenge in getAllChallenges() | filter: getKeys(viewOn).challengeFilter | orderBy: getKeys(viewOn).challengeKey">
+                                                        <tr data-ng-repeat="challenge in filteredChallenges = (getAllChallenges() | filter: getKeys(viewOn).challengeFilter) | orderBy: getKeys(viewOn).challengeKey">
                                                             <td class="col1">{{challenge.id}}</td>
                                                             <td class="colR"><span data-ng-click="showCoderInfo(challenge.challengerHandle, challenge.challengerUserType);" class="name {{getRatingClass(challenge.challengerRating)}}"><span data-rating-indicator="{{challenge.challengerRating}}" data-username="{{challenge.challengerHandle}}" class="ratingIcon"></span></span></td>
                                                             <td class="col2"><span data-ng-click="showCoderInfo(challenge.challengerHandle, challenge.challengerUserType);" class="name {{getRatingClass(challenge.challengerRating)}}">{{challenge.challengerHandle}}</span></td>
@@ -236,8 +237,9 @@
                                                             <td class="col4">{{challenge.language}}</td>
                                                             <td class="col5"><span>{{challenge.date | date: 'dd-MM-yyyy'}}</span></td>
                                                             <td class="col6"><i class="icon" data-ng-class="{iconSuccess: challenge.success, iconFail: !challenge.success}"></i></td>
-                                                            <td class="col7"><a class="icon iconViewDetail"></a></td>
+                                                            <td class="col7"><a class="icon iconViewDetail" data-ng-click="getCoderHistory({userName: challenge.challengerHandle, userType: challenge.challengerUserType})"></a></td>
                                                         </tr>
+                                                        <tr ng-show="(filteredChallenges.length == 0) && (challengeHandleString)"><td class="noResult">Handle {{challengeHandleString}} not found!</td></tr>
                                                     </tbody>
                                                 </table>
                                             </div><!--/.innerWrapper-->
@@ -256,7 +258,7 @@
                                                         <td class="col4">{{challenge.language}}</td>
                                                         <td class="col5"><span>{{challenge.date | date: 'dd-MM-yyyy'}}</span></td>
                                                         <td class="col6"><i class="icon" data-ng-class="{iconSuccess: challenge.success, iconFail: !challenge.success}"></i></td>
-                                                        <td class="col7"><a class="icon iconViewDetail"></a></td>
+                                                        <td class="col7"><a class="icon iconViewDetail" data-ng-click="getCoderHistory({userName: challenge.challengerHandle, userType: challenge.challengerUserType})"></a></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -336,7 +338,7 @@
                                         <div class="innerWrapper">
                                             <table class="table table-condensed">
                                                 <tbody>
-                                                     <tr data-ng-repeat="coder in getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey | startFrom: currentPage*numOfPage | limitTo: numOfPage">
+                                                     <tr data-ng-repeat="coder in filteredLeaderboard = (getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter) | orderBy: getKeys(viewOn).leaderboardKey | startFrom: currentPage*numOfPage | limitTo: numOfPage">
                                                         <td class="col1">{{viewOn=='room' ? coder.roomPlace : coder.divPlace}}</td>
                                                         <td class="colR" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
                                                             --><!-- avoid blank
@@ -355,6 +357,7 @@
                                                         </td>
                                                         <td class="col6">{{$root.formatScore(coder.totalPoints)}}</td>
                                                     </tr>
+                                                    <tr ng-show="(filteredLeaderboard.length == 0) && (lbHandleString)"><td class="noResult">Handle {{lbHandleString}} not found!</td></tr>
                                                 </tbody>
                                             </table>
                                         </div>

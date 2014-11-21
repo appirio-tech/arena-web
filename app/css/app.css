@@ -5,6 +5,9 @@
 .center{display:block;margin:0 auto;}
 .table-responsive {overflow-x: auto;}
 .auto-inline {float: left;width: auto !important;}
+#filterContent {
+    display: none;
+}
 html{height:100%;}
 body{
     background:url(../img/dark/bg.png) repeat 0 0 #DDE7F2;
@@ -163,7 +166,13 @@ body a {cursor: pointer;}
     background-position: -175px 0;
 }
 .navIcons .iconCM:before {
-    background-position: -275px 0;
+    background-position: -380px 0;
+}
+.navIcons .iconPP:before {
+    background-position: -430px 0;
+}
+.navIcons .iconMS:before {
+    background-position: -405px 0;
 }
 .header .navbar .navIcons>li>.iconCC:before {
     background-image: url(../img/wizard-icon.png);
@@ -649,6 +658,35 @@ body a {cursor: pointer;}
 .rating-admin:hover{
     color: #ff9900;
 }
+/********** Loading spinner *****/
+.preloader-window {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    width: 180px;
+    height: 40px;
+    z-index: 1000;
+    background-color: #000000;
+    opacity: 1;
+    border: 1px solid #0bbbe7;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #ffffff;
+    display: inline-block;
+}
+
+.preloader-window .preloader-indicator {
+    position: absolute;
+    padding: 5px 0px 0px 5px;
+}
+
+.preloader-window .preloader-indicator>img {
+    display: inline-block !important;
+    vertical-align: middle;
+    padding: 2px 4px 2px 2px;
+}
+
 /*************** dashboard page */
 /* basical stucture, title, breadcrumb and connection */
 .inner{
@@ -978,7 +1016,7 @@ footer .right>span:nth-child(2) {
         left: 50%;
         margin: 0;
         margin-top: -254px;
-        margin-left: -450px; /*min-width: 768px;*/
+        margin-left: -250px;
     }
 }
 .modal .modal-lg {
@@ -1052,7 +1090,6 @@ footer .right>span:nth-child(2) {
 }
 .modal .modal-content .modal-body p {
     margin: auto 20px;
-    overflow-x: auto; 
 }
 .modal .modal-content .wizardBody p {
     margin: 0;
@@ -2600,8 +2637,7 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeEditor .testPanel .btnRow label {
     display: inline-block;
-    width: 55px;
-    margin-right: 45px;
+    margin-right: 25px;
     height: 36px;
     padding-top: 15px;
     margin-bottom: 6px;
@@ -2610,7 +2646,7 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .testPanel .btnRow .btn {margin-bottom: 0;}
 .panelCodeEditor .testPanel .btnRow .testBtn,
 .panelCodeEditor .testPanel .btnRow .addBtn {
-    width: 76px;
+    width: 90px;
     padding: 5px 6px 7px 10px;
     font-weight: 300;
     text-align: left;
@@ -2721,10 +2757,11 @@ footer .right>span:nth-child(2) {
     width: 530px;
     min-height: 306px;
     max-height: 516px;
-    position: absolute;
-    top: 43px;
+    position: fixed;
+    top: 0;
     left: 50%;
     margin-left: -260px;
+    margin-top: 5%;
     border: 1px solid #2d2f30;
     z-index: 100;
 }
@@ -3681,6 +3718,12 @@ footer .right>span:nth-child(2) {
     text-decoration: none;
     background: #e7e7e7;
 }
+.panelChatArea .panel-body {
+    padding: 0;
+}
+.panelChatArea .inlineSpan {
+    display: inline;
+}
 .panelChatArea .membersInfo{
     display: inline-block;
     position: absolute;
@@ -3793,6 +3836,9 @@ footer .right>span:nth-child(2) {
     display: inline;
     white-space: pre-wrap;
     word-break: normal;
+}
+.panelChatArea .content .chatBoard ul li span {
+    word-wrap: break-word;
 }
 .panelChatArea .content .chatBoard .emph{
     font-weight: bold;
@@ -4364,6 +4410,10 @@ footer .right>span:nth-child(2) {
 .detailPage .tableWrapper {
     position: relative;
 }
+.detailPage .table>tbody>tr>td.noResult {
+    text-align: center !important;
+    color: #f00;
+}
 /* expand/collapse action */
 .detailPage .panel-body section.expand{
     position: absolute;
@@ -4566,7 +4616,7 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     -ms-word-break:break-all;
     word-break:break-all;
-    font-weight: 700!important;
+    font-weight: 700;
 }
 
 .leaderboardWrapper .table td.col2 .name{
@@ -4813,7 +4863,7 @@ footer .right>span:nth-child(2) {
 .contestManagement .titleBar .btn {
     width: 188px;
     font-size: 16px;
-    padding-left: 12px;
+    padding-left: 0px;
     padding-right: 0;
 }
 .contestManagement .panel-body .tabs, 
@@ -4968,6 +5018,10 @@ footer .right>span:nth-child(2) {
 .contestManagement .table .btn:focus {
     outline: 0;
 }
+.contestManagement .table .colLoadRound .btn:focus,
+.contestManagement .table .colChangeRound .btn:focus {
+    color: #ffffff !important;
+}
 .contestManagement .table .btn:hover {
     opacity: 0.7;
 }
@@ -4984,16 +5038,6 @@ footer .right>span:nth-child(2) {
     left: 10px;
     top: 8px;
     background-position: -10px -25px;
-}
-.contestManagement .colHide span {
-    display: block;
-    margin-top: 11px;
-    height: 22px;
-    width: 59px;
-    background-position: -35px 0;
-}
-.contestManagement .colHide .on {
-    background-position: -35px -25px;
 }
 .contestManagement .sortableHeading span {
     display: inline-block;
@@ -5045,12 +5089,15 @@ footer .right>span:nth-child(2) {
     padding-left: 8px;
 }
 .contestManagement .colStatus {
-    width: 108px;
+    width: 88px;
     min-width: 70px;
+}
+.contestManagement .colChangeRound {
+    width: 88px;
 }
 .contestManagement .table>thead>tr>th:last-child,
 .contestManagement .colHide {
-    width: 95px;
+    width: 75px;
     text-align: left;
 }
 .contestManagement .table>tbody>tr>.colHide {
@@ -5285,7 +5332,8 @@ footer .right>span:nth-child(2) {
     float: left;
 }
 .contestManagementPanel .btnRight,
-.problemAssignmentPanel .btnRight {
+.problemAssignmentPanel .btnRight,
+.panelFeedback .btnRight {
     float: right;
 }
 .contestManagementPanel h4,
@@ -6334,6 +6382,9 @@ contestManagementPanel .panel-footer .btn {
 .showDisableLBLbl {
     color: #636d70;
 }
+.showDisableLBLbl:before {
+    opacity: 0.5;
+}
 .searched {background: yellow;}
 
 .coderHistoryTblDiv {
@@ -6984,6 +7035,25 @@ table thead .sort.desc{
     opacity: 0.9;
 }
 
+.userEnteringIcon {
+    background-image: url(../img/entering.png);
+    content: '';
+    width: 10px;
+    height: 12px;
+    float: right;
+    margin-right: 4px;
+    margin-top: 7px;
+}
+.userLeavingIcon {
+    background-image: url(../img/leaving.png);
+    content: '';
+    width: 9px;
+    height: 12px;
+    float: right;
+    margin-right: 4px;
+    margin-top: 7px;
+}
+
 .tweet-share {
     display: inline-block;
 }
@@ -7018,6 +7088,504 @@ table thead .sort.desc{
 }
 .container-fluid .detailPage .paddingTop {
     padding-top: 10px
+}
+
+/*member feedback widget*/
+.memberFeedback {
+    position: fixed;
+    bottom: 0;
+    right: 5px;
+    z-index: 2;
+}
+.panelFeedback {
+    width: 407px;
+    float: right;
+}
+.feedbackHead {
+    text-align: right;
+}
+/*btns*/
+.panelFeedback .btn {
+    border-width: 0;
+    color: #fff;
+    font-weight: 300;
+}
+.panelFeedback .btn:hover {
+    opacity: 0.9;
+}
+.panelFeedback .btn:focus {
+    outline: none;
+}
+.btnFeedback {
+    font-size: 14px;
+    width: 112px;
+    padding-top: 4px;
+    padding-left: 13px;
+    padding-right: 11px;
+    background: #0999d1;
+}
+.btnFeedback .arrow {
+    display: inline-block;
+    height: 8px;
+    width: 22px;
+    position: relative;
+}
+.btnFeedback .arrow:before {
+    content: "";
+    display: block;
+    height: 8px;
+    width: 15px;
+    background: url(../img/feedbackArrow.png) 0 0 no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.btn-modeDashboard .arrow:before {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.feedbackBody {
+    background: #151718;
+    border: 1px solid #0999d1;
+    height: 0;
+}
+.memberFeedback .feedbackBody.animationSlideUp {
+    animation: slideUp 0.1s ease-in-out;
+    -webkit-animation: slideUp 0.1s ease-in-out;
+    -moz-animation: slideUp 0.1s ease-in-out;
+    height: 371px;
+}
+@keyframes slideUp {
+    0% {height: 0;}
+    100% {height: 371px;}
+}
+@-webkit-keyframes slideUp {
+    0% {height: 0;}
+    100% {height: 371px;}
+}
+@-moz-keyframes slideUp {
+    0% {height: 0;}
+    100% {height: 371px;}
+}
+.memberFeedback .feedbackBody.animationSlideDown {
+    animation: slideDown 0.1s ease-in-out;
+    -webkit-animation: slideDown 0.1s ease-in-out;
+    -moz-animation: slideDown 0.1s ease-in-out;
+    height: 0;
+}
+@keyframes slideDown {
+    0% {height: 371px;}
+    100% {height: 0;}
+}
+@-webkit-keyframes slideDown {
+    0% {height: 371px;}
+    100% {height: 0;}
+}
+@-moz-keyframes slideDown {
+    0% {height: 371px;}
+    100% {height: 0;}
+}
+.panelFeedback .contentWrapper {
+    padding: 25px 27px 0 11px;
+}
+.panelFeedback p {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.panelFeedback .border {
+    border: 1px solid #fff;
+    margin-top: 15px;
+    margin-left: 2px;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+}
+.panelFeedback textarea {
+    display: block;
+    height: 184px;
+    width: 363px;
+    resize: none;
+    font-size: 14px;
+    border-width: 1px;
+    line-height: 1.2145em;
+    padding: 0;
+    padding: 4px 7px;
+    border-width: 0;
+    background: transparent;
+}
+.panelFeedback .feedbackBody .error {
+    border-color: #f40000;
+}
+.panelFeedback .errorMessage {
+    font-size: 14px;
+    height: 21px;
+    line-height: 1.5em;
+    overflow: hidden;
+    color: #f40000;
+    margin-bottom: 0;
+}
+.panelFeedback .feedbackInput::-webkit-input-placeholder{
+    opacity: 1;
+}
+.panelFeedback .feedbackInput:-moz-placeholder{
+    opacity: 1;
+}
+.panelFeedback .feedbackInput::-moz-placeholder{
+    opacity: 1;
+}
+.panelFeedback .feedbackInput:-ms-input-placeholder{
+    opacity: 1;
+}
+.panelFeedback .feedbackInput:focus::-webkit-input-placeholder{
+    color: transparent;
+}
+.panelFeedback .feedbackInput:focus:-moz-placeholder{
+    color: transparent;
+}
+.panelFeedback .feedbackInput:focus::-moz-placeholder{
+    color: transparent;
+}
+.panelFeedback .feedbackInput:focus:-ms-input-placeholder{
+    color: transparent;
+}
+.panelFeedback .btnRow {
+    border-top: 1px solid #0999d1;
+    height: 67px;
+    padding: 14px 27px 14px 13px;
+}
+.panelFeedback .btnRow .btn {
+    background: #0f9bba;
+    width: 116px;
+    font-size: 16px;
+}
+.panelFeedback .btnCancel {
+    opacity: 0.5;
+    padding-top: 2px;
+}
+.panelFeedback .btnSubmit {
+    margin-top: 2px;
+}
+/*modes */
+.modeMinimized .feedbackHead {
+    height: 8px;
+    overflow: hidden;
+}
+.modeDashboard .feedbackHead,
+.modeFloating .feedbackHead {
+    height: 35px;
+    overflow: hidden;
+}
+
+/**
+ * This hack targets the Webkit browser engine
+ * which includes Safari and Chrome.
+ */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .panelFeedback textarea {
+        padding-top: 5px;
+    }
+}
+
+/*chat widget and leaderboard widget in coding page*/
+/*position*/
+.codeArea .docker {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 4;
+}
+.codeArea .chatWidget .dropdown-toggle,
+.codeArea .infoSection li {
+    font-size: 13px;
+}
+.codeArea .chatWidget,
+.codeArea .leaderboardWidget {
+    display: inline-block;
+    margin-right: 30px;
+    vertical-align: bottom;
+}
+.codeArea .chatWidget .panel,
+.codeArea .leaderboardWidget .panel{
+    margin-bottom: 0;
+}
+.codeArea .chatWidget .panel-heading,
+.codeArea .leaderboardWidget .panel-heading {
+    position: relative;
+}
+.codeArea .chatWidget .panel-heading .icon,
+.codeArea .leaderboardWidget .panel-heading .icon {
+    position: absolute;
+    top: 4px;
+    display: block;
+    height: 30px;
+    width: 33px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.codeArea .chatWidget .panel-heading .icon:before,
+.codeArea .leaderboardWidget .panel-heading .icon:before {
+    content: '';
+    display: block;
+    width: 21px;
+    position: absolute;
+    right: 6px;
+    left: 6px;
+}
+.codeArea .chatWidget .panel-heading .miniIcon:before,
+.codeArea .leaderboardWidget .panel-heading .miniIcon:before {
+    height: 1px;
+    border-top: 1px solid;
+    top: 15px;
+}
+.codeArea .chatWidget .panel-heading .expandIcon:before,
+.codeArea .leaderboardWidget .panel-heading .expandIcon:before {
+    height: 21px;
+    top: 5px;
+    background-position: 0 0;
+}
+.codeArea .chatWidget .panel-heading .collapseIcon:before,
+.codeArea .leaderboardWidget .panel-heading .collapseIcon:before {
+    background-position: -21px 0;
+}
+.codeArea .chatWidget .panel {
+    width: 500px;
+    height: 450px;
+    min-height: 450px;
+}
+.codeArea .chatWidget .mainHead {
+    padding-right: 89px;
+    padding-left: 29px;
+    padding-top: 7px;
+}
+.codeArea .chatWidget .panel-heading .miniIcon,
+.codeArea .leaderboardWidget .panel-heading .miniIcon {
+    right: 45px;
+}
+.codeArea .chatWidget .panel-heading .expandIcon {
+    right: 3px;
+}
+.codeArea .chatWidget .panel .membersInfo {
+    width: 150px;
+    height: 408px;
+}
+.codeArea .chatWidget .panel .content {
+    width: 349px;
+    height: 408px;
+}
+.codeArea .chatWidget .panel .content .panel-heading{
+    height: 79px;
+}
+.codeArea .chatWidget .panel .chatBoard {
+    height: 315px;
+}
+.codeArea .chatWidget .memberDropdown .dropdown-menu, 
+.codeArea .chatWidget .methodDropdown .dropdown-menu {
+    margin: -134px 0 0;
+}
+.codeArea .chatWidget .methodDropdown,
+.codeArea .chatWidget .chatInput,
+.codeArea .chatWidget .control-bar .findCheckLbl {
+    margin-left: 11px;
+}
+.codeArea .chatWidget .chatInput {
+    width: 302px;
+}
+.codeArea .chatWidget .chatInput input {
+    width: 292px;
+}
+.codeArea .leaderboardWidget .panel {
+    width: 595px;
+}
+.codeArea .leaderboardWidget .panel-heading .expandIcon {
+    right: 5px;
+}
+.codeArea .leaderboardWidget .panel-body {
+    padding-left: 16px;
+}
+.codeArea .leaderboardWidget .panel-body .summaryWrapper,
+.codeArea .leaderboardWidget .leaderboardWrapper .heading,
+.codeArea .leaderboardWidget .tHeadDiv .innerWrapper, 
+.codeArea .leaderboardWidget .tableDiv .innerWrapper {
+    padding-right: 14px;
+}
+.codeArea .leaderboardWidget .leaderboardWrapper {
+    height: 516px;
+}
+.codeArea .leaderboardWrapper .tableDiv {
+    max-height: 411px;
+    min-height: 411px;
+}
+.codeArea .leaderboardWidget .disabled {
+    opacity: 0.5;
+}
+.codeArea .leaderboardWidget .ratingNum {
+    color: #7f7f7f;
+}
+.codeArea .leaderboardWidget .table .name {
+    font-weight: 400;
+}
+.codeArea .leaderboardWrapper .table .col1 {
+    width: 66px;
+}
+/*min*/
+.codeArea .chatArea-min .panel,
+.codeArea .leaderboard-min .panel{
+    width: 300px;
+}
+.codeArea .chatArea-min .panel-heading {
+    padding-right: 26px;
+}
+.codeArea .chatArea-min .panel-heading .numOfMembers {
+    color: #0bbbe7;
+    float: right;
+}
+.codeArea .chatArea-min .panel-heading,
+.codeArea .leaderboard-min .panel-heading {
+    padding-left: 33px;
+    padding-top: 8px;
+}
+.codeArea .chatArea-min .panel-heading:hover,
+.codeArea .leaderboard-min .panel-heading:hover {
+    cursor: pointer;
+}
+.codeArea .chatArea-min .panel-body,
+.codeArea .leaderboard-min .panel-body{
+    display: none;
+}
+.codeArea .chatArea-min .panelChatArea {
+    min-height: 42px;
+    height: 42px;
+}
+/*max*/
+.codeArea .chatArea-max,
+.codeArea .leaderboard-max {
+    display: none;
+}
+.codeArea .docker-max {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #040505;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1030;
+    overflow: auto;
+}
+.codeArea .docker-max .chatWidget,
+.codeArea .docker-max .leaderboardWidget {
+    display: block;
+    margin: 10% 0 10px;
+}
+@media only screen and (min-height: 394px) {
+    .codeArea .docker-max .chatWidget {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-top: -197px;
+        margin-left: -379px;
+    }
+}
+.codeArea .docker-max .chatWidget .panel {
+    width: 758px;
+    height: 393px;
+    min-height: 393px;
+    margin: 0 auto;
+}
+.codeArea .docker-max .chatWidget .mainHead {
+    padding-right: 60px;
+}
+.codeArea .docker-max .chatWidget .mainHead .collapseIcon {
+    right: 16px;
+}
+.codeArea .docker-max .chatWidget .panel .membersInfo {
+    width: 150px;
+    height: 351px;
+}
+.codeArea .docker-max .chatWidget .panel .content {
+    width: 606px;
+    height: 351px;
+}
+.codeArea .docker-max .chatWidget .panel .content .panel-heading{
+    height: 40px;
+}
+.codeArea .docker-max .chatWidget .panel .chatBoard {
+    height: 296px;
+}
+.codeArea .docker-max .chatWidget .methodDropdown,
+.codeArea .docker-max .chatWidget .control-bar .findCheckLbl {
+    margin-left: 5px;
+}
+.codeArea .docker-max .chatWidget .chatInput {
+    width: 474px;
+    margin-left: 4px;
+}
+.codeArea .docker-max .chatWidget .chatInput input {
+    width: 474px;
+}
+@media only screen and (max-width: 758px) {
+    .codeArea .docker-max .chatWidget {
+        position: absolute;
+        left: 50%;
+        margin-left: -250px;
+    }
+    .codeArea .docker-max .chatWidget .panel {
+        width: 500px;
+    }
+    .codeArea .docker-max .chatWidget .panel .membersInfo {
+        width: 150px;
+    }
+    .codeArea .docker-max .chatWidget .panel .content {
+        width: 349px;
+    }
+    .codeArea .docker-max .chatWidget .chatInput {
+        width: 302px;
+    }
+    .codeArea .docker-max .chatWidget .chatInput input {
+        width: 292px;
+    }
+    .codeArea .docker-max .chatWidget .panel .content .panel-heading {
+        height: 79px;
+    }
+    .codeArea .docker-max .chatWidget .panel .chatBoard {
+        height: 257px;
+    }
+}
+@media only screen and (min-height: 655px) {
+    .codeArea .docker-max .leaderboardWidget {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -328px;
+        margin-left: -350px;
+    }
+}
+.codeArea .docker-max .leaderboardWidget .panel {
+    width: 699px;
+    margin: 0 auto;
+}
+@media only screen and (max-width: 699px) {
+    .codeArea .docker-max .leaderboardWidget {
+        position: absolute;
+        left: 50%;
+        margin-left: -160px;
+    }
+    .codeArea .docker-max .leaderboardWidget .panel {
+        width: 320px;
+    }
+}
+.codeArea .leaderboardWidget .panel-heading .collapseIcon {
+    right: 27px;
+}
+.codeArea .docker-max .leaderboardWidget .leaderboardWrapper {
+    height: 562px;
+}
+.codeArea .docker-max .leaderboardWrapper .tableDiv {
+    max-height: 457px;
+    min-height: 457px;
 }
 
 /*Media blocks should be placed after the normal code!!!*/
@@ -7302,7 +7870,28 @@ table thead .sort.desc{
     }
     .contestManagement .table .colStart {
         width: auto;
-    
+    }
+}
+@media only screen and (max-width: 955px) {
+    .codeArea .chatWidget, 
+    .codeArea .leaderboardWidget {
+        margin-right: 10px;
+    }
+    .codeArea .chatArea-min .panel, 
+    .codeArea .leaderboard-min .panel {
+        width: 249px;
+    }
+}
+@media only screen and (max-width: 865px) {
+    .codeArea .leaderboardWidget {
+        margin-right: 0;
+    }
+    .codeArea .leaderboardWidget .panel {
+        width: 500px;
+    }
+    .codeArea .leaderboard-min .panel {
+        width: 249px;
+    }
 }
 @media only screen and (max-width: 789px) {
     /* fix size of active contests */
@@ -7347,7 +7936,8 @@ table thead .sort.desc{
         margin-top: 10px;
     }
     /* ./Specific to contest management */
-    .dashboard .mainContent {
+    .dashboard .mainContent,
+    .memberFeedback .mainContent {
         width: 100%;
     }
     .codeArea .mainContent,
@@ -7496,6 +8086,20 @@ table thead .sort.desc{
         width: 90px;
     }
 }
+@media only screen and (max-width: 760px) {
+    .codeArea .leaderboardWidget .panel {
+        width: 400px;
+    }
+    .codeArea .chatArea-min .panel, 
+    .codeArea .leaderboard-min .panel{
+        width: 207px;
+        min-width: 207px;
+    }
+    .codeArea .chatArea-min .panel-heading, 
+    .codeArea .leaderboard-min .panel-heading {
+        padding: 8px 8px 10px;
+    }
+}
 /* special sizes which widget will overflow */
 @media only screen and (max-width: 741px) {
     .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 20px;}
@@ -7506,6 +8110,57 @@ table thead .sort.desc{
     }
     .panelCodeEditor .panel-body .middlePart .findInput input {width: 76px;}
     .panelCodeEditor .panel-body .middlePart .gotoInput input {width: 48px;}
+}
+@media only screen and (max-width: 718px) {
+    .codeArea .leaderboardWidget .panel {
+        width: 351px;
+    }
+    .codeArea .chatWidget .panel {
+        width: 351px;
+        height: auto;
+    }
+    .codeArea .chatWidget .mainHead {
+        height: 80px;
+    }
+    .codeArea .docker-max .chatWidget .mainHead {
+        height: 40px;
+    }
+    .codeArea .lobbyDropdown {
+        float: left;
+        margin-top: 4px;
+    }
+    .codeArea .docker-max .lobbyDropdown {
+        float: right;
+        margin-top: -3px;
+    }
+    .codeArea .chatWidget .panel .membersInfo,
+    .codeArea .chatWidget .panel .content {
+        width: 350px;
+        height: 300px;
+        display: block;
+        position: relative;
+    }
+    .codeArea .docker-max .chatWidget .panel .membersInfo,
+    .codeArea .docker-max .chatWidget .panel .content {
+        display: inline-block;
+        position: absolute;
+    }
+    .codeArea .docker-max .chatWidget .panel .content {
+        right: 0;
+    }
+    .codeArea .chatWidget .panel .membersInfo {
+        height: 200px;
+    }
+    .codeArea .chatWidget .panel .chatBoard {
+        height: 206px;
+    }
+    .codeArea .chatArea-min .panel,
+    .codeArea .leaderboard-min .panel {
+        width: 207px;
+    }
+    .codeArea .chatArea-min .mainHead {
+        height: 40px;
+    }
 }
 @media only screen and (max-width: 668px) {
     .panelChatArea .membersInfo{
@@ -7629,6 +8284,15 @@ table thead .sort.desc{
     .panelContestStat .panel-body .schedule .details .column:nth-child(2) .endIn {width: 65px; }
     .codeArea .connection>div:nth-child(2) {
         padding-left: 0;
+    }
+}
+@media only screen and (max-width: 407px) {
+    .panelFeedback {
+        width: 320px;
+    }
+    .panelFeedback textarea {
+        width: 275px;
+        height: 159px;
     }
 }
 @media only screen and (max-width: 428px) {
@@ -7770,6 +8434,15 @@ table thead .sort.desc{
     .panelCodeEditor .panel-body .middlePart .gotoInput input {width: 68px;}
     .panelOverview .overviewAndMessage .profile {height: 137px;}
 }
+@media only screen and (max-width: 340px) {
+    .panelFeedback {
+        width: 298px;
+    }
+    .panelFeedback textarea {
+        width: 253px;
+        height: 159px;
+    }
+}
 @media only screen and (max-width: 331px) {
     .codeArea .titleBar {height: 165px;}
     .panelCodeEditor .toolBar .testToggle {width: 83px;padding-left: 21px;}
@@ -7796,4 +8469,257 @@ table thead .sort.desc{
 }
 .panelCodeEditor .settingsPanel .editorDropDown .dropdown-toggle {
     cursor: not-allowed;
+}
+
+/* 
+*    Styles for challenges advertisement widget
+*/
+
+#challenges-advertiser {
+    margin: 0 -15px 10px -15px;
+    padding: 0 28px 0 10px;
+}
+
+#challenges-advertiser .challenge-advertisement {
+    text-align: left;
+    white-space: nowrap;
+    font-weight: 300;
+}
+
+#challenges-advertiser .challenge-advertisement > * {
+    line-height: normal;
+    vertical-align: middle;
+}
+
+#challenges-advertiser .challenge-icon {
+    display: inline-block;
+    text-align: center;
+    font-size: 14px;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    border-radius: 2px;
+}
+
+#challenges-advertiser .challenge-prize {
+    margin: 0 10px 0 13px;
+    font-size: 14px;
+    font-weight: lighter;
+}
+
+#challenges-advertiser .challenge-title {
+    font-size: 14px;
+}
+
+/* Add word 'and' between visible time components */
+#challenges-advertiser .challenge-timer .time-value:not(.ng-hide) + .time-value:not(.ng-hide):before {
+    content: "and ";
+}
+
+/* Add word commas between technologies */
+#challenges-advertiser .challenge-technologies + .challenge-technologies:before {
+    content: ", ";
+}
+
+/* Display up to two time components (e.g. days and hours, or hours and seconds)  */
+#challenges-advertiser .time-value:not(.ng-hide) ~ .time-value:not(.ng-hide) ~ .time-value:not(.ng-hide) {
+    display: none;
+}
+
+#challenges-advertiser .challenge-timer {
+    display: inline-block;
+    padding: 0 13px;
+    border-style: solid;
+    border-width: 0 1px;
+    margin: 0 13px;
+}
+
+#challenges-advertiser .challenge-prize:before {
+    content: "$";
+}
+
+#challenges-advertiser .carousel:not(.single-slide) {
+    padding-right: 50px;
+}
+
+#challenges-advertiser .carousel-control {
+    opacity: 1;
+    background-color: transparent;
+    background-image: none;
+    border: none;
+    width: 18px;
+    height: 100%;
+}
+
+#challenges-advertiser .carousel-control:hover {
+    opacity: 1;
+}
+
+/* Hide unnecessary carousel elements */
+#challenges-advertiser .carousel-control .glyphicon:before,
+#challenges-advertiser .carousel-indicators {
+    display: none;
+}
+
+#challenges-advertiser .carousel-control .glyphicon {
+    width: 18px;
+    height: 15px;
+    background-image: url(../img/sprite-contestPlan.png);
+    margin: -8px 0 0 0;
+    left: 0;
+}
+
+#challenges-advertiser .carousel-control.left {
+    right: 30px;
+    left: auto;
+}
+
+#challenges-advertiser .carousel-control.left .glyphicon {
+    background-position: 100% 0;
+}
+
+#challenges-advertiser .carousel-control.right .glyphicon {
+    background-position: 0 0;
+}
+
+
+#challenges-advertiser .challenge-title,
+#challenges-advertiser .challenge-technologies-wrapper {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+
+
+/* Layout for large displays */
+ #challenges-advertiser .challenge-advertisement,
+ #challenges-advertiser .challenge-left-part,
+ #challenges-advertiser .challenge-right-part {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-direction: normal;
+    -moz-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-box-pack: start;
+    -moz-box-pack: start;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+ }
+ 
+ #challenges-advertiser .challenge-left-part, #challenges-advertiser .challenge-left-part > *
+ #challenges-advertiser .challenge-right-part, #challenges-advertiser .challenge-right-part > * {
+    -webkit-box-ordinal-group: 1;
+    -moz-box-ordinal-group: 1;
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+ }
+ 
+#challenges-advertiser .challenge-left-part,
+#challenges-advertiser .challenge-title,
+ #challenges-advertiser .challenge-technologies-wrapper,
+#challenges-advertiser .challenge-right-part {
+    -webkit-box-flex: 0; 
+    -moz-box-flex: 0; 
+    -webkit-flex: 0 1 auto; 
+    -ms-flex: 0 1 auto; 
+    flex: 0 1 auto;
+}
+
+#challenges-advertiser .challenge-icon, #challenges-advertiser .challenge-prize, #challenges-advertiser .challenge-timer {
+    -webkit-box-flex: 0; 
+    -moz-box-flex: 0; 
+    -webkit-flex: 0 0 auto; 
+    -ms-flex: 0 0 auto; 
+    flex: 0 0 auto;
+}
+
+/* One row layout for large displays */
+@media (min-width: 1200px) {
+    #challenges-advertiser .challenge-advertisement{
+        height: 40px;
+    }
+    
+    #challenges-advertiser .challenge-timer {
+        line-height: 26px;
+        height: 26px;
+    }
+}
+
+/* Styles for smaller displays */
+@media (max-width: 1199px) {
+    /* Two rows layout */
+    #challenges-advertiser .challenge-advertisement {
+        display: block;
+    }
+
+    #challenges-advertiser .challenge-timer {
+        border-left: none;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    #challenges-advertiser {
+        padding: 10px 29px;
+    }
+    
+    #challenges-advertiser .challenge-right-part {
+        margin-top: 10px;
+    }
+}
+
+
+/* Styles for small displays */
+@media (max-width: 767px) {
+    /* Three row layout */
+    #challenges-advertiser .challenge-right-part,
+    #challenges-advertiser .challenge-technologies-wrapper  {
+        display: block;
+        margin-top: 10px;
+    }
+    
+    #challenges-advertiser .challenge-timer {
+        border-right: none;
+        margin-right: 0;
+        padding-right: 0;
+    }
+}
+
+/* Styles for extra small displays */
+@media (max-width: 600px) {
+    /* Four row layout */
+    #challenges-advertiser .challenge-left-part,
+    #challenges-advertiser .challenge-title {
+        display: block;
+    }
+    
+    #challenges-advertiser .challenge-title {
+        margin-top: 10px;
+    }
 }

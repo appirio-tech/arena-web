@@ -170,7 +170,7 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
     };
 
     $scope.getTopCoderCount = function () {
-        return config.summaryTopCoderCount;
+        return Number(config.summaryTopCoderCount);
     };
 
     // Closes the opened division summary on page leaving.

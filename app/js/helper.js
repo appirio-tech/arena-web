@@ -82,8 +82,19 @@
  * Changes in version 1.21 (Module Assembly - Web Arena Bug Fix 14.10 - 2):
  *  - Updated LEADERBOARD_TABLE_REBUILT_TIMEGAP flag.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.21
+ * Changes in version 1.22 (Module Assembly - Web Arena - Quick Fixes for Contest Management)
+ * - Added ChangeRoundRequest, LoadRoundRequest, RoundAccessRequest, ChangeRoundResponse,
+ *   CommandSucceededResponse, CommandFailedResponse and RoundAccessResponse events
+ *   to handle changing and loading rounds.
+ * - Ordered list of requests/responses.
+ * - Added pop up titles RoundAccessError and ChangeRoundError.
+ *
+ * Changes in version 1.23 (Module Assembly - Web Arena - Challenges Advertising Widget):
+ * - Added CHALLENGE_ADVERTISING to handle constants user for challenge advertising widget.
+ * - Added TRACK_SHORTNAMES to map challenge types to short names.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
+ * @version 1.23
  */
 
 module.exports = {
@@ -106,12 +117,16 @@ module.exports = {
     // Represents the event names
     EVENT_NAME: {
         // backend requests
+        ActiveUsersRequest: 'ActiveUsersRequest',
+        BatchTestRequest: 'BatchTestRequest',
         ChallengeRequest: 'ChallengeRequest',
         ChatRequest: 'ChatRequest',
-        CloseProblemRequest: 'CloseProblemRequest',
         CloseDivSummaryRequest: 'CloseDivSummaryRequest',
+        CloseProblemRequest: 'CloseProblemRequest',
+        CoderHistoryRequest: 'CoderHistoryRequest',
         CoderInfoRequest: 'CoderInfoRequest',
         CompileRequest: 'CompileRequest',
+        DivSummaryRequest: 'DivSummaryRequest',
         EnterRequest: 'EnterRequest',
         EnterRoundRequest: 'EnterRoundRequest',
         GenericPopupRequest: 'GenericPopupRequest',
@@ -121,21 +136,23 @@ module.exports = {
         LogoutRequest: 'LogoutRequest',
         MoveRequest: 'MoveRequest',
         OpenComponentForCodingRequest: 'OpenComponentForCodingRequest',
-        DivSummaryRequest: 'DivSummaryRequest',
         ReadMessageRequest: 'ReadMessageRequest',
         RegisterInfoRequest: 'RegisterInfoRequest',
         RegisterRequest: 'RegisterRequest',
         RegisterUsersRequest: 'RegisterUsersRequest',
+        SetLanguageRequest: 'SetLanguageRequest',
         SSOLoginRequest: 'SSOLoginRequest',
         SubmitRequest: 'SubmitRequest',
         SynchTimeRequest: 'SynchTimeRequest',
         TestInfoRequest: 'TestInfoRequest',
         TestRequest: 'TestRequest',
-        BatchTestRequest: 'BatchTestRequest',
-        BatchTestResponse: 'BatchTestResponse',
-        SetLanguageRequest: 'SetLanguageRequest',
         // backend responses
+        BatchTestResponse: 'BatchTestResponse',
+        ChallengeResponse: 'ChallengeResponse',
+        ChallengesListResponse: 'ChallengesListResponse',
+        CoderHistoryResponse: 'CoderHistoryResponse',
         CreateChallengeTableResponse: 'CreateChallengeTableResponse',
+        CreateLeaderBoardResponse: 'CreateLeaderBoardResponse',
         CreateMenuResponse: 'CreateMenuResponse',
         CreateProblemsResponse: 'CreateProblemsResponse',
         CreateRoomListResponse: 'CreateRoomListResponse',
@@ -166,15 +183,18 @@ module.exports = {
         UpdateCoderComponentResponse: 'UpdateCoderComponentResponse',
         UpdateCoderPointsResponse: 'UpdateCoderPointsResponse',
         UpdateLeaderBoardResponse: 'UpdateLeaderBoardResponse',
-        UpdateUserListResponse: 'UpdateUserListResponse',
         UpdateRoundListResponse: 'UpdateRoundListResponse',
+        UpdateUserListResponse: 'UpdateUserListResponse',
         UserInfoResponse: 'UserInfoResponse',
-        CoderHistoryRequest: 'CoderHistoryRequest',
-        CoderHistoryResponse: 'CoderHistoryResponse',
-        ChallengesListResponse: 'ChallengesListResponse',
-        ChallengeResponse: 'ChallengeResponse',
-        ActiveUsersRequest: 'ActiveUsersRequest',
-        CreateLeaderBoardResponse: 'CreateLeaderBoardResponse',
+        // admin backend requests
+        ChangeRoundRequest: 'ChangeRoundRequest',
+        LoadRoundRequest: 'LoadRoundRequest',
+        RoundAccessRequest: 'RoundAccessRequest',
+        // admin backend responses
+        ChangeRoundResponse: 'ChangeRoundResponse',
+        CommandFailedResponse: 'CommandFailedResponse',
+        CommandSucceededResponse: 'CommandSucceededResponse',
+        RoundAccessResponse: 'RoundAccessResponse',
         // internal events
         Connected: 'Connected',
         Disconnected: 'Disconnected',
@@ -286,7 +306,9 @@ module.exports = {
         PhaseChange: 'Phase Change',
         Disconnected: 'Disconnected',
         ForcedLogout: 'Client Connection Error',
-        NotAssigned: 'Not Assigned'
+        NotAssigned: 'Not Assigned',
+        RoundAccessError: 'Round Access Error',
+        ChangeRoundError: 'Change round Error'
     },
 
     // custom pop up messages
@@ -437,5 +459,42 @@ module.exports = {
         P : "Pending"
     },
     // Number of rounds per page
-    MANAGE_CONTESTS_PAGE_LENGTH : 10
+    MANAGE_CONTESTS_PAGE_LENGTH : 10,
+
+    // Challenge advertising widget constants, it contains only color now but can be extended in the future.
+    CHALLENGE_ADVERTISING: {
+        COLOR: {
+            'design': '#0bbbe7',
+            'develop': '#7db905'
+        },
+        // Used to display challenge icon text. Maps challenge type (in smallcase)
+        // to the short name (smallcase, too).
+        // For details please see: https://gitlab.com/topcoderinc/tc-site.git
+        // File: tc-site/wp-content/themes/tcs-responsive/js/script-challenges.js
+        // Method: getTrackSymbol
+        TRACK_SHORTNAMES: {
+            "web design": "w",
+            "widget or mobile screen design": "wi",
+            "wireframes": "wf",
+            "idea generation": "ig",
+            "other": "o",
+            "ui prototype competition": "p",
+            "content creation": "cc",
+            "assembly competition": "ac",
+            "print\/presentation": "pr",
+            "banners\/icons": "bi",
+            "code": "c",
+            "architecture": "a",
+            "bug hunt": "bh",
+            "specification": "spc",
+            "test suites": "ts",
+            "copilot posting": "cp",
+            "conceptualization": "c",
+            "first2finish": "ff",
+            "design first2finish": "df2f",
+            "application front-end design": "a",
+            "default": "o",
+            "design": "d"
+        }
+    }
 };

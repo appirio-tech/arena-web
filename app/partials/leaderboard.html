@@ -1,0 +1,162 @@
+<div class="detailPage"><!-- content start -->
+    <div class="panel panel-custom panelSummary">
+        <div class="panel-heading" data-ng-click="openPanel('leaderboard');">
+            <span data-ng-show="viewOn=='room'">Room</span><span data-ng-hide="viewOn=='room'">Division</span> <span data-ng-show="viewOn=='divOne'">I</span><span data-ng-show="viewOn=='divTwo'">II</span> Leaderboard<span data-ng-show="isDivLoading"> (Loading... <span data-rebuild-on="rebuild:loadingCounter">{{currentlyLoaded}}/{{totalLoading}}</span>)</span>
+            <a class="icon miniIcon" data-ng-show="windowStatus.leaderboard=='normal'" data-ng-click="closePanel('leaderboard');"></a>
+            <a class="icon expandIcon" data-ng-show="windowStatus.leaderboard=='normal'" data-ng-click="expandPanel('leaderboard');"></a>
+            <a class="icon expandIcon collapseIcon" data-ng-show="windowStatus.leaderboard=='max'" data-ng-click="collapsePanel('leaderboard');"></a>
+        </div>
+        <div class="panel-body row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="mainContent">
+                    <div class="tabs">
+                        <ul class="nav nav-tabs hidden-xs">
+                            <li data-ng-class="{'textActive': viewOn=='room'}" data-ng-click="setViewOn('room')">Room</li>
+                            <li data-ng-show="isDivisionActive(contest, 'divOne')" data-ng-class="{'textActive': viewOn=='divOne'}" data-ng-click="setViewOn('divOne')">Division I</li>
+                            <li data-ng-show="isDivisionActive(contest, 'divTwo')" data-ng-class="{'textActive': viewOn=='divTwo'}" data-ng-click="setViewOn('divTwo')">Division II</li>
+                        </ul>
+                        <!-- button and label will show when window is very narrow -->
+                        <ul class="nav altNav visible-xs">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle">
+                                    {{ getViewOnTitle()}}<b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li data-ng-class="{'textActive': viewOn=='room'}" data-ng-click="setViewOn('room')">Room</li>
+                                    <li data-ng-class="{'textActive': viewOn=='divOne'}" data-ng-show="isDivisionActive(contest, 'divOne')" data-ng-click="setViewOn('divOne')">Division I</li>
+                                    <li data-ng-class="{'textActive': viewOn=='divTwo'}" data-ng-show="isDivisionActive(contest, 'divTwo')" data-ng-click="setViewOn('divTwo')">Division II</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div><!--/.tabs-->
+                    <div class="summaryWrapper">
+                        <div data-ng-show="viewOn=='room'" class="roomDiv sumDiv">
+                            <div class="scroll" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.roomSummary}}</div></div>
+                            <div class="default"><div class="innerWrapper">{{contest.roomSummary}}</div></div>
+                        </div>
+                        <div data-ng-show="viewOn=='divOne'" class="divOneDiv sumDiv">
+                            <div class="scroll" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
+                            <div class="default"><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
+                        </div>
+                        <div data-ng-show="viewOn=='divTwo'" data-ng-class="{divOneDiv: !isDivisionActive(contest, 'divOne'), divTwoDiv: isDivisionActive(contest, 'divOne')}" class="sumDiv">
+                            <div class="scroll" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
+                            <div class="default"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
+                        </div>
+                    </div><!-- /.summaryWrapper -->
+                </div><!-- /.mainContent -->
+                <section class="leaderboardWrapper" id="leaderboardPanel">
+                    <div class="heading">
+                        <h3 class="hide">Leaderboard</h3>
+                        <div class="filterArea" data-ng-show="registrationFinished()">
+                            <a id="leaderboardFilter" data-ng-click="checkFilter(viewOn, 'leaderboard')" class="filterToggle">Filter</a>
+                            <div>
+                                <a data-ng-click="closeQtip('leaderboard')" class="closeLink">Filter</a>
+                                <div class="contentWrapper">
+                                    <div class="contentRow">
+                                        <label>Show</label>
+                                        <div class="dropdown">
+                                            <button class="dropdown-toggle">{{getFilterKey(viewOn, 'leaderboard')}}<span class="arrow"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <li data-ng-class="{active:getKeys(viewOn).lbFilterKey=='all',inactive:getKeys(viewOn).lbFilterKey!='all'}"><a data-dropdown-toggle data-ng-click="setFilterKey(viewOn, 'leaderboard', 'all')">All Handles</a></li>
+                                                <li data-ng-class="{active:getKeys(viewOn).lbFilterKey=='specific',inactive:getKeys(viewOn).lbFilterKey!='specific'}"><a data-dropdown-toggle data-ng-click="setFilterKey(viewOn, 'leaderboard', 'specific')">Specific Handle</a></li>
+                                            </ul>
+                                        </div><!--/.dropdown-->
+                                    </div>
+                                    <div data-ng-show="getKeys(viewOn).lbFilterKey=='specific'" class="contentRow">
+                                        <label>Handle</label>
+                                        <input type="text" data-ng-model="lbHandleString" class="filterInput" data-ng-keypress="pressKeyInFilter($event, viewOn, 'leaderboard')"/>
+                                    </div>
+                                </div>
+                                <div class="btnWrapper">
+                                    <a class="btn btnFilter" data-ng-click="filterBegin(viewOn, 'leaderboard')">Filter</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="viewFilter" data-ng-show="registrationFinished()">
+                            <label>View</label><!-- avoid unnecessary white space
+                            --><div><input type="radio" data-ng-model="showBy" value="status" class="showLBRadio" id="showByStatus" data-ng-disabled="!challengeAvailable()"/><label for="showByStatus" class="showLBLbl" data-ng-class="{'showDisableLBLbl':!challengeAvailable()}">Status</label></div><!-- avoid unnecessary white space
+                            --><div><input type="radio" data-ng-model="showBy" value="points" class="showLBRadio" id="showByPoints" data-ng-disabled="!challengeAvailable()"/><label for="showByPoints" class="showLBLbl" data-ng-class="{'showDisableLBLbl':!challengeAvailable()}">Points</label></div>
+                        </div>
+                    </div><!--/.heading-->
+                    <p data-ng-show="!registrationFinished()">The leaderboard is not ready.</p>
+                    <div class="tableWrapper" data-ng-show="registrationFinished()" data-rebuild-on="rebuild:leaderboardTable">
+                        <div class="tHeadDiv" data-ng-class="{moreProblemTbl:contest.problems[divisionID].length>3,normal:contest.problems[divisionID].length<=3}">
+                            <div class="innerWrapper">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th class="col1 sortableHeading" data-ng-hide="viewOn=='room'" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'divPlace')">
+                                                Room #<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='divPlace' || getKeys(viewOn).leaderboardKey=='-divPlace'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-divPlace',ascArrow:getKeys(viewOn).leaderboardKey=='divPlace'}" class="arrow"></span></span>
+                                            </th>
+                                            <th class="col1 sortableHeading" data-ng-show="viewOn=='room'" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'roomPlace')">
+                                                Room #<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='roomPlace' || getKeys(viewOn).leaderboardKey=='-roomPlace'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-roomPlace',ascArrow:getKeys(viewOn).leaderboardKey=='roomPlace'}" class="arrow"></span></span>
+                                            </th>
+                                            <th class="col2 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'userName')">
+                                                Handle<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='userName' || getKeys(viewOn).leaderboardKey=='-userName'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-userName',ascArrow:getKeys(viewOn).leaderboardKey=='userName'}" class="arrow"></span></span>
+                                            </th>
+                                            <th data-ng-repeat="problem in contest.problems[divisionID] track by $index" class="colProblem sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'components['+$index+'].points')">
+                                                {{ problem.primaryComponent.pointValue }}<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='components['+$index+'].points' || getKeys(viewOn).leaderboardKey=='-components['+$index+'].points'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-components['+$index+'].points',ascArrow:getKeys(viewOn).leaderboardKey=='components['+$index+'].points'}" class="arrow"></span></span>
+                                            </th>
+                                            <th class="col6 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'totalPoints')">
+                                                Score<span><span data-ng-show="getKeys(viewOn).leaderboardKey=='totalPoints' || getKeys(viewOn).leaderboardKey=='-totalPoints'" data-ng-class="{descArrow:getKeys(viewOn).leaderboardKey=='-totalPoints',ascArrow:getKeys(viewOn).leaderboardKey=='totalPoints'}" class="arrow"></span></span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div><!--/.innerWrapper-->
+                        </div><!--/.tHeadDiv-->
+                        <div class="tableDiv scroll" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:leaderboardTable" data-ng-class="{moreProblemTbl:contest.problems[divisionID].length>3,normal:contest.problems[divisionID].length<=3}">
+                            <div class="innerWrapper">
+                                <table class="table table-condensed">
+                                    <tbody>
+                                         <tr data-ng-repeat="coder in getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey | startFrom: currentPage*numOfPage | limitTo: numOfPage">
+                                            <td class="col1">{{viewOn=='room' ? coder.roomPlace : coder.divPlace}}</td>
+                                            <td class="col2"><!-- avoid blank
+                                                -><a><!-- rating icon may be used, so keep here
+                                                    -><span class="name {{getRatingClass(coder.userRating)}}"><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span></span><!--
+                                                -></a><!-- avoid blank
+                                                --><span class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span><span class="ratingNum"> ({{coder.userRating}})</span>
+                                                <!-- code history may be used<a class="rating" data-ng-click="getCoderHistory(coder)"><img src="../img/history.png" alt="history"/></a> -->
+                                            </td>
+                                            <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
+                                                <a data-ng-show="isViewable(contest.phaseData.phaseType, component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span></a>
+                                                <span data-ng-hide="isViewable(contest.phaseData.phaseType, component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span>
+                                            </td>
+                                            <td class="col6">{{$root.formatScore(coder.totalPoints)}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="paginator"  data-ng-show='isShowPage()' >
+                                <span data-ng-repeat="n in range((getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter ), numOfPage)" data-ng-class="{'textActive': n.i == currentPage}" data-ng-click="setCurrentPage(n.i)">{{n.show}}</span>
+                            </div>
+                        </div><!-- /.tableDiv .scroll -->
+                        <div class="tableDiv default" data-ng-class="{moreProblemTbl:contest.problems[divisionID].length>3,normal:contest.problems[divisionID].length<=3}">
+                            <div class="innerWrapper">
+                               <table class="table table-condensed">
+                                    <tbody>
+                                         <tr data-ng-repeat="coder in getCurrentLeaderboard() | filter: getKeys(viewOn).lbFilter | orderBy: getKeys(viewOn).leaderboardKey">
+                                            <td class="col1">{{viewOn=='room' ? coder.roomPlace : coder.divPlace}}</td>
+                                            <td class="col2"><!-- avoid blank
+                                                -> Rating Icon may be used, keep here 
+                                                <span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span><!-- avoid blank
+                                                --><span class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span><span class="ratingNum"> ({{coder.userRating}})</span>
+                                            </td>
+                                            <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
+                                                <a data-ng-show="isViewable(contest.phaseData.phaseType, component)" data-ng-click=""><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span></a>
+                                                <span data-ng-hide="isViewable(contest.phaseData.phaseType, component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, $parent.showBy)}}</span>
+                                            </td>
+                                            <td class="col6">{{$root.formatScore(coder.totalPoints)}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                             </div>
+                        </div><!-- /.tableDiv .default -->
+                    </div>
+                </section><!--/.leaderboardWrapper-->
+            </div><!-- /.leftSec -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+</div>
+<!-- content end -->

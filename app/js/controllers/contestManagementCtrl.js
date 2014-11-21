@@ -8,11 +8,14 @@
  * - Round questions will be loaded on page load itself
  * - Added methods openTerms, openSchedule, openRegistrationQuestions to navigate user to appropriate popup
  *
- * Changes in version 1.2 (Module Assembly - Web Arena -Match Management Update):
+ * Changes in version 1.2 (Module Assembly - Web Arena - Quick Fixes for Contest Management)
+ * - Added $rootScope, methods changeRound and loadRound to handle changing and loading round.
+ *
+ * Changes in version 1.3 (Module Assembly - Web Arena -Match Management Update):
  * - Added load round terms logic.
  *
- * @author TCASSEMBLER
- * @version 1.2
+ * @author TCASSEMBLER, dexy
+ * @version 1.3
  */
 'use strict';
 /*jshint -W097*/
@@ -24,7 +27,7 @@
 var config = require('../config');
 var helper = require('../helper');
 
-var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'appHelper', function ($scope, $http, $timeout, sessionHelper, appHelper) {
+var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHelper', 'socket', function ($rootScope, $scope, $http, $timeout, appHelper, socket) {
     /**
      * Keys for management page filter
      * @type {Array}
@@ -97,6 +100,11 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
          * @type {*|jQuery|HTMLElement}
          */
         assignmentFilter = $('#assignmentFilter'),
+        /**
+         * Promise of timeout commands disable.
+         * @type {Promise}
+         */
+        commandsDisabledHndl,
         /**
          * Closes Filter dialog
          */
@@ -568,6 +576,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
         });
     }
 
+    /*jslint unparam:true*/
     /**
      * Listens to errors across all contest management controllers like
      * contestTermsConfigCtrl, contestScheduleConfigCtrl, manageQuestionCtrl, registrationQuestionCtrl and manageAnswerCtrl
@@ -577,6 +586,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
     $scope.$on('genericApiError', function (event, data) {
         genericErrorHandler(data);
     });
+    /*jslint unparam:false*/
     /**
      * It loads all rounds from $scope.allRounds to array to use in ng-repeat
      * Make sure to call this method whenever there is change in $scope.allRounds
@@ -667,6 +677,7 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
      */
     function saveContestRounds(rounds) {
         var i = 0, roundId;
+        $scope.numContestRequests -= 1;
         if (rounds.error) {
             genericErrorHandler(rounds);
             return;
@@ -706,26 +717,42 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
 
 
     /**
+     * Handles error when loading rounds from server.
+     *
+     * @param data the data received
+     */
+    function errorLoadingRounds(data) {
+        $scope.numContestRequests -= 1;
+        genericErrorHandler(data);
+    }
+
+    $scope.numContestRequests = 1;
+    /**
      * Sends request to api to get all contests
      * Once contests are received request will be sent to retrieve respective rounds
      */
     $http.get(config.apiDomain + '/data/srm/contests', header).success(function (contests) {
         var i = 0;
+        $scope.numContestRequests -= 1;
         if (contests.error) {
             genericErrorHandler(contests);
             return;
         }
         for (i = 0; i < contests.length; i++) {
             $scope.allContests[contests[i].contestId] = contests[i];
-            $http.get(config.apiDomain + '/data/srm/rounds/' + contests[i].contestId, header).
-                success(saveContestRounds).error(genericErrorHandler);
+            $scope.numContestRequests += 1;
+            $http.get(config.apiDomain + '/data/srm/rounds/' + contests[i].contestId, header)
+                .success(saveContestRounds)
+                .error(errorLoadingRounds);
         }
     });
     /**
      * Sends api request to ret
      */
+    $scope.numContestRequests += 1;
     $http.get(config.apiDomain + '/data/srm/problems', header).success(function (data) {
         var i = 0;
+        $scope.numContestRequests -= 1;
         if (data.error) {
             genericErrorHandler(data);
             return;
@@ -734,7 +761,11 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
         for (i = 0; i < data.problems.length; i++) {
             $scope.allProblems[data.problems[i].id] = data.problems[i];
         }
-    }).error(genericErrorHandler);
+    }).error(function (data) {
+        $scope.numContestRequests -= 1;
+        genericErrorHandler(data);
+    });
+
     // --------------- Problem Assignment panel ---------------------
     /**
      * Array of problems assigned to selected round
@@ -990,6 +1021,135 @@ var contestManagementCtrl = ['$scope', '$http', '$timeout', 'sessionHelper', 'ap
     $scope.openRegistrationQuestions = function (round) {
         $scope.$broadcast('setRegistrationQuestions', {round: round, questionKeys: $scope.questionKeys});
     };
+
+    if (angular.isUndefined($rootScope.changedRound)) {
+        $rootScope.changedRound = {};
+    }
+    /**
+     * Enable change and load buttons.
+     */
+    function enableCommands() {
+        $scope.commandsDisabled = false;
+        $timeout.cancel(commandsDisabledHndl);
+    }
+    /**
+     * Disable change and load buttons. Used when change or load round request is made.
+     */
+    function disableCommands() {
+        $scope.commandsDisabled = true;
+        $timeout.cancel(commandsDisabledHndl);
+        commandsDisabledHndl = $timeout(enableCommands, config.spinnerTimeout);
+    }
+
+
+    $scope.changeRoundRequest = {};
+    /*jslint unparam:true*/
+    /**
+     * Requests command access and changes round.
+     *
+     * @param round the round to be changed to.
+     * @since 1.2
+     */
+    $scope.changeRound = function (round) {
+        angular.forEach($scope.changeRoundRequest, function (value, key) {
+            $scope.changeRoundRequest[key] = 0;
+        });
+        $scope.changeRoundRequest[round.id] = 1;
+        disableCommands();
+        socket.emit(helper.EVENT_NAME.ChangeRoundRequest, {roundId: round.id});
+        $scope.$$listeners[helper.EVENT_NAME.ChangeRoundResponse] = [];
+        $scope.$on(helper.EVENT_NAME.ChangeRoundResponse, function (event, data) {
+            enableCommands();
+            $rootScope.changedRound[data.roundId] = data.succeeded;
+            $scope.changeRoundRequest[round.id] = 0;
+            $timeout(function () {
+                if (data.succeeded) {
+                    $scope.openModal({
+                        title: 'Success',
+                        message: data.message || 'Changed round successfully.',
+                        enableClose: true
+                    });
+                } else {
+                    $scope.openModal({
+                        title: 'Failed',
+                        message: data.message || 'Failed changing round.',
+                        enableClose: true
+                    });
+                }
+            }, 100);
+        });
+    };
+    $scope.loadRoundRequest = {};
+    /**
+     * Loads the round.
+     *
+     * @param round the round to be loaded.
+     * @since 1.2
+     */
+    $scope.loadRound = function (round) {
+        $scope.openModal({
+            title: 'Confirm',
+            message: 'Load round ' + round.title + '?',
+            buttons: ['Yes', 'No'],
+            enableClose: true
+        }, function () {
+            $timeout(function () {
+                angular.forEach($scope.loadRoundRequest, function (value, key) {
+                    $scope.loadRoundRequest[key] = 0;
+                });
+                $scope.loadRoundRequest[round.id] = 1;
+                disableCommands();
+                socket.emit(helper.EVENT_NAME.LoadRoundRequest, {roundID: round.id});
+                $scope.$$listeners[helper.EVENT_NAME.CommandSucceededResponse] = [];
+                $scope.$on(helper.EVENT_NAME.CommandSucceededResponse, function (event, data) {
+                    enableCommands();
+                    $scope.loadRoundRequest[round.id] = 0;
+                    $scope.openModal({
+                        title: 'Message',
+                        message: data.message,
+                        enableClose: true
+                    });
+                });
+                $scope.$$listeners[helper.EVENT_NAME.CommandFailedResponse] = [];
+                $scope.$on(helper.EVENT_NAME.CommandFailedResponse, function (event, data) {
+                    enableCommands();
+                    $scope.loadRoundRequest[round.id] = 0;
+                    $scope.openModal({
+                        title: 'Message',
+                        message: data.message,
+                        enableClose: true
+                    });
+                });
+            }, 100);
+        });
+    };
+    $scope.commandsDisabled = false;
+    socket.emit(helper.EVENT_NAME.RoundAccessRequest, {});
+    if (angular.isUndefined($rootScope.hasAccess)) {
+        $rootScope.hasAccess = {};
+    }
+    $scope.$on(helper.EVENT_NAME.RoundAccessResponse, function (event, data) {
+        if (angular.isDefined(data.rounds)) {
+            angular.forEach(data.rounds, function (round) {
+                $rootScope.hasAccess[round.id] = true;
+            });
+        }
+    });
+    // handle the case when round access request failed
+    // show the error message and reemit the request after 3s
+    $scope.$$listeners[helper.EVENT_NAME.CommandFailedResponse] = [];
+    $scope.$on(helper.EVENT_NAME.CommandFailedResponse, function (event, data) {
+        $scope.openModal({
+            title: 'Message',
+            message: data.message,
+            enableClose: true
+        });
+        $timeout(function () {
+            socket.emit(helper.EVENT_NAME.RoundAccessRequest, {});
+        }, 3000);
+    });
+
+    /*jslint unparam:false*/
 }];
 
 module.exports = contestManagementCtrl;

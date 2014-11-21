@@ -9,7 +9,7 @@
   right: 27px;
 }
 .notifications.bottom-right {
-  bottom: 7px;
+  bottom: 42px;
   right: 10px;
 }
 .notifications .alert {
@@ -79,6 +79,14 @@
   background: rgba(130, 173, 138, 0.882);
   border: 1px solid #445258;
   border-color: rgba(73, 88, 95, 0.882);
+  overflow: hidden;
+  color: white;
+}
+.alert-blue {
+  background: #087fc3;
+  background: rgba(8, 127, 195, 0.882);
+  border: 1px solid #0765a7;
+  border-color: rgba(7, 101, 167, 0.882);
   overflow: hidden;
   color: white;
 }

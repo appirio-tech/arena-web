@@ -218,7 +218,7 @@
         <div class="tabContent step-4 row" data-ng-show="index==4">
             <div class="leftPart col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <section class="schedule">
-                    <h3>Phase Schedule (prior to contest)</h3>
+                    <h3>Phase Schedule (prior to match)</h3>
                     <p><label>Registration Start</label><span><span data-ng-hide="$parent.regStartH==0">{{$parent.regStartH}} hour<span data-ng-hide="$parent.regStartH==1">s</span> </span><span data-ng-hide="$parent.regStartMm=='0' || $parent.regStartMm==0">{{trimLeadingZero($parent.regStartMm)}} minute<span data-ng-hide="$parent.regStartMm=='1' || $parent.regStartMm=='01'">s</span></span></span></p>
                     <p><label>Coding Length</label><span><span data-ng-hide="$parent.codeLengthH==0">{{$parent.codeLengthH}} hour<span data-ng-hide="$parent.codeLengthH==1">s</span> </span><span data-ng-hide="$parent.codeLengthMm=='0' || $parent.codeLengthMm==0">{{trimLeadingZero(codeLengthMm)}} minute<span data-ng-hide="$parent.codeLengthMm=='1' || $parent.codeLengthMm=='01'">s</span></span></span></p>
                     <p><label>Intermission Length</label><span data-ng-hide="removeInter"><span data-ng-hide="$parent.intermissionLengthH==0">{{intermissionLengthH}} hour<span data-ng-hide="$parent.intermissionLengthH==1">s</span> </span><span data-ng-hide="$parent.intermissionLengthMm=='0' || $parent.intermissionLengthMm==0">{{trimLeadingZero(intermissionLengthMm)}} minute<span data-ng-hide="$parent.intermissionLengthMm=='1' || $parent.intermissionLengthMm=='01'">s</span></span></span></p>
@@ -237,7 +237,7 @@
                 <div class="infoPart">
                     <div class="row">
                         <p class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-                            <label>Start Date</label><span>{{startDateSum}}, {{startHh.length < 2 ? ('0' + startHh) : startHh}}:{{startMm.length < 2 ? ('0' + startMm) : startMm}} {{getMarker()}} {{timeZone}}</span>
+                            <label>Start Date</label><span>{{startDateSum}}, {{(startHh + '').length < 2 ? ('0' + startHh) : startHh}}:{{(startMm + '').length < 2 ? ('0' + startMm) : startMm}} {{getMarker()}} {{timeZone}}</span>
                         </p>
                         <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 typePart">
                             <label>Type: </label><span>{{type}}</span>
@@ -262,6 +262,6 @@
             <li class="previous" data-ng-hide="index==1 || index==4"><a class="btn btn-primary btnPrev" data-ng-click="prev();">Previous</a></li>
             <li class="next" data-ng-hide="index==4"><a class="btn btn-primary btnNext" data-ng-click="next(contestForm);">Next</a></li>
         </ul>
-        <div class="finalBtn"><a class="btn btn-primary" data-ng-show="index==4" data-ng-click="ok();">Launch Match!</a></div>
+        <div class="finalBtn"><a class="btn btn-primary" data-ng-show="index==4" data-ng-click="ok();">Save As Draft</a></div>
     </form>
 </div>

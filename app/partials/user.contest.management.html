@@ -3,25 +3,25 @@
     <div class="row-fluid dashboard contest detailPage contestManagement">
         <div class="col-lg-12 text-left titleBar">
             <div class="col-lg-6 col-md-7">
-                <h1 class="title">Manage Contests</h1>
+                <h1 class="title">Manage Matches</h1>
             </div>
             <div class="col-lg-6 col-md-5 connection">
                 <!--div data-topcodertime></div><div data-connectionstatus></div-->
-                <div class="col-lg-12 col-md-12 btnRow"><a class="btn btnBack btnCreate" data-ng-click="createContest();">Create New Contest</a></div>
+                <div class="col-lg-12 col-md-12 btnRow"><a class="btn btnBack btnCreate" data-ng-click="createContest();">Create New Match</a></div>
             </div>
         </div>
         <div class="container-fluid row-fluid mainContent">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">
                 <div class="panel panel-custom panelSummary contestPanel">
                     <div class="panel-heading">
-                        Topcoder Contests
+                        Topcoder Matches
                     </div>
                     <div class="panel-body">
                         <div class="tabs">
                             <ul class="nav nav-tabs">
-                                <li data-ng-class="{textActive: key==='active'}" data-ng-click="setDataTo('active')">Active Contests</li>
-                                <li data-ng-class="{textActive: key==='past'}" data-ng-click="setDataTo('past')">Past Contests</li>
-                                <li data-ng-class="{textActive: key==='hidden'}" data-ng-click="setDataTo('hidden')">Hidden Contests</li>
+                                <li data-ng-class="{textActive: key==='active'}" data-ng-click="setDataTo('active')">Active Matches</li>
+                                <li data-ng-class="{textActive: key==='past'}" data-ng-click="setDataTo('past')">Past Matches</li>
+                                <li data-ng-class="{textActive: key==='hidden'}" data-ng-click="setDataTo('hidden')">Hidden Matches</li>
                             </ul>
                             <!-- /.nav-tabls -->
                             <label class="note"><span class="redStar">* </span>Required</label>
@@ -57,30 +57,35 @@
                         </div>
                         <!-- /.tabs -->
                         <div class="content">
+                            <div class="preloader-window" data-preloader data-num-requests='{{numContestRequests}}' text='Loading Matches...'></div>
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
-                                        <th class="colTitle sortableHeading" data-ng-click="toggleSortKey(keys.managementKeys, 'title')">Contest Title<span data-ng-class="{up: keys.managementKeys.indexOf('title') == 0,down: keys.managementKeys.indexOf('-title') == 0}"></span></th>
-                                        <th class="colStart sortableHeading" data-ng-click="toggleSortKey(keys.managementKeys, 'start')">Contest Start<span data-ng-class="{up: keys.managementKeys.indexOf('start') == 0,down: keys.managementKeys.indexOf('-start') == 0}"></span></th>
+                                        <th class="colTitle sortableHeading" data-ng-click="toggleSortKey(keys.managementKeys, 'title')">Match Title<span data-ng-class="{up: keys.managementKeys.indexOf('title') == 0,down: keys.managementKeys.indexOf('-title') == 0}"></span></th>
+                                        <th class="colStart sortableHeading" data-ng-click="toggleSortKey(keys.managementKeys, 'start')">Match Start<span data-ng-class="{up: keys.managementKeys.indexOf('start') == 0,down: keys.managementKeys.indexOf('-start') == 0}"></span></th>
                                         <th class="colBtn colProblem">Problem Assignment <span class="redStar">*</span></th>
                                         <th class="colBtn colTerm">Terms <span class="redStar">*</span></th>
                                         <th class="colBtn colSchedule">Schedule</th>
                                         <th class="colBtn colRegQuestion">Registration Questions</th>
                                         <th class="colStatus">Status</th>
-                                        <th class="colHide">Hide Contest</th>
+                                        <!--<th class="colHide">Hide Match</th>-->
+                                        <th class="colChangeRound">Change Round</th>
+                                        <th class="colLoadRound">Load Round</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr data-ng-show="allRoundsArray.length == 0"><td>Loading Rounds. Please wait...</td></tr>
                                     <tr data-ng-repeat="round in allRoundsArray | filter: keys.managementFilter: stringsEqual | orderBy: keys.managementKeys | startFrom: currentPage*pageLength | limitTo: pageLength">
-                                        <td class="colText colTitle"><a>{{round.title}}</a></td>
+                                        <td class="colText colTitle" data-ng-click="updateContest(round)"><a>{{round.title}}</a></td>
                                         <td class="colText colStart">{{round.start | date: 'MMM d, yyyy hh:mm a'}} <span data-ng-show="round.start != ''">{{timeZone}}</span></td>
                                         <td class="colBtn colProblem"><button class="btn" data-ng-class="{viewBtn: round.problems, addBtn: !round.problems}" data-ng-disabled="disableAssign" data-ng-click="openAssignProblem(round)">{{round.problems ? 'View' : 'Add'}}</button></td>
                                         <td class="colBtn colTerm"><button class="btn" data-ng-class="{viewBtn: round.terms, addBtn: !round.terms}" data-ng-click="openTerms(round)">{{round.terms ? 'View' : 'Add'}}</button></td>
                                         <td class="colBtn colSchedule"><button class="btn" data-ng-class="{viewBtn: round.segments, addBtn: !round.segments}" data-ng-click="openSchedule(round)">{{round.segments ? 'View' : 'Set'}}</button>
                                         <td class="colBtn colRegQuestion"><button class="btn" data-ng-class="{viewBtn: round.questions.length, addBtn: !round.questions.length}" data-ng-click="openRegistrationQuestions(round)">{{round.questions.length ? 'View' : 'Add'}}</button></td>
                                         <td class="colText colStatus">{{round.status}}</td>
-                                        <td class="colHide"><span data-ng-class="{on: item.isHide, off: !item.isHide}"></span></td>
+                                        <!--<td class="colHide"><span data-ng-class="{on: item.isHide, off: !item.isHide}"></span></td>-->
+                                        <td class="colBtn colChangeRound"><div class="preloader-window" data-preloader data-num-requests='{{changeRoundRequest[round.id]}}' text='Changing round...'></div><button class="btn" data-ng-click="changeRound(round)" data-ng-class="{disabled: !$root.hasAccess[round.id] || commandsDisabled}">Change</button></td>
+                                        <td class="colBtn colLoadRound"><div class="preloader-window" data-preloader data-num-requests='{{loadRoundRequest[round.id]}}' text='Loading round...'></div><button class="btn" data-ng-click="loadRound(round)" data-ng-class="{disabled: !($root.hasAccess[round.id] && $root.changedRound[round.id]) || commandsDisabled}">Load</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -116,7 +121,7 @@
                 </div>
                 <!-- /.searchArea -->
                 <div class="availableProblems">
-                    <h4>Available Contest Problems</h4>
+                    <h4>Available Match Problems</h4>
                     <div class="filterArea">
                         <a id="assignmentFilter" class="filterToggle">Filter</a>
                         <div>
@@ -182,7 +187,7 @@
                     <a data-ng-click="assignProblem()" class="btn btnAssign">Assign Problem</a>
                 </div>
                 <div class="assignedProblems">
-                    <h4>Assigned Contest Problems</h4>
+                    <h4>Assigned Match Problems</h4>
                     <div class="content">
                         <table class="table table-condensed problemTable tHead">
                             <thead>

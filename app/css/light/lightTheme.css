@@ -125,7 +125,6 @@ body{
 .contestManagementPanel .filterToggle:before,
 .contestFilter.qtip-default,
 .contestManagement .table .viewBtn:before,
-.contestManagement .colHide span,
 .contestManagement .sortableHeading span,
 .contestManagementPanel .panel-heading .close:before,
 .contestManagementPanel .searchIcon:before,
@@ -148,6 +147,11 @@ body{
 .practiceProblemFilter.qtip-default,
 .problemListPanel .statusIcon:before{
     background-image: url(../img/light/sprite-practiceRoom.png);
+    background-repeat: no-repeat;
+}
+.codeArea .chatWidget .panel-heading .expandIcon:before,
+.codeArea .leaderboardWidget .panel-heading .expandIcon:before {
+    background-image: url(../img/dark/expand-alt.png);
     background-repeat: no-repeat;
 }
 /***************header style*/
@@ -600,6 +604,11 @@ footer .right .sponsorLogo {
 }
 .testReportPanel .modalHeader>span {
     color: #636d70;
+}
+.testReportPanel .modalHeader {
+    background-color: #0999d1;
+    border-bottom: 1px solid #fff;
+    color: #fff;
 }
 .testReportPanel .infoBar {
     background: #75A5C8;
@@ -1196,36 +1205,6 @@ footer .right .sponsorLogo {
 .practiceProblemList .iconSolved {
     color: #a2eb23;
 }
-@media only screen and (max-width: 1121px) {
-    .panelCodeEditor .panel-body .toolBar {
-        padding-top: 30px;
-    }
-}
-/*bootstrap small devices tablets*/
-@media only screen and (max-width: 991px) {
-    .header .navIcons > li {
-        background-image: url(../img/black-header.png);
-    }
-    .header .timeItem,
-    .header .navbar-right .userInfo {
-        background-image: url(../img/black-header.png);
-    }
-}
-/* boostrap extra small devices */
-@media only screen and (max-width: 767px) {
-    .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/light/company_logo_small.png);
-    }
-}
-/* special sizes which widget will overflow */
-@media only screen and (max-width: 668px) {
-    .panelChatArea .membersInfo{
-        border-bottom: 1px solid #b7c9d7;
-    }
-}
-@media only screen and (max-width: 425px) {
-    .panelContestStat .breadcrumbHead {height: 80px; }
-}
 
 /* tooltip */
 .body .tooltip.bottom .tooltip-arrow{
@@ -1314,6 +1293,70 @@ footer .right .sponsorLogo {
     background: #F5F8FA;
 }
 
+/*member feedback widget*/
+.feedbackBody,
+.panelFeedback .btnRow {
+    background: #fff;
+    border-color: #0999d1;
+}
+.btnFeedback {
+    background: #0999d1;
+}
+.panelFeedback .btnRow .btn {
+    background: #0999d1;
+}
+.panelFeedback .border {
+    border-color: #b7c9d7;
+}
+.panelFeedback {
+    color: #636d70;
+}
+.panelFeedback .feedbackInput {
+    color: #636d70;
+}
+.panelFeedback .feedbackInput::-webkit-input-placeholder{
+    color: #848686;
+}
+.panelFeedback .feedbackInput:-moz-placeholder{
+    color: #848686;
+}
+.panelFeedback .feedbackInput::-moz-placeholder{
+    color: #848686;
+}
+.panelFeedback .feedbackInput:-ms-input-placeholder{
+    color: #848686;
+}
+
+/*match level multi tasking*/
+.codeArea .chatWidget .panel-heading,
+.codeArea .leaderboardWidget .panel-heading {
+    color: #4680a7;
+    color: rgba(41, 111, 153, 0.8);
+}
+.codeArea .chatArea-min .panel-heading .numOfMembers {
+    color: #184d71;
+}
+.codeArea .chatWidget .panel-heading .icon:hover,
+.codeArea .leaderboardWidget .panel-heading .icon:hover {
+    background-color: #52738c;
+}
+.codeArea .chatWidget .panel-heading .miniIcon:before,
+.codeArea .leaderboardWidget .panel-heading .miniIcon:before {
+    border-color: #fff;
+    opacity: 0.6;
+}
+.codeArea .leaderboardWidget .panel-heading .expandIcon {
+    opacity: 0.6;
+}
+
+.socialButtons {
+    border-color: rgb(52, 170, 222);
+    background-color: rgb(230, 234, 237);
+}
+.socialButtons .challenge {
+    color: rgb(48, 110, 157);
+}
+
 /*Media blocks should be placed after the normal code!!!*/
 @media only screen and (max-width: 1121px) {
     .panelCodeEditor .panel-body .toolBar {
@@ -1368,10 +1411,28 @@ footer .right .sponsorLogo {
     }
 }
 
-.socialButtons {
-    border-color: rgb(52, 170, 222);
-    background-color: rgb(230, 234, 237);
+/* 
+*    Styles for challenges advertisement widget
+*/
+
+#challenges-advertiser {
+    border: 1px solid #b7c9d7;
+    background: #f5f8fa;   
 }
-.socialButtons .challenge {
-    color: rgb(48, 110, 157);
+
+#challenges-advertiser .challenge-technologies-wrapper {
+    color: #636d70;
+}
+
+#challenges-advertiser .challenge-timer {
+    color: #316f99;
+    border-color: #b7c9d7;
+}
+
+#challenges-advertiser .challenge-prize {
+    color: #316f99;
+}
+
+#challenges-advertiser .challenge-icon {
+    color: #e9f2db;
 }

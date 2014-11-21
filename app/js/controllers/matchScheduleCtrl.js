@@ -22,23 +22,7 @@ var helper = require('../helper');
 var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', function ($scope, $http, $timeout, $rootScope) {
     $scope.events = [];
     $scope.eventSources = [$scope.events];
-    var tmpDate = new Date(), modalTimeoutPromise = null;
-
-    /**
-     * Set timeout modal.
-     */
-    function setTimeoutModal() {
-        $scope.openModal({
-            title: 'Timeout',
-            message: 'Sorry, the request is timeout.',
-            enableClose: true
-        });
-        modalTimeoutPromise = null;
-    }
-
-    $scope.openModal({'title': 'Getting match schedule data', 'message': 'Please wait for getting match schedule data.', 'enableClose': false});
-
-    modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
+    var tmpDate = new Date();
 
     // config calendar plugin
     $scope.matchScheduleConfig = {
@@ -97,8 +81,10 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', function (
             }
         };
     }
+    $scope.numScheduleRequests = 1;
     // Call tc-api server to get srm schedule
     $http.get(config.apiDomain + '/data/srm/schedule?pageIndex=-1&sortColumn=startDate&sortOrder=asc').success(function (data, status, headers) {
+        $scope.numScheduleRequests -= 1;
         if (data.data) {
             data.data.forEach(function (item) {
                 $scope.eventSources[0].push({
@@ -108,17 +94,10 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', function (
                     allDay: false
                 });
             });
-
-            if ($rootScope.currentModal) {
-                $rootScope.currentModal.dismiss('cancel');
-                $rootScope.currentModal = undefined;
-            }
-            if (modalTimeoutPromise) {
-                $timeout.cancel(modalTimeoutPromise);
-            }
         }
         initCalendar();
     }).error(function (data, status, headers, config) {
+        $scope.numScheduleRequests -= 1;
         //skip the error, simply print to console
         console.log(data);
     });
