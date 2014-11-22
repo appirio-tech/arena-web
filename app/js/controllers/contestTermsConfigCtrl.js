@@ -4,8 +4,11 @@
 /**
  * The contest terms configuration controller.
  *
+ * Changes in version 1.1 (Module Assembly - Web Arena -Match Management Update):
+ * - Added load terms logic.
+ *
  * @author TCSASSEMBLER
- * @version 1.0
+ * @version 1.1
  */
 'use strict';
 /*jshint -W097*/
@@ -74,13 +77,21 @@ var contestTermsConfigCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '
     $scope.closeContestTermsConfig = function () {
         $scope.hidePopup('contestTermsConfig');
     };
-    /*jslint todo: true */
     /**
      * Loads existing terms for selected round
      */
     $scope.loadPreviousTerm = function () {
-        // TODO Need to implement it when API is ready
-        $scope.roundTerms = $scope.round.terms;
+        //get terms
+        if ($scope.round.terms && $scope.round.terms.length > 0) {
+            $scope.roundTerms = $scope.round.terms;
+        } else {
+            $scope.openModal({
+                title: 'Warning',
+                message: 'No terms in this round currently.',
+                enableClose: true
+            });
+        }
+
     };
 }];
 
