@@ -89,8 +89,8 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', function (
             data.data.forEach(function (item) {
                 $scope.eventSources[0].push({
                     title: item.contestName,
-                    start: parseDate(item.startDate),
-                    end: parseDate(item.endDate),
+                    start: parseDate(item.registrationStartDate),
+                    end: parseDate(item.challengeEndTime),
                     allDay: false
                 });
             });

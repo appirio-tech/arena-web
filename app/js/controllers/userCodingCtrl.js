@@ -361,10 +361,10 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             // make visit fields easily
             $scope.problem.component = component;
             $scope.problem.className = component.className;
-            $scope.problem.methodName = component.allMethodNames[0];
-            $scope.problem.paramNames = component.paramNames;
+            $scope.problem.methodName = component.methodNames[0];
+            $scope.problem.paramNames = component.allParamNames[0];
             $scope.problem.allArgTypes = component.allParamTypes[0];
-            $scope.problem.allReturnType = component.allReturnTypes[0];
+            $scope.problem.allReturnType = component.returnTypes[0];
 
             // get languages from round data
             // it may be undefined, but assign it anyway
