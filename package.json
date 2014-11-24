@@ -1,6 +1,6 @@
 {
   "name": "arena-web",
-  "version": "2014.10.27.5-aws",
+  "version": "14.11-candidate",
   "description": "[topcoder] arena for Single Round Match contests.",
   "keywords": [
     "[topcoder]",
@@ -10,7 +10,7 @@
   ],
   "main": "index.html",
   "scripts": {
-    "start": "node node_modules/http-server/bin/http-server build -p $PORT",
+    "start": "node node_modules/http-server/bin/http-server build -p $PORT --cors",
     "start_win": "node node_modules/http-server/bin/http-server build -p %PORT%",
     "postinstall": "node_modules/.bin/bower install"
   },

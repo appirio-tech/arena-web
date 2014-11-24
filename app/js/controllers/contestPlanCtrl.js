@@ -122,7 +122,7 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
             data.data.forEach(function (item) {
                 $scope.eventSources[0].push({
                     title: item.contestName,
-                    start: parseDate(item.startDate),
+                    start: parseDate(item.registrationStartTime),
                     allDay: false
                 });
             });
