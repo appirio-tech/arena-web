@@ -787,7 +787,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
      * @returns {Array} the leader board
      */
     $rootScope.getCurrentLeaderboard = function (viewOn, roomID) {
-        if (angular.isUndefined($rootScope.roomDate)) {
+        if (angular.isUndefined($rootScope.roomData)) {
             return [];
         }
         if (viewOn === 'room') {
