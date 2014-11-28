@@ -183,6 +183,7 @@ controllers.manageAnswerCtrl = require('./controllers/manageAnswerCtrl');
 controllers.userCodingTimeCtrl = require('./controllers/userCodingTimeCtrl');
 controllers.practiceProblemListCtrl = require('./controllers/practiceProblemListCtrl');
 controllers.matchScheduleCtrl = require('./controllers/matchScheduleCtrl');
+controllers.balloonCtrl = require('./controllers/balloonCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -215,6 +216,7 @@ directives.contestScheduleConfig = require('./directives/contestScheduleConfig')
 directives.registrationQuestions = require('./directives/registrationQuestions');
 directives.manageQuestion = require('./directives/manageQuestion');
 directives.manageAnswer = require('./directives/manageAnswer');
+directives.ngBallons = require('./directives/ngBallons');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -283,6 +285,7 @@ main.controller('registrationQuestionsCtrl', controllers.registrationQuestionsCt
 main.controller('manageQuestionCtrl', controllers.manageQuestionCtrl);
 main.controller('manageAnswerCtrl', controllers.manageAnswerCtrl);
 main.controller('matchScheduleCtrl', controllers.matchScheduleCtrl);
+main.controller('balloonCtrl', controllers.balloonCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -317,6 +320,7 @@ main.directive('contestScheduleConfig', directives.contestScheduleConfig);
 main.directive('registrationQuestions', directives.registrationQuestions);
 main.directive('manageQuestion', directives.manageQuestion);
 main.directive('manageAnswer', directives.manageAnswer);
+main.directive('ngBallons', directives.ngBallons);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
