@@ -39,8 +39,11 @@
  * Changes in version 1.10 (PoC Assembly - Invite friends To Participate On A Match From Facebook and Twitter):
  * - Added facebook / twitter invitation logic.
  *
+ * Changes in version 1.11 (Web Arena Deep Link Assembly v1.0):
+ * - Added Member and Register Deep Link Logic
+ *
  * @author amethystlei, dexy, flytoj2ee, TCASSEMBLER
- * @version 1.10
+ * @version 1.11
  */
 'use strict';
 /*global module, angular, require*/
@@ -58,7 +61,7 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper', '$modal', 'Facebook', function ($scope, $rootScope, $state, socket, appHelper, $modal, Facebook) {
+var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper', '$modal', 'Facebook', '$stateParams', '$filter', function ($scope, $rootScope, $state, socket, appHelper, $modal, Facebook, $stateParams, $filter) {
     var getPhase = function (contest, phaseTypeId) {
         var i;
         if (!contest.phases) {
@@ -362,6 +365,12 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
             $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
                 // remove the listener
                 $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
+                if (data.message.indexOf('You are already registered') === -1) {
+                    contest.isRegisterable = true;
+                } else {
+                    contest.isRegistered = true;
+                    return;
+                }
                 angular.extend(data, {enableClose: true});
                 $rootScope.currentDetailModal = undefined;
                 $scope.openModal(data, function () {
@@ -589,6 +598,22 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.getTabName = function (index) {
         return index >= 0 && index < tabNames.length ? tabNames[index] : 'Click to show tabs';
     };
+
+    // Show member popup. This is from deeplink
+    if ($state.current.name === helper.STATE_NAME.Member) {
+        $rootScope.showCoderInfo($stateParams.memberName, 1);
+    }
+    // Show Register popup. This is from deeplink
+    if ($state.current.name === helper.STATE_NAME.Register) {
+        if (!$rootScope.roundData[$stateParams.contestId].isRegistered) {
+            $scope.doAction($rootScope.roundData[$stateParams.contestId]);
+        }
+        angular.forEach($filter('orderBy')($scope.getContests(), 'phases[0].startTime'), function (contest, index) {
+            if ($stateParams.contestId === contest.roundID.toString()) {
+                $scope.setCurrentContest(index);
+            }
+        });
+    }
 }];
 
 module.exports = activeContestsCtrl;

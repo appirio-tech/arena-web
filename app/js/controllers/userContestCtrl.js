@@ -14,11 +14,14 @@
  * Changes in version 1.3 (Module Assembly - Web Arena UI - Division Summary):
  * - Added isDivisionActive to check if the division is active.
  *
- * @author amethystlei, dexy
- * @version 1.3
+ * Changes in version 1.4 (Web Arena Deep Link Assembly v1.0):
+ * - Added deep linking logic for SRM links
+ *
+ * @author amethystlei, dexy, TCASSEMBLER
+ * @version 1.4
  */
 'use strict';
-/*global module, angular*/
+/*global module, angular, require*/
 
 /**
  * The helper.
@@ -36,6 +39,15 @@ var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket
     function ($scope, $rootScope, $stateParams, $state, socket, appHelper) {
         function setContest(data) {
             $scope.contest = data;
+            // If user came through deeplink,
+            // he may tried to enter contest while in registration phase or lower
+            if ($scope.contest.phaseData.phaseType === 2) {
+                $state.go(helper.STATE_NAME.Register, {
+                    contestId: $scope.contest.roundID
+                });
+            } else if ($scope.contest.phaseData.phaseType < 2) {
+                $state.go(helper.STATE_NAME.Dashboard);
+            }
             // rebuild the contest schedule when phase data updated
             $scope.$broadcast('rebuild:contestSchedule');
         }

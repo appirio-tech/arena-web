@@ -42,8 +42,12 @@
  *
  * Changes in version 1.11 (Sort is not retained in room summary):
  * - Set isKeepSort to true
- * @author dexy, amethystlei, savon_cn
- * @version 1.11
+ *
+ * Changes in version 1.12 (Web Arena Deep Link Assembly v1.0):
+ * - Fixed issue while loading practice problem
+ *
+ * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
+ * @version 1.12
  */
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -361,10 +365,18 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             // make visit fields easily
             $scope.problem.component = component;
             $scope.problem.className = component.className;
-            $scope.problem.methodName = component.methodNames[0];
+            if (component.methodeNames) {
+                $scope.problem.methodName = component.methodNames[0];
+            } else {
+                $scope.problem.methodName = component.methodName;
+            }
             $scope.problem.paramNames = component.allParamNames[0];
             $scope.problem.allArgTypes = component.allParamTypes[0];
-            $scope.problem.allReturnType = component.returnTypes[0];
+            if (component.returnTypes) {
+                $scope.problem.allReturnType = component.returnTypes[0];
+            } else {
+                $scope.problem.allReturnType = component.returnType;
+            }
 
             // get languages from round data
             // it may be undefined, but assign it anyway

@@ -93,15 +93,22 @@
  * - Added CHALLENGE_ADVERTISING to handle constants user for challenge advertising widget.
  * - Added TRACK_SHORTNAMES to map challenge types to short names.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.23
+ * Changes in version 1.24 (Web Arena Deep Link Assembly v1.0):
+ * - Added new STATE_NAME: Member, Register
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
+ * @version 1.24
  */
+'use strict';
+/*global module*/
 
 module.exports = {
     // Represents the state names
     STATE_NAME: {
         User: 'user',
         Dashboard: 'user.dashboard',
+        Member: 'user.member',
+        Register: 'user.register',
         Coding: 'user.coding',
         ViewCode: 'user.viewCode',
         PracticeCode: 'user.practiceCode',
