@@ -90,11 +90,11 @@
  * - Added challengesAdvertisingCtrl controller
  * - Added challengesAdvertiser directive
  *
- * Changes in version 1.125 (Web Arena Deep Link Assembly v1.0):
+ * Changes in version 1.25 (Web Arena Deep Link Assembly v1.0):
  * - Added Member and Register states
  * - Added Deep Linking logic
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
  * @version 1.25
  */
 'use strict';
@@ -389,7 +389,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             }
         })
         .state('user.member', {
-            url: '/dashboard/:memberName',
+            url: '/dashboard/{memberName}',
             data: {
                 pageTitle: "Dashboard",
                 pageMetaKeywords: "dashboard"
@@ -400,7 +400,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             }
         })
         .state('user.register', {
-            url: '/dashboard/register/:contestId',
+            url: '/dashboard/register/{contestId}',
             data: {
                 pageTitle: "Dashboard",
                 pageMetaKeywords: "dashboard"
@@ -436,6 +436,18 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             },
             templateUrl: 'partials/user.coding.html',
             controller: 'userCodingCtrl'
+        })
+        .state('user.defaultContest', {
+            url: '/contests/{contestId}',
+            data: {
+                pageTitle: "Contest",
+                pageMetaKeywords: "contest"
+            },
+            templateUrl: 'partials/user.contest.html',
+            controller: 'userContestCtrl',
+            resolve: {
+                enterRoom: resolvers.enterCompetingRoom
+            }
         })
         .state('user.contest', {
             url: '/contests/{contestId}/{viewOn}',
@@ -590,7 +602,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         //use whitelist approach
         var allowedStates = [helper.STATE_NAME.Anonymous, helper.STATE_NAME.AnonymousHome, helper.STATE_NAME.LoggingIn, helper.STATE_NAME.Logout],
             publicState = false,
-            deepLinks = [helper.STATE_NAME.Contest, helper.STATE_NAME.Member, helper.STATE_NAME.PracticeCode],
+            deepLinks = [helper.STATE_NAME.DefaultContest, helper.STATE_NAME.Contest, helper.STATE_NAME.Member, helper.STATE_NAME.PracticeCode],
             isDeepLink = false,
             deepLink = {};
 
@@ -608,6 +620,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
                 deepLink = {};
                 deepLink.state = toState.name;
                 switch (toState.name) {
+                case helper.STATE_NAME.DefaultContest:
                 case helper.STATE_NAME.Contest:
                     deepLink.contestId = toParams.contestId;
                     break;
@@ -617,7 +630,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
                 case helper.STATE_NAME.PracticeCode:
                     deepLink.roundId = toParams.roundId;
                     deepLink.componentId = toParams.componentId;
-                    deepLink.divsionId = toParams.divisionId;
+                    deepLink.divisionId = toParams.divisionId;
                     deepLink.roomId = toParams.roomId;
                     break;
                 }
@@ -628,7 +641,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         // Move user to deep link, if stored
         if (sessionHelper.getDeepLink() && $rootScope.isLoggedIn) {
             deepLink = sessionHelper.getDeepLink();
-            if (deepLink.state === helper.STATE_NAME.Contest) {
+            if (deepLink.state === helper.STATE_NAME.DefaultContest || deepLink.state === helper.STATE_NAME.Contest) {
                 sessionHelper.setDeepLink({});
                 event.preventDefault();
                 $state.go(deepLink.state, {
@@ -646,7 +659,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
                 $state.go(deepLink.state, {
                     roundId : deepLink.roundId,
                     componentId : deepLink.componentId,
-                    divsionId : deepLink.divisionId,
+                    divisionId : deepLink.divisionId,
                     roomId : deepLink.roomId
                 }, {reload: true});
             }

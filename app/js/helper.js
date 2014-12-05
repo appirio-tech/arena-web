@@ -112,6 +112,7 @@ module.exports = {
         Coding: 'user.coding',
         ViewCode: 'user.viewCode',
         PracticeCode: 'user.practiceCode',
+        DefaultContest: 'user.defaultContest',
         Contest: 'user.contest',
         ContestSummary: 'user.contestSummary',
         Logout: 'user.logout',

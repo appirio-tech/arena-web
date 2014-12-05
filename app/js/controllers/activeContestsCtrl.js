@@ -85,7 +85,13 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
 
     $scope.getPhaseTime = appHelper.getPhaseTime;
     $scope.range = appHelper.range;
-    $scope.currentContest = 0;
+    // Changed to rootscope because of deeplinking contest page
+    // If contest is in registration phase, redirected to dashboard with /register/{contestId} in url
+    // If user is already registered, we need to take the user to dashboard without /register/{contestId} but with the
+    // contest selected in active contest widget.
+    if ($rootScope.currentContest === undefined) {
+        $rootScope.currentContest = 0;
+    }
     $scope.tweetText = config.tweetText.replace('#', '%23');
     $scope.tweetUrl = config.tweetUrl;
 
@@ -205,7 +211,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
 
     // sets the current contest for viewing
     $scope.setCurrentContest = function (newContest) {
-        $scope.currentContest = newContest;
+        $rootScope.currentContest = newContest;
     };
 
     // gets the current action available
@@ -467,7 +473,11 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                             // Remove the listener.
                             $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
                             angular.extend(data, {enableClose: true, registrantCallBack: true});
-                            $scope.openModal(data);
+                            $scope.openModal(data, null, function () {
+                                if ($state.current.name === helper.STATE_NAME.Register) {
+                                    $state.go(helper.STATE_NAME.Dashboard);
+                                }
+                            });
                             if (data.message.indexOf('You have successfully registered for the match.') !== -1) {
                                 contest.isRegisterable = false;
                                 contest.isRegistered = true;
@@ -486,6 +496,9 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                     contest.isRegistered = false;
                     $rootScope.currentModal = undefined;
                     $rootScope.currentDetailModal = undefined;
+                    if ($state.current.name === helper.STATE_NAME.Register) {
+                        $state.go(helper.STATE_NAME.Dashboard);
+                    }
                 }, 'partials/user.contest.registration.html');
                 $scope.okDisabled = false;
             });
@@ -601,6 +614,8 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
 
     // Show member popup. This is from deeplink
     if ($state.current.name === helper.STATE_NAME.Member) {
+        // As there is no way to get usertype in link, hard-coding it to 1
+        // 1 represents individual user
         $rootScope.showCoderInfo($stateParams.memberName, 1);
     }
     // Show Register popup. This is from deeplink
@@ -613,6 +628,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                 $scope.setCurrentContest(index);
             }
         });
+        $state.go(helper.STATE_NAME.Dashboard);
     }
 }];
 

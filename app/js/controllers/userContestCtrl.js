@@ -39,6 +39,10 @@ var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket
     function ($scope, $rootScope, $stateParams, $state, socket, appHelper) {
         function setContest(data) {
             $scope.contest = data;
+            if (!$scope.contest) {
+                $state.go(helper.STATE_NAME.Dashboard);
+                return;
+            }
             // If user came through deeplink,
             // he may tried to enter contest while in registration phase or lower
             if ($scope.contest.phaseData.phaseType === 2) {
@@ -61,6 +65,9 @@ var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket
         // load contest data with contest id
         $scope.roundID = +$stateParams.contestId;
         setContest($rootScope.roundData[$scope.roundID]);
+        if (!$scope.contest) {
+            return;
+        }
         $scope.divisionID = null;
         angular.forEach($scope.contest.coderRooms, function (room) {
             if (angular.isDefined($rootScope.currentRoomInfo) &&
