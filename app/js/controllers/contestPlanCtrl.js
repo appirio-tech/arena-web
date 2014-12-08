@@ -10,8 +10,15 @@
  * Changes in version 1.2 (Module Assembly - Web Arena - Match Schedule Widget Update):
  *  - Updated the code to use real data of SRM schedule.
  *
+ * Changes in version 1.3 (Module Assembly - Web Arena - Match Schedule Widget Update):
+ *  - Move the code before calendar configuration so that calendar is populated with $scope.*
+ *    methods which are already defined.
+ *  - Added isToday and goToday methods to support moving to the current date.
+ *  - Added tooltip and updated methods eventsADay and eventAfterAllRender to support tooltips
+ *    with brief contest information.
+ *
  * @author TCASSEMBLER
- * @version 1.2
+ * @version 1.3
  */
 'use strict';
 
@@ -23,7 +30,7 @@ var helper = require('../helper');
 /*jslint unparam: true*/
 /*global $:false, angular:false, module*/
 // contest plan widget
-var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
+var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '$compile', function ($rootScope, $scope, $http, $timeout, $filter, $compile) {
     $scope.events = [];
     $scope.eventSources = [$scope.events];
     $scope.listEvents = [];
@@ -62,79 +69,8 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
         $scope.listEvents = $filter('showByMonth')(events, currentDate);
         $scope.$broadcast('rebuild:list');
     }
-    // The default ui config
-    $scope.uiConfig = {
-        calendar: {
-            height: 255,
-            editable: false,
-            header: {
-                left: 'title',
-                center: '',
-                right: 'month, prev, next'
-            },
-            titleFormat: {
-                month: 'MMMM yyyy',
-                day: 'MMM d, yyyy'
-            },
-            buttonText: {
-                month: 'Back'
-            }
-        }
-    };
-    /**
-     * Init the calendar with events.
-     */
-    function initCalendar() {
-        $scope.uiConfig = {
-            calendar: {
-                height: 255,
-                editable: false,
-                header: {
-                    left: 'title',
-                    center: '',
-                    right: 'month, prev, next'
-                },
-                titleFormat: {
-                    month: 'MMMM yyyy',
-                    day: 'MMM d, yyyy'
-                },
-                buttonText: {
-                    month: 'Back'
-                },
-                timeFormat: 'HH:mm',
-                year: tmpDate.getFullYear(), //the initial year when the calendar loads
-                month: tmpDate.getMonth(), //the initial month when the calendar loads
-                day: tmpDate.getDate(),    //the initial day when the calendar loads
-                eventRender: $scope.eventRender, // add color tag and events number qtip to day number when events are loading
-                dayClick: $scope.changeView, // change to day view when clicking day number
-                viewRender: $scope.viewRender, // when view loads, implement some style issues
-                eventAfterAllRender: $scope.eventAfterAllRender, //try to add a sign to indicate number of events that day
-                dayRender: $scope.dayRender
-            }
-        };
-    }
 
-    $scope.numCalendarRequests = 1;
-    // Call tc-api server to get srm schedule
-    $http.get(config.apiDomain + '/data/srm/schedule?pageIndex=-1&sortColumn=startDate&sortOrder=asc').success(function (data, status, headers) {
-        $scope.numCalendarRequests -= 1;
-        if (data.data) {
-            data.data.forEach(function (item) {
-                $scope.eventSources[0].push({
-                    title: item.contestName,
-                    start: parseDate(item.registrationStartTime || item.startDate),
-                    allDay: false
-                });
-            });
-        }
-        initCalendar();
-    }).error(function (data, status, headers, config) {
-        $scope.numCalendarRequests -= 1;
-        //skip the error, simply print to console
-        console.log(data);
-    });
-
-    /**
+        /**
      * It will get current date information from calendar when list view is loaded.
      * @returns {boolean} - false if the view is list, otherwise return true.
      */
@@ -240,6 +176,7 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
                 $scope.contestPlan.fullCalendar('gotoDate', date);
             }
         });
+        $('.tooltip').remove();
 
         $scope.$broadcast('rebuild:list');
     };
@@ -271,7 +208,7 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
      * @returns {*[]} the events number
      */
     function eventsADay(data) {
-        var nums = [], dates = [], dateString, index, i, event;
+        var nums = [], dates = [], events = [], dateString, index, i, event;
         if (angular.isArray(data)) {
             for (i = 0; i < data[0].length; i += 1) {
                 event = data[0][i];
@@ -282,12 +219,31 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
                 if (index === -1) {
                     dates.push(dateString);
                     nums.push(1);
+                    events.push([{
+                        name: event.title,
+                        regStart: event.regStart,
+                        codeStart: event.codeStart
+                    }]);
                 } else {
                     nums[index] += 1;
+                    events[index].push({
+                        name: event.title,
+                        regStart: event.regStart,
+                        codeStart: event.codeStart
+                    });
                 }
             }
         }
-        return [dates, nums];
+        return [dates, nums, events];
+    }
+    /**
+     * Formats the date/time to specific format.
+     *
+     * @param date the date
+     * @return formatted date
+     */
+    function formatDateTime(date) {
+        return $filter('date')(date, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone;
     }
 
     /**
@@ -296,9 +252,22 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
      * @param view - the view flag.
      */
     $scope.eventAfterAllRender = function (view) {
-        var i, data = eventsADay($scope.eventSources);
+        var i, j, data = eventsADay($scope.eventSources), element, htmlTip;
         for (i = 0; i < data[0].length; i += 1) {
-            $('#calendar .fc-view-month').find('[data-date=' + data[0][i] + ']').find('.numOfEvents').html(data[1][i]);
+            element = $('#calendar .fc-view-month').find('[data-date=' + data[0][i] + ']').find('.fc-day-number');
+            htmlTip = data[1][i].toString() + ' event' + ((data[1][i] !== 1) ? 's' : '');
+            for (j = 0; j < data[2][i].length; j += 1) {
+                htmlTip += '<hr/>' + data[2][i][j].name;
+                htmlTip += '</br>' + 'Registration: ' + formatDateTime(data[2][i][j].regStart);
+                htmlTip += '</br>' + 'Coding: ' + formatDateTime(data[2][i][j].codeStart);
+            }
+            element.attr({
+                'tooltip-html-unsafe': htmlTip,
+                'tooltip-popup-delay': 100,
+                'tooltip-placement': 'top',
+                'tooltip-append-to-body': true
+            });
+            $compile(element)($scope);
         }
     };
     /**
@@ -308,6 +277,104 @@ var contestPlanCtrl = ['$scope', '$http', '$timeout', '$filter', function ($scop
      */
     $scope.dayRender = function (date, cell) {
         angular.element(cell).append('<span class="numOfEvents"></span>');
+    };
+
+    // The default ui config
+    $scope.uiConfig = {
+        calendar: {
+            height: 255,
+            editable: false,
+            header: {
+                left: 'title',
+                center: '',
+                right: 'month, prev, next'
+            },
+            titleFormat: {
+                month: 'MMMM yyyy',
+                day: 'MMM d, yyyy'
+            },
+            buttonText: {
+                month: 'Back'
+            }
+        }
+    };
+    /**
+     * Init the calendar with events.
+     */
+    function initCalendar() {
+        $scope.uiConfig = {
+            calendar: {
+                height: 255,
+                editable: false,
+                header: {
+                    left: 'title',
+                    center: '',
+                    right: 'month, prev, next'
+                },
+                titleFormat: {
+                    month: 'MMMM yyyy',
+                    day: 'MMM d, yyyy'
+                },
+                buttonText: {
+                    month: 'Back'
+                },
+                timeFormat: 'HH:mm',
+                year: tmpDate.getFullYear(), //the initial year when the calendar loads
+                month: tmpDate.getMonth(), //the initial month when the calendar loads
+                day: tmpDate.getDate(),    //the initial day when the calendar loads
+                eventRender: $scope.eventRender, // add color tag and events number qtip to day number when events are loading
+                dayClick: $scope.changeView, // change to day view when clicking day number
+                viewRender: $scope.viewRender, // when view loads, implement some style issues
+                eventAfterAllRender: $scope.eventAfterAllRender, //try to add a sign to indicate number of events that day
+                dayRender: $scope.dayRender
+            }
+        };
+    }
+
+    $scope.numCalendarRequests = 1;
+    // Call tc-api server to get srm schedule
+    $http.get(config.apiDomain + '/data/srm/schedule?pageIndex=-1&sortColumn=startDate&sortOrder=asc').success(function (data, status, headers) {
+        $scope.numCalendarRequests -= 1;
+        if (data.data) {
+            data.data.forEach(function (item) {
+                $scope.eventSources[0].push({
+                    title: item.contestName,
+                    start: parseDate(item.startDate),
+                    regStart: new Date(item.registrationStartTime),
+                    codeStart: new Date(item.codingStartTime),
+                    allDay: false
+                });
+            });
+        }
+        initCalendar();
+    }).error(function (data, status, headers, config) {
+        $scope.numCalendarRequests -= 1;
+        //skip the error, simply print to console
+        console.log(data);
+    });
+
+    /**
+     * Checks if the calendar date is the current month.
+     *
+     * @return true if calendar month is the current month.
+     */
+    $scope.isToday = function () {
+        tmpDate = new Date();
+        return tmpDate.getFullYear() === $scope.currentDate.year
+                && tmpDate.getMonth() === $scope.currentDate.month;
+    };
+    /**
+     * Moves the calendar to the current date.
+     */
+    $scope.goToday = function () {
+        tmpDate = new Date();
+        $scope.contestPlan.fullCalendar('gotoDate', tmpDate);
+        $scope.currentDate = {
+            day: tmpDate.getDay(),
+            month: tmpDate.getMonth(),
+            year: tmpDate.getFullYear()
+        };
+        listRender($scope.events, $scope.currentDate);
     };
 }];
 

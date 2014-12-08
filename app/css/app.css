@@ -675,7 +675,6 @@ body a {cursor: pointer;}
     color: #ffffff;
     display: inline-block;
 }
-
 .preloader-window .preloader-indicator {
     position: absolute;
     padding: 5px 0px 0px 5px;
@@ -685,6 +684,14 @@ body a {cursor: pointer;}
     display: inline-block !important;
     vertical-align: middle;
     padding: 2px 4px 2px 2px;
+}
+.panelContestPlan .preloader-window {
+    left: 28.1%;
+}
+@media only screen and (max-width: 1199px) {
+    .panelContestPlan .preloader-window {
+        left: 36.1%;
+    }
 }
 
 /*************** dashboard page */
@@ -786,7 +793,7 @@ body a {cursor: pointer;}
 }
 .tcTime {
     display: block;
-    width: 240px;  
+    width: 240px;
     padding-right: 33px;
     font-size: 14px;
     text-align: right;
@@ -1262,7 +1269,7 @@ footer .right>span:nth-child(2) {
 .contestManagementPanel textarea,
 .contestManagementPanel .inputBorder>input,
 .wizardBody .inputBorder>input {
-    font-weight: 300;    
+    font-weight: 300;
 }
 
 .wizardBody .inputBorder>input[name="startDate"] {
@@ -3238,13 +3245,71 @@ footer .right>span:nth-child(2) {
     opacity: 1;
 }
 .panelContestPlan .panel-body {
-    padding-top: 19px;
+    padding-top: 0px;
     padding-left: 29px;
     padding-right: 12px;
 }
+.panelContestPlan .panel-footer {
+    cursor: pointer;
+}
+
 .panelContestPlan .calendarView {
     padding-right: 16px;
 }
+
+.panelContestPlan .matchScheduleLink {
+    position: absolute;
+    bottom: 20px;
+    color: #0bbbe7;
+}
+.panelContestPlan .btnToday {
+    position: absolute;
+    top: 9px;
+    right: 85px;
+    width: 60px;
+    height: 25px;
+    background: #0f9abd;
+    padding: 0;
+    vertical-align: middle;
+    text-align: center;
+}
+.panelContestPlan .btnToday:hover {
+    opacity: 0.7;
+}
+.panelContestPlan .fc-day>div {
+    min-height: 30px !important;
+}
+.panelContestPlan .calendar .fc-today {
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius: 5px !important;
+    border-radius: 5px !important;
+    text-align: center !important;
+    border-color: #0f9abd !important;
+    border-width: 1px !important;
+}
+.matchSchedule .fc-button {
+    height: 26px;
+    text-align: center;
+    margin-bottom: 0px !important;
+    background: #0f9abd !important;
+    color: #ffffff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    z-index: 0 !important;
+    cursor: pointer;
+}
+.matchSchedule .fc-button:not(.fc-state-disabled):hover,
+.matchSchedule .fc-button:not(.fc-state-active):hover {
+    color: #ffffff;
+    opacity: 0.7;
+    z-index: 0 !important;
+}
+.matchSchedule .fc-state-disabled,
+.matchSchedule .fc-state-active {
+    opacity: 0.7;
+}
+
 /*for calendar and list view*/
 .calendar .fc-header .fc-button-month.fc-state-active,
 .calendar .fc-view-month .fc-event-container .fc-event,
@@ -3253,7 +3318,7 @@ footer .right>span:nth-child(2) {
 .calendar .fc-view-month .fc-day {position: relative;}
 .calendar .fc-day .fc-day-number {
     float: left;
-    padding-left: 15px;
+    padding-left: 17px;
     padding-top: 2px;
 }
 .calendar .fc-day.fc-first .fc-day-number {
@@ -3295,8 +3360,8 @@ footer .right>span:nth-child(2) {
     color: #687376;
     text-align: left;
     padding-left: 15px;
-    padding-top: 9px;
-    padding-bottom: 9px;
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 .calendar .fc-border-separate thead .fc-day-header.fc-first {
     padding-left: 13px;
@@ -3415,6 +3480,9 @@ footer .right>span:nth-child(2) {
 .listView .eventsContent .tableDiv .eventDate {
     width: 90px;
 }
+.listView .eventsContent .tableDiv .phaseDate {
+    width: 200px;
+}
 .listView .eventsContent .tableDiv {
     padding-right: 16px;
 }
@@ -3423,8 +3491,12 @@ footer .right>span:nth-child(2) {
 }
 .listView .eventsContent .table>tbody>tr>td {
     border-color: #1f444e;
-    padding-top: 11px;
-    padding-bottom: 12px;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    border: none;
+}
+.listView .eventsContent .table .lastPhase {
+    border-bottom: 2px solid;
 }
 .listView .eventsContent .table>tbody>tr:first-child>td{
     border-top-width: 0;
@@ -4866,7 +4938,7 @@ footer .right>span:nth-child(2) {
     padding-left: 0px;
     padding-right: 0;
 }
-.contestManagement .panel-body .tabs, 
+.contestManagement .panel-body .tabs,
 .contestManagement .panel-body .content {
     padding: 0 28px 0 29px;
     position: relative;
@@ -4878,13 +4950,13 @@ footer .right>span:nth-child(2) {
     padding: 0 25px;
     position: relative;
     cursor: pointer;
-} 
+}
 .contestManagement .tabs .nav li:hover {
     /*text-decoration: underline;*/
 }
 .contestManagement .tabs .nav li:nth-child(2) {
     padding: 0 27px;
-} 
+}
 .contestManagement .tabs .nav li:last-child {
     padding: 0 24px;
 }
@@ -4990,7 +5062,7 @@ footer .right>span:nth-child(2) {
     margin-bottom: 2px;
 }
 .contestManagement .table>tbody>tr:last-child>td {
-    border-bottom-width: 0; 
+    border-bottom-width: 0;
 }
 .contestManagement .table>thead>tr>th {
     line-height: 1.29em;
@@ -5113,7 +5185,7 @@ footer .right>span:nth-child(2) {
 }
 .popupOpen .problemAssignmentPanel {
     overflow-x: auto;
-    overflow-y: auto;  
+    overflow-y: auto;
 }
 .problemAssignmentPanel {
     display: none;
@@ -5616,7 +5688,7 @@ footer .right>span:nth-child(2) {
 /*contest terms*/
 .popupOpen .contestManagementPanel {
     overflow-x: hidden;
-    overflow-y: auto;  
+    overflow-y: auto;
 }
 .contestManagementPanel {
     display: none;
@@ -5664,7 +5736,7 @@ contestManagementPanel .panel-footer .btn {
     margin-bottom: 0;
 }
 
-.contestManagementPanel .table>tbody>tr>td:last-child, 
+.contestManagementPanel .table>tbody>tr>td:last-child,
 .contestManagementPanel .table>thead>tr>th:last-child {
     text-align: left;
 }
@@ -5825,7 +5897,7 @@ contestManagementPanel .panel-footer .btn {
     padding: 10px 0 7px;
 }
 .registrationQuestionsPanel .table>tbody>tr:last-child>td {
-    border-bottom-width: 0; 
+    border-bottom-width: 0;
 }
 .registrationQuestionsPanel .table .colKeyword {
     padding-left: 9px;
@@ -5857,7 +5929,7 @@ contestManagementPanel .panel-footer .btn {
 }
 .registrationQuestionsPanel .panel-footer {
     border-top-width: 0;
-    padding-top: 18px; 
+    padding-top: 18px;
 }
 .registrationQuestionsPanel .panel-footer .btnRow {
     padding-left: 7px;
@@ -5999,7 +6071,7 @@ contestManagementPanel .panel-footer .btn {
     padding: 10px 0 7px;
 }
 .manageQuestionPanel .table>tbody>tr:last-child>td {
-    border-bottom-width: 0; 
+    border-bottom-width: 0;
 }
 .manageQuestionPanel .table .colSortOrder {
     padding-left: 9px;
@@ -6031,7 +6103,7 @@ contestManagementPanel .panel-footer .btn {
     margin-left: 13px;
 }
 .manageQuestionPanel .panel-footer {
-    padding-top: 20px; 
+    padding-top: 20px;
     height: 70px;
     padding-left: 20px;
     padding-right: 22px;
@@ -6072,7 +6144,7 @@ contestManagementPanel .panel-footer .btn {
 }
 .manageAnswerPanel .panel-body {
     padding-top: 26px;
-    padding-left: 39px; 
+    padding-left: 39px;
 }
 .manageAnswerPanel .panel-body fieldset>label:first-child {
     width: 87px;
@@ -7381,7 +7453,7 @@ table thead .sort.desc{
 .codeArea .chatWidget .panel .chatBoard {
     height: 315px;
 }
-.codeArea .chatWidget .memberDropdown .dropdown-menu, 
+.codeArea .chatWidget .memberDropdown .dropdown-menu,
 .codeArea .chatWidget .methodDropdown .dropdown-menu {
     margin: -134px 0 0;
 }
@@ -7407,7 +7479,7 @@ table thead .sort.desc{
 }
 .codeArea .leaderboardWidget .panel-body .summaryWrapper,
 .codeArea .leaderboardWidget .leaderboardWrapper .heading,
-.codeArea .leaderboardWidget .tHeadDiv .innerWrapper, 
+.codeArea .leaderboardWidget .tHeadDiv .innerWrapper,
 .codeArea .leaderboardWidget .tableDiv .innerWrapper {
     padding-right: 14px;
 }
@@ -7873,11 +7945,11 @@ table thead .sort.desc{
     }
 }
 @media only screen and (max-width: 955px) {
-    .codeArea .chatWidget, 
+    .codeArea .chatWidget,
     .codeArea .leaderboardWidget {
         margin-right: 10px;
     }
-    .codeArea .chatArea-min .panel, 
+    .codeArea .chatArea-min .panel,
     .codeArea .leaderboard-min .panel {
         width: 249px;
     }
@@ -8090,12 +8162,12 @@ table thead .sort.desc{
     .codeArea .leaderboardWidget .panel {
         width: 400px;
     }
-    .codeArea .chatArea-min .panel, 
+    .codeArea .chatArea-min .panel,
     .codeArea .leaderboard-min .panel{
         width: 207px;
         min-width: 207px;
     }
-    .codeArea .chatArea-min .panel-heading, 
+    .codeArea .chatArea-min .panel-heading,
     .codeArea .leaderboard-min .panel-heading {
         padding: 8px 8px 10px;
     }
@@ -8329,7 +8401,7 @@ table thead .sort.desc{
     .coderHistoryTblDiv {
         padding: 0 5px;
     }
-    .coderHistoryTblDiv .coderHistoryTable>tbody>tr>td, 
+    .coderHistoryTblDiv .coderHistoryTable>tbody>tr>td,
     .coderHistoryTblDiv .coderHistoryTable>thead>tr>th {
         padding-left: 0;
         padding-bottom: 0;
@@ -8471,7 +8543,7 @@ table thead .sort.desc{
     cursor: not-allowed;
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
@@ -8628,7 +8700,7 @@ table thead .sort.desc{
     -ms-flex-align: center;
     align-items: center;
  }
- 
+
  #challenges-advertiser .challenge-left-part, #challenges-advertiser .challenge-left-part > *
  #challenges-advertiser .challenge-right-part, #challenges-advertiser .challenge-right-part > * {
     -webkit-box-ordinal-group: 1;
@@ -8640,23 +8712,23 @@ table thead .sort.desc{
     -ms-flex-item-align: auto;
     align-self: auto;
  }
- 
+
 #challenges-advertiser .challenge-left-part,
 #challenges-advertiser .challenge-title,
  #challenges-advertiser .challenge-technologies-wrapper,
 #challenges-advertiser .challenge-right-part {
-    -webkit-box-flex: 0; 
-    -moz-box-flex: 0; 
-    -webkit-flex: 0 1 auto; 
-    -ms-flex: 0 1 auto; 
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
     flex: 0 1 auto;
 }
 
 #challenges-advertiser .challenge-icon, #challenges-advertiser .challenge-prize, #challenges-advertiser .challenge-timer {
-    -webkit-box-flex: 0; 
-    -moz-box-flex: 0; 
-    -webkit-flex: 0 0 auto; 
-    -ms-flex: 0 0 auto; 
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
     flex: 0 0 auto;
 }
 
@@ -8665,7 +8737,7 @@ table thead .sort.desc{
     #challenges-advertiser .challenge-advertisement{
         height: 40px;
     }
-    
+
     #challenges-advertiser .challenge-timer {
         line-height: 26px;
         height: 26px;
@@ -8688,7 +8760,7 @@ table thead .sort.desc{
     #challenges-advertiser {
         padding: 10px 29px;
     }
-    
+
     #challenges-advertiser .challenge-right-part {
         margin-top: 10px;
     }
@@ -8703,7 +8775,7 @@ table thead .sort.desc{
         display: block;
         margin-top: 10px;
     }
-    
+
     #challenges-advertiser .challenge-timer {
         border-right: none;
         margin-right: 0;
@@ -8718,7 +8790,7 @@ table thead .sort.desc{
     #challenges-advertiser .challenge-title {
         display: block;
     }
-    
+
     #challenges-advertiser .challenge-title {
         margin-top: 10px;
     }
