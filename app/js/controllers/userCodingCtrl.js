@@ -42,8 +42,12 @@
  *
  * Changes in version 1.11 (Sort is not retained in room summary):
  * - Set isKeepSort to true
- * @author dexy, amethystlei, savon_cn
- * @version 1.11
+ *
+ * Changes in version 1.12 (Web Arena Deep Link Assembly v1.0):
+ * - Fixed issue while loading practice problem
+ *
+ * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
+ * @version 1.12
  */
 /*jshint -W097*/
 /*jshint strict:false*/

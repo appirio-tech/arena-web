@@ -89,9 +89,13 @@
  * Changes in version 1.24 (UI Prototype - Web Arena - Challenges Advertising Widget)
  * - Added challengesAdvertisingCtrl controller
  * - Added challengesAdvertiser directive
- * 
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein
- * @version 1.24
+ *
+ * Changes in version 1.25 (Web Arena Deep Link Assembly v1.0):
+ * - Added Member and Register states
+ * - Added Deep Linking logic
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
+ * @version 1.25
  */
 'use strict';
 /*jshint -W097*/
@@ -384,6 +388,28 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
                 enterRoom: resolvers.enterLobbyRoom
             }
         })
+        .state('user.member', {
+            url: '/dashboard/{memberName}',
+            data: {
+                pageTitle: "Dashboard",
+                pageMetaKeywords: "dashboard"
+            },
+            templateUrl: 'partials/user.dashboard.html',
+            resolve: {
+                enterRoom: resolvers.enterLobbyRoom
+            }
+        })
+        .state('user.register', {
+            url: '/dashboard/register/{contestId}',
+            data: {
+                pageTitle: "Dashboard",
+                pageMetaKeywords: "dashboard"
+            },
+            templateUrl: 'partials/user.dashboard.html',
+            resolve: {
+                enterRoom: resolvers.enterLobbyRoom
+            }
+        })
         .state('user.coding', {
             url: '/coding/{roundId}/{problemId}/{divisionId}',
             data: {
@@ -410,6 +436,18 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             },
             templateUrl: 'partials/user.coding.html',
             controller: 'userCodingCtrl'
+        })
+        .state('user.defaultContest', {
+            url: '/contests/{contestId}',
+            data: {
+                pageTitle: "Contest",
+                pageMetaKeywords: "contest"
+            },
+            templateUrl: 'partials/user.contest.html',
+            controller: 'userContestCtrl',
+            resolve: {
+                enterRoom: resolvers.enterCompetingRoom
+            }
         })
         .state('user.contest', {
             url: '/contests/{contestId}/{viewOn}',
@@ -560,18 +598,71 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     $rootScope.startSyncResponse = false;
     $rootScope.lastServerActivityTime = new Date().getTime();
     $rootScope.leaderboard = [];
-    $rootScope.$on('$stateChangeStart', function (event, toState) {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
         //use whitelist approach
         var allowedStates = [helper.STATE_NAME.Anonymous, helper.STATE_NAME.AnonymousHome, helper.STATE_NAME.LoggingIn, helper.STATE_NAME.Logout],
-            publicState = false;
+            publicState = false,
+            deepLinks = [helper.STATE_NAME.DefaultContest, helper.STATE_NAME.Contest, helper.STATE_NAME.Member, helper.STATE_NAME.PracticeCode],
+            isDeepLink = false,
+            deepLink = {};
+
+        angular.forEach(deepLinks, function (deepLink) {
+            isDeepLink = isDeepLink || (toState.name === deepLink);
+        });
 
         angular.forEach(allowedStates, function (allowedState) {
             publicState = publicState || (toState.name === allowedState);
         });
-
         if (!publicState && !$rootScope.isLoggedIn) {
             event.preventDefault();
+            // Store deep link to session
+            if (isDeepLink) {
+                deepLink = {};
+                deepLink.state = toState.name;
+                switch (toState.name) {
+                case helper.STATE_NAME.DefaultContest:
+                case helper.STATE_NAME.Contest:
+                    deepLink.contestId = toParams.contestId;
+                    break;
+                case helper.STATE_NAME.Member:
+                    deepLink.memberName = toParams.memberName;
+                    break;
+                case helper.STATE_NAME.PracticeCode:
+                    deepLink.roundId = toParams.roundId;
+                    deepLink.componentId = toParams.componentId;
+                    deepLink.divisionId = toParams.divisionId;
+                    deepLink.roomId = toParams.roomId;
+                    break;
+                }
+                sessionHelper.setDeepLink(deepLink);
+            }
             $state.go(helper.STATE_NAME.AnonymousHome);
+        }
+        // Move user to deep link, if stored
+        if (sessionHelper.getDeepLink() && $rootScope.isLoggedIn) {
+            deepLink = sessionHelper.getDeepLink();
+            if (deepLink.state === helper.STATE_NAME.DefaultContest || deepLink.state === helper.STATE_NAME.Contest) {
+                sessionHelper.setDeepLink({});
+                event.preventDefault();
+                $state.go(deepLink.state, {
+                    contestId: deepLink.contestId
+                }, {reload: true});
+            } else if (deepLink.state === helper.STATE_NAME.Member) {
+                sessionHelper.setDeepLink({});
+                event.preventDefault();
+                $state.go(deepLink.state, {
+                    memberName: deepLink.memberName
+                }, {reload: true});
+            } else if (deepLink.state === helper.STATE_NAME.PracticeCode) {
+                sessionHelper.setDeepLink({});
+                event.preventDefault();
+                $state.go(deepLink.state, {
+                    roundId : deepLink.roundId,
+                    componentId : deepLink.componentId,
+                    divisionId : deepLink.divisionId,
+                    roomId : deepLink.roomId
+                }, {reload: true});
+            }
         }
         //expose this for the base.html template
         $rootScope.loggedIn = function () {
