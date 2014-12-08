@@ -805,6 +805,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     }
                 });
             });
+            if (angular.isUndefined($rootScope.userTests)) {
+                $rootScope.userTests = [{}];
+            }
             $rootScope.userTests.forEach(function (testCase) {
                 testCase.checked = false;
             });

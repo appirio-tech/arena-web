@@ -100,7 +100,7 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
     $scope.problemKeys = ['problemName', 'problemType', 'points', 'difficulty', 'status', 'myPoints'];
 
     $scope.problems = [];
-    $scope.numOfPage = config.practiceProblemListPageSize;
+    $scope.numOfPage = Number(config.practiceProblemListPageSize);
     $scope.currentPage = 1;
     $scope.filterShown = angular.copy(defaultFilterValues);
     $scope.filterUsed = angular.copy($scope.filterShown);

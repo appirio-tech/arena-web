@@ -76,8 +76,13 @@
  * - Fixed notification url issue.
  * - Added the scroll bar for popup modal detail panel.
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.17
+ * Changes in version 1.18 (Module Assembly - Web Arena - Quick Fixes for Contest Management)
+ * - Added handling of PopUpGenericResponse with titles changeRound and loadRound to handle changing and loading round.
+ * - Added methods createContest and updateContest to handle creation and updating of the contest.
+ * - Updated method createContestWizzard to include roundDataIn if the contest is updated.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee
+ * @version 1.18
  */
 'use strict';
 /*jshint -W097*/
@@ -574,6 +579,18 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 message: data.message,
                 enableClose: true
             });
+        } else if (data.title === helper.POP_UP_TITLES.RoundAccessError) {
+            $scope.openModal({
+                title: helper.POP_UP_TITLES.RoundAccessError,
+                message: data.message,
+                enableClose: true
+            });
+        } else if (data.title === helper.POP_UP_TITLES.ChangeRoundError) {
+            $scope.openModal({
+                title: helper.POP_UP_TITLES.ChangeRoundError,
+                message: data.message,
+                enableClose: true
+            });
         }
     });
     /*jslint unparam: false*/
@@ -700,9 +717,11 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     };
 
     /**
-     * Open contest creation wizard
+     * Opens contest creation wizard.
+     *
+     * @param roundData the round data, if it creates new contest roundData should be undefined
      */
-    $scope.createContest = function () {
+    function createContestWizzard(roundData) {
         $rootScope.currentModal = $modal.open({
             templateUrl: '../../../partials/contestCreationWizard.html',
             controller: contestCreationCtrl,
@@ -718,9 +737,31 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     return function () {
                         $rootScope.currentModal = undefined;
                     };
+                },
+                roundDataIn: function () {
+                    return roundData;
                 }
             }
         });
+    }
+    /**
+     * Opens contest creation wizard to create new contest.
+     *
+     * @since 1.18
+     */
+    $scope.createContest = function () {
+        createContestWizzard(undefined);
+    };
+
+    /**
+     * Updates the existing contest.
+     *
+     * @param roundData the round data
+     *
+     * @since 1.18
+     */
+    $scope.updateContest = function (roundData) {
+        createContestWizzard(roundData);
     };
 
     $rootScope.isDivLoading = false;
@@ -787,8 +828,12 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
      * @returns {Array} the leader board
      */
     $rootScope.getCurrentLeaderboard = function (viewOn, roomID) {
+        if (angular.isUndefined($rootScope.roomData)
+                || angular.isUndefined($rootScope.roomData[roomID])) {
+            return [];
+        }
         if (viewOn === 'room') {
-            return $rootScope.roomData[roomID].coders;
+            return $rootScope.roomData[roomID].coders || [];
         }
         if (viewOn === 'divOne' || viewOn === 'divTwo') {
             return $rootScope.leaderboard;

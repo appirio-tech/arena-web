@@ -6,20 +6,23 @@
 				<h1 class="title">Competition Arena: Dashboard</h1>
 			</div>
 		</div><!--/.titleBar-->
-		<div class="container row mainContent">
-			<div class="col-lg-8 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 leftBox">
-				<div data-activecontests></div>
-			</div>
-			<div class="col-lg-4 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 rightBox">
-				<div data-contest-plan></div>
-			</div>
-			<div class="col-lg-8 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 leftBox placeholder">
-				<div data-chatarea></div>
-			</div>
-			<div class="col-lg-4 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 rightBox placeholder">
-				<div data-overview></div>
-			</div>
-		</div><!--/.mainContent-->
+	    <div class="container row mainContent">
+            <div class="col-xs-12">
+                <div data-challenges-advertiser id="challenges-advertiser" data-ng-cloak data-ng-show="challenges.length > 0"></div>
+            </div>
+	        <div class="col-lg-8 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 leftBox">
+	            <div data-activecontests></div>
+	        </div>
+	        <div class="col-lg-4 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 rightBox">
+	            <div data-contest-plan></div>
+	        </div>
+	        <div class="col-lg-8 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 leftBox placeholder">
+	            <div data-chatarea></div>
+	        </div>
+	        <div class="col-lg-4 col-lg-offset-0 col-md-12 col-sm-12 col-xs-12 rightBox placeholder">
+	            <div data-overview></div>
+	        </div>
+	    </div><!--/.mainContent-->
 	</div><!--/.dashboard -->
 </div>
 <!-- content end -->

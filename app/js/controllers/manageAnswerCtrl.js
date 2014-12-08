@@ -4,8 +4,11 @@
 /**
  * The controller for managing a single answer.
  *
+ * Changes in version 1.1 (Module Assembly - Web Arena -Match Management Update):
+ * - Added modify answer logic.
+ *
  * @author TCSASSEMBLER
- * @version 1.0
+ * @version 1.1
  */
 'use strict';
 /*jshint -W097*/
@@ -14,7 +17,7 @@
 /*global $:false, angular:false, module, require*/
 
 var config = require('../config');
-var manageAnswerCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '$rootScope', function ($scope, $http, sessionHelper, appHelper, $rootScope) {
+var manageAnswerCtrl = ['$scope', '$http', 'appHelper', '$rootScope', function ($scope, $http, appHelper, $rootScope) {
     var
         /**
          * Header to be added to all http requests to api
@@ -57,7 +60,6 @@ var manageAnswerCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '$rootS
     $scope.errorText = function () {
         return !$scope.answer.text || $scope.answer.text.length === 0;
     };
-    /*jslint todo: true */
     /**
      * Submits answer to backend
      */
@@ -85,8 +87,25 @@ var manageAnswerCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '$rootS
             answer.correct = "false";
         }
         if (angular.isDefined($scope.editingAnswer)) {
-            // TODO implement edit existing answer when API is ready
-            $scope.hidePopup('manageAnswer');
+
+            $http.put(config.apiDomain + '/data/srm/answer/' + $scope.answer.id, answer, header).
+                success(function (data) {
+                    if (data.error) {
+                        $rootScope.$broadcast('genericApiError', data);
+                        return;
+                    }
+                    $scope.openModal({
+                        title: 'Modify Answer',
+                        message: 'Answer has been updated successfully.',
+                        enableClose: true
+                    });
+                    // close the popup
+                    angular.copy($scope.answer, $scope.editingAnswer);
+                    $scope.hidePopup('manageAnswer');
+                }).error(function (data) {
+                    $rootScope.$broadcast('genericApiError', data);
+                });
+
         } else {
             $http.post(config.apiDomain + '/data/srm/questions/' + $scope.answer.questionId + '/answers', answer, header).
                 success(function (data) {

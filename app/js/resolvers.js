@@ -70,8 +70,15 @@
  * - Fixed issues of the broadcast message format.
  * - Fixed some JSLint format in other projects.
  *
+ * Changes in version 1.17 (PoC Assembly - Web Arena - Chat Widget Improvement):
+ * - Added user entering / leaving room icon logic.
+ *
+ * Changes in version 1.18 (Module Assembly - Web Arena - Quick Fixes for Contest Management)
+ * - Added handling of ChangeRoundResponse, CommandSucceededResponse, CommandFailedResponse
+ *   and RoundAccessResponse events.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.16
+ * @version 1.18
  */
 ///////////////
 // RESOLVERS //
@@ -88,7 +95,7 @@ var helper = require('./helper');
  *
  * @type {number}
  */
-var connectionTimeout = config.connectionTimeout || 25000;
+var connectionTimeout = Number(config.connectionTimeout || 25000);
 /**
  * Represents the member photo host.
  *
@@ -105,7 +112,7 @@ var DATE_FORMAT = 'MMM d, h:mm a';
 //Here we put resolver logic into a container object so that the state declaration code section stays readable
 var resolvers = {};
 //This function processes the login callback. It is the resolver to the "loggingin" state.
-resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', 'notificationService', 'appHelper', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService, notificationService, appHelper) {
+resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'sessionHelper', 'socket', 'tcTimeService', 'notificationService', 'appHelper', '$timeout', function ($rootScope, $q, $state, $filter, cookies, sessionHelper, socket, tcTimeService, notificationService, appHelper, $timeout) {
     var deferred, sso = sessionHelper.getTcsso(), requestId,
         forceLogout = function () {
             $rootScope.isLoggedIn = false;
@@ -347,9 +354,20 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             $rootScope.$broadcast('rebuild:activeUser');
             $rootScope.isLoadingActiveUsersData = false;
         } else if (data.type === helper.CREATE_USER_LIST_RESPONSE_TYPE.ROOM_USERS) {
+            $rootScope.userEnteringIcons = {};
+            $rootScope.userLeavingIcons = {};
             var i, tmpArray = [];
             $rootScope.whosHereArray = [];
             for (i = 0; i < data.names.length; i += 1) {
+                if ($rootScope.userLeavingTimeouts && $rootScope.userLeavingTimeouts[data.names[i]]) {
+                    $timeout.cancel($rootScope.userLeavingTimeouts[data.names[i]]);
+                    $rootScope.userLeavingTimeouts[data.names[i]] = null;
+                }
+
+                if ($rootScope.userEnteringTimeouts && $rootScope.userEnteringTimeouts[data.names[i]]) {
+                    $timeout.cancel($rootScope.userEnteringTimeouts[data.names[i]]);
+                    $rootScope.userEnteringTimeouts[data.names[i]] = null;
+                }
                 tmpArray.push({name: data.names[i],
                     userListItem: data.userListItems[i],
                     rating: data.ratings[i]});
@@ -492,6 +510,34 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     });
 
     /**
+     * Remove user from whosHereArray.
+     * @param name - the user name.
+     */
+    function removeUserFromList(name) {
+        var timeoutInstance = $timeout(function () {
+            var i;
+            for (i = 0; i < $rootScope.whosHereArray.length; i += 1) {
+                if ($rootScope.whosHereArray[i].name === name) {
+                    $rootScope.whosHereArray.splice(i, 1);
+                    if ($rootScope.memberIdx === name) {
+                        $rootScope.memberIdx = null;
+                    }
+                }
+            }
+
+            $rootScope.whosHereArrayFullList = $rootScope.whosHereArray;
+
+            $rootScope.$broadcast('rebuild:whosHere');
+            $rootScope.$broadcast('rebuild:members');
+        }, config.chatIconDisappearTime);
+
+        if (!$rootScope.userLeavingTimeouts) {
+            $rootScope.userLeavingTimeouts = {};
+        }
+        $rootScope.userLeavingTimeouts[name] = timeoutInstance;
+    }
+
+    /**
      * Update user list in the chat room.
      * Logics for chat rooms are implemented here
      * as the data should be prepared before entering the chat room or
@@ -500,19 +546,60 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     socket.on(helper.EVENT_NAME.UpdateUserListResponse, function (data) {
         var hasUserFlag = false,
             i,
-            tmpArray;
+            tmpArray,
+            timeoutInstance;
+
         if (data.roomID === $rootScope.currentRoomInfo.roomID && data.type === helper.USER_LIST.RoomUsers) {
+            // something changed, cancel all timer now.
+            if ($rootScope.userLeavingTimeouts && $rootScope.userLeavingTimeouts[data.userListItem.userName]) {
+                $timeout.cancel($rootScope.userLeavingTimeouts[data.userListItem.userName]);
+                $rootScope.userLeavingTimeouts[data.userListItem.userName] = null;
+            }
+
+            if ($rootScope.userEnteringTimeouts && $rootScope.userEnteringTimeouts[data.userListItem.userName]) {
+                $timeout.cancel($rootScope.userEnteringTimeouts[data.userListItem.userName]);
+                $rootScope.userEnteringTimeouts[data.userListItem.userName] = null;
+            }
+
+            // Init the show / hide icon object
+            if (!$rootScope.userEnteringIcons) {
+                $rootScope.userEnteringIcons = {};
+            }
+            if (!$rootScope.userLeavingIcons) {
+                $rootScope.userLeavingIcons = {};
+            }
+
+            if (data.action === helper.USER_LIST_UPDATE.Add) {
+                // show entering icon
+                $rootScope.userLeavingIcons[data.userListItem.userName] = false;
+                $rootScope.userEnteringIcons[data.userListItem.userName] = true;
+
+                // set time out to hide entering icon
+                timeoutInstance = $timeout(function () {
+                    $rootScope.userEnteringIcons[data.userListItem.userName] = false;
+                }, config.chatIconDisappearTime);
+
+                // cache entering timer
+                if (!$rootScope.userEnteringTimeouts) {
+                    $rootScope.userEnteringTimeouts = {};
+                }
+                $rootScope.userEnteringTimeouts[data.userListItem.userName] = timeoutInstance;
+            }
+
+            if (data.action === helper.USER_LIST_UPDATE.Remove) {
+                // show leaving icon
+                $rootScope.userEnteringIcons[data.userListItem.userName] = false;
+                $rootScope.userLeavingIcons[data.userListItem.userName] = true;
+                removeUserFromList(data.userListItem.userName);
+            }
+
             for (i = 0; i < $rootScope.whosHereArray.length; i += 1) {
                 if ($rootScope.whosHereArray[i].name === data.userListItem.userName) {
                     hasUserFlag = true;
-                    if (data.action === helper.USER_LIST_UPDATE.Remove) {
-                        $rootScope.whosHereArray.splice(i, 1);
-                        if ($rootScope.memberIdx === data.userListItem.userName) {
-                            $rootScope.memberIdx = null;
-                        }
-                    }
+                    break;
                 }
             }
+
             if (!hasUserFlag && data.action === helper.USER_LIST_UPDATE.Add) {
 
                 tmpArray = $rootScope.whosHereArray;
@@ -570,6 +657,12 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         }
 
         $rootScope.chatScope = data.scope;
+
+        if (data.type === helper.CHAT_TYPES.SystemChat && data.data && (data.data.indexOf('has left the room.') !== -1
+            || data.data.indexOf('has entered the room.') !== -1 || data.data.indexOf('has logged out.') !== -1)) {
+            //skip the entering and leaving message
+            return;
+        }
 
         var str = '', roomId = data.roomID + str, links = [], user = '', splitData = '', index = data.data.indexOf(': '),
             allLinks, linksArray, i, j, flag, tmp, chatSound;
@@ -635,7 +728,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         $rootScope.chatContent[roomId].push(tmp);
         appHelper.setLocalStorage(roomId, tmp);
 
-        if ($rootScope.chatContent[roomId].length > config.chatLength) {
+        if ($rootScope.chatContent[roomId].length > Number(config.chatLength)) {
             $rootScope.chatContent[roomId].shift();
         }
 
@@ -838,6 +931,26 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             message: data.text,
             popUpContent: data.text
         });
+    });
+
+    // handle change round response
+    socket.on(helper.EVENT_NAME.ChangeRoundResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.ChangeRoundResponse, data);
+    });
+
+    // handle command succeeded response
+    socket.on(helper.EVENT_NAME.CommandSucceededResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.CommandSucceededResponse, data);
+    });
+    // handle command failed response
+    socket.on(helper.EVENT_NAME.CommandFailedResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.CommandFailedResponse, data);
+    });
+
+
+    // handle round access response
+    socket.on(helper.EVENT_NAME.RoundAccessResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.RoundAccessResponse, data);
     });
 }];
 

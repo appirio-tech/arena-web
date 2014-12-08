@@ -118,7 +118,6 @@ body{
 .problemAssignmentPanel .filterToggle:before,
 .contestFilter.qtip-default,
 .contestManagement .table .viewBtn:before,
-.contestManagement .colHide span,
 .contestManagement .sortableHeading span,
 .contestManagementPanel .panel-heading .close:before,
 .contestManagementPanel .searchIcon:before,
@@ -142,12 +141,11 @@ body{
     background-image: url(../img/dark/sprite-practiceRoom.png);
     background-repeat: no-repeat;
 }
-.practiceProblemFilter.qtip-default{
-    background-image: url(../img/dark/sprite-practiceRoom.png);
+.codeArea .chatWidget .panel-heading .expandIcon:before,
+.codeArea .leaderboardWidget .panel-heading .expandIcon:before {
+    background-image: url(../img/dark/expand-alt.png);
     background-repeat: no-repeat;
-    background-size: 289px 236px;
 }
-
 /***************header style*/
 .header .navIcons .themePanel {
     border-color: #fff;
@@ -568,6 +566,9 @@ footer .right .sponsorLogo {
 }
 .testReportPanel .modalHeader>span {
     color: #636d70;
+}
+.testReportPanel .modalHeader {
+    background-color: #1f444e;
 }
 .testReportPanel .infoBar {
     background: #1a1c1d;
@@ -1123,32 +1124,7 @@ footer .right .sponsorLogo {
 .practiceProblemList .iconSolved {
     color: #a2eb23;
 }
-/*bootstrap small devices tablets*/
-@media only screen and (max-width: 991px) {
-    .header .navIcons > li {
-        background-image: url(../img/black-header.png);
-    }
-    .header .timeItem,
-    .header .navbar-right .userInfo {
-        background-image: url(../img/black-header.png);
-    }
-}
-/* boostrap extra small devices */
-@media only screen and (max-width: 767px) {
-    .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/dark/company_logo_small.png);
-    }
-}
-/* special sizes which widget will overflow */
-@media only screen and (max-width: 668px) {
-    .panelChatArea .membersInfo{
-        border-bottom: 1px solid #1f444e;
-    }
-}
-@media only screen and (max-width: 421px) {
-    .panelContestStat .breadcrumbHead {height: 63px; }
-}
->>>>>>> 3bb67444dd36fd929dfa94cebe116707c2f71188
+
 .coder-history-modal-header {
     background-color:#1f444e!important;
 }
@@ -1188,6 +1164,65 @@ footer .right .sponsorLogo {
 }
 .testReportPanel .reportItem .textGray {color: #687376; }
 
+/*member feedback widget*/
+.feedbackBody,
+.panelFeedback .btnRow {
+    background: #151718;
+    border-color: #0999d1;
+}
+.btnFeedback {
+    background: #0999d1;
+}
+.panelFeedback .btnRow .btn {
+    background: #0f9bba;
+}
+.panelFeedback .border {
+    border-color: #363738;
+    border-color: rgba(255, 255, 255, 0.16);
+}
+.panelFeedback .feedbackInput::-webkit-input-placeholder{
+    color: #fff;
+}
+.panelFeedback .feedbackInput:-moz-placeholder{
+    color: #fff;
+}
+.panelFeedback .feedbackInput::-moz-placeholder{
+    color: #fff;
+}
+.panelFeedback .feedbackInput:-ms-input-placeholder{
+    color: #fff;
+}
+
+/*match level multi tasking*/
+.codeArea .docker .chatArea-normal .panel,
+.codeArea .docker .leaderboard-normal .panel,
+.codeArea .docker-max .panel {
+    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.52);
+}
+.codeArea .chatWidget .panel-heading .icon:hover,
+.codeArea .leaderboardWidget .panel-heading .icon:hover {
+    background-color: #162f36;
+}
+.codeArea .chatWidget .panel-heading .miniIcon:before,
+.codeArea .leaderboardWidget .panel-heading .miniIcon:before {
+    border-color: #fff;
+}
+
+.socialButtons {
+    border-color: rgb(45, 47, 48);
+    background-color: rgb(28, 30, 31);
+}
+.socialButtons .challenge {
+    color: rgb(146, 147, 148);
+}
+
+/* Registrants table > Country rows */
+.registrants-modal tbody .col2 {
+    color: #A0A0A0!important;
+}
+
 /*Media blocks should be placed after the normal code!!!*/
 /*bootstrap small devices tablets*/
 @media only screen and (max-width: 991px) {
@@ -1215,15 +1250,32 @@ footer .right .sponsorLogo {
     .panelContestStat .breadcrumbHead {height: 63px; }
 }
 
-.socialButtons {
-    border-color: rgb(45, 47, 48);
-    background-color: rgb(28, 30, 31);
-}
-.socialButtons .challenge {
-    color: rgb(146, 147, 148);
+/* 
+*    Styles for challenges advertisement widget
+*/
+
+#challenges-advertiser {
+    border: 1px solid #1f444e;
+    background: #151718;   
 }
 
-/* Registrants table > Country rows */
-.registrants-modal tbody .col2 {
-    color: #A0A0A0!important;
+#challenges-advertiser .challenge-technologies-wrapper {
+    color: #636d70;
+}
+
+#challenges-advertiser .challenge-timer {
+    border-color: #1f444e;
+}
+
+#challenges-advertiser .challenge-timer  > * {
+	color: #fff;
+	opacity: 0.7;
+}
+
+#challenges-advertiser .challenge-prize {
+    color: #fff;
+}
+
+#challenges-advertiser .challenge-icon {
+    color: #e9f2db;
 }

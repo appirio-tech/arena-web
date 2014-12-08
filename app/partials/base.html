@@ -28,7 +28,7 @@
                         </li>
 			<!--
                         <li data-ng-class="{ active: $state.includes('user.contests') || $state.includes('user.contest') || $state.includes('user.coding') || $state.includes('user.contestSummary')}">
-                          <a class="icon iconContests">MATCHES</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Contests"></a>
+                          <a class="icon iconContests">MATCHES</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Matches"></a>
                         </li>
                         <li data-ng-class="">
                           <a class="icon iconVC">VIRTUAL MATCH</a><a class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Virtual match"></a>
@@ -60,7 +60,7 @@
                           </div>
                         </li>
                         <li data-ng-class="{ active: $state.includes('user.contestManagement') }" data-ng-show="userInfo() && (userInfo().admin === true)">
-                          <a data-ui-sref="user.contestManagement" class="icon iconCM">CONTEST MANAGEMENT</a><a data-ui-sref="user.contestManagement" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Contest Management"></a>
+                          <a data-ui-sref="user.contestManagement" class="icon iconCM">MATCH MANAGEMENT</a><a data-ui-sref="user.contestManagement" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Match Management"></a>
                         </li>
                         <li data-ng-class="{ active: $state.includes('user.practiceProblemList') }">
                             <a data-ui-sref="user.practiceProblemList" class="icon iconPP">PRACTICE PROBLEMS</a><a data-ui-sref="user.practiceProblemList" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Practice Problems"></a>
@@ -103,6 +103,7 @@
             </div>
         </div>
     </footer>
+    <div data-member-feedback class="memberFeedback" data-ng-show="loggedIn() && !$state.includes('user.coding') && !$state.includes('user.viewCode')"></div>
 
 <script type="text/ng-template" id="popupModalBase.html">
     <div class="modal-header">
