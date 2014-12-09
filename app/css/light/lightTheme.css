@@ -724,7 +724,8 @@ footer .right .sponsorLogo {
 .listView .listHeader {
     border-bottom: 1px solid #b7c9d7;
 }
-.listView .eventsContent .table>tbody>tr>td {
+.listView .eventsContent .table>tbody>tr>td,
+.listView .eventsContent .table .lastPhase {
     border-color: #b7c9d7;
 }
 /* style of message arena */
