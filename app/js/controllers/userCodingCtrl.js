@@ -46,8 +46,14 @@
  * Changes in version 1.12 (Web Arena Deep Link Assembly v1.0):
  * - Fixed issue while loading practice problem
  *
+ * Changes in version 1.13 (Web Arena Plugin API Part 1):
+ * - Added plugin logic for coding panel.
+ *
+ * Changes in version 1.14 (Web Arena Plugin API Part 2):
+ * - Added plugin logic for ready.
+ *
  * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.12
+ * @version 1.14
  */
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -68,8 +74,8 @@ var config = require('../config');
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', 'tcTimeService', 'keyboardManager',
-    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, tcTimeService, keyboardManager) {
+var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', 'tcTimeService', 'keyboardManager', 'appHelper',
+    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, tcTimeService, keyboardManager, appHelper) {
         $rootScope.$broadcast('hideFeedback');
         // shared between children scopes
         $scope.sharedObj = {};
@@ -357,6 +363,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
 
         // get problem response
         socket.on(helper.EVENT_NAME.GetProblemResponse, function (data) {
+            appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemOpened, data);
             var component = data.problem.problemComponents[0];
             if (component.componentId !== $scope.componentID) {
                 return;
@@ -380,6 +387,8 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
 
             // set user data
             $scope.tests = component.testCases;
+
+            $rootScope.defaultTestCasesForPlugin = $scope.tests;
 
             // generate html content once
             $scope.problem.intro = getHtmlContent(component.intro);
@@ -434,6 +443,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
 
             componentOpened = true;
             notifyWhenProblemDataReady();
+            appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.ready, data);
         });
 
         /**
@@ -472,17 +482,28 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             }
             if ($rootScope.previousStateName === helper.STATE_NAME.Coding) {
                 if ($scope.username()) {
+                    appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemClosed, {
+                        problemID: $scope.componentID,
+                        writer: $scope.username()
+                    });
                     socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
                         problemID: $scope.componentID,
                         writer: $scope.username()
                     });
                 }
             } else if ($rootScope.previousStateName === helper.STATE_NAME.ViewCode) {
+                appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemClosed, {
+                    problemID: $scope.componentID,
+                    writer: $scope.defendant
+                });
                 socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
                     problemID: $scope.componentID,
                     writer: $scope.defendant
                 });
             } else if ($rootScope.previousStateName === helper.STATE_NAME.PracticeCode) {
+                appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemClosed, {
+                    problemID: $scope.componentID
+                });
                 socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
                     problemID: $scope.componentID
                 });
@@ -511,7 +532,9 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                                 if (problem.problemID === $scope.problemID) {
                                     $scope.problem = problem;
                                     $scope.componentID = problem.components[0].componentID;
-
+                                    appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemClosed, {
+                                        problemID: $scope.componentID
+                                    });
                                     socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
                                         problemID: $scope.componentID
                                     });
@@ -531,6 +554,10 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         } else if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
             // close the previous problem if any
             if (angular.isDefined($scope.defendant) && angular.isDefined($scope.componentID)) {
+                appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemClosed, {
+                    problemID: $scope.componentID,
+                    writer: $scope.defendant
+                });
                 socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
                     problemID: $scope.componentID,
                     writer: $scope.defendant
@@ -551,6 +578,9 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         } else if ($scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
             $scope.$on(helper.EVENT_NAME.RoomInfoResponse, function () {
                 $scope.componentID = Number($stateParams.componentId);
+                appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemClosed, {
+                    problemID: $scope.componentID
+                });
                 socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
                     problemID: $scope.componentID
                 });
