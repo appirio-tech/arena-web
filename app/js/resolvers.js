@@ -77,6 +77,12 @@
  * - Added handling of ChangeRoundResponse, CommandSucceededResponse, CommandFailedResponse
  *   and RoundAccessResponse events.
  *
+ * Changes in version 1.19 (Web Arena Plugin API Part 1):
+ * - Added plugin logic for global and editor events.
+ *
+ * Changes in version 1.20 (Web Arena Plugin API Part 2):
+ * - Added plugin logic to trigger events.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee
  * @version 1.18
  */
@@ -280,6 +286,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
         appHelper.getLocalStorage($rootScope.currentRoomInfo.roomID);
         $rootScope.$broadcast(helper.EVENT_NAME.RoomInfoResponse);
+
+        appHelper.triggerPluginEvent(helper.PLUGIN_EVENT.roomChanged, data);
     });
 
     // Handle the CreateLeaderBoardResponse event.
@@ -333,6 +341,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             items.push(data.item);
             $rootScope.leaderBoardRoundData.push({roundID: data.roundID, items: items});
         }
+
+        appHelper.triggerPluginLeaderBoardEvent(helper.PLUGIN_LEADER_BOARD_EVENT.changed, data.roundID, data);
 
         $rootScope.$broadcast('rebuild:leaderBoardMethods');
         $rootScope.$broadcast('rebuild:leaderBoardLeaders');
@@ -732,6 +742,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             $rootScope.chatContent[roomId].shift();
         }
 
+        appHelper.triggerPluginRoomEvent(helper.PLUGIN_ROOMS_EVENT.chatMessageReceived, roomId, data);
+
         if (data.type === helper.CHAT_TYPES.WhisperToYouChat || user === $rootScope.username()) {
             chatSound = document.getElementById('chatSound');
             if (chatSound) {
@@ -776,6 +788,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         if (data.roomID < 0) {
             return;
         }
+        var roundId = null;
         angular.forEach($rootScope.roomData[data.roomID].coders, function (coder) {
             if (coder.userName === data.coderHandle) {
                 // update the total points of the coder
@@ -784,6 +797,19 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         });
         updateCoderPlacement($rootScope.roomData[data.roomID].coders);
         $rootScope.$broadcast(helper.EVENT_NAME.UpdateCoderPointsResponse, data);
+        angular.forEach($rootScope.roundData, function (contest) {
+            if (contest.coderRooms) {
+                angular.forEach(contest.coderRooms, function (room) {
+                    if (room.roomID === data.roomID) {
+                        roundId = contest.roundID;
+                    }
+                });
+            }
+        });
+
+        if (roundId !== null) {
+            appHelper.triggerPluginLeaderBoardEvent(helper.PLUGIN_LEADER_BOARD_EVENT.changed, roundId, data);
+        }
     });
 
     // handle update coder component response
@@ -879,10 +905,19 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                     formatTimeFrameMessage(data.phaseData, now)
             });
         }
+
+        appHelper.triggerPluginMatchEvent(helper.PLUGIN_MATCHES_EVENT.phaseChanged, data.phaseData.roundID, data.phaseData);
+
+        if (data.phaseData.phaseType === helper.PHASE_TYPE_ID.CodingPhase) {
+            appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.codingStart, data.phaseData);
+        } else if (data.phaseData.phaseType === helper.PHASE_TYPE_ID.IntermissionPhase) {
+            appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.codingEnd, data.phaseData);
+        }
     });
 
     // handle system test progress response
     socket.on(helper.EVENT_NAME.SystestProgressResponse, function (data) {
+        appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.systemTestEnd, data);
         if ($rootScope.roundData[data.roundID]) {
             // display as percentage instead of '0/0'
             $rootScope.roundData[data.roundID].systestProgress =
@@ -905,6 +940,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     socket.on(helper.EVENT_NAME.SingleBroadcastResponse, function (data) {
         data.broadcast.popUpContent = data.broadcast.message;
         notificationService.addNotificationMessage(data.broadcast);
+        appHelper.triggerPluginEvent(helper.PLUGIN_EVENT.systemBroadcastReceived, data);
     });
 
     // request login
@@ -921,6 +957,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             broadcast.popUpContent = broadcast.message;
             notificationService.addNotificationMessage(broadcast);
         });
+
+        appHelper.triggerPluginEvent(helper.PLUGIN_EVENT.systemBroadcastReceived, data);
     });
 
     // handle important messages
@@ -931,6 +969,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             message: data.text,
             popUpContent: data.text
         });
+        appHelper.triggerPluginEvent(helper.PLUGIN_EVENT.systemBroadcastReceived, data);
     });
 
     // handle change round response

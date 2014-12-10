@@ -42,8 +42,11 @@
  * Changes in version 1.11 (Web Arena Deep Link Assembly v1.0):
  * - Added Member and Register Deep Link Logic
  *
+ * Changes in version 1.12 (Web Arena Plugin API Part 2):
+ * - Added registerFromPlugin event logic.
+ *
  * @author amethystlei, dexy, flytoj2ee, TCASSEMBLER
- * @version 1.11
+ * @version 1.12
  */
 'use strict';
 /*global module, angular, require*/
@@ -252,7 +255,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
      * @returns {number} - the page number
      */
     $scope.numberOfPages = function (contest) {
-        return Math.ceil($scope.getRoomsList(contest).length / $scope.pageSize);
+        return $scope.getRoomsList(contest) ? Math.ceil($scope.getRoomsList(contest).length / $scope.pageSize) : 0;
     };
 
     /**
@@ -611,6 +614,24 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.getTabName = function (index) {
         return index >= 0 && index < tabNames.length ? tabNames[index] : 'Click to show tabs';
     };
+
+    /*jslint unparam: true*/
+    // Call register logic
+    $scope.$on(helper.BROADCAST_PLUGIN_EVENT.registerFromPlugin, function (event, roundId, callback) {
+        var tmp = null;
+        angular.forEach($rootScope.roundData, function (contest) {
+            if (contest.roundID === roundId) {
+                tmp = contest;
+            }
+        });
+        if (tmp !== null) {
+            $scope.doAction(tmp);
+            if (callback) {
+                callback();
+            }
+        }
+    });
+    /*jslint unparam: false*/
 
     // Show member popup. This is from deeplink
     if ($state.current.name === helper.STATE_NAME.Member) {

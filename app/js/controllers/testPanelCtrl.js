@@ -15,17 +15,21 @@
  * Changes in version 1.3 (Module Assembly - Web Arena Bug Fix 14.10 - 1):
  * - Fixed issues of the challenge popup.
  *
- * @author amethystlei
- * @version 1.3
+ * Changes in version 1.4 (Web Arena Plugin API Part 1):
+ * - Added plugin logic for test panel.
+ *
+ * @author amethystlei, flytoj2ee
+ * @version 1.4
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
 /*jslint plusplus: true*/
+/*jslint unparam: true*/
 /*global module, console, angular, $:false*/
 var helper = require('../helper');
 // controller of the test panel
-var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($rootScope, $scope, socket, $timeout) {
+var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', function ($rootScope, $scope, socket, $timeout, appHelper) {
     // initialize the object containing user tests for each round
     if (!angular.isDefined($rootScope.userTestForRound)) {
         $rootScope.userTestForRound = {};
@@ -83,6 +87,8 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($ro
             angular.extend(reportItem, data.results[i]);
             $scope.report.push(reportItem);
         }
+
+        appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.solutionTestFinished, data);
 
         showReport();
     });
@@ -368,5 +374,54 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', function ($ro
     $scope.toggleTextReport = function () {
         $scope.$broadcast('test-report-loaded');
     };
+
+    // Run all test cases for plugin.
+    $scope.$on(helper.BROADCAST_PLUGIN_EVENT.runAllTestCasesFromPlugin, function (event) {
+        $scope.userData.tests.forEach(function (testCase) {
+            testCase.checked = true;
+        });
+        $rootScope.userTests.forEach(function (testCase) {
+            testCase.checked = true;
+        });
+
+        $scope.runCheckedTests();
+    });
+
+    // Run test case for plugin.
+    $scope.$on(helper.BROADCAST_PLUGIN_EVENT.runTestCaseFromPlugin, function (event, name) {
+        $scope.userData.tests.forEach(function (testCase) {
+            testCase.checked = (testCase.name === name);
+        });
+        $rootScope.userTests.forEach(function (testCase) {
+            testCase.checked = (testCase.name === name);
+        });
+
+        $scope.runCheckedTests();
+    });
+
+    /**
+     * Set test cases from plugin.
+     */
+    $scope.$on(helper.BROADCAST_PLUGIN_EVENT.setTestCasesFromPlugin, function (event, testCases) {
+        count = 0;
+        $rootScope.userTests.length = 0;
+
+        var testCase, i, handleParams = function (param, j) {
+            testCase.params.push({
+                value: testCases[i].params[j]
+            });
+        };
+        for (i = 0; i < testCases.length; i++) {
+            testCase = {};
+            testCase.checked = false;
+            testCase.toggle = true;
+            testCase.name = testCases[i].name;
+            testCase.params = [];
+
+            angular.forEach(testCases[i].params, handleParams);
+            $rootScope.userTests.unshift(testCase);
+            count += 1;
+        }
+    });
 }];
 module.exports = testPanelCtrl;

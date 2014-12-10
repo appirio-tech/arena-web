@@ -42,7 +42,7 @@ filters.showByMonth = [function () {
 filters.startFrom = [function () {
     return function (input, start) {
         start = +start; //parse to int
-        return input.slice(start);
+        return input ? input.slice(start) : [];
     };
 }];
 

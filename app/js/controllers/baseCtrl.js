@@ -81,8 +81,11 @@
  * - Added methods createContest and updateContest to handle creation and updating of the contest.
  * - Updated method createContestWizzard to include roundDataIn if the contest is updated.
  *
+ * Changes in version 1.19 (Web Arena Plugin API Part 2):
+ * - Fixed some undefined exceptions.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.18
+ * @version 1.19
  */
 'use strict';
 /*jshint -W097*/
@@ -833,11 +836,13 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return [];
         }
         if (viewOn === 'room') {
-            return $rootScope.roomData[roomID].coders || [];
+            return $rootScope.roomData && $rootScope.roomData[roomID] ? $rootScope.roomData[roomID].coders : [];
         }
         if (viewOn === 'divOne' || viewOn === 'divTwo') {
-            return $rootScope.leaderboard;
+            return $rootScope.leaderboard ? $rootScope.leaderboard : [];
         }
+
+        return [];
     };
 
     /**

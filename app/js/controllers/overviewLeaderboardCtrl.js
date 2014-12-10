@@ -25,7 +25,7 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
      * @returns {boolean} Returns 0, 1 or -1 based on comparison
      */
     var compareRoundNames = function (roundA, roundB) {
-        return $scope.getRoundName(roundA).localeCompare($scope.getRoundName(roundB));
+        return ($scope.getRoundName(roundA) + '').localeCompare($scope.getRoundName(roundB) + '');
     }, customDropdown = $('#customDDToggle');
     $scope.activeRound = "";
     $scope.isLoadingLbData = false;
