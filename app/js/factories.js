@@ -35,17 +35,27 @@
  * Changes in version 1.8 (Module Assembly - Web Arena - Local Chat Persistence):
  * - Added logic to set / get / clear data in local storage.
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.8
+ * Changes in version 1.9 (Web Arena Deep Link Assembly v1.0):
+ * - Added logic to set / get deep links under sessionHelper
+ *
+ * Changes in version 1.10 (Web Arena Plugin API Part 1):
+ * - Added trigger plugin logic.
+ *
+ * Changes in version 1.11 (Web Arena Plugin API Part 2):
+ * - Added more trigger plugin logic.
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.11
  */
+'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
-'use strict';
+/*global $ : false, angular : false, require, module, document*/
+/*jslint plusplus: true*/
+/*global arena:true */
 var config = require('./config');
 var Auth0 = require('auth0-js');
 var socket = require('socket.io-client').connect(config.webSocketURL);
-/*global $ : false, angular : false, require, module, document*/
-/*jslint plusplus: true*/
 
 var helper = require('./helper');
 ///////////////
@@ -473,6 +483,54 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
             'Authorization': 'Bearer ' + sessionHelper.getJwtToken()}};
     };
 
+    /**
+     * Trigger the plugin event.
+     * @param event - the event name.
+     * @param param - the parameters.
+     */
+    retHelper.triggerPluginEvent = function (event, param) {
+        arena.trigger(event, param);
+    };
+
+    /**
+     * Trigger the editor plugin event.
+     * @param event - the event name.
+     * @param param - the parameters.
+     */
+    retHelper.triggerPluginEditorEvent = function (event, param) {
+        arena.editor.trigger(event, param);
+    };
+
+    /**
+     * Trigger the match plugin event.
+     * @param event - the event name
+     * @param roundId - the round id
+     * @param param - the parameters
+     */
+    retHelper.triggerPluginMatchEvent = function (event, roundId, param) {
+        arena.match.trigger(event, roundId, param);
+    };
+
+    /**
+     * Trigger the room plugin event.
+     * @param event - the event name
+     * @param roomId - the room id
+     * @param param - the parameters
+     */
+    retHelper.triggerPluginRoomEvent = function (event, roomId, param) {
+        arena.matches.rounds.rooms.trigger(event, roomId, param);
+    };
+
+    /**
+     * Trigger the leader board plugin event.
+     * @param event - the event name
+     * @param roundId - the round id
+     * @param param - the parameters
+     */
+    retHelper.triggerPluginLeaderBoardEvent = function (event, roundId, param) {
+        arena.leaderboard.trigger(event, roundId, param);
+    };
+
     return retHelper;
 }];
 
@@ -681,6 +739,20 @@ factories.sessionHelper = ['$window', 'cookies', function ($window, cookies) {
     };
     helper.getJwtToken = function () {
         return cookies.get(config.jwtToken);
+    };
+    /**
+     * Sets deep link to local storage
+     * @param deepLink Deep Link object to be stored
+     */
+    helper.setDeepLink = function (deepLink) {
+        $window.localStorage.deepLink = angular.toJson(deepLink);
+    };
+    /**
+     * Gets deep link object stored in local storage
+     * @returns {Object} Deep Link object from local storage
+     */
+    helper.getDeepLink = function () {
+        return angular.fromJson($window.localStorage.deepLink);
     };
     return helper;
 }];

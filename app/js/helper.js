@@ -93,18 +93,32 @@
  * - Added CHALLENGE_ADVERTISING to handle constants user for challenge advertising widget.
  * - Added TRACK_SHORTNAMES to map challenge types to short names.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.23
+ * Changes in version 1.24 (Web Arena Deep Link Assembly v1.0):
+ * - Added new STATE_NAME: Member, Register
+ *
+ * Changes in version 1.25 (Web Arena Plugin API Part 1):
+ * - Added plugin logic related event names.
+ *
+ * Changes in version 1.26 (Web Arena Plugin API Part 2):
+ * - Added more plugin event names.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
+ * @version 1.26
  */
+'use strict';
+/*global module*/
 
 module.exports = {
     // Represents the state names
     STATE_NAME: {
         User: 'user',
         Dashboard: 'user.dashboard',
+        Member: 'user.member',
+        Register: 'user.register',
         Coding: 'user.coding',
         ViewCode: 'user.viewCode',
         PracticeCode: 'user.practiceCode',
+        DefaultContest: 'user.defaultContest',
         Contest: 'user.contest',
         ContestSummary: 'user.contestSummary',
         Logout: 'user.logout',
@@ -496,5 +510,44 @@ module.exports = {
             "default": "o",
             "design": "d"
         }
+    },
+
+    // plugin event names.
+    PLUGIN_EVENT: {
+        roomChanged: 'roomChanged',
+        challengeSucceeded: 'challengeSucceeded',
+        challengeFailed: 'challengeFailed',
+        systemBroadcastReceived: 'systemBroadcastReceived',
+        solutionCompiled: 'solutionCompiled',
+        problemOpened: 'problemOpened',
+        problemClosed: 'problemClosed',
+        solutionTestFinished: 'solutionTestFinished',
+        solutionSubmitted: 'solutionSubmitted',
+        codingStart: 'codingStart',
+        codingEnd: 'codingEnd',
+        systemTestEnd: 'systemTestEnd',
+        ready: 'ready'
+    },
+    PLUGIN_MATCHES_EVENT: {
+        phaseChanged: 'phaseChanged'
+    },
+    PLUGIN_ROOMS_EVENT: {
+        chatMessageReceived: 'chatMessageReceived'
+    },
+    // plugin leader board event
+    PLUGIN_LEADER_BOARD_EVENT: {
+        changed: 'changed'
+    },
+    // plugin broadcast event names.
+    BROADCAST_PLUGIN_EVENT: {
+        setCodeFromPlugin: 'setCodeFromPlugin',
+        searchFromPlugin: 'searchFromPlugin',
+        setLanguageFromPlugin: 'setLanguageFromPlugin',
+        compileFromPlugin: 'compileFromPlugin',
+        submitFromPlugin: 'submitFromPlugin',
+        runAllTestCasesFromPlugin: 'runAllTestCasesFromPlugin',
+        runTestCaseFromPlugin: 'runTestCaseFromPlugin',
+        setTestCasesFromPlugin: 'setTestCasesFromPlugin',
+        registerFromPlugin: 'registerFromPlugin'
     }
 };

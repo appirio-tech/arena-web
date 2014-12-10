@@ -39,8 +39,14 @@
  * Changes in version 1.10 (PoC Assembly - Invite friends To Participate On A Match From Facebook and Twitter):
  * - Added facebook / twitter invitation logic.
  *
+ * Changes in version 1.11 (Web Arena Deep Link Assembly v1.0):
+ * - Added Member and Register Deep Link Logic
+ *
+ * Changes in version 1.12 (Web Arena Plugin API Part 2):
+ * - Added registerFromPlugin event logic.
+ *
  * @author amethystlei, dexy, flytoj2ee, TCASSEMBLER
- * @version 1.10
+ * @version 1.12
  */
 'use strict';
 /*global module, angular, require*/
@@ -58,7 +64,7 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper', '$modal', 'Facebook', function ($scope, $rootScope, $state, socket, appHelper, $modal, Facebook) {
+var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper', '$modal', 'Facebook', '$stateParams', '$filter', function ($scope, $rootScope, $state, socket, appHelper, $modal, Facebook, $stateParams, $filter) {
     var getPhase = function (contest, phaseTypeId) {
         var i;
         if (!contest.phases) {
@@ -82,7 +88,13 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
 
     $scope.getPhaseTime = appHelper.getPhaseTime;
     $scope.range = appHelper.range;
-    $scope.currentContest = 0;
+    // Changed to rootscope because of deeplinking contest page
+    // If contest is in registration phase, redirected to dashboard with /register/{contestId} in url
+    // If user is already registered, we need to take the user to dashboard without /register/{contestId} but with the
+    // contest selected in active contest widget.
+    if ($rootScope.currentContest === undefined) {
+        $rootScope.currentContest = 0;
+    }
     $scope.tweetText = config.tweetText.replace('#', '%23');
     $scope.tweetUrl = config.tweetUrl;
 
@@ -202,7 +214,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
 
     // sets the current contest for viewing
     $scope.setCurrentContest = function (newContest) {
-        $scope.currentContest = newContest;
+        $rootScope.currentContest = newContest;
     };
 
     // gets the current action available
@@ -243,7 +255,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
      * @returns {number} - the page number
      */
     $scope.numberOfPages = function (contest) {
-        return Math.ceil($scope.getRoomsList(contest).length / $scope.pageSize);
+        return $scope.getRoomsList(contest) ? Math.ceil($scope.getRoomsList(contest).length / $scope.pageSize) : 0;
     };
 
     /**
@@ -362,6 +374,12 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
             $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
                 // remove the listener
                 $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
+                if (data.message.indexOf('You are already registered') === -1) {
+                    contest.isRegisterable = true;
+                } else {
+                    contest.isRegistered = true;
+                    return;
+                }
                 angular.extend(data, {enableClose: true});
                 $rootScope.currentDetailModal = undefined;
                 $scope.openModal(data, function () {
@@ -458,7 +476,11 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                             // Remove the listener.
                             $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
                             angular.extend(data, {enableClose: true, registrantCallBack: true});
-                            $scope.openModal(data);
+                            $scope.openModal(data, null, function () {
+                                if ($state.current.name === helper.STATE_NAME.Register) {
+                                    $state.go(helper.STATE_NAME.Dashboard);
+                                }
+                            });
                             if (data.message.indexOf('You have successfully registered for the match.') !== -1) {
                                 contest.isRegisterable = false;
                                 contest.isRegistered = true;
@@ -477,6 +499,9 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                     contest.isRegistered = false;
                     $rootScope.currentModal = undefined;
                     $rootScope.currentDetailModal = undefined;
+                    if ($state.current.name === helper.STATE_NAME.Register) {
+                        $state.go(helper.STATE_NAME.Dashboard);
+                    }
                 }, 'partials/user.contest.registration.html');
                 $scope.okDisabled = false;
             });
@@ -589,6 +614,43 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.getTabName = function (index) {
         return index >= 0 && index < tabNames.length ? tabNames[index] : 'Click to show tabs';
     };
+
+    /*jslint unparam: true*/
+    // Call register logic
+    $scope.$on(helper.BROADCAST_PLUGIN_EVENT.registerFromPlugin, function (event, roundId, callback) {
+        var tmp = null;
+        angular.forEach($rootScope.roundData, function (contest) {
+            if (contest.roundID === roundId) {
+                tmp = contest;
+            }
+        });
+        if (tmp !== null) {
+            $scope.doAction(tmp);
+            if (callback) {
+                callback();
+            }
+        }
+    });
+    /*jslint unparam: false*/
+
+    // Show member popup. This is from deeplink
+    if ($state.current.name === helper.STATE_NAME.Member) {
+        // As there is no way to get usertype in link, hard-coding it to 1
+        // 1 represents individual user
+        $rootScope.showCoderInfo($stateParams.memberName, 1);
+    }
+    // Show Register popup. This is from deeplink
+    if ($state.current.name === helper.STATE_NAME.Register) {
+        if (!$rootScope.roundData[$stateParams.contestId].isRegistered) {
+            $scope.doAction($rootScope.roundData[$stateParams.contestId]);
+        }
+        angular.forEach($filter('orderBy')($scope.getContests(), 'phases[0].startTime'), function (contest, index) {
+            if ($stateParams.contestId === contest.roundID.toString()) {
+                $scope.setCurrentContest(index);
+            }
+        });
+        $state.go(helper.STATE_NAME.Dashboard);
+    }
 }];
 
 module.exports = activeContestsCtrl;

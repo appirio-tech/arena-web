@@ -820,11 +820,25 @@ footer .left>span {
 .listView .listHeader {
     border-bottom: 1px solid #ffe6c9;
 }
-.listView .eventsContent .table>tbody>tr>td {
+.listView .eventsContent .table>tbody>tr>td,
+.listView .eventsContent .table .lastPhase {
     border-color: #ffe6c9;
 }
 .panelContestPlan .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
     background: #e7e7e7;
+}
+.panelContestPlan .matchScheduleLink {
+    color: #656565;
+}
+.panelContestPlan .matchScheduleLink:hover {
+    color: #ff8a00;
+}
+.panelContestPlan .calendar .fc-today {
+    border-color: #ff8a00 !important;
+}
+.panelContestPlan .btnToday,
+.matchSchedule .fc-button {
+    background: #ff8a00 !important;
 }
 
 /* style of message arena */

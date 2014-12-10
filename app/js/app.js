@@ -89,13 +89,24 @@
  * Changes in version 1.24 (UI Prototype - Web Arena - Challenges Advertising Widget)
  * - Added challengesAdvertisingCtrl controller
  * - Added challengesAdvertiser directive
- * 
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein
- * @version 1.24
+ *
+ * Changes in version 1.25 (Web Arena Deep Link Assembly v1.0):
+ * - Added Member and Register states
+ * - Added Deep Linking logic
+ *
+ * Changes in version 1.26 (Web Arena Plugin API Part 1):
+ * - Added arena global object for plugin api.
+ *
+ * Changes in version 1.27 (Web Arena Plugin API Part 2):
+ * - Added more implementations for plugin api.
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
+ * @version 1.27
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
+/*global arena:true */
 /*global require*/
 require('./../../thirdparty/jquery/jquery');
 require('./../../bower_components/angular/angular');
@@ -384,6 +395,28 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
                 enterRoom: resolvers.enterLobbyRoom
             }
         })
+        .state('user.member', {
+            url: '/dashboard/{memberName}',
+            data: {
+                pageTitle: "Dashboard",
+                pageMetaKeywords: "dashboard"
+            },
+            templateUrl: 'partials/user.dashboard.html',
+            resolve: {
+                enterRoom: resolvers.enterLobbyRoom
+            }
+        })
+        .state('user.register', {
+            url: '/dashboard/register/{contestId}',
+            data: {
+                pageTitle: "Dashboard",
+                pageMetaKeywords: "dashboard"
+            },
+            templateUrl: 'partials/user.dashboard.html',
+            resolve: {
+                enterRoom: resolvers.enterLobbyRoom
+            }
+        })
         .state('user.coding', {
             url: '/coding/{roundId}/{problemId}/{divisionId}',
             data: {
@@ -410,6 +443,18 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             },
             templateUrl: 'partials/user.coding.html',
             controller: 'userCodingCtrl'
+        })
+        .state('user.defaultContest', {
+            url: '/contests/{contestId}',
+            data: {
+                pageTitle: "Contest",
+                pageMetaKeywords: "contest"
+            },
+            templateUrl: 'partials/user.contest.html',
+            controller: 'userContestCtrl',
+            resolve: {
+                enterRoom: resolvers.enterCompetingRoom
+            }
         })
         .state('user.contest', {
             url: '/contests/{contestId}/{viewOn}',
@@ -543,6 +588,592 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         themer.styles[0].label = $cookies.themeLabel;
         themer.styles[0].href = $cookies.themeHref;
     }
+
+
+    if (!arena) {
+        arena = {};
+    }
+
+    arena = (function arena() {
+        var events = {};
+        return {
+            /**
+             * Trigger the event.
+             * @param event - the event name
+             * @param param - the parameters
+             */
+            trigger : function (event, param) {
+                if (event && events[event]) {
+                    if (typeof (events[event]) === "function") {
+                        events[event](param);
+                    } else {
+                        console.log('Failed to trigger ' + event);
+                    }
+                }
+            },
+            /**
+             * Register the event. It could accept a data parameter in callback method.
+             * @param event - the event name
+             * @param method - the callback method
+             */
+            on: function (event, method) {
+                if (helper.PLUGIN_EVENT[event] && (typeof method === "function")) {
+                    events[event] = method;
+                } else {
+                    console.log('The event name is invalid.');
+                }
+            },
+            /**
+             * Get the registered event.
+             * @param event - the event name
+             * @returns {*} - the callback method if event exists
+             */
+            getEvent: function (event) {
+                return events[event];
+            },
+            /**
+             * Get lobby rooms.
+             * @returns {Array} the rooms.
+             */
+            getRooms: function () {
+                var array = [];
+                angular.forEach($rootScope.lobbyMenu, function (lobby) {
+                    var tmp = {};
+                    tmp[lobby.roomID] = lobby;
+                    array.push(tmp);
+                });
+                return array;
+
+            },
+            /**
+             * The ready trigger event.
+             * @param method - the trigger event.
+             */
+            ready: function (method) {
+                if (typeof method === "function") {
+                    events[helper.PLUGIN_EVENT.ready] = method;
+                    // if user already login, trigger the event, if not, it'll refresh the page in login
+                    if ($rootScope.isLoggedIn) {
+                        method();
+                    }
+                } else {
+                    console.log('The event method is invalid.');
+                }
+            }
+        };
+    }());
+
+    arena.editor = (function editor() {
+        var events = {};
+
+        return {
+            /**
+             * Trigger the event.
+             * @param event - the event name
+             * @param param - the parameters
+             */
+            trigger : function (event, param) {
+                if (event && events[event]) {
+                    if (typeof events[event] === "function") {
+                        events[event](param);
+                    } else {
+                        console.log('Failed to trigger ' + event);
+                    }
+                }
+            },
+            /**
+             * Register the event. It could accept a data parameter in callback method.
+             * @param event - the event name
+             * @param method - the callback method
+             */
+            on: function (event, method) {
+                if (helper.PLUGIN_EVENT[event] && (typeof method === "function")) {
+                    events[event] = method;
+                } else {
+                    console.log('The event name is invalid.');
+                }
+            },
+            /**
+             * Get the registered event.
+             * @param event - the event name
+             * @returns {*} - the callback method if event exists
+             */
+            getEvent: function (event) {
+                return events[event];
+            },
+            /**
+             * Get the code in editor.
+             * @returns {$rootScope.codeForPlugin|*} the code value.
+             */
+            getCode : function () {
+                return $rootScope.codeForPlugin;
+            },
+            /**
+             * Get the problem object in editor.
+             * @returns {$rootScope.problemForPlugin|*} - the problem object.
+             */
+            getProblem : function () {
+                return $rootScope.problemForPlugin;
+            },
+            /**
+             * Get all test cases objects.
+             * @returns {Array} - the test cases objects.
+             */
+            getTestCases : function () {
+                var res = [];
+                res = res.concat($rootScope.userTests);
+                res = res.concat($rootScope.defaultTestCasesForPlugin);
+                return res;
+            },
+            /**
+             * Set the given code to editor.
+             * @param code - the code value.
+             */
+            setCode : function (code) {
+                $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.setCodeFromPlugin, code);
+            },
+            /**
+             * Trigger the search in editor.
+             * @param text - the search text.
+             */
+            search : function (text) {
+                $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.searchFromPlugin, text);
+            },
+            /**
+             * Set language to editor.
+             * @param languageName - the language name.
+             */
+            setLanguage : function (languageName) {
+                languageName = languageName ? languageName.toLowerCase() : '';
+                if (languageName === 'java' || languageName === 'c++' || languageName === 'c#' ||
+                    languageName === 'vb.net' || languageName === 'python') {
+                    $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.setLanguageFromPlugin, languageName);
+                } else {
+                    console.log('The language name is invalid.');
+                }
+
+            },
+            /**
+             * Compile the code.
+             */
+            compile : function () {
+                $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.compileFromPlugin, null);
+            },
+            /**
+             * Submit the code.
+             */
+            submitSolution : function () {
+                $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.submitFromPlugin, null);
+            },
+            /**
+             * Run all test cases.
+             */
+            runAllTests : function () {
+                $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.runAllTestCasesFromPlugin, null);
+            },
+            /**
+             * Run the test case by name.
+             * @param name - the test case name.
+             */
+            runTest : function (name) {
+                $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.runTestCaseFromPlugin, name);
+            },
+            /**
+             * Set the given test cases to test panel.
+             * @param testCases - the test cases array
+             */
+            setTestCases : function (testCases) {
+                $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.setTestCasesFromPlugin, testCases);
+            },
+            /**
+             * Add trigger event for editor.
+             * @param method - the trigger event.
+             */
+            ready: function (method) {
+                if (typeof method === "function") {
+                    events[helper.PLUGIN_EVENT.ready] = method;
+                } else {
+                    console.log('The event method is invalid.');
+                }
+            }
+        };
+    }());
+
+    /**
+     * Get contest phase.
+     *
+     * @param contest the contest object
+     * @param phaseTypeId - the phase type id
+     * @returns {*} the phase
+     */
+    function getPhase(contest, phaseTypeId) {
+        var i;
+        if (!contest.phases) {
+            return null;
+        }
+        for (i = 0; i < contest.phases.length; i += 1) {
+            if (contest.phases[i].phaseType === phaseTypeId) {
+                return contest.phases[i];
+            }
+        }
+        return null;
+    }
+    /**
+     * Checks whether the registration phase is open.
+     * @param contest the contest object
+     * @returns {boolean} the result
+     */
+    function isRegistrationOpen(contest) {
+        if (!contest) {
+            return false;
+        }
+        var phase = getPhase(contest, helper.PHASE_TYPE_ID.RegistrationPhase);
+        if (!phase) {
+            return false;
+        }
+        return phase.startTime <= $rootScope.now && $rootScope.now <= phase.endTime;
+    }
+
+    /**
+     * Get round by id.
+     * @param roundId - the round id
+     * @returns {*} the round object
+     */
+    function getRound(roundId) {
+        var tmp = null;
+        angular.forEach($rootScope.roundData, function (contest) {
+            if (contest.roundID === roundId) {
+                tmp = contest;
+            }
+        });
+        return tmp;
+    }
+
+    arena.member = (function member() {
+        return {
+            /**
+             * Get user info.
+             * @returns {*} the user info
+             */
+            getInfo : function () {
+                return sessionHelper.getUserInfo();
+            },
+            /**
+             * Get user status.
+             * @returns user status
+             */
+            getStatus : function () {
+                var tmp = {lastLogin : sessionHelper.getUserInfo().lastLogin, currentlyLoggedIn: $rootScope.isLoggedIn,
+                    currentRoom : $rootScope.currentRoomInfo, registrationStatus: []};
+
+                angular.forEach($rootScope.roundData, function (contest) {
+                    if (isRegistrationOpen(contest)) {
+                        tmp.registrationStatus.push({roundID: contest.roundID, contestName: contest.contestName,
+                            roundName: contest.roundName, isRegistrationOpen: true, registered: contest.isRegistered});
+                    } else {
+                        tmp.registrationStatus.push({roundID: contest.roundID, contestName: contest.contestName,
+                            roundName: contest.roundName, isRegistrationOpen: false});
+                    }
+
+                });
+                return tmp;
+            },
+            /**
+             * Logout the user.
+             */
+            logout : function () {
+                if ($rootScope.isLoggedIn) {
+                    $state.go(helper.STATE_NAME.Logout);
+                } else {
+                    console.log('User is not logged in.');
+                }
+            }
+        };
+    }());
+
+
+    arena.match = (function match() {
+        var events = {};
+        return {
+            /**
+             * Get matches.
+             * @returns {Array} the matches
+             */
+            getMatches : function () {
+                var array = [];
+                angular.forEach($rootScope.roundData, function (contest) {
+                    var tmp = {};
+                    tmp[contest.roundID] = contest;
+                    array.push(tmp);
+                });
+                return array;
+            },
+            /**
+             * Trigger event.
+             * @param event the event name
+             * @param roundId the round id
+             * @param param the parameter
+             */
+            trigger : function (event, roundId, param) {
+                if (event && events[roundId + event]) {
+                    if (typeof (events[roundId + event]) === "function") {
+                        events[roundId + event](param);
+                    } else {
+                        console.log('Failed to trigger ' + event);
+                    }
+                }
+            },
+            /**
+             * Register the trigger event.
+             * @param event the event name
+             * @param roundId the round id
+             * @param method the trigger method
+             */
+            on: function (event, roundId, method) {
+                var tmp = getRound(roundId);
+                if (tmp === null) {
+                    console.log('The round id is invalid.');
+                } else {
+                    if (helper.PLUGIN_MATCHES_EVENT[event] && (typeof method === "function")) {
+                        events[roundId + event] = method;
+                    } else {
+                        console.log('The event name is invalid.');
+                    }
+                }
+            },
+            /**
+             * Get event.
+             * @param event the event name
+             * @param roundId the round id
+             * @returns {*} the event method
+             */
+            getEvent: function (event, roundId) {
+                return events[roundId + event];
+            },
+            /**
+             * Register the contest.
+             * @param roundId the round id.
+             * @param callback the callback method after open registration dialog.
+             */
+            register : function (roundId, callback) {
+
+                if (callback) {
+                    if (typeof callback !== "function") {
+                        console.log('Invalid callback paramter.');
+                        return;
+                    }
+                }
+
+                var tmp = getRound(roundId);
+                if (tmp === null) {
+                    console.log('Invalid round id paramter.');
+                } else {
+                    if (isRegistrationOpen(tmp)) {
+                        if (tmp.isRegistered) {
+                            console.log('You already registered in this match.');
+                        } else {
+                            $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.registerFromPlugin, roundId, callback);
+                        }
+                    } else {
+                        console.log('Registration phase already closed.');
+                    }
+                }
+            }
+        };
+    }());
+
+    arena.matches = {};
+    arena.matches.rounds = (function rounds() {
+
+        return {
+            /**
+             * Get round rooms.
+             * @param roundId the round id
+             * @returns {Array} the round rooms
+             */
+            getRooms: function (roundId) {
+                var array = [], tmp = getRound(roundId), room, r;
+                if (tmp === null) {
+                    console.log('Invalid round id paramter.');
+                } else {
+                    if (tmp.adminRoom) {
+                        room = {};
+                        room[tmp.adminRoom.roomID] = tmp.adminRoom;
+                        array.push(room);
+                    }
+                    if (tmp.coderRooms) {
+                        angular.forEach(tmp.coderRooms, function (room) {
+                            r = {};
+                            r[room.roomID] = room;
+                            array.push(r);
+                        });
+                    }
+                }
+                return array;
+            },
+            /**
+             * The rooms object.
+             */
+            rooms : (function rooms() {
+                var events = {};
+                return {
+                    /**
+                     * Trigger the event
+                     * @param event the event name
+                     * @param roomId the room id
+                     * @param param the parameter
+                     */
+                    trigger : function (event, roomId, param) {
+                        if (event && events[roomId + event]) {
+                            if (typeof (events[roomId + event]) === "function") {
+                                events[roomId + event](param);
+                            } else {
+                                console.log('Failed to trigger ' + event);
+                            }
+                        }
+                    },
+                    /**
+                     * Register the event.
+                     * @param event the event name
+                     * @param roomId the room id
+                     * @param method the event method
+                     */
+                    on: function (event, roomId, method) {
+                        var tmp = null;
+                        angular.forEach($rootScope.lobbyMenu, function (lobby) {
+                            if (lobby.roomID === roomId) {
+                                tmp = lobby;
+                            }
+                        });
+                        if (tmp === null && $rootScope.roundData) {
+                            angular.forEach($rootScope.roundData, function (contest) {
+                                if (contest.coderRooms) {
+                                    angular.forEach(contest.coderRooms, function (r) {
+                                        if (r.roomID === roomId) {
+                                            tmp = r;
+                                        }
+                                    });
+                                }
+
+                                if (contest.adminRoom && (contest.adminRoom.roomID === roomId)) {
+                                    tmp = contest.adminRoom;
+                                }
+                            });
+                        }
+
+                        if (tmp === null) {
+                            console.log('The room id is invalid.');
+                        } else {
+                            if (helper.PLUGIN_ROOMS_EVENT[event] && (typeof method === "function")) {
+                                events[roomId + event] = method;
+                            } else {
+                                console.log('The event name is invalid.');
+                            }
+                        }
+                    },
+                    /**
+                     * Get event.
+                     * @param event the event name
+                     * @param roomId the room id
+                     * @returns {*} the event method
+                     */
+                    getEvent: function (event, roomId) {
+                        return events[roomId + event];
+                    },
+                    /**
+                     * Enter the round.
+                     * @param roundId the round id
+                     * @param roomId the room id
+                     * @param callback the callback method
+                     */
+                    enter: function (roundId, roomId, callback) {
+                        var tmp = getRound(roundId), room, empty = '';
+
+                        if (tmp === null) {
+                            console.log('The round id is invalid.');
+                        } else {
+                            room = null;
+                            if (tmp.coderRooms) {
+                                angular.forEach(tmp.coderRooms, function (r) {
+                                    if ((r.roomID + empty) === (roomId + empty)) {
+                                        room = r;
+                                    }
+                                });
+                            }
+
+                            if (room === null && tmp.adminRoom && (tmp.adminRoom.roomID === roomId)) {
+                                room = tmp.adminRoom;
+                            }
+
+                            if (room === null) {
+                                console.log('The room id is invalid.');
+                            } else {
+                                $rootScope.competingRoomID = roomId;
+                                // requests will be sent by the resolvers
+                                $state.go(helper.STATE_NAME.Contest, {
+                                    contestId: roundId
+                                }, {reload: true});
+
+                                if (callback) {
+                                    callback();
+                                }
+                            }
+                        }
+                    }
+                };
+            }())
+        };
+    }());
+
+    arena.leaderboard  = (function leaderboard() {
+        var events = {};
+        return {
+            /**
+             * Trigger the event.
+             * @param event the event name
+             * @param roundId the round id
+             * @param param the parameter
+             */
+            trigger : function (event, roundId, param) {
+                if (event && events[roundId + event]) {
+                    if (typeof (events[roundId + event]) === "function") {
+                        events[roundId + event](param);
+                    } else {
+                        console.log('Failed to trigger ' + event);
+                    }
+                }
+            },
+            /**
+             * Register the event.
+             * @param event the event name
+             * @param roundId the round id
+             * @param method the event method
+             */
+            on: function (event, roundId, method) {
+                var tmp = getRound(roundId);
+
+                if (tmp === null) {
+                    console.log('The round id is invalid.');
+                } else {
+                    if (helper.PLUGIN_LEADER_BOARD_EVENT[event] && (typeof method === "function")) {
+                        events[roundId + event] = method;
+                    } else {
+                        console.log('The event name is invalid.');
+                    }
+                }
+            },
+            /**
+             * Get event.
+             * @param event the event name.
+             * @param roundId the round id.
+             * @returns {*} the event method.
+             */
+            getEvent: function (event, roundId) {
+                return events[roundId + event];
+            }
+        };
+    }());
+
     $rootScope.online = navigator.onLine;
     $window.addEventListener("offline", function () {
         $rootScope.$apply(function () {
@@ -560,18 +1191,71 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     $rootScope.startSyncResponse = false;
     $rootScope.lastServerActivityTime = new Date().getTime();
     $rootScope.leaderboard = [];
-    $rootScope.$on('$stateChangeStart', function (event, toState) {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
         //use whitelist approach
         var allowedStates = [helper.STATE_NAME.Anonymous, helper.STATE_NAME.AnonymousHome, helper.STATE_NAME.LoggingIn, helper.STATE_NAME.Logout],
-            publicState = false;
+            publicState = false,
+            deepLinks = [helper.STATE_NAME.DefaultContest, helper.STATE_NAME.Contest, helper.STATE_NAME.Member, helper.STATE_NAME.PracticeCode],
+            isDeepLink = false,
+            deepLink = {};
+
+        angular.forEach(deepLinks, function (deepLink) {
+            isDeepLink = isDeepLink || (toState.name === deepLink);
+        });
 
         angular.forEach(allowedStates, function (allowedState) {
             publicState = publicState || (toState.name === allowedState);
         });
-
         if (!publicState && !$rootScope.isLoggedIn) {
             event.preventDefault();
+            // Store deep link to session
+            if (isDeepLink) {
+                deepLink = {};
+                deepLink.state = toState.name;
+                switch (toState.name) {
+                case helper.STATE_NAME.DefaultContest:
+                case helper.STATE_NAME.Contest:
+                    deepLink.contestId = toParams.contestId;
+                    break;
+                case helper.STATE_NAME.Member:
+                    deepLink.memberName = toParams.memberName;
+                    break;
+                case helper.STATE_NAME.PracticeCode:
+                    deepLink.roundId = toParams.roundId;
+                    deepLink.componentId = toParams.componentId;
+                    deepLink.divisionId = toParams.divisionId;
+                    deepLink.roomId = toParams.roomId;
+                    break;
+                }
+                sessionHelper.setDeepLink(deepLink);
+            }
             $state.go(helper.STATE_NAME.AnonymousHome);
+        }
+        // Move user to deep link, if stored
+        if (sessionHelper.getDeepLink() && $rootScope.isLoggedIn) {
+            deepLink = sessionHelper.getDeepLink();
+            if (deepLink.state === helper.STATE_NAME.DefaultContest || deepLink.state === helper.STATE_NAME.Contest) {
+                sessionHelper.setDeepLink({});
+                event.preventDefault();
+                $state.go(deepLink.state, {
+                    contestId: deepLink.contestId
+                }, {reload: true});
+            } else if (deepLink.state === helper.STATE_NAME.Member) {
+                sessionHelper.setDeepLink({});
+                event.preventDefault();
+                $state.go(deepLink.state, {
+                    memberName: deepLink.memberName
+                }, {reload: true});
+            } else if (deepLink.state === helper.STATE_NAME.PracticeCode) {
+                sessionHelper.setDeepLink({});
+                event.preventDefault();
+                $state.go(deepLink.state, {
+                    roundId : deepLink.roundId,
+                    componentId : deepLink.componentId,
+                    divisionId : deepLink.divisionId,
+                    roomId : deepLink.roomId
+                }, {reload: true});
+            }
         }
         //expose this for the base.html template
         $rootScope.loggedIn = function () {
