@@ -100,8 +100,11 @@
  * Changes in version 1.27 (Web Arena Plugin API Part 2):
  * - Added more implementations for plugin api.
  *
+ * Changes in version 1.28 (Add Settings Panel for Chat Widget)
+ * - Added directives for chat area widget settings
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
- * @version 1.27
+ * @version 1.28
  */
 'use strict';
 /*jshint -W097*/
@@ -144,6 +147,8 @@ require('./../../thirdparty/bootstrap-notify/js/bootstrap-alert.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-notify.js');
 require('./../../thirdparty/ng-scrollbar/dist/ng-customscrollbar.js');
 require('./../../bower_components/angular-local-storage/dist/angular-local-storage.js');
+require('./../../bower_components/bootstrap-switch/dist/js/bootstrap-switch');
+require('./../../bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch');
 
 var config = require('./config.js');
 
@@ -237,6 +242,8 @@ directives.preloader = require('./directives/preloader');
 directives.memberFeedback = require('./directives/memberFeedback');
 directives.leaderboard = require('./directives/leaderboard');
 directives.challengesAdvertiser = require('./directives/challengesAdvertiser');
+directives.chatSettings = require('./directives/chatSettings');
+directives.toggleSetting = require('./directives/toggleSetting');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -248,7 +255,7 @@ directives.challengesAdvertiser = require('./directives/challengesAdvertiser');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'ngCustomScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'ngCustomScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook', 'frapontillo.bootstrap-switch']);
 
 ///////////////
 // FACTORIES //
@@ -347,6 +354,8 @@ main.directive('preloader', directives.preloader);
 main.directive('memberFeedback', directives.memberFeedback);
 main.directive('leaderboard', directives.leaderboard);
 main.directive('challengesAdvertiser', directives.challengesAdvertiser);
+main.directive('chatSettings', directives.chatSettings);
+main.directive('toggleSetting', directives.toggleSetting);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //

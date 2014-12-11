@@ -43,8 +43,11 @@
  * - Added TC_HOSTNAME and CHALLENGE_ADVERTISING_UPDATE
  *   to handle showing and updating challenge advertising data.
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus
- * @version 1.10
+ * Changes in version 1.11 (Add Settings Panel for Chat Widget):
+ * - Added CSS references for switch widget
+ * 
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein
+ * @version 1.11
  */
 'use strict';
 /*global module, process*/
@@ -141,6 +144,7 @@ module.exports = function (grunt) {
                     'bower_components/codemirror/lib/codemirror.css',
                     'bower_components/codemirror/addon/fold/foldgutter.css',
                     'bower_components/fullcalendar/fullcalendar.css',
+                    'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
                     'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                     'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
@@ -160,6 +164,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/lib/codemirror.css',
                         'bower_components/codemirror/addon/fold/foldgutter.css',
                         'bower_components/fullcalendar/fullcalendar.css',
+                        'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
@@ -178,6 +183,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/lib/codemirror.css',
                         'bower_components/codemirror/addon/fold/foldgutter.css',
                         'bower_components/fullcalendar/fullcalendar.css',
+                        'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',

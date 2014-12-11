@@ -36,9 +36,12 @@
  * Changes in version 1.9 (PoC Assembly - Web Arena - Chat Widget Improvement):
  * - Added getMemberName() method.
  * - Prevent the double click event while user is leaving the room
+ * 
+ * Changes in version 1.10 Add Settings Panel for Chat Widget):
+ * - Added scope variables for chat settings.
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.9
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCASSEMBLER
+ * @version 1.10
  */
 'use strict';
 /*global require, module, angular, $, window, document */
@@ -108,6 +111,14 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         "Large"
     ];
     $scope.currentFontSize = "Medium";
+
+    $scope.chatSettings = {
+        chat: true,
+        history: true,
+        autoscroll: true,
+        timestamps: false,
+        sounds: false
+    };
 
     /**
      * Sets the font size.
