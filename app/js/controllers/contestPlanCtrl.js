@@ -339,7 +339,7 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
             data.data.forEach(function (item) {
                 $scope.eventSources[0].push({
                     title: item.contestName,
-                    start: parseDate(item.startDate),
+                    start: parseDate(item.registrationStartTime || item.startDate),
                     regStart: new Date(item.registrationStartTime),
                     codeStart: new Date(item.codingStartTime),
                     allDay: false

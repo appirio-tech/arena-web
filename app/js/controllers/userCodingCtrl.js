@@ -131,6 +131,13 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             } else if (windowWidth <= 741) {
                 toolBarHeight = 41 + 60;
             }
+
+            if($scope.topStatus === 'normal') {
+                this.theCode = $scope.cmElem.CodeMirror.getValue();
+            } else if (this.theCode) {
+                $scope.cmElem.CodeMirror.getValue(this.theCode);
+            }
+
             if ((target === 'top-content' && $scope.topStatus === 'expand') ||
                     (target === 'bottom-content' && $scope.bottomStatus === 'expand')) {
                 //return to normal status
