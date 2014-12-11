@@ -135,7 +135,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             if($scope.topStatus === 'normal') {
                 this.theCode = $scope.cmElem.CodeMirror.getValue();
             } else if (this.theCode) {
-                $scope.cmElem.CodeMirror.getValue(this.theCode);
+                $scope.cmElem.CodeMirror.setValue(this.theCode);
             }
 
             if ((target === 'top-content' && $scope.topStatus === 'expand') ||
