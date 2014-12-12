@@ -8,8 +8,8 @@
         "content": "<p>The new and improved match plan widget makes it much easier for you to keep track of upcoming challenges!</p>"
     }, {
         "attachTo": ".carousel-inner",
-        "width": "200",
+        "width": "300",
         "position": "leftBelow",
-        "content": "<p>You have used your awesome coding skills to dominate in the arena, not it is time to make some cash on the topcoder development challenges!</p>"
+        "content": "<p>You have used your awesome coding skills to dominate in the arena, not it is time to make some cash in the topcoder development challenges!</p>"
     }]}
 }
