@@ -9,7 +9,7 @@
     }, {
         "attachTo": ".carousel-inner",
         "width": "200",
-        "position": "rightBelow",
+        "position": "leftBelow",
         "content": "<p>You have used your awesome coding skills to dominate in the arena, not it is time to make some cash on the topcoder development challenges!</p>"
     }]}
 }
