@@ -3,8 +3,13 @@
     "id":"uniqueID",
     "balloonGuides":[{
         "attachTo": ".panelContestPlan",
-        "width": "433",
+        "width": "400",
         "position": "rightBelow",
         "content": "<p>The new and improved match plan widget makes it much easier for you to keep track of upcoming challenges!</p>"
+    }, {
+        "attachTo": ".carousel-inner",
+        "width": "200",
+        "position": "rightBelow",
+        "content": "<p>You have used your awesome coding skills to dominate in the arena, not it is time to make some cash on the topcoder development challenges!</p>"
     }]}
 }
