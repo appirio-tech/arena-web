@@ -1,0 +1,11 @@
+<div>
+    <div data-ng-repeat="balloon in balloons" class="ballonWrap {{balloon.position}} bl-{{$index}}" data-ng-hide="balloon.disabled"  data-ng-style="{'width':balloon.width+'px', 'top':balloon.posT, 'right':balloon.posR, 'bottom':balloon.posB, 'left':balloon.posL, 'position': (balloon.isFixed?'fixed':'absolute')}">
+        <div class="ballon" data-ng-style="{'height':balloon.height+'px'}">
+            <span class="arrow"></span>
+            <div class="con" data-ng-bind-html="balloon.content"></div>
+            <a class="lnkClose" data-ng-click="removeBalloon($index);"></a>
+        </div>
+        <!-- /.balloon -->
+    </div>
+    <!-- /.ballonWrap -->
+</div>

@@ -201,6 +201,7 @@ controllers.matchScheduleCtrl = require('./controllers/matchScheduleCtrl');
 controllers.memberFeedbackCtrl = require('./controllers/memberFeedbackCtrl');
 controllers.leaderboardCtrl = require('./controllers/leaderboardCtrl');
 controllers.challengesAdvertisingCtrl = require('./controllers/challengesAdvertisingCtrl');
+controllers.balloonCtrl = require('./controllers/balloonCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -237,6 +238,7 @@ directives.preloader = require('./directives/preloader');
 directives.memberFeedback = require('./directives/memberFeedback');
 directives.leaderboard = require('./directives/leaderboard');
 directives.challengesAdvertiser = require('./directives/challengesAdvertiser');
+directives.ngBallons = require('./directives/ngBallons');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -309,6 +311,7 @@ main.controller('matchScheduleCtrl', controllers.matchScheduleCtrl);
 main.controller('memberFeedbackCtrl', controllers.memberFeedbackCtrl);
 main.controller('leaderboardCtrl', controllers.leaderboardCtrl);
 main.controller('challengesAdvertisingCtrl', controllers.challengesAdvertisingCtrl);
+main.controller('balloonCtrl', controllers.balloonCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -347,6 +350,7 @@ main.directive('preloader', directives.preloader);
 main.directive('memberFeedback', directives.memberFeedback);
 main.directive('leaderboard', directives.leaderboard);
 main.directive('challengesAdvertiser', directives.challengesAdvertiser);
+main.directive('ngBallons', directives.ngBallons);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
