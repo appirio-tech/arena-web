@@ -2,38 +2,9 @@
     "dashboardBalloons": {
     "id":"uniqueID",
     "balloonGuides":[{
-        "attachTo": ".titleBar .title",
+        "attachTo": ".panelContestPlan",
         "width": "433",
-        "content": "<p>Topcoder gives you everything you need to call out new features in your app or website.</p><p>There have been too many significant performance improvements in Joyride 2, along</p>"
-    }, {
-        "attachTo": ".tcTime label",
-        "width": "441",
         "position": "rightBelow",
-        "content": "<p>Topcoder gives you everything you need to call out new features in your app or website.</p><p>There have been too many significant performance improvements in Joyride 2, along with a myriad of new features.  These features include .......Topcoder gives you everything you need to call out new features in your app or website.</p><p>There have been too many significant include .......</p><div class='actns'><a class='btnBlnDefault btnMore'>Read More</a></div>"
-    }, {
-        "attachTo": ".panelChatArea .panel-heading",
-        "width": "1020",
-        "content": "<p>Topcoder gives you everything you need to call out new features in your app or website.<br/>There have been too many significant performance improvements in Joyride 2, along with a myriad of new features.  These features include .......</p>"
-    }]},
-    
-    
-    "managmentGuides":{
-        "id":"uniqueID2",
-        "balloonGuides":[{
-            "attachTo": ".contestPanel .panel-heading",
-            "width": "433",
-            "content": "<p>Topcoder gives you everything you need to call out new features in your app or website.</p><p>There have been too many significant performance improvements in Joyride 2, along</p>"
-        }, {
-            "attachTo": "#managementFilter",
-            "width": "441",
-            "height" :"160",
-            "position": "rightBelow",
-            "content": "<p>Topcoder gives you everything you need to call out new features in your app or website.</p><p>There have been too many significant performance improvements in Joyride 2, along with a myriad of new features.  These features include .......Topcoder gives you everything you need to call out new features in your app or website.</p><p>There have been too many significant include .......</p><div class='actns'><a class='btnBlnDefault btnMore'>Read More</a></div>"
-        }, {
-            "attachTo": ".contestPanel .paginator",
-            "width": "450",
-            "position": "leftAbove",
-            "content": "<p>Topcoder gives you everything you need to call out new features in your app or website.<br/>There have been too many significant performance improvements in Joyride 2, along with a myriad of new features.  These features include .......</p>"
-        }]
-    }
+        "content": "<p>The new and improved match plan widget makes it much easier for you to keep track of upcoming challenges!</p>"
+    }]}
 }
