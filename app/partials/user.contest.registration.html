@@ -16,7 +16,7 @@
             <p data-ng-bind="survey.questionText"></p>
         </div>
 
-        <div data-ng-repeat="answer in survey.answerText" class="answerText">
+        <div data-ng-repeat="answer in survey.answerText" class="answerText" data-ng-if="survey.questionType === 1 || survey.questionType === 2">
             <label >
                 <span data-ng-if="survey.questionType === 1">
                     <input  name="{{survey.questionID}}" type="radio" ng-model="survey.answer" value="{{answer}}" class="radio">{{answer}}
@@ -24,11 +24,16 @@
                 <span data-ng-if="survey.questionType === 2">
                     <input  name="{{survey.questionID}}" type="checkbox" ng-model="survey.answers[$index]" value="{{answer}}" class="radio">{{answer}}
                 </span>
-                <span data-ng-if="survey.questionType === 3">
-                    <textarea name="{{survey.questionID}}" data-ng-model="survey.answer" class="longText" maxlength="250"></textarea>
-                </span>
+            </label>
+            <br/>
+        </div>
+        <div class="answerText"  data-ng-if="survey.questionType === 3 || survey.questionType === 4">
+            <label>
                 <span data-ng-if="survey.questionType === 4">
                     <input type="text" name="{{survey.questionID}}" data-ng-model="survey.answer" class="shortText" maxlength="40">
+                </span>
+                <span data-ng-if="survey.questionType === 3">
+                    <textarea name="{{survey.questionID}}" data-ng-model="survey.answer" class="longText" maxlength="250"></textarea>
                 </span>
             </label>
             <br/>
@@ -42,7 +47,7 @@
         <div class="questionTextDiv">
             <p data-ng-bind="survey.questionText"></p>
         </div>
-        <div data-ng-repeat="answer in survey.answerText" class="answerText">
+        <div data-ng-repeat="answer in survey.answerText" class="answerText" data-ng-if="survey.questionType === 1 || survey.questionType === 2">
             <label >
                 <span data-ng-if="survey.questionType === 1">
                     <input name="{{survey.questionID}}" type="radio" ng-model="survey.answer" value="{{answer}}" class="radio">{{answer}}
@@ -50,11 +55,16 @@
                 <span data-ng-if="survey.questionType === 2">
                     <input  name="{{survey.questionID}}" type="checkbox" ng-model="survey.answers[$index]" value="{{answer}}" class="radio">{{answer}}
                 </span>
-                <span data-ng-if="survey.questionType === 3">
-                    <textarea name="{{survey.questionID}}" data-ng-model="survey.answer" class="longText" maxlength="250"></textarea>
-                </span>
+            </label>
+            <br/>
+        </div>
+        <div class="answerText"  data-ng-if="survey.questionType === 3 || survey.questionType === 4">
+            <label>
                 <span data-ng-if="survey.questionType === 4">
                     <input type="text" name="{{survey.questionID}}" data-ng-model="survey.answer" class="shortText" maxlength="40">
+                </span>
+                <span data-ng-if="survey.questionType === 3">
+                    <textarea name="{{survey.questionID}}" data-ng-model="survey.answer" class="longText" maxlength="250"></textarea>
                 </span>
             </label>
             <br/>
