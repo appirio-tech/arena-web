@@ -17,7 +17,7 @@
  *  - Added tooltip and updated methods eventsADay and eventAfterAllRender to support tooltips
  *    with brief contest information.
  *
- * @author TCASSEMBLER
+ * @author TCASSEMBLER, dexy
  * @version 1.3
  */
 'use strict';
@@ -70,7 +70,7 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
         $scope.$broadcast('rebuild:list');
     }
 
-        /**
+    /**
      * It will get current date information from calendar when list view is loaded.
      * @returns {boolean} - false if the view is list, otherwise return true.
      */
