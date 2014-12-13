@@ -605,7 +605,7 @@ body a {cursor: pointer;}
     height: 0;
     width: 0;
     overflow: hidden;
-    margin-left: -13px;
+    margin-left: 74px;
 }
 .hero .loginBox footer>p:last-child {
     margin-top: 16px;
