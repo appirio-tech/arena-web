@@ -330,7 +330,7 @@ module.exports = {
         Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
         ForcedLogout: 'Logging off as you logged in to another session or browser.',
         LostConnection: 'The connection to the server has been lost. Please log off and log in again.',
-        NotAssigned: 'Sorry, you cannot perform this operation because you are not assigned to this room. The likely cause is that you did not register for the match on time.'
+        NotAssigned: 'Sorry, you cannot perform this operation because you are not assigned to this room. The likely cause is that you did not successfuly register for the match during the registration period.'
     },
 
     // The mapper from time zone code (must be uppercase) to offset from UTC (in minutes).
