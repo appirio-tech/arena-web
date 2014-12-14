@@ -56,7 +56,7 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', '
         'Challenge Phase', // 6 - challenge
         'Preparing for System Test Phase', // 7 - after challenge, before sys. test
         'System Test Phase', // 8 - sys. test
-        'Match Complete' // 9 - complete
+        'Match is complete' // 9 - complete
     ];
 
     if ($scope.contest) {
