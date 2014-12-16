@@ -207,7 +207,7 @@ module.exports = function (grunt) {
                 // This copies all the html and images into the build/ folder. css and js were done already.
                 expand: true,
                 cwd: 'app/',
-                src: ['**/*.html', 'img/**', 'fonts/**', 'data/**', 'robots.txt'],
+                src: ['**/*.html', 'img/**', 'fonts/**', 'data/**', 'robots.txt','js/newrelic.js'],
                 dest: 'build/'
             },
             release: {
@@ -244,6 +244,21 @@ module.exports = function (grunt) {
             options: {
                 force: true
             }
+        },
+        newrelic : {
+            browser : {
+                development : {
+                    licenseKey: "28fb2fc79c",
+                    applicationID: "4447207"
+                }
+            },
+            server : {
+                development : {
+                    APP_NAME: "testserver",
+                    LICENSE_KEY: "8f1eb71c599e28fb2b02e7e521488cbabb97174f",
+                    LOGGING_LEVEL : "trace"
+                }                
+            }
         }
     });
 
@@ -258,10 +273,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-aws');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadTasks('./new_relic/tasks');
+    grunt.loadTasks('./new_relic/server_tasks')
 
     // The default tasks to run when you type: grunt
-    grunt.registerTask('default', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
-    grunt.registerTask('build', ['clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('default', ['servernewrelic','newrelic','clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('build', ['servernewrelic','newrelic','clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
     //release tasks work out of build directory - build must be run first!
     grunt.registerTask('release', ['clean:release', 'uglify:release', 'copy:release']);
     grunt.registerTask('heroku', ['build']);
