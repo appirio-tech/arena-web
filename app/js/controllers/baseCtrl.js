@@ -560,7 +560,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     popUpContent: data.message,
                     action : {
                         question: '',
-                        target: '#/u/contests/' + phaseChangeRoundId
+                        target: '#/u/contests/' + phaseChangeRoundId + '/room'
                     }
                 });
             }
