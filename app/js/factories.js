@@ -69,8 +69,9 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
         unRead: 0,
         pastNotifications: []
     },
+    // No need to check date, same message can have different date when it occurs in different time
         sameMessage = function (msgA, msgB) {
-            return msgA.date === msgB.date && msgA.type === msgB.type && msgA.message === msgB.message &&
+            return msgA.type === msgB.type && msgA.message === msgB.message &&
                 ((!angular.isDefined(msgA.action) && !angular.isDefined(msgB.action)) ||
                     (angular.isDefined(msgA.action) && angular.isDefined(msgB.action) &&
                         msgA.action.question === msgB.action.question && msgA.action.target === msgB.action.target));
@@ -156,10 +157,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
         var player = document.getElementById('player'),
             i,
             unreadDelta = 0;
-        if (player) {
-            player.load();
-            player.play();
-        }
+
         // messages: array of message
         // message: {
         //   read: boolean - indicate the message is read or not
@@ -174,6 +172,10 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
         // }
         for (i = messages.length - 1; i >= 0; i -= 1) {
             if (!service.existMessage(messages[i])) {
+                if (player) {
+                    player.load();
+                    player.play();
+                }
                 service.notifications.unshift(messages[i]);
                 if (!messages[i].read) {
                     unreadDelta += 1;
