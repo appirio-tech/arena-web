@@ -3,18 +3,10 @@
 module.exports = function(grunt) {
   grunt.registerTask("servernewrelic", "generate a newrelic.js file", function(environment) {
 
-    var environment;
-
-    if (process.env.NODE_ENV == null) {
-        environment = "development"
-    }else{
-        environment = process.env.NODE_ENV
-    }
-
     try {
         var target = grunt.config.get('newrelic'),
-            config_path = target.server[environment],
-            app_name = "app_name : ['" + environment  + "-" + config_path.APP_NAME + "']",
+            config_path = target.server["development"],
+            app_name = "app_name : ['development" + "-" + config_path.APP_NAME + "']",
             license_key = "license_key : '" + config_path.LICENSE_KEY + "'",
             logging_level = "level : " + config_path.LOGGING_LEVEL + "'";
         

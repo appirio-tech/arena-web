@@ -242,15 +242,15 @@ module.exports = function (grunt) {
         newrelic : {
             browser : {
                 development : {
-                    licenseKey: "28fb2fc79c",
-                    applicationID: "4447207"
+                    licenseKey: process.env.NEWRELIC_BROWSER_LICENSCEKEY,
+                    applicationID: process.env.NEWRELIC_BROWSER_APPLICATIONID
                 }
             },
             server : {
                 development : {
-                    APP_NAME: "testserver",
-                    LICENSE_KEY: "8f1eb71c599e28fb2b02e7e521488cbabb97174f",
-                    LOGGING_LEVEL : "trace"
+                    APP_NAME: process.env.NEWRELIC_SERVER_APPNAME,
+                    LICENSE_KEY: process.env.NEWRELIC_SERVER_LICENSE_KEY,
+                    LOGGING_LEVEL : process.env.NEWRELIC_SERVER_LOGGING_LEVEL
                 }                
             }
         }
