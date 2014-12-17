@@ -91,3 +91,11 @@ export CHALLENGE_ADVERTISING_UPDATE=300000
 
 # The TopCoder host name
 export TC_HOSTNAME=http://www.topcoder.com
+
+#The New Relic Browser KEY
+export NEWRELIC_BROWSER_APPLICATIONID='4447207'
+export NEWRELIC_BROWSER_LICENSCEKEY='28fb2fc79c'
+#The New Relic Server KEY
+export NEWRELIC_SERVER_APPNAME='testserver'
+export NEWRELIC_SERVER_LICENSE_KEY='8f1eb71c599e28fb2b02e7e521488cbabb97174f'
+export NEWRELIC_SERVER_LOGGING_LEVEL='trace'
