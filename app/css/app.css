@@ -31,8 +31,25 @@ body a {cursor: pointer;}
 }
 /* To tackle fixed top nav*/
 .mainContainer {
-    margin-top: 62px;
+    padding-top: 62px;
+    padding-bottom: 62px;
+    -moz-box-sizing:    border-box;
+   -webkit-box-sizing: border-box;
+    box-sizing:        border-box;
 }
+
+/*Fix the footer at the bottom*/
+.page-main-content {
+    min-height: 100%;
+    position: relative;   
+}
+
+.page-main-content > footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
 .anon-header .navbar .navbar-brand,
 .header .navbar-brand,
 .header .navIcons>li>.icon:before,
