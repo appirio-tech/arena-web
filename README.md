@@ -42,6 +42,7 @@ source config/dev-local.sh
 
 To build the client side app run:
 ```
+bower install
 grunt
 ```
 This will perform the following tasks:
