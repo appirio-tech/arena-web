@@ -1230,13 +1230,13 @@ footer .right .sponsorLogo {
 .registration-modal-body .questionDiv{
     border: 1px solid;
     padding: 5px;
-    margin-left: 36px;
+    margin-left: 18px;
     margin-right: 18px;
     border-color: #b7c9d7;
     min-height: 250px;
 }
 .registration-modal-body .surveyDiv .index{
-    margin:5px 5px 5px 20px !important;
+    margin:5px 5px 5px 0px !important;
 }
 .registration-modal-body .questionTitle{
     padding-top: 20px;
@@ -1245,7 +1245,6 @@ footer .right .sponsorLogo {
     border: 1px solid;
     border-color: #b7c9d7;
     margin-right: 18px;
-    margin-left: 18px;
     min-height: 80px;
 }
 .notifications .alert {
