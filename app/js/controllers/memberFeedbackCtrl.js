@@ -91,6 +91,7 @@ var memberFeedbackCtrl = ['$scope', '$timeout', '$rootScope', function ($scope, 
     $scope.cancel = function () {
         addAnimationForBody(false);
         $scope.feedbackText = '';
+        $scope.showError(false);
     };
     // submit feedback handler, check for text, send feedback and show notifier
     $scope.submit = function () {
