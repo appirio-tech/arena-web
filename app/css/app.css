@@ -7383,7 +7383,7 @@ table thead .sort.desc{
     position: fixed;
     bottom: 0;
     right: 0;
-    z-index: 10;
+    z-index: 20;
 }
 .codeArea .chatWidget .dropdown-toggle,
 .codeArea .infoSection li {
@@ -7394,6 +7394,7 @@ table thead .sort.desc{
     display: inline-block;
     margin-right: 30px;
     vertical-align: bottom;
+    z-index: 20;
 }
 .codeArea .chatWidget .panel,
 .codeArea .leaderboardWidget .panel{
