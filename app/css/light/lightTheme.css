@@ -656,8 +656,7 @@ footer .right .sponsorLogo {
     line-height: 40px;
 }
 .panelContestStat .breadcrumbHead .breadcrumb li:last-child {
-    padding-right: 11px;
-    float: right;
+    padding-right: 15px;
 }
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     opacity: 1;
