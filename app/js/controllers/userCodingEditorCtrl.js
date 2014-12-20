@@ -150,17 +150,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 }
 
                 $scope.markedSearched.length = 0;
-                cursor = $scope.cm.getSearchCursor($scope.searchText);
+                cursor = $scope.cm.getSearchCursor($scope.searchText, 0, true);
                 while (cursor.findNext()) {
                     $scope.markedSearched.push($scope.cm.markText(cursor.from(), cursor.to(), {className: "searched"}));
-                }
-
-                if ($scope.searchText.length > 0 && $scope.markedSearched.length === 0) {
-                    $scope.openModal({
-                        title: 'Warning',
-                        message: 'No matched text found!',
-                        enableClose: true
-                    });
                 }
             }
         };
