@@ -656,7 +656,7 @@ footer .right .sponsorLogo {
     line-height: 40px;
 }
 .panelContestStat .breadcrumbHead .breadcrumb li:last-child {
-    padding-right: 11px; 
+    padding-right: 11px;
     float: right;
 }
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
@@ -840,10 +840,6 @@ footer .right .sponsorLogo {
 .rating-grey,
 .rating-grey:hover{
     color: #999;
-}
-.rating-none,
-.rating-none:hover{
-    color: #000;
 }
 .rating-admin,
 .rating-admin:hover{
@@ -1412,13 +1408,13 @@ footer .right .sponsorLogo {
     }
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
 #challenges-advertiser {
     border: 1px solid #b7c9d7;
-    background: #f5f8fa;   
+    background: #f5f8fa;
 }
 
 #challenges-advertiser .challenge-technologies-wrapper {
