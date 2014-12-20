@@ -3,14 +3,15 @@
     <h3>Message(s) ({{notificationService.notifications.length}})</h3>
     <a data-ng-click="closeQtip()" class="btnClose"></a>
     <p class="legends">
-        <label class="iGeneral">General</label>
-        <label class="iProblem">Problem</label>
-        <label class="iRound">Round</label>
+        <label class="iGeneral" ng-click="notificationType = 'general'">General</label>
+        <label class="iProblem" ng-click="notificationType = 'problem'">Problem</label>
+        <label class="iRound" ng-click="notificationType = 'round'">Round</label>
+        <label class="iAll" ng-click="notificationType = ''">All</label>
     </p>
 </div><!--/.panelHeader -->
 <div class="messageBox visible-lg visible-md" data-ng-custom-scrollbar data-rebuild-on="rebuild:messages" data-reload-on="reload:messages">
     <div class="messageWrapper">
-        <div data-ng-repeat="item in notificationService.notifications track by $index " class="mItem {{item.type}}" data-ng-click="showNotificationDetails(item)">
+        <div data-ng-repeat="item in notificationService.notifications | filter:notificationType track by $index " class="mItem {{item.type}}" data-ng-click="showNotificationDetails(item)">
             <p class="topRow">
                 {{item.date}}    |    Status {{item.status}}
             </p>
@@ -22,7 +23,7 @@
 </div><!--/.messageBox-->
 <div class="messageBox default visible-sm visible-xs">
     <div class="messageWrapper">
-        <div data-ng-repeat="item in notificationService.notifications track by $index " class="mItem {{item.type}}" data-ng-click="showNotificationDetails(item)">
+        <div data-ng-repeat="item in notificationService.notifications | filter:notificationType track by $index " class="mItem {{item.type}}" data-ng-click="showNotificationDetails(item)">
             <p class="topRow">
                 {{item.date}}    |    Status {{item.status}}
             </p>
