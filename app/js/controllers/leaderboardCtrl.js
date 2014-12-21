@@ -332,11 +332,11 @@ var leaderboardCtrl = ['$scope', '$stateParams', '$rootScope', '$location', '$ti
         position: {
             my: 'top left',
             at: 'bottom left',
-            target: $window,
             adjust: {
                 x: -34,
                 y: -25
-            }
+            },
+            container: $('#leaderboardPanel .filterArea')
         },
         show: {
             event: 'click',
