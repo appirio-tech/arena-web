@@ -661,6 +661,17 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         }
     };
 
+    // Removes coder handle filter
+    $scope.stopHandleFilter = function(viewOn) {
+        $scope.getKeys(viewOn).lbFilter.userName = '';
+
+        $timeout.cancel($rootScope.ldrbrdTimeoutPromise);
+
+        $rootScope.ldrbrdTimeoutPromise = $timeout(function () {
+            $scope.$broadcast('rebuild:leaderboardTable');
+        }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
+    }
+
     $scope.previousChallengeHandle = '';
 
     /**
