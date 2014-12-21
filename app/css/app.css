@@ -7184,7 +7184,7 @@ table thead .sort.desc{
     position: fixed;
     bottom: 0;
     right: 5px;
-    z-index: 2;
+    z-index: 20;
 }
 .panelFeedback {
     width: 407px;
