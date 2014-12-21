@@ -6345,6 +6345,9 @@ contestManagementPanel .panel-footer .btn {
 .practiceProblemFilter .pointRow .dropdown {
     width: 65px;
 }
+.practiceProblemFilter .pointRow .dropdown-menu {
+    min-width: 0;
+}
 .practiceProblemFilter .pointRow .dropdown-toggle {
     width: 63px;
     padding-left: 14px;
