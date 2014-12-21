@@ -41,7 +41,7 @@ body a {cursor: pointer;}
 /*Fix the footer at the bottom*/
 .page-main-content {
     min-height: 100%;
-    position: relative;   
+    position: relative;
 }
 
 .page-main-content > footer {
@@ -1972,7 +1972,7 @@ footer .right>span:nth-child(2) {
 .panel-custom {
     width: 759px;
     border: 1px solid #234760;
-    height: 315px;
+    height: 345px;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -2042,7 +2042,7 @@ footer .right>span:nth-child(2) {
 .panel-custom .schedulePanel,
 .panel-custom .roomsPanel,
 .panel-custom .statusPanel {
-    height: 141px;
+    height: 171px;
     padding: 12px 0;
     border-top: 1px solid #0bbbe7;
     line-height: 23px;
@@ -3209,7 +3209,7 @@ footer .right>span:nth-child(2) {
 
 /* contest plan widget */
 .panelContestPlan {
-    height: 315px;
+    height: 345px;
     width: 407px;
     border-color: #1f444e;
     background: #151718;
