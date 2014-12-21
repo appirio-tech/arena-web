@@ -6902,6 +6902,9 @@ contestManagementPanel .panel-footer .btn {
     margin-right: 0;
     margin-top: 0;
 }
+#methodsList.dropdown-menu {
+    padding: 0;
+}
 .leadarboardList .tableWrap .leaderBoardTable span,
 .activeUserList .tableWrap .activeUserTable span,
 .anchor{
