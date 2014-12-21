@@ -6918,8 +6918,14 @@ contestManagementPanel .panel-footer .btn {
     margin-top: 0;
 }
 
+
 .leaderboard-rounds .ngsb-wrap .ngsb-scrollbar {
     top: 0;
+}
+
+
+#methodsList.dropdown-menu {
+    padding: 0;
 }
 
 .leadarboardList .tableWrap .leaderBoardTable span,
