@@ -106,7 +106,7 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', '$filter', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window, $filter) {
     var /**
          * The modal controller.
          *
@@ -957,8 +957,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         for (i = 0; i < data.historyData.length; i++) {
             tmpDate = new Date(data.historyData[i].time);
 
-            coderHistoryData.push({"time": (tmpDate.getMonth() + 1) + "-" + tmpDate.getDate() + "-" + tmpDate.getFullYear()
-                + " " + tmpDate.getHours() + ":" + tmpDate.getMinutes() + ":" + tmpDate.getSeconds(),
+            coderHistoryData.push({"time": $filter('date')(tmpDate, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone,
                 "actionDescription": data.historyData[i].actionDescription, "userName": data.historyData[i].coder.userName,
                 "userRating": data.historyData[i].coder.userRating,
                 "componentValue": data.historyData[i].componentValue, "points": data.historyData[i].points, "detail": data.historyData[i].detail});
