@@ -3611,8 +3611,8 @@ footer .right>span:nth-child(2) {
     margin-bottom: 4px;
 }
 .messageArena .panelHeader .legends label {
-    padding-left: 22px;
-    margin-right: 20px;
+    padding-left: 18px;
+    margin-right: 12px;
     position: relative;
 }
 .messageArena .panelHeader .legends label:before,
@@ -3631,6 +3631,10 @@ footer .right>span:nth-child(2) {
 .messageArena .messageBox .problem:before {background-position: -75px -50px;}
 .messageArena .panelHeader .legends .iRound:before,
 .messageArena .messageBox .round:before {background-position: -100px -50px;}
+.messageArena .panelHeader .legends .iAll:before {content: none;}
+.messageArena .panelHeader .legends .iAll {
+    padding-left: 0px;
+}
 .messageArena .messageBox {
     padding-right: 4px;
     max-height: 212px;
