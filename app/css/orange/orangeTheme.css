@@ -826,7 +826,7 @@ footer .left>span {
 .panelContestPlan .matchScheduleLink:hover {
     color: #ff8a00;
 }
-.panelContestPlan .calendar .fc-today {
+.panelContestPlan .calendar .fc-view-month .fc-today {
     border-color: #ff8a00 !important;
 }
 .panelContestPlan .btnToday,
