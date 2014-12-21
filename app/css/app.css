@@ -3296,7 +3296,7 @@ footer .right>span:nth-child(2) {
 .panelContestPlan .fc-day>div {
     min-height: 30px !important;
 }
-.panelContestPlan .calendar .fc-today {
+.panelContestPlan .calendar .fc-view-month .fc-today {
     -webkit-border-radius: 5px !important;
     -moz-border-radius: 5px !important;
     border-radius: 5px !important;

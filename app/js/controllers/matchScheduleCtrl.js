@@ -19,7 +19,7 @@ var helper = require('../helper');
 /**
  * The match schedule page controller.
  */
-var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', function ($scope, $http, $timeout, $rootScope) {
+var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', 'appHelper', function ($scope, $http, $timeout, $rootScope, appHelper) {
     $scope.events = [];
     $scope.eventSources = [$scope.events];
     var tmpDate = new Date();
@@ -41,38 +41,6 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', function (
         }
     };
 
-    /**
-     * Parse the date string.
-     * @param dateString - the date string to parse
-     * @returns {Date} the parsed result
-     */
-    function parseDate(dateString) {
-        var date = new Date();
-        date.setFullYear(+dateString.substring(0, 4));
-        date.setMonth((+dateString.substring(5, 7)) - 1);
-        date.setDate(+dateString.substring(8, 10));
-        date.setHours(+dateString.substring(11, 13));
-        date.setMinutes(+dateString.substring(14, 16));
-
-        // Timezone
-        var tz_regex = /(\+|-)(\d{4})$/;
-        var tz = tz_regex.exec(dateString);
-
-        if(tz) {
-            var hours = Number(tz[2].substr(0, 2));
-            var minutes = Number(tz[2].substr(2, 2));
-
-            if(tz[1] === '-') {
-                hours = -hours;
-                minutes = -minutes;
-            }
-
-            date.setHours(date.getHours() + hours);
-            date.setMinutes(date.getMinutes() + minutes);
-        }
-
-        return date;
-    }
     /**
      * Init the calendar with events.
      */
@@ -106,8 +74,8 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', function (
             data.data.forEach(function (item) {
                 $scope.eventSources[0].push({
                     title: item.contestName,
-                    start: parseDate(item.registrationStartTime || item.startDate),
-                    end: parseDate(item.challengeEndTime),
+                    start: appHelper.parseTDate(item.registrationStartTime || item.startDate),
+                    end: appHelper.parseTDate(item.challengeEndTime),
                     allDay: false
                 });
             });
@@ -143,7 +111,7 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', function (
 
         if (result !== null) {
             $scope.matchSchedule.fullCalendar('changeView', 'basicDay');
-            $scope.matchSchedule.fullCalendar('gotoDate', parseDate(result + 'T00:00:00'));
+            $scope.matchSchedule.fullCalendar('gotoDate', appHelper.parseTDate(result + 'T00:00:00'));
         }
     };
 }];
