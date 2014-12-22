@@ -152,7 +152,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           if (page.height < page.scrollHeight) {
             redraw();
             scope.showYScrollbar = true;
-            dragger.height = Math.round(page.height / page.scrollHeight * page.height);
+            dragger.height = Math.round(page.height / page.scrollHeight * (page.height-18));
 			maxDraggerTop = page.height - dragger.height;
             dragger.trackHeight = page.height;
             calcStyles();
