@@ -92,3 +92,6 @@ export CHALLENGE_ADVERTISING_UPDATE=300000
 
 # The TopCoder host name
 export TC_HOSTNAME=http://www.topcoder.com
+
+# The max live leaderboard number
+export MAX_LIVE_LEADERBOARD=200

@@ -44,8 +44,11 @@
  * Changes in version 1.11 (Web Arena Plugin API Part 2):
  * - Added more trigger plugin logic.
  *
+ * Changes in version 1.12 (Module Assembly - Web Arena Max Live Leaderboard Assembly):
+ * - Added exceedLeaderBoardLimit() function.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.11
+ * @version 1.12
  */
 'use strict';
 /*jshint -W097*/
@@ -351,6 +354,23 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
             return false;
         }
         return true;
+    };
+
+    /**
+     * Check if the leaderboards number exceeds the configured max limit.
+     *
+     * @param phaseType the phase type
+     * @param roomID the room ID
+     * @returns {boolean} true if exceeded
+     * @since Module Assembly - Web Arena Max Live Leaderboard Assembly
+     */
+    retHelper.exceedLeaderBoardLimit = function (phaseType, roomID) {
+        if (roomID && phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase && $rootScope.roomData[roomID].coders.length > config.maxLiveLearderBoard) {
+            return true;
+        } else if  (phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase && $rootScope.leaderboard.length > config.maxLiveLearderBoard) {
+            return true;
+        }
+        return false;
     };
 
     /**
