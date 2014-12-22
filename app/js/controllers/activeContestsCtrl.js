@@ -45,8 +45,12 @@
  * Changes in version 1.12 (Web Arena Plugin API Part 2):
  * - Added registerFromPlugin event logic.
  *
+ * Changes in version 1.13 (Web Arena SRM Problem Deep Link Assembly):
+ * - Added $scope.getContestLink
+ * - Fixed some bugs in Registration deep-link logic
+ *
  * @author amethystlei, dexy, flytoj2ee, TCASSEMBLER
- * @version 1.12
+ * @version 1.13
  */
 'use strict';
 /*global module, angular, require*/
@@ -122,7 +126,9 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                     $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
                     if (data.message.indexOf('You are already registered') === -1) {
                         contest.isRegisterable = true;
+                        contest.isRegistered = false;
                     } else {
+                        contest.isRegisterable = false;
                         contest.isRegistered = true;
                     }
                 });
@@ -153,7 +159,9 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                 $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
                 if (data.message.indexOf('You are already registered') === -1) {
                     contest.isRegisterable = true;
+                    contest.isRegistered = false;
                 } else {
+                    contest.isRegisterable = false;
                     contest.isRegistered = true;
                 }
             });
@@ -376,8 +384,11 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                 $scope.$$listeners[helper.EVENT_NAME.PopUpGenericResponse] = [];
                 if (data.message.indexOf('You are already registered') === -1) {
                     contest.isRegisterable = true;
+                    contest.isRegistered = false;
                 } else {
+                    contest.isRegisterable = false;
                     contest.isRegistered = true;
+                    $state.go(helper.STATE_NAME.Dashboard);
                     return;
                 }
                 angular.extend(data, {enableClose: true});
@@ -481,7 +492,8 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
                                     $state.go(helper.STATE_NAME.Dashboard);
                                 }
                             });
-                            if (data.message.indexOf('You have successfully registered for the match.') !== -1) {
+                            if (data.message.indexOf('You have successfully registered for the match.') !== -1
+                                    || data.message.indexOf('You are already registered') !== -1) {
                                 contest.isRegisterable = false;
                                 contest.isRegistered = true;
                                 if ($rootScope.currentModal !== undefined && $rootScope.currentModal !== null) {
@@ -614,7 +626,9 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.getTabName = function (index) {
         return index >= 0 && index < tabNames.length ? tabNames[index] : 'Click to show tabs';
     };
-
+    $scope.getContestLink = function (contest) {
+        return config.staticFileHost + '/#/u/contests/' + contest.roundID + '/';
+    };
     /*jslint unparam: true*/
     // Call register logic
     $scope.$on(helper.BROADCAST_PLUGIN_EVENT.registerFromPlugin, function (event, roundId, callback) {
@@ -641,15 +655,16 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     }
     // Show Register popup. This is from deeplink
     if ($state.current.name === helper.STATE_NAME.Register) {
-        if (!$rootScope.roundData[$stateParams.contestId].isRegistered) {
-            $scope.doAction($rootScope.roundData[$stateParams.contestId]);
-        }
         angular.forEach($filter('orderBy')($scope.getContests(), 'phases[0].startTime'), function (contest, index) {
             if ($stateParams.contestId === contest.roundID.toString()) {
                 $scope.setCurrentContest(index);
             }
         });
-        $state.go(helper.STATE_NAME.Dashboard);
+        if (!$rootScope.roundData[$stateParams.contestId].isRegistered) {
+            $scope.doAction($rootScope.roundData[$stateParams.contestId]);
+        } else {
+            $state.go(helper.STATE_NAME.Dashboard);
+        }
     }
 }];
 

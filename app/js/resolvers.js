@@ -83,8 +83,11 @@
  * Changes in version 1.20 (Web Arena Plugin API Part 2):
  * - Added plugin logic to trigger events.
  *
- * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.18
+ * Changes in version 1.21 (Web Arena SRM Problem Deep Link Assembly):
+ * - Updated enterCompetingRoom resolver to accommodate user.coding state as well
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.21
  */
 ///////////////
 // RESOLVERS //
@@ -1042,7 +1045,8 @@ resolvers.enterLobbyRoom = ['$q', 'socket', '$rootScope', function ($q, socket, 
  */
 resolvers.enterCompetingRoom = ['$q', 'socket', '$rootScope', '$stateParams', function ($q, socket, $rootScope, $stateParams) {
     var deferred = $q.defer(),
-        requestId = null;
+        requestId = null,
+        contestId = angular.isDefined($stateParams.contestId) ? $stateParams.contestId : $stateParams.roundId;
 
     // handle end-sync response
     socket.on(helper.EVENT_NAME.EndSyncResponse, function (data) {
@@ -1060,13 +1064,13 @@ resolvers.enterCompetingRoom = ['$q', 'socket', '$rootScope', '$stateParams', fu
     });
 
     if (angular.isDefined($rootScope.competingRoomID) && $rootScope.competingRoomID > -1) {
-        $rootScope.currentRoomInfo = $rootScope.competingRoomID;
+        $rootScope.currentRoomInfo.roomID = $rootScope.competingRoomID;
         socket.emit(helper.EVENT_NAME.MoveRequest, {
             moveType: $rootScope.roomData[$rootScope.competingRoomID].roomType,
             roomID: $rootScope.competingRoomID
         });
     } else {
-        socket.emit(helper.EVENT_NAME.EnterRoundRequest, {roundID: Number($stateParams.contestId)});
+        socket.emit(helper.EVENT_NAME.EnterRoundRequest, {roundID: Number(contestId)});
     }
     return deferred.promise;
 }];

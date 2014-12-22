@@ -52,8 +52,12 @@
  * Changes in version 1.14 (Web Arena Plugin API Part 2):
  * - Added plugin logic for ready.
  *
+ * Changes in version 1.15 (Web Arena SRM Problem Deep Link Assembly):
+ * - Added logic to handle invalid roundId, problemId and divisionId,
+ * which are side-effects of deep linking
+ *
  * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.14
+ * @version 1.15
  */
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -74,8 +78,8 @@ var config = require('../config');
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', 'tcTimeService', 'keyboardManager', 'appHelper',
-    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, tcTimeService, keyboardManager, appHelper) {
+var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'tcTimeService', 'keyboardManager', 'appHelper',
+    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, tcTimeService, keyboardManager, appHelper) {
         $rootScope.$broadcast('hideFeedback');
         // shared between children scopes
         $scope.sharedObj = {};
@@ -95,7 +99,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $rootScope.previousStateName = $scope.currentStateName();
 
         var componentOpened = false, problemRetrieved = false, notified = false, round,
-            topHeight, bottomHeight, toolBarHeight, totalHeight;
+            topHeight, bottomHeight, toolBarHeight, totalHeight, isValidComponent = false;
 
         /**
          * Check whether it is in Challenge Phase.
@@ -132,7 +136,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 toolBarHeight = 41 + 60;
             }
 
-            if($scope.topStatus === 'normal') {
+            if ($scope.topStatus === 'normal') {
                 this.theCode = $scope.cmElem.CodeMirror.getValue();
             } else if (this.theCode) {
                 $scope.cmElem.CodeMirror.setValue(this.theCode);
@@ -375,7 +379,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             if (component.componentId !== $scope.componentID) {
                 return;
             }
-
+            $timeout(function () { return; }, 0);
             // make visit fields easily
             $scope.problem.component = component;
             $scope.problem.className = component.className;
@@ -537,6 +541,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                         if (angular.isDefined(round.problems[$scope.divisionID])) {
                             angular.forEach(round.problems[$scope.divisionID], function (problem) {
                                 if (problem.problemID === $scope.problemID) {
+                                    isValidComponent = true;
                                     $scope.problem = problem;
                                     $scope.componentID = problem.components[0].componentID;
                                     appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemClosed, {
@@ -557,6 +562,9 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                         }
                     }
                 }
+            }
+            if (!isValidComponent) {
+                $state.go(helper.STATE_NAME.Dashboard);
             }
         } else if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
             // close the previous problem if any

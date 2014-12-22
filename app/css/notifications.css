@@ -106,3 +106,23 @@
   color: white;
   text-decoration: underline;
 }
+
+.notifications .alert.alert-copy:before {
+  background-image: url(../img/check-mark.png);
+  background-repeat: no-repeat;
+  background-position: 0;
+  top: 25%;
+  margin-top: 0;
+  left: 10px;
+  height: 28px;
+  width: 30px;
+}
+.notifications .alert-copy {
+  background: #769c7e;
+  background: rgba(130, 173, 138, 0.882);
+  border: 1px solid #445258;
+  border-color: rgba(73, 88, 95, 0.882);
+  overflow: hidden;
+  color: white;
+  line-height: 39px;
+}
