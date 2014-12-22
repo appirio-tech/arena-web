@@ -68,6 +68,9 @@ body a {cursor: pointer;}
 .modal-body .table>thead>tr>th .arrow {
     background-repeat: no-repeat;
 }
+.navbar-fixed-top {
+    z-index: 1050;
+}
 /*common button style*/
 .btn {
     height: 36px;
