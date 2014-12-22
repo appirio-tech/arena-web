@@ -7016,7 +7016,7 @@ table thead .sort.desc{
     right: 1px;
 }
 .panel-body .mainContent .infoRow {
-    width: 434px;
+    width: 412px;
     display: inline-block;
     margin: 10px 0 12px;
 }
@@ -7033,7 +7033,7 @@ table thead .sort.desc{
 }
 .socialButtons {
     display: inline-block;
-    width: 267px;
+    width: 284px;
     height: 46px;
     vertical-align: middle;
     border: 1px solid;
@@ -7055,9 +7055,9 @@ table thead .sort.desc{
     border: none;
     cursor: pointer;
     height: 28px;
-    width: 28px;
+    width: 12px;
     padding: 0;
-    left: 30px;
+    left: 20px;
     top: 9px;
     position: relative;
 }
@@ -7072,11 +7072,44 @@ table thead .sort.desc{
     display: inline-block;
     position: relative;
 }
-
+.socialButtons .copyLink {
+    border: none;
+    cursor: pointer;
+    height: 28px;
+    width: 28px;
+    padding: 0;
+    left: 35px;
+    top: 9px;
+    position: relative;
+    vertical-align: top;
+}
+.modal-body .copyLink {
+    border: none;
+    cursor: pointer;
+    height: 28px;
+    width: 28px;
+    padding: 0;
+    right: 26px;
+    top: 9px;
+    position: relative;
+    float: right;
+    vertical-align: top;
+}
+.copyLink .icon {
+    background-image: url(../img/copy-link.png);
+    background-size: 28px 28px;
+    background-repeat: no-repeat;
+    height: 28px;
+    width: 28px;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    position: relative;
+}
 .twitter-custom {
     height: 28px;
     width: 28px;
-    left: 45px;
+    left: 30px;
     top: 9px;
     vertical-align: top;
     position: relative;
