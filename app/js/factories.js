@@ -295,6 +295,39 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
         return date;
     };
 
+    /**
+     * Parse the date string formatted as 2014-12-10T21:41:00.000-0500 (ISO 8601 format)
+     * to Date object with date/time in local zone.
+     *
+     * @param dateString - the date string to parse
+     * @returns {Date} the parsed result
+     */
+    retHelper.parseTDate = function (dateString) {
+        var date = new Date(), tz_regex, tz, hours, minutes;
+        date.setFullYear(+dateString.substring(0, 4));
+        date.setMonth((+dateString.substring(5, 7)) - 1);
+        date.setDate(+dateString.substring(8, 10));
+        date.setHours(+dateString.substring(11, 13));
+        date.setMinutes(+dateString.substring(14, 16));
+        // Timezone
+        tz_regex = /(\+|-)(\d{4})$/;
+        tz = tz_regex.exec(dateString);
+
+        if (tz) {
+            hours = -Number(tz[2].substr(0, 2));
+            minutes = -Number(tz[2].substr(2, 2));
+
+            if (tz[1] === '-') {
+                hours = -hours;
+                minutes = -minutes;
+            }
+            date.setHours(date.getHours() + hours);
+            date.setMinutes(date.getMinutes() + minutes);
+        }
+        date.setMinutes(date.getMinutes() - (new Date()).getTimezoneOffset());
+        return date;
+    };
+
     retHelper.clickOnTarget = function (clicked, id, stepLimit) {
         if (!clicked) {
             return false;
