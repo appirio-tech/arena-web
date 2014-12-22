@@ -6752,7 +6752,7 @@ contestManagementPanel .panel-footer .btn {
     height: 26px;
     width: 26px;
     background:url(../img/loading.png) 50% 50% no-repeat;
-    z-index: 999;
+    z-index: 2;
 
 }
 .activeUsers .refreshData.loading{
