@@ -84,8 +84,11 @@
  * Changes in version 1.19 (Web Arena Plugin API Part 2):
  * - Fixed some undefined exceptions.
  *
+ * Changes in version 1.20 (Web Arena SRM Problem Deep Link Assembly):
+ * - Added copy link functionality in coder info popup
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.19
+ * @version 1.20
  */
 'use strict';
 /*jshint -W097*/
@@ -99,6 +102,7 @@
  * @type {exports}
  */
 var helper = require('../helper'),
+    config = require('../config'),
     contestCreationCtrl = require('./contestCreationCtrl');
 
 /**
@@ -118,6 +122,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
             $scope.enableClose = data.enableClose;
             $scope.coderInfo = data.message;
+            $scope.coderInfoLink = function () { return data.coderInfoLink; };
             $scope.coderHistoryData = data.coderHistoryData;
             $scope.registrants = data.registrants;
 
@@ -278,6 +283,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         },
         selTheme,
         waitingCoderInfo = false,
+        coderInfoUsername = '',
         modalTimeoutPromise = null,
         phaseChangeRoundId,
         /**
@@ -470,6 +476,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return;
         }
         waitingCoderInfo = true;
+        coderInfoUsername = name;
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
         }
@@ -574,6 +581,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.openModal({
                 title: helper.POP_UP_TITLES.CoderInfo,
                 message: data.message,
+                coderInfoLink: config.staticFileHost + '/#/u/dashboard/' + coderInfoUsername,
                 enableClose: true
             }, null, null, 'partials/user.chat.area.coderinfo.html');
         } else if (data.title === helper.POP_UP_TITLES.IncorrectUsage) {
@@ -781,6 +789,16 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         $rootScope.lastDivSummary = undefined;
     };
 
+    $rootScope.notifyCopyLink = function () {
+        $('.top-right').notify({
+            message: 'Link is ready to be pasted.',
+            type: 'copy',
+            fadeOut: {
+                enabled: true,
+                delay: 5000
+            }
+        }).show();
+    };
     /**
      * Get the division summary.
      * It is first sending close div summary for the summary we want to open.
@@ -842,7 +860,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return $rootScope.roomData && $rootScope.roomData[roomID] ? $rootScope.roomData[roomID].coders : [];
         }
         if (viewOn === 'divOne' || viewOn === 'divTwo') {
-            return $rootScope.leaderboard ? $rootScope.leaderboard : [];
+            return angular.isDefined($rootScope.leaderboard) ? $rootScope.leaderboard : [];
         }
 
         return [];
