@@ -43,8 +43,11 @@
  * - Added TC_HOSTNAME and CHALLENGE_ADVERTISING_UPDATE
  *   to handle showing and updating challenge advertising data.
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus
- * @version 1.10
+ * Changes in version 1.11 (Module Assembly - Web Arena Max Live Leaderboard Assembly):
+ * - Added MAX_LIVE_LEADERBOARD setting.
+ *
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, TCSASSEMBLER
+ * @version 1.11
  */
 'use strict';
 /*global module, process*/
@@ -106,7 +109,8 @@ module.exports = function (grunt) {
                         { match : 'FEEDBACK_MAXLENGTH', replacement: process.env.FEEDBACK_MAXLENGTH },
                         { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT },
                         { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME },
-                        { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME }
+                        { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
+                        { match : 'MAX_LIVE_LEADERBOARD', replacement: process.env.MAX_LIVE_LEADERBOARD }
                     ]
                 },
                 files : [

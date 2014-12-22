@@ -305,7 +305,8 @@
                                     <a data-ng-click="toggleExpand('leaderboardPanel', 'rSec', 'lSec')" class="expandIcon"></a>
                                 </div><!--/.heading-->
                                 <p data-ng-show="!registrationFinished()">The leaderboard is not ready.</p>
-                                <div class="tableWrapper" data-ng-show="registrationFinished()" data-rebuild-on="rebuild:leaderboardTable">
+                                <p data-ng-if="registrationFinished() && exceedLeaderBoardLimit(contest.phaseData.phaseType, currentRoomInfo.roomID)">The leaderboard you are trying to view is currently unavailable. Please try again after the match is complete</p>
+                                <div class="tableWrapper" data-ng-if="registrationFinished() && !exceedLeaderBoardLimit(contest.phaseData.phaseType, currentRoomInfo.roomID)" data-rebuild-on="rebuild:leaderboardTable">
                                     <div class="tHeadDiv" data-ng-class="{moreProblemTbl:contest.problems[divisionID].length>3,normal:contest.problems[divisionID].length<=3}">
                                         <div class="innerWrapper">
                                             <table class="table table-condensed">

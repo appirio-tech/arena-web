@@ -86,3 +86,6 @@ set CHALLENGE_ADVERTISING_UPDATE=300000
 
 :: The TopCoder host name
 set TC_HOSTNAME=http://www.topcoder.com
+
+:: The max live leaderboard number
+set MAX_LIVE_LEADERBOARD=200
