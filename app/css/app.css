@@ -1114,6 +1114,7 @@ footer .right>span:nth-child(2) {
 }
 .modal .modal-content .modal-body p {
     margin: auto 20px;
+    word-wrap: break-word;
 }
 .modal .modal-content .wizardBody p {
     margin: 0;
