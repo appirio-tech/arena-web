@@ -50,7 +50,7 @@
                 </div>
             </div>
             <p data-ng-show="!isShownRooms()">The leaderboard is not ready.</p>
-            <p data-ng-if="isShownRooms() && exceedLeaderBoardLimit(contest.phaseData.phaseType, currentRoomInfo.roomID)">The leaderboard you are trying to view is currently unavailable. Please try again after the match is complete</p>
+            <p data-ng-if="isShownRooms() && exceedLeaderBoardLimit(contest.phaseData.phaseType, currentRoomInfo.roomID)" data-ng-hide="viewOn=='rooms'">The leaderboard you are trying to view is currently unavailable. Please try again after the match is complete</p>
             <section class="detailPage shortLeaderboard">
                 <section class="leaderboardWrapper" data-rebuild-on="rebuild:leaderboardTable" id="leaderboardPanel" data-ng-hide="viewOn=='rooms'">
                     <p data-ng-show="!isShownRooms()">The leaderboard is not ready.</p>
