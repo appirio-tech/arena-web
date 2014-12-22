@@ -38,6 +38,7 @@ module.exports = {
     feedbackMaxlength: '@@FEEDBACK_MAXLENGTH',
     keyboardShortcut: '@@KEYBOARD_SHORTCUT',
     chatIconDisappearTime: '@@CHAT_ICON_DISAPPEAR_TIME',
-    tcHostName: '@@TC_HOSTNAME'
+    tcHostName: '@@TC_HOSTNAME',
+    maxLiveLearderBoard: '@@MAX_LIVE_LEADERBOARD'
 };
 
