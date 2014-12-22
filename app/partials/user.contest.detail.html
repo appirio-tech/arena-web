@@ -289,7 +289,7 @@
                                                 </div>
                                                 <div data-ng-show="getKeys(viewOn).lbFilterKey=='specific'" class="contentRow">
                                                     <label>Handle</label>
-                                                    <input type="text" data-ng-model="lbHandleString" class="filterInput" data-ng-keypress="pressKeyInFilter($event, viewOn, 'leaderboard')"/>
+                                                    <input type="text" data-ng-model="lbHandleString" class="filterInput" data-ng-keypress="pressKeyInFilter($event, viewOn, 'leaderboard')" data-ng-change="stopHandleFilter(viewOn)"/>
                                                 </div>
                                             </div>
                                             <div class="btnWrapper">
