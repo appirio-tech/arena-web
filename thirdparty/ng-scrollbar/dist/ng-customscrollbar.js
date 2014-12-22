@@ -216,6 +216,19 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
             scope.$on(eventName, reload);
           });
         }
+        if (!!attrs.scrollOn) {
+          scope.$on(attrs.scrollOn, function(_, data) {
+              if(-(page.top || 0) > data.top) {
+                  dragger.top = (dragger.trackHeight - dragger.height) * Math.min(data.top / (page.scrollHeight-page.height), 1);
+              }
+              else if(-(page.top || 0) + page.height < data.bottom) {
+                  dragger.top = dragger.trackHeight * (data.bottom / page.scrollHeight) - dragger.height;
+              }
+              else return;
+
+              rebuild();
+          });
+        }
       },
         template: '<div>' + '<div class="ngsb-wrap">' + '<div class="ngsb-container" ng-transclude tabindex="100"></div>' + '<div class="ngsb-scrollbar" style="position: absolute; display: block;" ng-show="showYScrollbar">' + '<div class="ngsb-thumb-container">' + '<div class="ngsb-thumb-pos" oncontextmenu="return false;">' + '<div class="ngsb-thumb" ></div>' + '</div>' + '<div class="ngsb-track"></div>' + '</div>' + '</div>' + '</div>' + '</div>'
     };

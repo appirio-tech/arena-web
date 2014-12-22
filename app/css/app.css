@@ -41,7 +41,7 @@ body a {cursor: pointer;}
 /*Fix the footer at the bottom*/
 .page-main-content {
     min-height: 100%;
-    position: relative;   
+    position: relative;
 }
 
 .page-main-content > footer {
@@ -6897,6 +6897,11 @@ contestManagementPanel .panel-footer .btn {
     margin-right: 0;
     margin-top: 0;
 }
+
+.leaderboard-rounds .ngsb-wrap .ngsb-scrollbar {
+    top: 0;
+}
+
 .leadarboardList .tableWrap .leaderBoardTable span,
 .activeUserList .tableWrap .activeUserTable span,
 .anchor{

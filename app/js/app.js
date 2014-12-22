@@ -237,6 +237,7 @@ directives.preloader = require('./directives/preloader');
 directives.memberFeedback = require('./directives/memberFeedback');
 directives.leaderboard = require('./directives/leaderboard');
 directives.challengesAdvertiser = require('./directives/challengesAdvertiser');
+directives.ngScrollbarAutoscroll = require('./directives/ngScrollbarAutoscroll');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -347,6 +348,7 @@ main.directive('preloader', directives.preloader);
 main.directive('memberFeedback', directives.memberFeedback);
 main.directive('leaderboard', directives.leaderboard);
 main.directive('challengesAdvertiser', directives.challengesAdvertiser);
+main.directive('ngScrollbarAutoscroll', directives.ngScrollbarAutoscroll);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
