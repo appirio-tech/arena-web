@@ -4090,7 +4090,7 @@ footer .right>span:nth-child(2) {
     border-width: 0;
 }
 .panelSummary .panel-body {
-    padding: 7px 14px 20px 30px;
+    padding: 0px 14px 20px 30px;
 }
 .panelSummary .panel-body .mainContent {
     padding: 0;
