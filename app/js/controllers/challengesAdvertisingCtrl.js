@@ -59,43 +59,6 @@ var challengesAdvertisingCtrl = ['$scope', '$http', 'appHelper', '$timeout', '$w
         }
     };
 
-    /**
-     * Parse the date string.
-     * @param dateString - the date string to parse
-     * @returns {Date} the parsed result
-     * @since 1.2
-     */
-    function parseDate(dateString) {
-        // Timezone
-        var tz_regex = /(\+|-)(\d{4})$/,
-            tz = tz_regex.exec(dateString),
-            date = null,
-            hours = null,
-            minutes = null,
-            diff = null;
-
-        // IE cannot parse timezone. Remove it, parse
-        // and then add timezone manually
-        if (tz) {
-            dateString = dateString.replace(tz[0], 'Z');
-            date = new Date(dateString);
-            hours = Number(tz[2].substr(0, 2));
-            minutes = Number(tz[2].substr(2, 2));
-
-            if (tz[1] === '-') {
-                hours = -hours;
-                minutes = -minutes;
-            }
-
-            diff = hours * 60 + minutes;
-            date.setMinutes(date.getMinutes() - diff);
-
-            return date;
-        }
-
-        return new Date(dateString);
-    }
-
 
     /**
      * Handles the data successfully received from TC-API server.
@@ -109,7 +72,7 @@ var challengesAdvertisingCtrl = ['$scope', '$http', 'appHelper', '$timeout', '$w
         $scope.challenges = [];
 
         angular.forEach(data.data, function (challenge) {
-            var endDate = parseDate(challenge.registrationEndDate);
+            var endDate = appHelper.parseTDate(challenge.registrationEndDate);
 
             // Don't add this challenge if registration is closed
             if (endDate <= new Date()) {
