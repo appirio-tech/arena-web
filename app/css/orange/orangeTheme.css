@@ -769,13 +769,6 @@ footer .left>span {
 .panelOverview .panel-body .contentWrapper {
     background: #fff;
     border: 1px solid #e7e7e7;
-    height: 230px;
-    margin-top: 4px;
-    margin-bottom: 3px;
-}
-.panelOverview>section:last-child .panel-body .contentWrapper {
-    height: 229px;
-    border-bottom-width: 1px;
 }
 .panelOverview .overviewAndMessage .profile p {
     color: #333;
@@ -833,7 +826,7 @@ footer .left>span {
 .panelContestPlan .matchScheduleLink:hover {
     color: #ff8a00;
 }
-.panelContestPlan .calendar .fc-today {
+.panelContestPlan .calendar .fc-view-month .fc-today {
     border-color: #ff8a00 !important;
 }
 .panelContestPlan .btnToday,

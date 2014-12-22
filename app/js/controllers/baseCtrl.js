@@ -695,6 +695,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     $scope.onClickMessageArena = function () {
         notificationService.clearUnRead();
         checkPosition();
+        // Hide all notifications
+        var $notifications = $('.alert');
+        $notifications.children('.close').trigger('click');
     };
 
     /**

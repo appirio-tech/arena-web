@@ -90,7 +90,7 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
 
     // the sorting flags.
     $scope.sortlb = {
-        column: '',
+        column: 'points',
         descending: false
     };
     /**
