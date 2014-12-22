@@ -99,6 +99,7 @@
 
 var config = require('./config');
 var helper = require('./helper');
+require('./server_newrelic');
 /**
  * Represents the timeout of establishing socket connection.
  *

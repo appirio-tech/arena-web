@@ -567,7 +567,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     popUpContent: data.message,
                     action : {
                         question: '',
-                        target: '#/u/contests/' + phaseChangeRoundId
+                        target: '#/u/contests/' + phaseChangeRoundId + '/room'
                     }
                 });
             }
@@ -703,6 +703,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     $scope.onClickMessageArena = function () {
         notificationService.clearUnRead();
         checkPosition();
+        // Hide all notifications
+        var $notifications = $('.alert');
+        $notifications.children('.close').trigger('click');
     };
 
     /**

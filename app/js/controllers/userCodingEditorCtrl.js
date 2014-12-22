@@ -150,17 +150,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 }
 
                 $scope.markedSearched.length = 0;
-                cursor = $scope.cm.getSearchCursor($scope.searchText);
+                cursor = $scope.cm.getSearchCursor($scope.searchText, 0, true);
                 while (cursor.findNext()) {
                     $scope.markedSearched.push($scope.cm.markText(cursor.from(), cursor.to(), {className: "searched"}));
-                }
-
-                if ($scope.searchText.length > 0 && $scope.markedSearched.length === 0) {
-                    $scope.openModal({
-                        title: 'Warning',
-                        message: 'No matched text found!',
-                        enableClose: true
-                    });
                 }
             }
         };
@@ -622,6 +614,8 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             return (!$scope.cm) || $scope.cm.getValue().trim() === '';
         };
 
+        // init code compiled false
+        $scope.codeCompiled = false;
         /**
          * Compile solution.
          */
@@ -661,6 +655,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 code: code
             });
             if (modalTimeoutPromise) {
+                $scope.codeCompiled = false;
                 $timeout.cancel(modalTimeoutPromise);
             }
             modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
@@ -692,6 +687,13 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     title: 'Warning',
                     message: 'You have made a change to your code since the last time you compiled. Do you want to continue with the submit?',
                     buttons: ['Yes', 'No'],
+                    enableClose: true
+                }, submitHandler);
+            } else if (!$scope.codeCompiled) {
+                $scope.openModal({
+                    title: 'Warning',
+                    message: 'You can\'t submit unless you have successfully compiled first.',
+                    buttons: ['Close'],
                     enableClose: true
                 }, submitHandler);
             } else {
@@ -790,6 +792,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             if (data.title === helper.POP_UP_TITLES.CompileResult && data.type2 === helper.COMPILE_RESULTS_TYPE_ID.SUCCEEDED) {
                 // set content dirty to false when compile successfully.
                 $scope.contentDirty = false;
+                $scope.codeCompiled = true;
             }
         });
 

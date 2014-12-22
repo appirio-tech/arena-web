@@ -31,8 +31,25 @@ body a {cursor: pointer;}
 }
 /* To tackle fixed top nav*/
 .mainContainer {
-    margin-top: 62px;
+    padding-top: 62px;
+    padding-bottom: 62px;
+    -moz-box-sizing:    border-box;
+   -webkit-box-sizing: border-box;
+    box-sizing:        border-box;
 }
+
+/*Fix the footer at the bottom*/
+.page-main-content {
+    min-height: 100%;
+    position: relative;
+}
+
+.page-main-content > footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
 .anon-header .navbar .navbar-brand,
 .header .navbar-brand,
 .header .navIcons>li>.icon:before,
@@ -1955,7 +1972,7 @@ footer .right>span:nth-child(2) {
 .panel-custom {
     width: 759px;
     border: 1px solid #234760;
-    height: 315px;
+    height: 345px;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -2025,7 +2042,7 @@ footer .right>span:nth-child(2) {
 .panel-custom .schedulePanel,
 .panel-custom .roomsPanel,
 .panel-custom .statusPanel {
-    height: 141px;
+    height: 171px;
     padding: 12px 0;
     border-top: 1px solid #0bbbe7;
     line-height: 23px;
@@ -3192,7 +3209,7 @@ footer .right>span:nth-child(2) {
 
 /* contest plan widget */
 .panelContestPlan {
-    height: 315px;
+    height: 345px;
     width: 407px;
     border-color: #1f444e;
     background: #151718;
@@ -3279,7 +3296,7 @@ footer .right>span:nth-child(2) {
 .panelContestPlan .fc-day>div {
     min-height: 30px !important;
 }
-.panelContestPlan .calendar .fc-today {
+.panelContestPlan .calendar .fc-view-month .fc-today {
     -webkit-border-radius: 5px !important;
     -moz-border-radius: 5px !important;
     border-radius: 5px !important;
@@ -3594,9 +3611,10 @@ footer .right>span:nth-child(2) {
     margin-bottom: 4px;
 }
 .messageArena .panelHeader .legends label {
-    padding-left: 22px;
-    margin-right: 20px;
+    padding-left: 18px;
+    margin-right: 12px;
     position: relative;
+    cursor: pointer;
 }
 .messageArena .panelHeader .legends label:before,
 .messageArena .messageBox .mItem:before {
@@ -3614,6 +3632,10 @@ footer .right>span:nth-child(2) {
 .messageArena .messageBox .problem:before {background-position: -75px -50px;}
 .messageArena .panelHeader .legends .iRound:before,
 .messageArena .messageBox .round:before {background-position: -100px -50px;}
+.messageArena .panelHeader .legends .iAll:before {content: none;}
+.messageArena .panelHeader .legends .iAll {
+    padding-left: 0px;
+}
 .messageArena .messageBox {
     padding-right: 4px;
     max-height: 212px;
@@ -7200,7 +7222,7 @@ table thead .sort.desc{
     position: fixed;
     bottom: 0;
     right: 5px;
-    z-index: 2;
+    z-index: 20;
 }
 .panelFeedback {
     width: 407px;
@@ -7399,7 +7421,7 @@ table thead .sort.desc{
     position: fixed;
     bottom: 0;
     right: 0;
-    z-index: 4;
+    z-index: 10;
 }
 .codeArea .chatWidget .dropdown-toggle,
 .codeArea .infoSection li {
@@ -7533,7 +7555,7 @@ table thead .sort.desc{
     font-weight: 400;
 }
 .codeArea .leaderboardWrapper .table .col1 {
-    width: 66px;
+    width: 70px;
 }
 /*min*/
 .codeArea .chatArea-min .panel,

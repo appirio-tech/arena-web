@@ -69,8 +69,9 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
         unRead: 0,
         pastNotifications: []
     },
+    // No need to check date, same message can have different date when it occurs in different time
         sameMessage = function (msgA, msgB) {
-            return msgA.date === msgB.date && msgA.type === msgB.type && msgA.message === msgB.message &&
+            return msgA.type === msgB.type && msgA.message === msgB.message &&
                 ((!angular.isDefined(msgA.action) && !angular.isDefined(msgB.action)) ||
                     (angular.isDefined(msgA.action) && angular.isDefined(msgB.action) &&
                         msgA.action.question === msgB.action.question && msgA.action.target === msgB.action.target));
@@ -156,10 +157,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
         var player = document.getElementById('player'),
             i,
             unreadDelta = 0;
-        if (player) {
-            player.load();
-            player.play();
-        }
+
         // messages: array of message
         // message: {
         //   read: boolean - indicate the message is read or not
@@ -174,6 +172,10 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
         // }
         for (i = messages.length - 1; i >= 0; i -= 1) {
             if (!service.existMessage(messages[i])) {
+                if (player) {
+                    player.load();
+                    player.play();
+                }
                 service.notifications.unshift(messages[i]);
                 if (!messages[i].read) {
                     unreadDelta += 1;
@@ -290,6 +292,39 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
         date.setMinutes(minute);
         date.setSeconds(seconds);
         date.setMilliseconds(0);
+        return date;
+    };
+
+    /**
+     * Parse the date string formatted as 2014-12-10T21:41:00.000-0500 (ISO 8601 format)
+     * to Date object with date/time in local zone.
+     *
+     * @param dateString - the date string to parse
+     * @returns {Date} the parsed result
+     */
+    retHelper.parseTDate = function (dateString) {
+        var date = new Date(), tz_regex, tz, hours, minutes;
+        date.setFullYear(+dateString.substring(0, 4));
+        date.setMonth((+dateString.substring(5, 7)) - 1);
+        date.setDate(+dateString.substring(8, 10));
+        date.setHours(+dateString.substring(11, 13));
+        date.setMinutes(+dateString.substring(14, 16));
+        // Timezone
+        tz_regex = /(\+|-)(\d{4})$/;
+        tz = tz_regex.exec(dateString);
+
+        if (tz) {
+            hours = -Number(tz[2].substr(0, 2));
+            minutes = -Number(tz[2].substr(2, 2));
+
+            if (tz[1] === '-') {
+                hours = -hours;
+                minutes = -minutes;
+            }
+            date.setHours(date.getHours() + hours);
+            date.setMinutes(date.getMinutes() + minutes);
+        }
+        date.setMinutes(date.getMinutes() - (new Date()).getTimezoneOffset());
         return date;
     };
 

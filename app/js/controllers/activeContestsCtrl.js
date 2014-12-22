@@ -188,7 +188,9 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.getContests = function () {
         var result = [];
         angular.forEach($rootScope.roundData, function (contest) {
-            result.push(contest);
+            if(contest.roundType != 13) {
+                result.push(contest);
+            }
         });
         return result;
     };
