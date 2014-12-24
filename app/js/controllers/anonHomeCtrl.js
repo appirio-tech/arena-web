@@ -20,18 +20,23 @@
 
 var config = require('../config');
 
-var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$rootScope', 'appHelper', function ($scope, $state, $window, sessionHelper, auth0, $rootScope, appHelper) {
+var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$rootScope', 'appHelper', '$cookies', function ($scope, $state, $window, sessionHelper, auth0, $rootScope, appHelper, $cookies) {
     // whether the login has error
     $scope.hasError = false;
     $scope.hasErrorForm = false;
     $scope.isUsernameEmpty = false;
     $scope.isPasswordEmpty = false;
-    $scope.username = '';
+    if ($cookies.username && $cookies.username !== '') {
+        $scope.username = $cookies.username;
+        $scope.remember = true;
+    } else {
+        $scope.username = '';
+    }
     $scope.password = '';
 
     $scope.register = function() {
         window.location = config.registrationUrl;
-    }
+    };
 
     $scope.accountLogin = function () {
         $scope.hasError = false;
@@ -80,6 +85,11 @@ var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$r
         }
         sessionHelper.clear();
         sessionHelper.persist({remember: $scope.remember});
+        if ($scope.remember === true) {
+            $cookies.username = $scope.username;
+        } else {
+            $cookies.username = '';
+        }
 
         appHelper.clearLocalStorage();
 
