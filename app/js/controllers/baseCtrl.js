@@ -120,6 +120,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.coderInfo = data.message;
             $scope.coderHistoryData = data.coderHistoryData;
             $scope.registrants = data.registrants;
+            $scope.numCoderRequest = 0;
 
             // define initial sorting order for registrants list
             $scope.registrantPredicate = 'userRating';
@@ -392,6 +393,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
 
     // modal defined in the root scope can be used by other scopes.
     $rootScope.currentModal = null;
+
     socket.emit(helper.EVENT_NAME.GetAdminBroadcastsRequest, {});
 
     /**
@@ -455,6 +457,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             message: 'Sorry, the request is timeout.',
             enableClose: true
         });
+        $scope.numCoderRequest = 0;
         modalTimeoutPromise = null;
         waitingCoderInfo = false;
     }
@@ -470,14 +473,17 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return;
         }
         waitingCoderInfo = true;
+        $scope.numCoderRequest = 1;
+
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
         }
-        $scope.openModal({
+
+        /*$scope.openModal({
             title: 'Getting coder info',
             message: 'Please wait while we retrieve coder information',
             enableClose: false
-        });
+        });*/
 
         modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
         socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
@@ -571,6 +577,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 $timeout.cancel(modalTimeoutPromise);
             }
             waitingCoderInfo = false;
+            $scope.numCoderRequest = 0;
             $scope.openModal({
                 title: helper.POP_UP_TITLES.CoderInfo,
                 message: data.message,
