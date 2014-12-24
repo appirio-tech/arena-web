@@ -11,6 +11,13 @@
                 </ul>
             </li>
         </ul>
+        <chat-settings>
+            <toggle-setting label="Chat" value="chatSettings.chat"></toggle-setting>
+            <toggle-setting label="History" value="chatSettings.history"></toggle-setting>
+            <toggle-setting label="Auto-Scrolling" value="chatSettings.autoscroll"></toggle-setting>
+            <toggle-setting label="Timestamps" value="chatSettings.timestamps"></toggle-setting>
+            <toggle-setting label="Sounds" value="chatSettings.sounds"></toggle-setting>
+        </chat-settings>
         </div>
         <a class="icon miniIcon" data-ng-show="windowStatus.chatArea=='normal'" data-ng-click="closePanel('chatArea');"></a>
         <a class="icon expandIcon" data-ng-show="windowStatus.chatArea=='normal'" data-ng-click="expandPanel('chatArea');"></a>
@@ -38,6 +45,13 @@
                 </ul>
             </li>
         </ul>
+            <chat-settings>
+                <toggle-setting label="Chat" value="chatSettings.chat"></toggle-setting>
+                <toggle-setting label="History" value="chatSettings.history"></toggle-setting>
+                <toggle-setting label="Auto-Scrolling" value="chatSettings.autoscroll"></toggle-setting>
+                <toggle-setting label="Timestamps" value="chatSettings.timestamps"></toggle-setting>
+                <toggle-setting label="Sounds" value="chatSettings.sounds"></toggle-setting>
+            </chat-settings>
         </div>
     </div>
     <!--end of heading-->

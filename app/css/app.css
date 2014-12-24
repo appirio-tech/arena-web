@@ -8856,3 +8856,185 @@ table thead .sort.desc{
         margin-top: 10px;
     }
 }
+
+
+/* 
+*
+*    Styles for chat area settings
+*
+*/
+
+.panelChatArea chat-settings {
+    float: right;
+    margin: -2.5px 11px 0 0;
+}
+
+.settings-panel {
+    /* Hide setings content while it's not copied over to tooltip */
+    display: none;
+
+    padding: 0 10px 5px 10px;
+}
+
+.settings-panel, .settings-panel h3 {
+    font-size: 14px;
+    line-height: 36px;
+}
+
+.settings-panel h3 {
+    text-align: center;
+    margin: 0;
+}
+
+.settings-panel .setting {
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 13px;
+}
+
+.settings-panel .setting .setting-label {
+    -webkit-box-flex: 1; 
+    -moz-box-flex: 1; 
+    -webkit-flex: auto; 
+    -ms-flex: auto; 
+    flex: auto;
+
+    display: block;
+    padding-right: 33px;
+}
+
+.settings-panel .setting .bootstrap-switch {
+    -webkit-box-flex: 0; 
+    -moz-box-flex: 0; 
+    -webkit-flex: none; 
+    -ms-flex: none; 
+    flex: none;
+}
+
+.settings-qtip {
+    border: none;
+}
+
+.settings-qtip:before, .settings-qtip:after {
+    content: "";
+    display: block;
+    position: absolute;
+    right: 44px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 12px 10px;
+}
+
+.settings-qtip:before {
+    top: -12px;
+}
+
+.settings-qtip:after {
+    top: -10px;
+}
+
+.qtip .settings-panel {
+    display: block;
+}
+
+.settings-qtip .qtip-content {
+    padding: 0;
+}
+
+.chat-settings-expand {
+    background-color: transparent;
+    border: none;
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAABJ0AAASdAHeZh94AAAAGHRFWHRTb2Z0d2FyZQBwYWludC5uZXQgNC4wLjOM5pdQAAAB10lEQVRIS7XVzUpbQRjG8UCpvQJNQmuhXXWnEYzRVG0bvIRsXbgWrCjYO9A76UYKRRdCNwVpFhVX0kU/VKS9Axd+V/9PmDO+Z2aiUXDgJ5457zx6JpP3FPoGqt2YxIrRQKouJzmZ8BmXxhpSdTmpyX7M44mZ+wkb/hvZPdUt4LmZa8td4BX+QQHfoQXjOHNzGV1P4AW23Nw+XsLn2eBn+IswxF6HzoPrXfQiCp+FLbyvGUThj/AVqQXd2oByonAp4QT5RYMjrfLIZK3gRrk6UWO+FdRpXR98ng2WKdgFl8Wh0abLjEaxMtoM6t/C5+nHO3zBAf7jupj/2OV0HNTZJzjGDlZR180PuA407FZ0GuXhcW1Rav3yjeFu/a0jtRYPH67H+ohtHMIX6FS49R1Hafi13ZYL7EFHsqFwS5+2D8ddP9A38Hn+F0fn9Aj+D+i4uZxoFCs1exRP8RQ+zwbrm6XH8cFGS6fCZbIV7RMSfolkEz2IwqcRFt/HIqJwdTP1aVt4W1cMW4W6qrprFC7q37+gQvVp9WttQRiiVluH9vibm9N7QO8Dn2eDM2pe72HfRD9gw/8gu/cYc9AbLJtry13c4BNs+DpSdTnJyYQxLBl69aXqjGrhCkKGzHkl1PYXAAAAAElFTkSuQmCC)
+}
+
+.chat-settings-expand:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    -webkit-transition: background-color .3s;
+    transition: background-color .3s;
+}
+
+.settings-panel .setting .bootstrap-switch {
+    min-width: 44px;
+    width: 44px;
+    position: relative;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    -webkit-transition: background-color .5s;
+    transition: background-color .5s;
+    border-radius: 10px / 50%;
+}
+
+.settings-panel .setting .bootstrap-switch-on {
+    background-color: #0d80d5;
+}
+
+.settings-panel .setting .bootstrap-switch-off {
+    background-color: #2d2f30;
+}
+
+.settings-panel .bootstrap-switch .bootstrap-switch-handle-off,
+.settings-panel .bootstrap-switch .bootstrap-switch-handle-on, 
+.settings-panel .bootstrap-switch .bootstrap-switch-label {
+    font-size: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+    line-height: 12px;
+    width: 50%;
+    background: transparent;
+    color: #fff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.settings-panel .bootstrap-switch .bootstrap-switch-handle-on {
+    padding-right: 12px;
+}
+
+.settings-panel .bootstrap-switch .bootstrap-switch-handle-off {
+    padding-left: 12px;
+}
+
+.settings-panel .bootstrap-switch .bootstrap-switch-label {
+    width: 12px;
+    height: 12px;
+    border-radius: 50% !important;
+    position: absolute;
+    top: 50%;
+    margin-top: -6px;
+    -webkit-transition: margin-left .5s;
+    transition: margin-left .5s;
+    left: 50%;
+    background: #fff;
+    pointer-events: none;
+}
+
+.settings-panel .bootstrap-switch-on .bootstrap-switch-label {
+    margin-left: -15px;
+}
+
+.settings-panel .bootstrap-switch-off .bootstrap-switch-label {
+    margin-left: 3px;
+}
+
+.settings-panel .bootstrap-switch .bootstrap-switch-container {
+    width: 200%;
+}
+
+.settings-panel .bootstrap-switch.bootstrap-switch-off .bootstrap-switch-container {
+    margin-left: -100%;
+}

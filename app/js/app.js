@@ -244,6 +244,8 @@ directives.preloader = require('./directives/preloader');
 directives.memberFeedback = require('./directives/memberFeedback');
 directives.leaderboard = require('./directives/leaderboard');
 directives.challengesAdvertiser = require('./directives/challengesAdvertiser');
+directives.chatSettings = require('./directives/chatSettings');
+directives.toggleSetting = require('./directives/toggleSetting');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -354,6 +356,8 @@ main.directive('preloader', directives.preloader);
 main.directive('memberFeedback', directives.memberFeedback);
 main.directive('leaderboard', directives.leaderboard);
 main.directive('challengesAdvertiser', directives.challengesAdvertiser);
+main.directive('chatSettings', directives.chatSettings);
+main.directive('toggleSetting', directives.toggleSetting);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
