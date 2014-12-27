@@ -8,7 +8,10 @@
 #filterContent {
     display: none;
 }
-html{height:100%;}
+html {
+    height:100%;
+    -ms-overflow-style: scrollbar;
+}
 body{
     background:url(../img/dark/bg.png) repeat 0 0 #DDE7F2;
     font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
