@@ -644,6 +644,9 @@ body a {cursor: pointer;}
     color: #696a6b;
 }
 /** rating style and role style **/
+.rating-scrollpanel .ngsb-wrap .ngsb-scrollbar {
+    top: 0;
+}
 .ratingItem {
     padding-left: 15px;
 }
