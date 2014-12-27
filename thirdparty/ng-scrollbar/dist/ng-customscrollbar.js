@@ -160,6 +160,7 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
               win.bind('mousemove', dragHandler);
               event.preventDefault();
             });
+            tools.bind('click', function(e) {e.stopPropagation()});
             if (keepBottom) {
               dragger.top = Math.max(0, parseInt(page.height, 10) - parseInt(dragger.height, 10));
               redraw();
