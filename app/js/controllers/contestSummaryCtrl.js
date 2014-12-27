@@ -49,7 +49,6 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
                 $rootScope.closeLastDivSummary();
             }
         };
-
     $scope.viewDivisionID = $scope.divisionID;
     $scope.setViewOn = function (view) {
         $rootScope.currentViewOn = view;
@@ -61,7 +60,7 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
             $rootScope.leaderboard = [];
             $rootScope.isDivLoading = false;
             $scope.viewDivisionID = $scope.divisionID;
-        } else {
+        } else if (divID >0) {
             $scope.viewDivisionID = divID;
             $rootScope.getDivSummary($scope.contest.roundID, divID);
         }
