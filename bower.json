@@ -24,12 +24,13 @@
     "angular-timer": "~1.1.5",
     "angular-ui-codemirror": "0.1.1",
     "angular-ui-calendar": "~0.8.1",
-    "angular-themer" : "~0.2.2",
+    "angular-themer": "~0.2.2",
     "angular-ui-angular": "https://github.com/angular-ui/angular.git",
     "angulartics": "~0.15.20",
-    "angular-table":"https://github.com/esvit/ng-table.git",
+    "angular-table": "https://github.com/esvit/ng-table.git",
     "angular-local-storage": "https://github.com/grevory/angular-local-storage.git",
-    "angular-facebook":"https://github.com/Ciul/angular-facebook.git"
+    "angular-facebook": "https://github.com/Ciul/angular-facebook.git",
+    "angular-bootstrap-switch": "~0.3.0"
   },
   "resolutions": {
     "jquery": "~2.x"
