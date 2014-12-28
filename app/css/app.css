@@ -6285,6 +6285,15 @@ contestManagementPanel .panel-footer .btn {
     margin-left: -1px;
     padding-top: 16px;
 }
+.problemListPanel {
+    position: relative;
+    padding-bottom: 50px;
+}
+.problemListPanel .paginator {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
 .problemListPanel .searchArea {
     padding: 23px 115px 0 28px;
     height: 59px;
