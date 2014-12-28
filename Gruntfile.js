@@ -43,6 +43,9 @@
  * - Added TC_HOSTNAME and CHALLENGE_ADVERTISING_UPDATE
  *   to handle showing and updating challenge advertising data.
  *
+ * Changes in version 1.11 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Added AUTO_SAVING_CODE_INTERVAL setting.
+ *
  * @author amethystlei, flytoj2ee, dexy, shubhendus
  * @version 1.10
  */
@@ -106,7 +109,8 @@ module.exports = function (grunt) {
                         { match : 'FEEDBACK_MAXLENGTH', replacement: process.env.FEEDBACK_MAXLENGTH },
                         { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT },
                         { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME },
-                        { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME }
+                        { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
+                        { match : 'AUTO_SAVING_CODE_INTERVAL', replacement: process.env.AUTO_SAVING_CODE_INTERVAL }
                     ]
                 },
                 files : [
