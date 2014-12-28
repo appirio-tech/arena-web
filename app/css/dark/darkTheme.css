@@ -51,7 +51,9 @@ body{
 .panelCodeEditor .panel-body .settingsPanel {
     background-image: url(../img/dark/popup-bg.png);
 }
-
+.searched {
+    color: #fff !important;
+}
 .header .navIcons>li>.icon:before,
 .header .pastNoti,
 .userInfo .notification,
