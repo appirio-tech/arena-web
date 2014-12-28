@@ -48,7 +48,8 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           pageStyle = {
             position: 'relative',
             top: page.top + 'px',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            width: 'calc(100% - 16px)'
           };
         };
         var redraw = function () {
