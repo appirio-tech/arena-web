@@ -55,6 +55,9 @@
  * Changes in version 1.15 (Web Arena Plugin API Part 1):
  * - Added plugin logic for coding editor panel.
  *
+ * Changes in version 1.16 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Added logic to cache the code to local storage.
+ *
  * @author tangzx, amethystlei, flytoj2ee
  * @version 1.15
  */
@@ -69,6 +72,7 @@
  * @type {exports}
  */
 var helper = require('../helper');
+var config = require('../config');
 
 /**
  * The main controller for coding editor.
@@ -231,6 +235,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         function enableUserInput() {
             if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
                 userInputDisabled = false;
+                $scope.isSaving = false;
                 enableEditor();
             }
         }
@@ -520,6 +525,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 languageID: $scope.lang($scope.langIdx).id
             });
             sessionHelper.setUserLanguagePreference($scope.lang($scope.langIdx).id);
+            // save the language id to local
+            appHelper.setCodeToLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID,
+                $scope.lang($scope.langIdx).id, $scope.cm.getValue());
         };
 
         // At first load, it loads the code content, it's not changed the code.
@@ -565,12 +573,15 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     $scope.settingsOpen = false;
                 };
                 cmInstance.on('change', function () {
-                    if ($scope.firstLoadCode) {
-                        $scope.contentDirty = false;
+                    if ($scope.firstLoadCode || $scope.resizeCodeEditor) {
                         $scope.firstLoadCode = false;
+                        $scope.resizeCodeEditor = false;
                     } else {
                         $scope.contentDirty = true;
-                        $scope.firstLoadCode = false;
+                        if (($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode)) {
+                            appHelper.setCodeToLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID,
+                                $scope.lang($scope.langIdx).id, $scope.cm.getValue());
+                        }
                     }
                 });
                 // comment out error handle related logic for now
@@ -614,6 +625,55 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             return (!$scope.cm) || $scope.cm.getValue().trim() === '';
         };
 
+        /**
+         * Save code.
+         */
+        $scope.saveCode = function () {
+            if ($scope.contentDirty) {
+                $scope.openModal({
+                    title: 'Saving',
+                    message: 'Please wait for saving code.',
+                    enableClose: false
+                });
+
+                $scope.isSaving = true;
+                $scope.contentDirty = false;
+                var code = $scope.cm.getValue();
+                socket.emit(helper.EVENT_NAME.SaveRequest, {
+                    componentID: $scope.componentID,
+                    language: $scope.lang($scope.langIdx).id,
+                    code: code
+                });
+                if (modalTimeoutPromise) {
+                    $timeout.cancel(modalTimeoutPromise);
+                }
+                modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
+            }
+        };
+
+        $scope.isSaving = false;
+        /**
+         * Auto save the code.
+         */
+        $scope.autoSaveCode = function () {
+            if ($scope.contentDirty && !$scope.isSaving) {
+                $scope.isSaving = true;
+                $scope.contentDirty = false;
+                var code = $scope.cm.getValue();
+                socket.emit(helper.EVENT_NAME.SaveRequest, {
+                    componentID: $scope.componentID,
+                    language: $scope.lang($scope.langIdx).id,
+                    code: code
+                });
+            }
+
+            $rootScope.autoSavingCodePromise = $timeout($scope.autoSaveCode, config.autoSavingCodeInterval);
+        };
+        // Only trigger auto save code logic in coding and practice code mode
+        if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
+            $scope.autoSaveCode();
+        }
+
         // init code compiled false
         $scope.codeCompiled = false;
         /**
@@ -649,6 +709,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 enableClose: false
             });
 
+            $scope.contentDirty = false;
             socket.emit(helper.EVENT_NAME.CompileRequest, {
                 componentID: $scope.componentID,
                 language: $scope.lang($scope.langIdx).id,
@@ -678,6 +739,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     buttons: ['Yes', 'No'],
                     enableClose: true
                 }, function () {
+                    $scope.contentDirty = false;
                     socket.emit(helper.EVENT_NAME.SubmitRequest, {componentID: $scope.componentID});
                     $scope.testOpen = false;
                 });
@@ -731,6 +793,14 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
             var i;
             enableUserInput();
+
+            if (data.title === helper.POP_UP_TITLES.SaveResults
+                || data.title === helper.POP_UP_TITLES.CompileResult
+                || data.title === helper.POP_UP_TITLES.MultipleSubmission) {
+                //success to save code in server, remove local cache code.
+                appHelper.removeCodeFromLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID);
+                $scope.isSaving = false;
+            }
 
             if (data.title !== helper.POP_UP_TITLES.Error &&
                     data.title !== helper.POP_UP_TITLES.CompileResult &&
@@ -817,16 +887,18 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
         // when the problem is loaded in the parent controller userCodingCtrl
         $scope.$on('problem-loaded', function () {
-            // init test case checkboxes
-            $scope.userData.tests.forEach(function (testCase) {
-                testCase.checked = false;
-                testCase.toggle = false;
-                testCase.params.forEach(function (param) {
-                    if (param.complexType) {
-                        param.created = false;
-                    }
+            if ($scope.userData && $scope.userData.tests) {
+                // init test case checkboxes
+                $scope.userData.tests.forEach(function (testCase) {
+                    testCase.checked = false;
+                    testCase.toggle = false;
+                    testCase.params.forEach(function (param) {
+                        if (param.complexType) {
+                            param.created = false;
+                        }
+                    });
                 });
-            });
+            }
             if (angular.isUndefined($rootScope.userTests)) {
                 $rootScope.userTests = [{}];
             }
@@ -906,8 +978,19 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             };
 
             // set the code written by the user
-            $scope.code = $scope.userData.code;
-            $scope.contentDirty = false;
+            var tmp = appHelper.getCodeFromLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID);
+            if (tmp !== null && ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode)) {
+                $scope.code = tmp.code;
+                $scope.languageID = tmp.languageID;
+                $scope.contentDirty = true;
+            } else {
+                if ($scope.userData.code) {
+                    $scope.code = $scope.userData.code;
+                } else {
+                    $scope.code = '';
+                }
+                $scope.contentDirty = false;
+            }
 
             // load supported languages from config.
             // $scope.problem.supportedLanguages was set in the parent controller

@@ -56,8 +56,11 @@
  * - Added logic to handle invalid roundId, problemId and divisionId,
  * which are side-effects of deep linking
  *
+ * Changes in version 1.16 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Cancel the timer for auto save logic while leaving the page.
+ *
  * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.15
+ * @version 1.16
  */
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -139,6 +142,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             if ($scope.topStatus === 'normal') {
                 this.theCode = $scope.cmElem.CodeMirror.getValue();
             } else if (this.theCode) {
+                $scope.resizeCodeEditor = true;
                 $scope.cmElem.CodeMirror.setValue(this.theCode);
             }
 
@@ -160,6 +164,8 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 $scope.$broadcast('test-panel-loaded');
                 $scope.topStatus = 'normal';
                 $scope.bottomStatus = 'normal';
+                $scope.resizeCodeEditor = true;
+                $scope.cmElem.CodeMirror.setValue($scope.cmElem.CodeMirror.getValue());
                 $scope.cmElem.CodeMirror.refresh();
                 $scope.sharedObj.rebuildErrorBar();
             } else if (target === 'top-content') {
@@ -198,6 +204,8 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 $scope.$broadcast('test-panel-loaded');
                 $scope.bottomStatus = 'expand';
                 $scope.topStatus = 'normal';
+                $scope.resizeCodeEditor = true;
+                $scope.cmElem.CodeMirror.setValue($scope.cmElem.CodeMirror.getValue());
                 $scope.cmElem.CodeMirror.refresh();
                 $scope.sharedObj.rebuildErrorBar();
             }
@@ -518,6 +526,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 socket.emit(helper.EVENT_NAME.CloseProblemRequest, {
                     problemID: $scope.componentID
                 });
+            }
+
+
+            // if leaving page, it should cancel the auto saving logic
+            if ($rootScope.autoSavingCodePromise) {
+                $timeout.cancel($rootScope.autoSavingCodePromise);
             }
         }
 

@@ -99,3 +99,6 @@ export NEWRELIC_BROWSER_LICENSCEKEY='28fb2fc79c'
 export NEWRELIC_SERVER_APPNAME='testserver'
 export NEWRELIC_SERVER_LICENSE_KEY='8f1eb71c599e28fb2b02e7e521488cbabb97174f'
 export NEWRELIC_SERVER_LOGGING_LEVEL='trace'
+
+# Time interval for auto saving code (milliseconds)
+export AUTO_SAVING_CODE_INTERVAL=30000

@@ -37,8 +37,11 @@
  * - Added getMemberName() method.
  * - Prevent the double click event while user is leaving the room
  *
+ * Changes in version 1.10 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Fixed the undefined error while calling $rootScope.roomData.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.9
+ * @version 1.10
  */
 'use strict';
 /*global require, module, angular, $, window, document */
@@ -152,7 +155,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
     this.init = function (registrantsConfig) {
         if (registrantsConfig !== undefined && registrantsConfig === "true") {
             $scope.showRegistrant = true;
-            $scope.registrantsArray = $rootScope.roomData[$rootScope.currentRoomInfo.roomID].coders;
+            $scope.registrantsArray = $rootScope.roomData[$rootScope.currentRoomInfo.roomID] ? $rootScope.roomData[$rootScope.currentRoomInfo.roomID].coders : [];
         }
         rebuildAllScrollbar();
     };
@@ -554,7 +557,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
      */
     $scope.getMemberShortName = function (name) {
         if ((($rootScope.userLeavingIcons && $rootScope.userLeavingIcons[name]) || ($rootScope.userEnteringIcons && $rootScope.userEnteringIcons[name]))
-            && name.length > 14) {
+                && name.length > 14) {
             return name.substring(0, 12) + '...';
         }
         return name;

@@ -102,8 +102,11 @@
  * Changes in version 1.26 (Web Arena Plugin API Part 2):
  * - Added more plugin event names.
  *
+ * Changes in version 1.27 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Added save request and save results title.
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.26
+ * @version 1.27
  */
 'use strict';
 /*global module*/
@@ -160,6 +163,7 @@ module.exports = {
         SynchTimeRequest: 'SynchTimeRequest',
         TestInfoRequest: 'TestInfoRequest',
         TestRequest: 'TestRequest',
+        SaveRequest: 'SaveRequest',
         // backend responses
         BatchTestResponse: 'BatchTestResponse',
         ChallengeResponse: 'ChallengeResponse',
@@ -322,7 +326,8 @@ module.exports = {
         ForcedLogout: 'Client Connection Error',
         NotAssigned: 'Not Assigned',
         RoundAccessError: 'Round Access Error',
-        ChangeRoundError: 'Change round Error'
+        ChangeRoundError: 'Change round Error',
+        SaveResults: 'Save Results'
     },
 
     // custom pop up messages
@@ -437,7 +442,8 @@ module.exports = {
     // The local storage prefix and room list key
     LOCAL_STORAGE: {
         PREFIX: 'chat_history_',
-        ROOM_LIST: 'chat_history_room_list'
+        ROOM_LIST: 'chat_history_room_list',
+        CACHE_CODE_LIST: 'cache_code_list'
     },
 
     // Titles for Facebook pop-ups
