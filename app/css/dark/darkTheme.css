@@ -1280,3 +1280,13 @@ footer .right .sponsorLogo {
 #challenges-advertiser .challenge-icon {
     color: #e9f2db;
 }
+
+/****** Loading spinner ******/
+.preloader-window {
+    background-color: #000000;
+    border: 1px solid #0bbbe7;
+    color: #fff;
+}
+.preloader-indicator>img {
+    background-image: url(../img/dark/preloader.gif);
+}
