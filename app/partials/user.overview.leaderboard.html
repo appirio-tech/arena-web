@@ -12,10 +12,10 @@
         <div class="customDropdown">
           <a class="dropdown-toggle toggle" id="customDDToggle">{{getActiveRound()}}</a>
           <div>
-            <div class="dropdown-menu menu" id="methodsList">
-              <div class="scrollArea" data-ng-scrollbar data-rebuild-on="rebuild:leaderBoardMethods" data-rebuild-on-resize data-reload-on="reload:leaderBoardMethods">
+            <div class="dropdown-menu menu leaderboard-rounds" id="methodsList">
+              <div class="scrollArea" data-ng-custom-scrollbar data-rebuild-on="rebuild:leaderBoardMethods" data-rebuild-on-resize data-reload-on="reload:leaderBoardMethods" data-scroll-on="scroll:leaderBoardMethods">
                 <ul>
-                  <li data-ng-repeat="round in getRounds()"><a data-ng-click="updateRound(round)"
+                  <li data-ng-repeat="round in getRounds()" data-ng-scrollbar-autoscroll="activeRound === round" data-autoscroll-event="scroll:leaderBoardMethods"><a data-ng-click="updateRound(round)"
                 data-ng-class="{current: activeRound === round}">{{getRoundName(round)}}</a></li>
                 </ul>
               </div>

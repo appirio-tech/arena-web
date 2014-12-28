@@ -125,6 +125,43 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
         $scope.$broadcast('rebuild:leaderBoardLeaders');
     };
 
+    /**
+     * Handle arrow key presses for the dropdown
+     */
+    function handleKey(e){
+        switch(e.which) {
+            case 13: // up
+                customDropdown.qtip('api').toggle(false);
+            break;
+
+            case 38: // up
+                $scope.$apply(function() {
+                    var rounds = $scope.getRounds(),
+                        idx = rounds.indexOf($scope.activeRound);
+
+                    if(idx > 0) {
+                        $scope.activeRound = rounds[idx-1];
+                    }
+                });
+                break;
+
+            case 40: // down
+                $scope.$apply(function() {
+                    var rounds = $scope.getRounds(),
+                        idx = rounds.indexOf($scope.activeRound);
+
+                    if(idx < rounds.length-1 && idx != -1) {
+                        $scope.activeRound = rounds[idx+1];
+                    }
+                });
+            break;
+
+            default: return; // exit this handler for other keys
+        }
+
+        e.preventDefault();
+    }
+
     // qtip here
     /*jslint unparam:false*/
     customDropdown.qtip({
@@ -149,11 +186,17 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
             show: function (event, api) {
                 /*jslint unparam:true*/
                 $rootScope.$broadcast('rebuild:leaderBoardMethods');
+
+                $(document).keydown(handleKey);
+            },
+            hide: function(event, api) {
+
+                $(document).off('keydown', handleKey);
             }
         }
     });
     $.fn.qtip.zindex = 1030;
-    
+
     /**
      * triggle key action.
      */

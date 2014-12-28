@@ -6908,6 +6908,11 @@ contestManagementPanel .panel-footer .btn {
     margin-right: 0;
     margin-top: 0;
 }
+
+.leaderboard-rounds .ngsb-wrap .ngsb-scrollbar {
+    top: 0;
+}
+
 .leadarboardList .tableWrap .leaderBoardTable span,
 .activeUserList .tableWrap .activeUserTable span,
 .anchor{
