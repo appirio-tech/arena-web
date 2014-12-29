@@ -13,17 +13,17 @@
                         <ul class="editorDropDown settingDropDown"><li class="dropdown"><a class="dropdown-toggle disabled">{{getThemeName(themeIdx)}}</a><!--
                          --><ul class="dropdown-menu">
                                 <li data-ng-repeat="t in themes track by $index"><a data-ng-click="setThemeIdx($index)" data-ng-class="{current: $index === themeIdx}">{{t.name}}</a></li>
-                            </ul></li><!-- 
+                            </ul></li><!--
                      --></ul>
                     </div>
                     <div class="languageRow">
                         <label>Language</label>
-                        <ul class="languageDropDown settingDropDown"><!-- 
-                         --><li class="dropdown"><!-- 
+                        <ul class="languageDropDown settingDropDown"><!--
+                         --><li class="dropdown"><!--
                              --><a class="dropdown-toggle">{{getLangName(langIdx)}}</a><!--
-                             --><ul class="dropdown-menu"><!-- 
+                             --><ul class="dropdown-menu"><!--
                                  --><li data-ng-repeat="l in languages track by $index"><a dropdown-toggle data-ng-click="setLangIdx($index)" data-ng-class="{current: $index === langIdx}">{{l.name}}</a></li><!--
-                             --></ul><!-- 
+                             --></ul><!--
                          --></li>
                         </ul>
                     </div>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <div data-ng-class="{showLineNumberPadding:showLineNumber,hideLineNumberPadding:!showLineNumber}" class="paddingRow"></div>
-        <textarea id="codeArea" name="codeArea" data-ui-codemirror="cmOption" data-ng-model="code" data-ng-class="{disableCursor:cm.options.readOnly}"></textarea>
+        <ui-codemirror id="codeArea" ui-codemirror-opts="cmOption" data-ng-model="code" class="code-editor-area" data-ng-class="{disableCursor:cm.options.readOnly}"></ui-codemirror>
         <script id="script"></script>
         <div class="errorBar">
             <div data-ng-repeat="i in range(lineNumbers) track by $index" data-ng-class="{error:getErrorMessage($index).length > 0}">

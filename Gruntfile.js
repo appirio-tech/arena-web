@@ -43,8 +43,11 @@
  * - Added TC_HOSTNAME and CHALLENGE_ADVERTISING_UPDATE
  *   to handle showing and updating challenge advertising data.
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus
- * @version 1.10
+ * Changes in version 1.11 (Web Arena - Scrolling Issues Fixes Assembly):
+ * - Added CSS files for comirror's scroll plugin
+ *
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein
+ * @version 1.11
  */
 'use strict';
 /*global module, process*/
@@ -140,6 +143,7 @@ module.exports = function (grunt) {
                     'app/css/bootstrap.min.css',
                     'bower_components/codemirror/lib/codemirror.css',
                     'bower_components/codemirror/addon/fold/foldgutter.css',
+                    'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                     'bower_components/fullcalendar/fullcalendar.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
                     'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
@@ -159,6 +163,7 @@ module.exports = function (grunt) {
                         'app/css/bootstrap.min.css',
                         'bower_components/codemirror/lib/codemirror.css',
                         'bower_components/codemirror/addon/fold/foldgutter.css',
+                        'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
@@ -177,6 +182,7 @@ module.exports = function (grunt) {
                         'app/css/bootstrap.min.css',
                         'bower_components/codemirror/lib/codemirror.css',
                         'bower_components/codemirror/addon/fold/foldgutter.css',
+                        'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
@@ -251,7 +257,7 @@ module.exports = function (grunt) {
                     APP_NAME: process.env.NEWRELIC_SERVER_APPNAME,
                     LICENSE_KEY: process.env.NEWRELIC_SERVER_LICENSE_KEY,
                     LOGGING_LEVEL : process.env.NEWRELIC_SERVER_LOGGING_LEVEL
-                }                
+                }
             }
         }
     });

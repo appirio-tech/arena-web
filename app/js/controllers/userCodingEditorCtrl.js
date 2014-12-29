@@ -544,6 +544,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             theme: 'topcoder',
             lineNumbers: true,
             lineWrapping : true,
+            scrollbarStyle: "simple",
             mode: $scope.lang($scope.langIdx).langKey,
             foldGutter: $scope.lang($scope.langIdx).langGutter,
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],

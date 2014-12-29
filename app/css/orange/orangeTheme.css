@@ -19,6 +19,9 @@ body{
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     background-image: url(../img/orange/sprite-2.png);
 }
+.CodeMirror-simplescroll-vertical > div {
+    background: #ff8a00;
+}
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
 .codeArea .socialLinks a:before,
@@ -1190,7 +1193,7 @@ footer .left>span {
     border-bottom-width: 1px;
     padding-top: 12px;
     padding-bottom: 9px;
-    border-color: #ffe6c7; 
+    border-color: #ffe6c7;
 }
 .contestManagementPanel .table>thead>tr>th {
     color: #636d70;
@@ -1543,13 +1546,13 @@ footer .left>span {
     }
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
 #challenges-advertiser {
     border: 1px solid #e7e7e7;
-    background: #fff;   
+    background: #fff;
 }
 
 #challenges-advertiser .challenge-technologies-wrapper {

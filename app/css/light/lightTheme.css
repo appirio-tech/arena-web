@@ -24,6 +24,9 @@ body{
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     background-image: url(../img/light/sprite-2.png);
 }
+.CodeMirror-simplescroll-vertical > div {
+    background: #0999d1;
+}
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
 .codeArea .socialLinks a:before,
