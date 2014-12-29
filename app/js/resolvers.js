@@ -86,8 +86,11 @@
  * Changes in version 1.21 (Web Arena SRM Problem Deep Link Assembly):
  * - Updated enterCompetingRoom resolver to accommodate user.coding state as well
  *
+ * Changes in version 1.22 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
+ * - Added the logic for chat setting and shown time in chat message.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.21
+ * @version 1.22
  */
 ///////////////
 // RESOLVERS //
@@ -675,6 +678,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         if (data.type === helper.CHAT_TYPES.SystemChat && data.data && (data.data.indexOf('has left the room.') !== -1
             || data.data.indexOf('has entered the room.') !== -1 || data.data.indexOf('has logged out.') !== -1)) {
             //skip the entering and leaving message
+            $rootScope.$broadcast('rebuild:chatboard');
             return;
         }
 
@@ -726,7 +730,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 text: data.data,
                 hasLink: links.length !== 0,
                 links: links,
-                type: 'toMe'
+                type: 'toMe',
+                time: new Date()
             };
         } else {
             tmp = {
@@ -735,12 +740,19 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 text: data.data,
                 hasLink: links.length !== 0,
                 links: links,
-                type: getChatType(data.type)
+                type: getChatType(data.type),
+                time: new Date()
             };
         }
 
-        $rootScope.chatContent[roomId].push(tmp);
-        appHelper.setLocalStorage(roomId, tmp);
+        if (appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_CHAT)) {
+            $rootScope.chatContent[roomId].push(tmp);
+        }
+
+        if (appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_CHAT)
+                && appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_HISTORY)) {
+            appHelper.setLocalStorage(roomId, tmp);
+        }
 
         if ($rootScope.chatContent[roomId].length > Number(config.chatLength)) {
             $rootScope.chatContent[roomId].shift();
@@ -748,7 +760,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
         appHelper.triggerPluginRoomEvent(helper.PLUGIN_ROOMS_EVENT.chatMessageReceived, roomId, data);
 
-        if (data.type === helper.CHAT_TYPES.WhisperToYouChat || user === $rootScope.username()) {
+        if ((data.type === helper.CHAT_TYPES.WhisperToYouChat || user === $rootScope.username())
+                && appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_SOUNDS)) {
             chatSound = document.getElementById('chatSound');
             if (chatSound) {
                 chatSound.load();

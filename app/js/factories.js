@@ -47,8 +47,11 @@
  * Changes in version 1.12 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Added method to set / get / remove code in local storage.
  *
+ * Changes in version 1.13 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
+ * - Added set / get setting from local storage.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.12
+ * @version 1.13
  */
 'use strict';
 /*jshint -W097*/
@@ -642,6 +645,44 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
 
                 localStorageService.remove(helper.LOCAL_STORAGE.ROOM_LIST);
             }
+        }
+    };
+
+    /**
+     * Get chat setting from local storage by key.
+     * @param key the setting key
+     * @returns {*} the value in local storage.
+     */
+    retHelper.getChatSettingFromLocalStorage = function (key) {
+        if (localStorageService.isSupported) {
+            var allSetting = localStorageService.get('chat_setting');
+            if (allSetting) {
+                var chatSetting = allSetting[key];
+                if (chatSetting !== undefined) {
+                    return JSON.parse(chatSetting);
+                }
+            }
+        }
+
+        if (key === helper.LOCAL_STORAGE.CHAT_SETTING_TIMESTAMPS) {
+            return false;
+        }
+        return true;
+    };
+
+    /**
+     * Set the chat setting to local storage.
+     * @param key the setting key.
+     * @param value the setting value.
+     */
+    retHelper.setChatSettingToLocalStorage = function (key, value) {
+        if (localStorageService.isSupported) {
+            var allSetting = localStorageService.get('chat_setting');
+            if (!allSetting) {
+                allSetting = {};
+            }
+            allSetting[key] = value;
+            localStorageService.set('chat_setting', JSON.stringify(allSetting));
         }
     };
 

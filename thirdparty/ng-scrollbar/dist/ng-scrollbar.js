@@ -51,7 +51,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
             overflow: 'hidden'
           };
         };
-        var redraw = function () {
+        var redraw = function (forceRedraw) {
           var draggerTop = dragger.top;
 		  if(dragger.top >= maxDraggerTop - 20 && maxDraggerTop - 20 > 0) {
 		    draggerTop = maxDraggerTop - 20;
@@ -59,27 +59,33 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           thumb.css('top', draggerTop + 'px');
           var draggerOffset = dragger.top / page.height;
           page.top = -Math.ceil(page.scrollHeight * draggerOffset * 1.0013);
-            if ((attrs.hasOwnProperty('scrollTop') && dragger.top === 0) || dragger.top > maxDraggerTop) {
-                maxDraggerTop = dragger.top;
-                scope.rebuildScroll = true;
-                rebuild();
-            } else {
+
+            if (scope.chatSettings && (scope.chatSettings.autoscroll === false) && !forceRedraw) {
                 scope.rebuildScroll = false;
+            } else {
+                if ((attrs.hasOwnProperty('scrollTop') && dragger.top === 0) || dragger.top >= maxDraggerTop) {
+                    maxDraggerTop = dragger.top;
+                    scope.rebuildScroll = true;
+                    rebuild();
+                } else {
+                    scope.rebuildScroll = false;
+                }
             }
+
             transculdedContainer.css('top', page.top + 'px');
         };
         var trackClick = function (event) {
           var offsetY = event.hasOwnProperty('offsetY') ? event.offsetY : event.layerY;
           var newTop = Math.max(0, Math.min(parseInt(dragger.trackHeight, 10) - parseInt(dragger.height, 10), offsetY));
           dragger.top = newTop;
-          redraw();
+          redraw(true);
           event.stopPropagation();
         };
         var wheelHandler = function (event) {
           var deltaY = event.wheelDeltaY !== undefined ? event.wheelDeltaY / 20 : event.wheelDelta !== undefined ? event.wheelDelta / 20 : -event.detail * 2;
           deltaY = deltaY * 3;
           dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
-          redraw();
+          redraw(true);
           if (!!event.preventDefault) {
             event.preventDefault();
           } else {
@@ -92,13 +98,13 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
                   //up
                   deltaY = 60;
                   dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
-                  redraw();
+                  redraw(true);
               }
               if (event.keyCode === 40) {
                   //down
                   deltaY = -60;
                   dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
-                  redraw();
+                  redraw(true);
               }
 
 //              if (!!event.preventDefault) {
@@ -112,14 +118,14 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
               //up
               dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
               console.log(dragger.top);
-              redraw();
+              redraw(true);
           };
           var downClick = function () {
               var deltaY = -10;
               //up
               dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
               console.log(dragger.top);
-              redraw();
+              redraw(true);
           };
         var lastOffsetY;
         var thumbDrag = function (event, offsetX, offsetY) {
@@ -131,7 +137,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           var newOffsetY = event.pageY - thumb[0].scrollTop - lastOffsetY;
           var newOffsetX = 0;
           thumbDrag(event, newOffsetX, newOffsetY);
-          redraw();
+          redraw(true);
         };
         var buildScrollbar = function (keepBottom) {
           mainElm = angular.element(element.children()[0]);
@@ -150,7 +156,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           }
           page.scrollHeight = transculdedContainer[0].scrollHeight;
           if (page.height < page.scrollHeight) {
-            redraw();
+            redraw(false);
             scope.showYScrollbar = true;
             dragger.height = Math.round(page.height / page.scrollHeight * (page.height-18));
 			maxDraggerTop = page.height - dragger.height;
@@ -182,7 +188,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
             });
             if (keepBottom) {
               dragger.top = Math.max(0, parseInt(page.height, 10) - parseInt(dragger.height, 10));
-              redraw();
+              redraw(false);
             }
           } else {
             // the scroll bar is not shown, move dragger and page to top
@@ -203,7 +209,9 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           if (rebuildTimer != null) {
             clearTimeout(rebuildTimer);
           }
-          scope.rebuildScroll = true;
+            if (scope.chatSettings && (scope.chatSettings.autoscroll === true)) {
+                scope.rebuildScroll = true;
+            }
           rebuildTimer = setTimeout(function () {
               if (scope.rebuildScroll) {
                 page.height = null;
@@ -213,15 +221,43 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
                 if (!scope.$$phase) {
                   scope.$digest();
                 }
+              } else {
+                  // if not re-build the scroll bar, just change the dragger height
+                  page.height = element[0].offsetHeight;
+                  if(attrs.class==="dropdown-menu" && page.height > 10) {// fix negative height
+                      page.height -= 10;
+                  }
+
+                  mainElm = angular.element(element.children()[0]);
+                  transculdedContainer = angular.element(mainElm.children()[0]);
+                  page.scrollHeight = transculdedContainer[0].scrollHeight;
+                  if (page.height < page.scrollHeight) {
+                      scope.showYScrollbar = true;
+                      dragger.height = Math.round(page.height / page.scrollHeight * page.height);
+                      dragger.trackHeight = page.height;
+
+                      tools = angular.element(mainElm.children()[2]);
+                      thumb = angular.element(angular.element(tools.children()[0]).children()[0]);
+                      thumb.height(dragger.height);
+                  }
               }
 
           }, 72);
         };
         var reload = function () {
           maxDraggerTop = 0;
-          scope.rebuildScroll = true;
           dragger = { top: 0 }, page = { top: 0 };
-          buildScrollbar();
+
+            dragger.height = page.height;
+            calcStyles();
+            mainElm.css(scrollboxStyle);
+            scope.showYScrollbar = false;
+            transculdedContainer.css({
+                top: 0
+            });
+
+            scope.rebuildScroll = true;
+            redraw(true);
         };
         buildScrollbar();
         if (!!attrs.rebuildOn) {

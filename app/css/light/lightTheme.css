@@ -1432,3 +1432,26 @@ footer .right .sponsorLogo {
 #challenges-advertiser .challenge-icon {
     color: #e9f2db;
 }
+
+/*
+*
+* Styles for chat area settings
+*
+*/
+.settings-qtip:after {
+    border-color: transparent transparent rgba(245,248,250,.98) transparent;
+}
+.settings-qtip:before {
+    border-color: transparent transparent rgba(245,248,250,.98) transparent;
+}
+.settings-panel {
+    color: rgb(49, 111, 153);
+    background: rgba(245,248,250,.98);
+    border: 1px solid #b7c9d7;
+}
+.settings-panel header, .settings-panel .setting {
+    border-bottom: 1px solid #b7c9d7;
+}
+.settings-panel, .settings-panel h3 {
+    font-weight: normal;
+}

@@ -46,8 +46,11 @@
  * Changes in version 1.11 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Added AUTO_SAVING_CODE_INTERVAL setting.
  *
+ * Changes in version 1.12 (Add Settings Panel for Chat Widget):
+ * - Added CSS references for switch widget
+ *
  * @author amethystlei, flytoj2ee, dexy, shubhendus
- * @version 1.10
+ * @version 1.12
  */
 'use strict';
 /*global module, process*/
@@ -145,6 +148,7 @@ module.exports = function (grunt) {
                     'bower_components/codemirror/lib/codemirror.css',
                     'bower_components/codemirror/addon/fold/foldgutter.css',
                     'bower_components/fullcalendar/fullcalendar.css',
+                    'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
                     'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                     'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
@@ -164,6 +168,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/lib/codemirror.css',
                         'bower_components/codemirror/addon/fold/foldgutter.css',
                         'bower_components/fullcalendar/fullcalendar.css',
+                        'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
@@ -182,6 +187,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/lib/codemirror.css',
                         'bower_components/codemirror/addon/fold/foldgutter.css',
                         'bower_components/fullcalendar/fullcalendar.css',
+                        'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
@@ -205,7 +211,7 @@ module.exports = function (grunt) {
                 // This copies all the html and images into the build/ folder. css and js were done already.
                 expand: true,
                 cwd: 'app/',
-                src: ['**/*.html', 'img/**', 'fonts/**', 'data/**', 'robots.txt','js/newrelic.js'],
+                src: ['**/*.html', 'img/**', 'fonts/**', 'data/**', 'robots.txt', 'js/newrelic.js'],
                 dest: 'build/'
             },
             release: {
@@ -255,7 +261,7 @@ module.exports = function (grunt) {
                     APP_NAME: process.env.NEWRELIC_SERVER_APPNAME,
                     LICENSE_KEY: process.env.NEWRELIC_SERVER_LICENSE_KEY,
                     LOGGING_LEVEL : process.env.NEWRELIC_SERVER_LOGGING_LEVEL
-                }                
+                }
             }
         }
     });
@@ -272,11 +278,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadTasks('./new_relic/tasks');
-    grunt.loadTasks('./new_relic/server_tasks')
+    grunt.loadTasks('./new_relic/server_tasks');
 
     // The default tasks to run when you type: grunt
-    grunt.registerTask('default', ['servernewrelic','newrelic','clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
-    grunt.registerTask('build', ['servernewrelic','newrelic','clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('default', ['servernewrelic', 'newrelic', 'clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('build', ['servernewrelic', 'newrelic', 'clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
     //release tasks work out of build directory - build must be run first!
     grunt.registerTask('release', ['clean:release', 'uglify:release', 'copy:release']);
     grunt.registerTask('heroku', ['build']);

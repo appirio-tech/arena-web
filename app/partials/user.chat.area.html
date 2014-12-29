@@ -11,6 +11,13 @@
                 </ul>
             </li>
         </ul>
+        <chat-settings>
+            <toggle-setting label="Chat" value="chatSettings.chat"></toggle-setting>
+            <toggle-setting label="History" value="chatSettings.history"></toggle-setting>
+            <toggle-setting label="Auto-Scrolling" value="chatSettings.autoscroll"></toggle-setting>
+            <toggle-setting label="Timestamps" value="chatSettings.timestamps"></toggle-setting>
+            <toggle-setting label="Sounds" value="chatSettings.sounds"></toggle-setting>
+        </chat-settings>
         </div>
         <a class="icon miniIcon" data-ng-show="windowStatus.chatArea=='normal'" data-ng-click="closePanel('chatArea');"></a>
         <a class="icon expandIcon" data-ng-show="windowStatus.chatArea=='normal'" data-ng-click="expandPanel('chatArea');"></a>
@@ -38,6 +45,13 @@
                 </ul>
             </li>
         </ul>
+        <chat-settings>
+            <toggle-setting label="Chat" value="chatSettings.chat"></toggle-setting>
+            <toggle-setting label="History" value="chatSettings.history"></toggle-setting>
+            <toggle-setting label="Auto-Scrolling" value="chatSettings.autoscroll"></toggle-setting>
+            <toggle-setting label="Timestamps" value="chatSettings.timestamps"></toggle-setting>
+            <toggle-setting label="Sounds" value="chatSettings.sounds"></toggle-setting>
+        </chat-settings>
         </div>
     </div>
     <!--end of heading-->
@@ -77,9 +91,9 @@
     <div class="panel-body">
         <!-- begin of chat area -->
         <div class="content">
-            <div class="chatBoard" data-ng-scrollbar data-keep-bottom data-rebuild-on="rebuild:chatboard" data-rebuild-on-resize data-ng-class="{smallFont: currentFontSize === 'Small', mediumFont: currentFontSize === 'Medium', largeFont: currentFontSize ==='Large'}">
+            <div class="chatBoard" data-ng-scrollbar data-keep-bottom data-rebuild-on="rebuild:chatboard" data-reload-on="reload:chatboard" data-rebuild-on-resize data-ng-class="{smallFont: currentFontSize === 'Small', mediumFont: currentFontSize === 'Medium', largeFont: currentFontSize ==='Large'}">
                 <ul>
-                    <li data-ng-repeat="chat in getChatContent()"><span class="{{getRatingClass(chat.userRating)}}" data-ng-show="chat.prefix">{{chat.prefix}} </span><span lang="en" class="allChatText" data-ng-class="chat.type" data-ng-bind="chat.text"></span><span data-ng-show="chat.hasLink === true" data-ng-repeat="chatLink in chat.links"><a data-ng-href="{{chatLink}}" target="_blank">{{chatLink}} </a></span></li>
+                    <li data-ng-repeat="chat in getChatContent()"><span data-ng-show="chatSettings.timestamps && chat.time" data-ng-class="chat.type">({{chat.time | date: 'HH:mm:ss'}}) </span><span class="{{getRatingClass(chat.userRating)}}" data-ng-show="chat.prefix">{{chat.prefix}} </span><span lang="en" class="allChatText" data-ng-class="chat.type" data-ng-bind="chat.text"></span><span data-ng-show="chat.hasLink === true" data-ng-repeat="chatLink in chat.links"><a data-ng-href="{{chatLink}}" target="_blank">{{chatLink}} </a></span></li>
                 </ul>
             </div>
             <!-- chat control bar -->
