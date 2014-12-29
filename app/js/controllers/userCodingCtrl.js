@@ -56,8 +56,11 @@
  * - Added logic to handle invalid roundId, problemId and divisionId,
  * which are side-effects of deep linking
  *
- * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.15
+ * Changes in version 1.16 (Web Arena SRM Problem Deep Link Assembly):
+ * - Refactored UI resizing logic to use flexbox layout
+ *
+ * @author dexy, amethystlei, savon_cn, TCSASSEMBLER, Helstein
+ * @version 1.16
  */
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -83,10 +86,8 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $rootScope.$broadcast('hideFeedback');
         // shared between children scopes
         $scope.sharedObj = {};
-        $scope.topStatus = 'normal';
-        $scope.bottomStatus = 'normal';
         $scope.noCountdown = true;
-
+        $scope.problemAreaHeightRatio = 0.5;
         // problem data
         $scope.problem = {};
 
@@ -101,6 +102,24 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         var componentOpened = false, problemRetrieved = false, notified = false, round,
             topHeight, bottomHeight, toolBarHeight, totalHeight, isValidComponent = false;
 
+        $scope.getFlexProperties = function(flexRatio) {
+            var flex = String(flexRatio) + ' ' +String(flexRatio) + ' ' + 100 * flexRatio + '%';
+
+            return {
+                '-webkit-box-flex': String(flexRatio),
+                '-moz-box-flex': String(flexRatio),
+                '-webkit-flex': flex,
+                '-ms-flex': flex,
+                'flex': flex
+            };
+        }
+
+        $scope.$watch('problemAreaHeightRatio', function() {
+            $timeout(function() {
+                $rootScope.$broadcast('problem-loaded');
+            });
+        });
+
         /**
          * Check whether it is in Challenge Phase.
          *
@@ -114,122 +133,6 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             return roundData.phaseData.phaseType === helper.PHASE_TYPE_ID.ChallengePhase;
         };
 
-        $scope.getTopStatus = function () {
-            return $scope.topStatus;
-        };
-
-        $scope.getBottomStatus = function () {
-            return $scope.bottomStatus;
-        };
-
-        $scope.collapseOther = function (target) {
-            // origin height of top-content: 169(with 1px padding)
-            // origin height of bottom-content: 516
-            // origin height of codemirror: 475
-            var windowWidth = $window.innerWidth;
-
-            totalHeight = document.getElementById('top-content').offsetHeight + document.getElementById('bottom-content').offsetHeight;
-            toolBarHeight = 34 + 7;
-            if (windowWidth <= 502) {
-                toolBarHeight = 41 + 30;
-            } else if (windowWidth <= 741) {
-                toolBarHeight = 41 + 60;
-            }
-
-            if ($scope.topStatus === 'normal') {
-                this.theCode = $scope.cmElem.CodeMirror.getValue();
-            } else if (this.theCode) {
-                $scope.cmElem.CodeMirror.setValue(this.theCode);
-            }
-
-            if ((target === 'top-content' && $scope.topStatus === 'expand') ||
-                    (target === 'bottom-content' && $scope.bottomStatus === 'expand')) {
-                //return to normal status
-                $('#top-content').css({
-                    height: topHeight + 'px'
-                });
-                $('#bottom-content').css({
-                    height: bottomHeight + 'px'
-                });
-                $('#codeArea').css({
-                    height: (bottomHeight - toolBarHeight) + 'px'
-                });
-                $('#testPanelDiv').css({
-                    height: (bottomHeight - toolBarHeight + 5) + 'px'
-                });
-                $scope.$broadcast('test-panel-loaded');
-                $scope.topStatus = 'normal';
-                $scope.bottomStatus = 'normal';
-                $scope.cmElem.CodeMirror.refresh();
-                $scope.sharedObj.rebuildErrorBar();
-            } else if (target === 'top-content') {
-                // expand top-content and collapse bottom-content with codemirror
-                topHeight = document.getElementById('top-content').offsetHeight;
-                bottomHeight = document.getElementById('bottom-content').offsetHeight;
-                $('#top-content').css({
-                    height: totalHeight + 'px'
-                });
-                $('#bottom-content').css({
-                    height: '0' + 'px'
-                });
-                $('#codeArea').css({
-                    height: '0' + 'px'
-                });
-                $scope.topStatus = 'expand';
-                $scope.bottomStatus = 'normal';
-                // close test report
-                $('#testReport').addClass('hide');
-            } else if (target === 'bottom-content') {
-                // expand bottom-content and collapse top one
-                topHeight = document.getElementById('top-content').offsetHeight;
-                bottomHeight = document.getElementById('bottom-content').offsetHeight;
-                $('#top-content').css({
-                    height: 1 + 'px'
-                });
-                $('#bottom-content').css({
-                    height: (totalHeight - 1) + 'px'
-                });
-                $('#codeArea').css({
-                    height: (totalHeight - 1 - toolBarHeight) + 'px'
-                });
-                $('#testPanelDiv').css({
-                    height: (totalHeight - 1 - toolBarHeight + 5) + 'px'
-                });
-                $scope.$broadcast('test-panel-loaded');
-                $scope.bottomStatus = 'expand';
-                $scope.topStatus = 'normal';
-                $scope.cmElem.CodeMirror.refresh();
-                $scope.sharedObj.rebuildErrorBar();
-            }
-            $rootScope.$broadcast('problem-loaded');
-        };
-        $scope.countdown = 1;
-
-        /**
-         * Set and start the timer.
-         */
-        function startTimer() {
-            // start coding/challenge phase count down
-            var seconds = -1, phase;
-            $scope.noCountdown = false;
-            if ($scope.roundData && $scope.roundData[$scope.roundID] && $scope.roundData[$scope.roundID].phaseData) {
-                phase = $scope.roundData[$scope.roundID].phaseData;
-                if (phase.phaseType === helper.PHASE_TYPE_ID.CodingPhase ||
-                        phase.phaseType === helper.PHASE_TYPE_ID.ChallengePhase) {
-                    // how many seconds between now and the phase end time
-                    seconds = (phase.endTime - tcTimeService.getTime()) / 1000;
-                }
-            }
-            if (seconds > 0) {
-                // set and start the timer, see angular-timer code for implementation details.
-                $timeout(function () {
-                    $scope.$broadcast('timer-set-countdown', seconds - 0.2);
-                    $scope.$broadcast('timer-start');
-                }, 200);
-            } else {
-                $scope.noCountdown = true;
-            }
-        }
 
         /*jslint unparam: true*/
         // handle phase data response
@@ -666,7 +569,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 $scope.$broadcast('rebuild:chatboard');
             }, 100);
         };
-        // back to normal 
+        // back to normal
         $scope.collapsePanel = function (panel) {
             $timeout(function () {
                 $scope.windowStatus[panel] = 'normal';
@@ -684,7 +587,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 $scope.$broadcast('rebuild:chatboard');
             }, 100);
         };
-        // set the panel to max 
+        // set the panel to max
         $scope.expandPanel = function (panel) {
             $timeout(function () {
                 $scope.windowStatus[panel] = 'max';

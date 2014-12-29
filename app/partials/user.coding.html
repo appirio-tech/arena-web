@@ -28,14 +28,14 @@
             </div>
             <div class="col-xs-4 text-right code-area-controls">
                 <a data-ng-click="goBack()" class="btn btnBack" data-ng-hide="currentStateName()==='user.practiceCode'">Back to Match</a>
-                <a></a>
+                <a class="btnSplitView" data-ng-click="problemAreaHeightRatio = 0.5" data-ng-class="{disabled:problemAreaHeightRatio == 0.5}"></a>
             </div>
         </div>
         <div class="container-fluid row-fluid mainContent">
 
-            <div id="problem-statement" data-codingproblem></div>
+            <div id="problem-statement" data-codingproblem data-ng-style="getFlexProperties(problemAreaHeightRatio)"></div>
             <!-- <div class="col-xs-12" id="resizer" data-resizer data-resizer-height="0" data-resizer-top="#top-content" data-resizer-bottom="#bottom-content" data-resizer-code-mirror="#codeArea" data-resizer-title-bar="#titleBar" data-resizer-max="400"><span></span></div> -->
-            <div id="code-editor" data-codingeditor></div>
+            <div id="code-editor" data-codingeditor data-ng-style="getFlexProperties(1-problemAreaHeightRatio)"></div>
 
         </div>
         <div class="docker" data-ng-hide="$state.includes('user.practiceCode')">

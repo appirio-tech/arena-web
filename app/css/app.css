@@ -752,7 +752,15 @@ body a {cursor: pointer;}
 .coding-page,
 .coding-page .container-fluid.inner {
     height: 100%;
-
+}
+.codeArea .code-area-controls a.btn.btnBack {
+    float: none;
+}
+.coding-page .code-area-controls a {
+    vertical-align: middle;
+}
+.coding-page .code-area-controls a + a {
+    margin-left: 20px;
 }
 .coding-page {
     overflow: hidden;
@@ -766,14 +774,17 @@ body a {cursor: pointer;}
     height: 100%;
     width: 100%;
     min-width: 1024px;
-}
-.coding-page .container-fluid.inner {
-    min-height: 0;
-    overflow: auto;
     padding-bottom: 30px;
     -moz-box-sizing:    border-box;
     -webkit-box-sizing: border-box;
     box-sizing:        border-box;
+}
+.coding-page .container-fluid.inner {
+    min-height: 0;
+    overflow: auto;
+}
+.coding-page .codeArea .mainContent .panel-custom .panel-heading {
+    position: relative;
 }
 .coding-page .code-editor-area {
     position: relative;
@@ -784,6 +795,18 @@ body a {cursor: pointer;}
     bottom: 0;
     width: 100%;
     height: auto;
+}
+.coding-page .btnSplitView {
+    background-image: url(../img/dark/sprite-room-summary.png);
+    display: inline-block;
+    width: 30px;
+    height: 19px;
+    background-position: -43px -20px;
+    margin-right: 3px;
+}
+.coding-page .btnSplitView.disabled {
+    cursor: auto;
+    background-position: -43px 0;
 }
 .coding-page .codeArea,
 .coding-page .codeArea .mainContent .panel-custom,
@@ -802,6 +825,15 @@ body a {cursor: pointer;}
     -ms-flex-direction: column;
     -webkit-flex-direction: column;
     flex-direction: column;
+}
+.coding-page #code-editor,
+.coding-page #problem-statement{
+    overflow: hidden;
+    min-height: 41px; /*Mak sure header is not collapsed*/
+}
+.coding-page .codeArea .mainContent,
+.coding-page .panelCodeProblem {
+    overflow: hidden;
 }
 .coding-page .codeArea .heading,
 .coding-page #resizer,
@@ -854,6 +886,7 @@ body a {cursor: pointer;}
 }
 .code-area-controls {
     padding: 15px;
+    line-height: 36px;
 }
 .codeArea .titleBar > div:first-child {
     padding-top: 5px;
