@@ -419,9 +419,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.setThemeIdx = function (themeIdx) {
             $scope.themeIdx = themeIdx;
-            var _elem = angular.element('ul.editorDropDown > li.dropdown');
-            if (_elem) {
-                closeDropdown(_elem);
+            var elem = angular.element('ul.editorDropDown > li.dropdown');
+            if (elem) {
+                closeDropdown(elem);
             }
         };
 
@@ -458,9 +458,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             $scope.langIdx = langIdx;
 
             updateArgTypeAndMethod($scope.lang($scope.langIdx).id);
-            var _elem = angular.element('ul.languageDropDown > li.dropdown');
-            if (_elem) {
-                closeDropdown(_elem);
+            var elem = angular.element('ul.languageDropDown > li.dropdown');
+            if (elem) {
+                closeDropdown(elem);
             }
         };
 

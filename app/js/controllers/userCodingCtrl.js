@@ -65,7 +65,7 @@
 /*jshint -W097*/
 /*jshint strict:false*/
 'use strict';
-/*global module, angular, document, $, require, console*/
+/*global module, angular, document, $, require, console, startTimer*/
 /*jslint browser:true */
 
 /**
@@ -81,8 +81,8 @@ var config = require('../config');
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'tcTimeService', 'keyboardManager', 'appHelper',
-    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, tcTimeService, keyboardManager, appHelper) {
+var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'keyboardManager', 'appHelper',
+    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, keyboardManager, appHelper) {
         $rootScope.$broadcast('hideFeedback');
         // shared between children scopes
         $scope.sharedObj = {};
@@ -99,11 +99,10 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
 
         $rootScope.previousStateName = $scope.currentStateName();
 
-        var componentOpened = false, problemRetrieved = false, notified = false, round,
-            topHeight, bottomHeight, toolBarHeight, totalHeight, isValidComponent = false;
+        var componentOpened = false, problemRetrieved = false, notified = false, round, isValidComponent = false;
 
-        $scope.getFlexProperties = function(flexRatio) {
-            var flex = String(flexRatio) + ' ' +String(flexRatio) + ' ' + 100 * flexRatio + '%';
+        $scope.getFlexProperties = function (flexRatio) {
+            var flex = String(flexRatio) + ' ' + String(flexRatio) + ' ' + 100 * flexRatio + '%';
 
             return {
                 '-webkit-box-flex': String(flexRatio),
@@ -112,10 +111,10 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 '-ms-flex': flex,
                 'flex': flex
             };
-        }
+        };
 
-        $scope.$watch('problemAreaHeightRatio', function() {
-            $timeout(function() {
+        $scope.$watch('problemAreaHeightRatio', function () {
+            $timeout(function () {
                 $rootScope.$broadcast('problem-loaded');
             });
         });
