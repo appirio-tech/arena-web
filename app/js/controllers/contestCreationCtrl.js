@@ -439,6 +439,8 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                     showDetailModal(data, status);
                 });
             } else {
+                // Make auto end to true by default when creating contest through web-arena
+                roundData.auto_end = 1;
                 $http.post(config.apiDomain + '/data/srm/contests', contestData, header).success(function (data, status, headers) {
                     if (data.error && data.error !== '') {
                         showDetailModal(data, status);
