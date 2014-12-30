@@ -123,6 +123,8 @@ body{
 .contestManagement .filterToggle:before,
 .problemAssignmentPanel .filterToggle:before,
 .contestManagementPanel .filterToggle:before,
+.detailPage section .heading .filterArea>a:before,
+.filterPanel .closeLink:before,
 .contestFilter.qtip-default,
 .contestManagement .table .viewBtn:before,
 .contestManagement .sortableHeading span,
@@ -143,6 +145,15 @@ body{
 .problemListPanel .dropdown .arrow {
     background-image: url(../img/light/sprite-contestManagement.png);
     background-repeat: no-repeat;
+}
+.detailPage section .heading .filterArea>a:before,
+ .filterPanel .closeLink:before {
+    background-position: -100px 0;
+}
+.filterPanel .closeLink:before {
+    -webkit-transform:rotate(90deg);
+      -ms-transform:rotate(90deg);
+          transform:rotate(90deg);
 }
 .practiceProblemFilter.qtip-default,
 .problemListPanel .statusIcon:before{
