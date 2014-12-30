@@ -84,8 +84,13 @@
  * Changes in version 1.19 (Web Arena Plugin API Part 2):
  * - Fixed some undefined exceptions.
  *
+ * Changes in version 1.20 (Web Arena - Leaderboard Performance Improvement):
+ * - Added functions leaderboardViewChangeHandler, leaderboardRefreshHandler and
+ * injectLeaderboardRefresher to $rootScope to handle the updates of the leaderboards
+ * and improve the performance.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.19
+ * @version 1.20
  */
 'use strict';
 /*jshint -W097*/
@@ -99,6 +104,11 @@
  * @type {exports}
  */
 var helper = require('../helper'),
+    /**
+     * The object containing configurable constants.
+     * @type {exports}
+     */
+    config = require('../config'),
     contestCreationCtrl = require('./contestCreationCtrl');
 
 /**
@@ -106,7 +116,7 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', '$filter', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window, $filter) {
     var /**
          * The modal controller.
          *
@@ -362,6 +372,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $rootScope.ldrbrdTimeoutPromise = $timeout(function () {
                 $rootScope.$broadcast('rebuild:leaderboardTable');
             }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
+            $rootScope.$broadcast(helper.EVENT_NAME.LeaderboardRefreshed);
         },
         /**
          * Update the room summary.
@@ -387,6 +398,27 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             }
             if (updatedDivSummary) {
                 updateDivSummary(Number($rootScope.lastDivSummary.roundID), Number($rootScope.lastDivSummary.divisionID));
+            }
+        },
+        /**
+         * Update the leaderboard.
+         * @param scope the scope where the leaderboard is in
+         * @param moveToFirstPage true if the leaderboard should show its first page
+         */
+        updateLeaderboard = function (scope, moveToFirstPage) {
+            var begin;
+            if (moveToFirstPage) {
+                scope.currentPage = 0;
+            }
+            begin = scope.currentPage * scope.numOfPage;
+            scope.leaderboardFiltered = $filter('filter')($rootScope.leaderboard, scope.currentKeys.lbFilter);
+            scope.leaderboardFiltered = $filter('orderBy')(scope.leaderboardFiltered, scope.currentKeys.leaderboardKey);
+            scope.leaderboardPageRange = scope.range(scope.leaderboardFiltered, scope.numOfPage);
+            scope.leaderboardToShow = scope.leaderboardFiltered.slice(begin, begin + scope.numOfPage);
+            if (scope.rebuildScrollbars) {
+                $timeout(function () {
+                    scope.rebuildScrollbars();
+                }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
             }
         };
 
@@ -839,7 +871,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return $rootScope.roomData && $rootScope.roomData[roomID] ? $rootScope.roomData[roomID].coders : [];
         }
         if (viewOn === 'divOne' || viewOn === 'divTwo') {
-            return $rootScope.leaderboard ? $rootScope.leaderboard : [];
+            return $rootScope.leaderboard || [];
         }
 
         return [];
@@ -950,6 +982,80 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             });
         }
     };
+
+    /**
+     * Handles the event when the leaderboard's view is changed except for the case the that the
+     * username filter is changed.
+     *
+     * @param scope the $scope where the leaderboard is in
+     * @param newValues the new values of the leaderboard settings
+     * @param oldValues the old values of the leaderboard settings
+     */
+    $rootScope.leaderboardViewChangeHandler = function (scope, newValues, oldValues) {
+        scope.refresher.addEvent({
+            moveToFirstPage: !angular.equals(newValues.currentKeys.lbFilter, oldValues.currentKeys.lbFilter),
+            updateNow: true
+        });
+    };
+
+    /**
+     * Handles the event when the leaderboard is going to refresh.
+     * @param scope the $scope where the leaderboard is in.
+     * @param options the options of the refresh, "updateNow" and "moveToFirstPage" are possible boolean options.
+     */
+    $rootScope.leaderboardRefreshHandler = function (scope, options) {
+        scope.refresher.addEvent(options);
+    };
+
+    /**
+     * Injects a periodic refresher to a given $scope.
+     * @param scope the $scope where the leaderboard is in.
+     */
+    $rootScope.injectLeaderboardRefresher = function (scope) {
+        scope.refresher = {
+            counter: 0,
+            refreshGap: Number(config.leaderboardRefreshTimeGap),
+            scope: scope,
+            /**
+             * Adds a refresh event with options.
+             * @param options the options
+             */
+            addEvent: function (options) {
+                this.counter += 1;
+                if (options && options.updateNow) {
+                    this.refresh(options);
+                }
+            },
+            /**
+             * Refreshes the scope's leaderboard with the given options.
+             * @param options the options to use
+             */
+            refresh: function (options) {
+                if (this.counter > 0 || (options && options.updateNow)) {
+                    updateLeaderboard(this.scope, options && options.moveToFirstPage);
+                    this.counter = 0;
+                }
+            },
+            /**
+             * Refreshes the leaderboard periodically.
+             */
+            refreshPeriodically: function () {
+                if (this.stopped) {
+                    return;
+                }
+                this.refresh(false);
+                var that = this;
+                $timeout(function () {
+                    that.refreshPeriodically();
+                }, this.refreshGap);
+            },
+            stop: function () {
+                this.stopped = true;
+            }
+        };
+        scope.refresher.refreshPeriodically();
+    };
+
     // Show the coder history.
     socket.on(helper.EVENT_NAME.CoderHistoryResponse, function (data) {
         var i, tmpDate, coderHistoryData = [];

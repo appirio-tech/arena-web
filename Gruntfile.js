@@ -43,8 +43,12 @@
  * - Added TC_HOSTNAME and CHALLENGE_ADVERTISING_UPDATE
  *   to handle showing and updating challenge advertising data.
  *
+ * Changes in version 1.11 (Web Arena - Leaderboard Performance Improvement v1.0):
+ * - Added LEADERBOARD_REFRESH_TIME_GAP to improve leaderboard performance.
+ * - Fixed lint issues.
+ *
  * @author amethystlei, flytoj2ee, dexy, shubhendus
- * @version 1.10
+ * @version 1.11
  */
 'use strict';
 /*global module, process*/
@@ -106,7 +110,8 @@ module.exports = function (grunt) {
                         { match : 'FEEDBACK_MAXLENGTH', replacement: process.env.FEEDBACK_MAXLENGTH },
                         { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT },
                         { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME },
-                        { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME }
+                        { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
+                        { match : 'LEADERBOARD_REFRESH_TIME_GAP', replacement: process.env.LEADERBOARD_REFRESH_TIME_GAP }
                     ]
                 },
                 files : [
@@ -201,7 +206,7 @@ module.exports = function (grunt) {
                 // This copies all the html and images into the build/ folder. css and js were done already.
                 expand: true,
                 cwd: 'app/',
-                src: ['**/*.html', 'img/**', 'fonts/**', 'data/**', 'robots.txt','js/newrelic.js'],
+                src: ['**/*.html', 'img/**', 'fonts/**', 'data/**', 'robots.txt', 'js/newrelic.js'],
                 dest: 'build/'
             },
             release: {
@@ -251,7 +256,7 @@ module.exports = function (grunt) {
                     APP_NAME: process.env.NEWRELIC_SERVER_APPNAME,
                     LICENSE_KEY: process.env.NEWRELIC_SERVER_LICENSE_KEY,
                     LOGGING_LEVEL : process.env.NEWRELIC_SERVER_LOGGING_LEVEL
-                }                
+                }
             }
         }
     });
@@ -268,11 +273,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadTasks('./new_relic/tasks');
-    grunt.loadTasks('./new_relic/server_tasks')
+    grunt.loadTasks('./new_relic/server_tasks');
 
     // The default tasks to run when you type: grunt
-    grunt.registerTask('default', ['servernewrelic','newrelic','clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
-    grunt.registerTask('build', ['servernewrelic','newrelic','clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('default', ['servernewrelic', 'newrelic', 'clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('build', ['servernewrelic', 'newrelic', 'clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
     //release tasks work out of build directory - build must be run first!
     grunt.registerTask('release', ['clean:release', 'uglify:release', 'copy:release']);
     grunt.registerTask('heroku', ['build']);
