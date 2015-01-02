@@ -661,12 +661,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     angular.element('.chatInput').width(292);
                     angular.element('.chatInputText').width(282);
                 } else {
-                    $.fn.qtip.zindex = 1030;
+                    $.fn.qtip.zindex = 900;
                 }
                 $scope.$broadcast('rebuild:chatboard');
             }, 100);
         };
-        // back to normal 
+        // back to normal
         $scope.collapsePanel = function (panel) {
             $timeout(function () {
                 $scope.windowStatus[panel] = 'normal';
@@ -679,12 +679,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     angular.element('.chatInput').width(292);
                     angular.element('.chatInputText').width(282);
                 } else {
-                    $.fn.qtip.zindex = 1030;
+                    $.fn.qtip.zindex = 900;
                 }
                 $scope.$broadcast('rebuild:chatboard');
             }, 100);
         };
-        // set the panel to max 
+        // set the panel to max
         $scope.expandPanel = function (panel) {
             $timeout(function () {
                 $scope.windowStatus[panel] = 'max';
@@ -711,7 +711,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     angular.element('#leaderboardWidget').removeClass('hide');
                     angular.element('#chatWidget').addClass('hide');
                     $('#leaderboardFilter').qtip('api').set('show.modal', true);
-                    $.fn.qtip.zindex = 1030;
+                    $.fn.qtip.zindex = 900;
                 }
                 $scope.$broadcast('rebuild:chatboard');
             }, 100);
