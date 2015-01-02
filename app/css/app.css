@@ -82,6 +82,9 @@ body a {cursor: pointer;}
     color: #fff;
 }
 /* 'topcoder arena' */
+.navbar-fixed-top, .navbar-fixed-bottom {
+    z-index: 1100;
+}
 .anon-header .navbar .container-fluid {
     padding-left: 0;
     padding-right: 0;
