@@ -2773,7 +2773,7 @@ footer .right>span:nth-child(2) {
 #resizer {
     position: relative;
     background: transparent;
-    height: 0px;
+    height: 3px;
     cursor: ns-resize;
 }
 /* test report*/
