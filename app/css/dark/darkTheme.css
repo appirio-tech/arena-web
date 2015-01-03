@@ -552,10 +552,9 @@ footer .right .sponsorLogo {
     background: #232628;
 }
 /* resizer */
-/*hover style of resizer*/
-/*#resizer:hover {
+#resizer {
     background: #1f444e;
-}*/
+}
 
 .panelCodeEditor .testReportPanel,
 .reportQtip.qtip-default {
@@ -1251,13 +1250,13 @@ footer .right .sponsorLogo {
     .panelContestStat .breadcrumbHead {height: 63px; }
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
 #challenges-advertiser {
     border: 1px solid #1f444e;
-    background: #151718;   
+    background: #151718;
 }
 
 #challenges-advertiser .challenge-technologies-wrapper {
