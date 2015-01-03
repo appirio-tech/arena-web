@@ -2822,6 +2822,7 @@ footer .right>span:nth-child(2) {
     line-height: normal;
 }
 .testReportPanel .infoBar {
+    table-layout: fixed;
     min-height: 40px;
     margin-bottom: 1px;
     margin-left: 0;
@@ -2840,7 +2841,7 @@ footer .right>span:nth-child(2) {
 .testReportPanel .infoBar .caseName {
     padding-left: 35px;
     width: 169px;
-    word-break: break-all;
+    word-wrap: break-word;
 }
 .testReportPanel .caseName>a {
     height: 25px;
