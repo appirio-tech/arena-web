@@ -746,7 +746,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
             setLanguage : function (languageName) {
                 languageName = languageName ? languageName.toLowerCase() : '';
                 if (languageName === 'java' || languageName === 'c++' || languageName === 'c#' ||
-                    languageName === 'vb.net' || languageName === 'python') {
+                        languageName === 'vb.net' || languageName === 'python') {
                     $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.setLanguageFromPlugin, languageName);
                 } else {
                     console.log('The language name is invalid.');

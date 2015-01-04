@@ -102,8 +102,11 @@
  * Changes in version 1.26 (Web Arena Plugin API Part 2):
  * - Added more plugin event names.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.26
+ * Changes in version 1.27 (Web Arena - Leaderboard Performance Improvement v1.0):
+ * - Added event name LeaderboardRefreshed to refresh the leaderboard.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.27
  */
 'use strict';
 /*global module*/
@@ -212,6 +215,7 @@ module.exports = {
         // internal events
         Connected: 'Connected',
         Disconnected: 'Disconnected',
+        LeaderboardRefreshed: 'LeaderboardRefreshed',
         // socket events
         SocketConnected: 'connect',
         SocketConnectionFailed: 'connect_failed',

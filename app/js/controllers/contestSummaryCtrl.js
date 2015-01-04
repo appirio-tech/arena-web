@@ -27,8 +27,13 @@
  * Changes in version 1.7 (Sort is not retained in room summary):
  * - Reset isKeepSort to false.
  *
- * @author amethystlei, flytoj2ee, dexy, TCASSEMBLER
- * @version 1.7
+ * Changes in version 1.8 (Web Arena - Leaderboard Performance Improvement):
+ * - Updated to use the variable leaderboard instead of calling the function
+ *   getCurrentLeaderboard() in the template app/partials/user.contest.summary.html
+ *   to improve the performance of the leaderboard in the summary page.
+ *
+ * @author amethystlei, flytoj2ee, dexy, TCSASSEMBLER
+ * @version 1.8
  */
 'use strict';
 /*global module, angular*/
@@ -51,6 +56,10 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
         };
 
     $scope.viewDivisionID = $scope.divisionID;
+    /**
+     * Sets the view (Room, Rooms or Division) of the leaderboard.
+     * @param view the name of the view
+     */
     $scope.setViewOn = function (view) {
         $rootScope.currentViewOn = view;
         var divID = helper.VIEW_ID[view];
@@ -61,21 +70,25 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
             $rootScope.leaderboard = [];
             $rootScope.isDivLoading = false;
             $scope.viewDivisionID = $scope.divisionID;
+        } else if (view === 'room') {
+            $scope.viewDivisionID = divID;
+            $rootScope.closeLastDivSummary();
+            $rootScope.leaderboard = $scope.getCurrentLeaderboard();
+            $rootScope.isDivLoading = false;
         } else {
             $scope.viewDivisionID = divID;
             $rootScope.getDivSummary($scope.contest.roundID, divID);
         }
     };
-    if ($stateParams.viewOn) {
-        $scope.setViewOn($stateParams.viewOn);
-    } else {
-        $scope.setViewOn('room');
-    }
     // default to 50
     $scope.pageSize = 50;
 
     $scope.currentPage = 1;
+    $scope.topCoderCount = Number(config.summaryTopCoderCount);
 
+    $scope.$watch('competingRoomID', function () {
+        $rootScope.leaderboard = $scope.getCurrentLeaderboard();
+    });
     /**
      * Moves to room.
      *
@@ -137,40 +150,7 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
      * @returns {Array} the leader board
      */
     $scope.getCurrentLeaderboard = function () {
-        var leaderboard = $rootScope.getCurrentLeaderboard($scope.viewOn, $rootScope.competingRoomID), i, j;
-
-        for (i = 0; i < leaderboard.length; i++) {
-            for (j = 0; j < leaderboard[i].components.length; j++) {
-                leaderboard[i].components[j].defaultPoint = $scope.getDefaultComponentValue(leaderboard[i].components[j].componentID);
-            }
-        }
-
-        return leaderboard;
-    };
-
-    /**
-     * Get default problem component point value by component id.
-     * @param componentId - the component id.
-     * @returns {number} - the point value.
-     */
-    $scope.getDefaultComponentValue = function (componentId) {
-        var result = 0, j, problems;
-        if ($scope.contest) {
-            problems = $scope.contest.problems;
-            if (problems) {
-                for (j = 0; j < problems[$scope.viewDivisionID].length; j++) {
-                    if (+componentId === +problems[$scope.viewDivisionID][j].primaryComponent.componentID) {
-                        result = problems[$scope.viewDivisionID][j].primaryComponent.pointValue;
-                        break;
-                    }
-                }
-            }
-        }
-        return result;
-    };
-
-    $scope.getTopCoderCount = function () {
-        return Number(config.summaryTopCoderCount);
+        return $rootScope.getCurrentLeaderboard($scope.viewOn, $rootScope.competingRoomID);
     };
 
     // Closes the opened division summary on page leaving.
@@ -243,6 +223,12 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
         $rootScope.viewCode($scope.contest.phaseData.phaseType, $scope.contest.roundID, $scope.divisionID,
                             componentId, roomID, coder.userName, 'contest');
     };
+
+    if ($stateParams.viewOn) {
+        $scope.setViewOn($stateParams.viewOn);
+    } else {
+        $scope.setViewOn('room');
+    }
 }];
 
 module.exports = contestSummaryCtrl;
