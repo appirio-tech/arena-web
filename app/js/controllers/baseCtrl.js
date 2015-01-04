@@ -778,6 +778,28 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         createContestWizzard(roundData);
     };
 
+    /**
+     * Logout.
+     */
+    $scope.logout = function () {
+        if (appHelper.isExistingCodeInLocalStorage()) {
+            $scope.openModal({
+                title: 'Warning',
+                message: 'Would you like to clear your cache code in browser?',
+                buttons: ['Yes', 'No'],
+                enableClose: true
+            }, function () {
+                // clear the cache here
+                appHelper.removeCurrentCodeInLocalStorage();
+                $state.go(helper.STATE_NAME.Logout);
+            }, function () {
+                $state.go(helper.STATE_NAME.Logout);
+            });
+        } else {
+            $state.go(helper.STATE_NAME.Logout);
+        }
+    };
+
     $rootScope.isDivLoading = false;
     /**
      * Close the last opened division summary.

@@ -76,7 +76,7 @@
                             <ul class="nav navbar-nav userInfo">
                                 <li class="userName">Welcome&nbsp;<span class="{{getRatingClass(userInfo().rating)}}"><a ng-href="http://www.topcoder.com/member-profile/{{username()}}/" target="_blank" class="{{getRatingClass(userInfo().rating)}}">{{ username() }}</a></span></li>
                                 <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="{{isReading ? null : 'Messages'}}"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
-                                <li><a data-ui-sref="user.logout" class="arrow" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Logout"></a></li>
+                                <li><a data-ng-click="logout()" class="arrow" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Logout"></a></li>
                             </ul>
                         </li>
                     </ul>

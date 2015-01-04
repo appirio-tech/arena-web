@@ -102,8 +102,14 @@
  * Changes in version 1.26 (Web Arena Plugin API Part 2):
  * - Added more plugin event names.
  *
+ * Changes in version 1.27 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Added save request and save results title.
+ *
+ * Changes in version 1.28 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
+ * - Added chat setting names.
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.26
+ * @version 1.28
  */
 'use strict';
 /*global module*/
@@ -160,6 +166,7 @@ module.exports = {
         SynchTimeRequest: 'SynchTimeRequest',
         TestInfoRequest: 'TestInfoRequest',
         TestRequest: 'TestRequest',
+        SaveRequest: 'SaveRequest',
         // backend responses
         BatchTestResponse: 'BatchTestResponse',
         ChallengeResponse: 'ChallengeResponse',
@@ -322,7 +329,8 @@ module.exports = {
         ForcedLogout: 'Client Connection Error',
         NotAssigned: 'Not Assigned',
         RoundAccessError: 'Round Access Error',
-        ChangeRoundError: 'Change round Error'
+        ChangeRoundError: 'Change round Error',
+        SaveResults: 'Save Results'
     },
 
     // custom pop up messages
@@ -437,7 +445,13 @@ module.exports = {
     // The local storage prefix and room list key
     LOCAL_STORAGE: {
         PREFIX: 'chat_history_',
-        ROOM_LIST: 'chat_history_room_list'
+        ROOM_LIST: 'chat_history_room_list',
+        CACHE_CODE_LIST: 'cache_code_list',
+        CHAT_SETTING_CHAT: 'chat_setting_chat',
+        CHAT_SETTING_HISTORY: 'chat_setting_history',
+        CHAT_SETTING_AUTOSCROLL: 'chat_setting_autoscroll',
+        CHAT_SETTING_TIMESTAMPS: 'chat_setting_timestamps',
+        CHAT_SETTING_SOUNDS: 'chat_setting_sounds'
     },
 
     // Titles for Facebook pop-ups
