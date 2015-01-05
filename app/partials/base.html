@@ -159,3 +159,17 @@
         <button class="btn right-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 1">{{ buttons[0] }}</button>
     </div>
 </script>
+
+<script type="text/ng-template" id="popupSystemTestResultBase.html">
+    <div class="modal-header coder-history-modal-header">
+        {{ title }}
+        <span class="system-test-cancel-x cancel-x" data-ng-click="ok()" ng-if="enableClose">X</span>
+    </div>
+    <div class="textAlign textColor systemTestModalBody" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:popupSystemTestResult">
+        <p data-ng-show="!showError" class="coder-history-textMargin">Your solution <span class="passSystemTest">Passed</span> system test.</p>
+        <p data-ng-show="showError" class="coder-history-textMargin">Your solution <span class="failSystemTest">Failed</span> system test.<br/>Please Try Again.</p>
+    </div>
+    <div class="modal-footer textAlign">
+        <button class="btn" data-ng-click="ok()">{{ buttons[0] }}</button>
+    </div>
+</script>

@@ -1466,3 +1466,6 @@ footer .right .sponsorLogo {
 .settings-panel, .settings-panel h3 {
     font-weight: normal;
 }
+.coder-history-modal-header {
+    border: 1px solid #e5e5e5!important;
+}
