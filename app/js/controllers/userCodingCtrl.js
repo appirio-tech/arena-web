@@ -59,8 +59,11 @@
  * Changes in version 1.16 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Cancel the timer for auto save logic while leaving the page.
  *
- * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.16
+ * Changes in version 1.17 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added logic to support running practice system test.
+ *
+ * @author dexy, amethystlei, savon_cn, flytoj2ee
+ * @version 1.17
  */
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -620,6 +623,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     });
                 }, 100);
             });
+            $scope.practiceRoomId = $stateParams.roomId;
             socket.emit(helper.EVENT_NAME.MoveRequest, { moveType: helper.ROOM_TYPE_ID.PracticeRoom, roomID: $stateParams.roomId });
             socket.emit(helper.EVENT_NAME.EnterRequest, { roomID: -1 });
         }

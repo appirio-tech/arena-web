@@ -705,6 +705,11 @@ body a {cursor: pointer;}
 .panelContestPlan .preloader-window {
     left: 28.1%;
 }
+
+.system-test-preloader-window {
+    top: 1% !important;
+    width: 200px!important;
+}
 @media only screen and (max-width: 1199px) {
     .panelContestPlan .preloader-window {
         left: 36.1%;
@@ -1031,6 +1036,11 @@ footer .right>span:nth-child(2) {
 
 .modal .modal-dialog {
     /*padding-top: 10%;*/
+}
+@media only screen and (min-height: 509px) and (min-width: 768px) {
+    .systemTestResult .modal-dialog {
+        width: 400px !important;
+    }
 }
 .modal .modal-lg {
     width: 892px;
@@ -8403,7 +8413,7 @@ table thead .sort.desc{
         top: 0;
         padding-left: 0;
     }
-    .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 20px;}
+    .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 1px;}
     .panelCodeEditor .panel-body .middlePart .findInput {
         margin-right: 10px;
         margin-left: 20px;
@@ -8803,6 +8813,37 @@ table thead .sort.desc{
     -webkit-flex: 0 0 auto;
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
+}
+
+
+.middlePart .actionIcons .refreshSystemTestLink:before {
+    background-image: url(../img/refresh_system_test.png);
+    background-repeat: no-repeat;
+    height: 19px;
+    width: 19px;
+}
+
+.modal-dialog .passSystemTest {
+    color: rgb(113, 180, 10);
+    font-weight: bolder;
+}
+
+.modal-dialog .failSystemTest {
+    color: rgb(236, 39, 39);
+    font-weight: bolder;
+}
+.systemTestResult .modal-dialog .modal-content {
+    border-color: #1f444e;
+}
+.modal .modal-content .systemTestModalBody {
+    border-width: 0;
+    padding: 45px;
+    overflow: hidden;
+    height: 150px;
+}
+
+.modal .modal-content .modal-header .system-test-cancel-x {
+    margin-right: -15px;
 }
 
 /* One row layout for large displays */

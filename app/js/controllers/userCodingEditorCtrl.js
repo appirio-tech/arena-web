@@ -58,8 +58,11 @@
  * Changes in version 1.16 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Added logic to cache the code to local storage.
  *
+ * Changes in version 1.17 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added logic to support running practice system test.
+ *
  * @author tangzx, amethystlei, flytoj2ee
- * @version 1.15
+ * @version 1.17
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -575,9 +578,11 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 cmInstance.on('change', function () {
                     if ($scope.firstLoadCode || $scope.resizeCodeEditor) {
                         $scope.firstLoadCode = false;
+                        $scope.updatedCodeAfterSubmit = false;
                         $scope.resizeCodeEditor = false;
                     } else {
                         $scope.contentDirty = true;
+                        $scope.updatedCodeAfterSubmit = true;
                         if (($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode)) {
                             appHelper.setCodeToLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID,
                                 $scope.lang($scope.langIdx).id, $scope.cm.getValue());
@@ -777,6 +782,11 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 message: data.message,
                 enableClose: true
             });
+
+            if (data.message.indexOf('was successful for') !== -1) {
+                $scope.submittedCode = true;
+                $scope.updatedCodeAfterSubmit = false;
+            }
         });
 
         /**
@@ -1017,6 +1027,89 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
             // set preferred theme, there is no theme data
             $scope.themeIdx = 0;
+
+            $scope.submittedCode = false;
+            $scope.updatedCodeAfterSubmit = false;
+
+            /**
+             * Check whether to show running practice system test link.
+             * @returns {boolean} the checked result
+             */
+            $scope.isShowRunPracticeSystemTest = function () {
+                if ($scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
+                    return true;
+                }
+
+                return false;
+            };
+
+            $scope.numContestRequests = 0;
+
+            /**
+             * Run practice system test.
+             */
+            $scope.runPracticeSystemTest = function () {
+                if (!$scope.submittedCode) {
+                    return;
+                }
+
+                /**
+                 * Run system test handler.
+                 */
+                var runSystemTestHandler = function () {
+                    $scope.numContestRequests = 1;
+                    disableUserInput();
+                    socket.emit(helper.EVENT_NAME.PracticeSystemTestRequest, {
+                        componentIds: [$scope.componentID],
+                        roomID: $scope.practiceRoomId
+                    });
+                };
+                if ($scope.updatedCodeAfterSubmit) {
+                    $scope.openModal({
+                        title: 'Warning',
+                        message: 'You have made a change to your code since the last time you submitted.' +
+                            ' System test result will be based on last submitted code. Do you want to continue with Running System Tests?',
+                        buttons: ['Yes', 'No'],
+                        enableClose: true
+                    }, runSystemTestHandler);
+                } else {
+                    runSystemTestHandler();
+                }
+            };
+
+            // The response which returned total system test case count
+            socket.on(helper.EVENT_NAME.PracticeSystemTestResponse, function (data) {
+                $scope.numContestRequests = data.testCaseCountByComponentId[$scope.componentID];
+            });
+
+            // The response which returned system test results
+            socket.on(helper.EVENT_NAME.PracticeSystemTestResultResponse, function (data) {
+                if (data.resultData.succeeded === false) {
+                    $scope.numContestRequests = 0;
+                    //popup error dialog
+                    $scope.openModal({
+                        title: 'Result',
+                        message: '',
+                        showError: true,
+                        buttons: ['Try Again'],
+                        enableClose: true
+                    }, null, null, 'popupSystemTestResultBase.html');
+                    enableUserInput();
+                } else {
+                    $scope.numContestRequests = $scope.numContestRequests - 1;
+                    if ($scope.numContestRequests === 0) {
+                        // popup success dialog
+                        $scope.openModal({
+                            title: 'Result',
+                            message: '',
+                            showError: false,
+                            buttons: ['OK'],
+                            enableClose: true
+                        }, null, null, 'popupSystemTestResultBase.html');
+                        enableUserInput();
+                    }
+                }
+            });
 
             // set line number visibility
             // comment out for now, there is no line number data

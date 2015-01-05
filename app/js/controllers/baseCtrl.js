@@ -92,8 +92,12 @@
  * injectLeaderboardRefresher to $rootScope to handle the updates of the leaderboards
  * and improve the performance.
  *
+ * Changes in version 1.22 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added the custom css for popup dialog.
+ * - Fixed the null pointer exception in popup dialog.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.21
+ * @version 1.22
  */
 'use strict';
 /*jshint -W097*/
@@ -134,6 +138,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.coderInfoLink = function () { return data.coderInfoLink; };
             $scope.coderHistoryData = data.coderHistoryData;
             $scope.registrants = data.registrants;
+            $scope.showError = data.showError;
 
             // define initial sorting order for registrants list
             $scope.registrantPredicate = 'userRating';
@@ -198,7 +203,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
              */
             $scope.ok = function () {
                 ok();
-                if ($scope.title !== 'Event Registration') {
+                if ($scope.title !== 'Event Registration' && $scope.message.indexOf('You have made a change to your code since the last time you compiled. Do you want to continue with the submit?') === -1) {
                     $modalInstance.close();
                 }
             };
@@ -450,6 +455,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
 
         if (templateUrl === 'partials/user.contest.registration.html') {
             cssName = 'marginTop';
+        }
+        if (templateUrl === 'popupSystemTestResultBase.html') {
+            cssName = 'systemTestResult';
         }
         $rootScope.currentModal = $modal.open({
             templateUrl: templateUrl,
