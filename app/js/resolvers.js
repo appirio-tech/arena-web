@@ -140,13 +140,25 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
          * @param {Array} coders
          */
         updateCoderPlacement = function (coders) {
-            coders.forEach(function (item) {
-                item.roomPlace = 1;
-                coders.forEach(function (other) {
-                    if (item.userName !== other.userName && item.totalPoints < other.totalPoints) {
-                        item.roomPlace += 1;
-                    }
-                });
+            // sort on descending order by totalPoints
+            coders.sort(function(a, b){
+                if (a.totalPoints > b.totalPoints)
+                    return -1;
+                if (a.totalPoints < b.totalPoints)
+                    return 1;
+                return 0;
+            });
+            // Ranking place in the room
+            var roomPlace = 1;
+            // Track last score to show same place for tied scores
+            var lastScore = -1;
+            // assign the placement to each coder
+            coders.forEach(function(coder, index){
+                if (coder.totalPoints != lastScore) {
+                    roomPlace = index + 1;
+                    lastScore = coder.totalPoints;
+                }
+                coder.roomPlace = roomPlace;
             });
         };
     // No need to start again if user already logged in
