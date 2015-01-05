@@ -649,10 +649,9 @@ footer .left>span {
     background: #e7e7e7;
 }
 /* resizer */
-/*hover style of resizer*/
-/*#resizer:hover {
-    background: #1f444e;
-}*/
+#resizer {
+    background: #e7e7e7;
+}
 .panelCodeEditor .testReportPanel,
 .reportQtip.qtip-default {
     border-color: #e7e7e7;
@@ -1190,7 +1189,7 @@ footer .left>span {
     border-bottom-width: 1px;
     padding-top: 12px;
     padding-bottom: 9px;
-    border-color: #ffe6c7; 
+    border-color: #ffe6c7;
 }
 .contestManagementPanel .table>thead>tr>th {
     color: #636d70;
@@ -1543,13 +1542,13 @@ footer .left>span {
     }
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
 #challenges-advertiser {
     border: 1px solid #e7e7e7;
-    background: #fff;   
+    background: #fff;
 }
 
 #challenges-advertiser .challenge-technologies-wrapper {
