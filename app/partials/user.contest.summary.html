@@ -82,11 +82,11 @@
                                 </table>
                             </div><!--/.innerWrapper-->
                         </div><!--/.tHeadDiv-->
-                        <div class="tableDiv scroll" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-ng-class="{moreProblemTbl:contest.problems[viewDivisionID].length>3,normal:contest.problems[viewDivisionID].length<=3}">
+                        <div class="tableDiv scroll" data-ng-if="!isTouchDevice" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-ng-class="{moreProblemTbl:contest.problems[viewDivisionID].length>3,normal:contest.problems[viewDivisionID].length<=3}">
                             <div class="innerWrapper">
                                 <table class="table table-condensed">
                                     <tbody>
-                                         <tr data-ng-repeat="coder in getCurrentLeaderboard() | orderBy: ['-totalPoints', '-userRating', 'userName'] | limitTo: getTopCoderCount()">
+                                         <tr data-ng-repeat="coder in leaderboard | orderBy: ['-totalPoints', '-userRating', 'userName'] | limitTo: topCoderCount">
                                             <td class="col1">{{viewOn=='room' ? coder.roomPlace : coder.divPlace}}</td>
                                             <td class="colR" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
                                                 --><!-- avoid blank
@@ -99,7 +99,7 @@
                                                 --><span data-ng-click="showCoderInfo(coder.userName, coder.userType);" class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
                                                 <a class="rating" data-ng-click="getCoderHistory(coder)"><img src="../img/history.png"/></a>
                                             </td>
-                                            <td data-ng-repeat="component in coder.components | orderBy:'defaultPoint' track by $index" class="colProblem">
+                                            <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
                                                 <a data-ng-show="isViewable(contest.phaseData.phaseType, component)" data-ng-click="viewCode(coder, component.componentID)"><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span></a>
                                                 <span data-ng-hide="isViewable(contest.phaseData.phaseType, component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span>
                                             </td>
@@ -109,11 +109,11 @@
                                 </table>
                             </div>
                         </div><!-- /.tableDiv .scroll -->
-                        <div class="tableDiv default" data-ng-class="{moreProblemTbl:contest.problems[viewDivisionID].length>3,normal:contest.problems[viewDivisionID].length<=3}">
+                        <div class="tableDiv default" data-ng-if="isTouchDevice" data-ng-class="{moreProblemTbl:contest.problems[viewDivisionID].length>3,normal:contest.problems[viewDivisionID].length<=3}">
                             <div class="innerWrapper">
                                <table class="table table-condensed">
                                     <tbody>
-                                         <tr data-ng-repeat="coder in getCurrentLeaderboard() | orderBy: ['-totalPoints', '-userRating', 'userName'] | limitTo: getTopCoderCount()">
+                                         <tr data-ng-repeat="coder in leaderboard | orderBy: ['-totalPoints', '-userRating', 'userName'] | limitTo: topCoderCount">
                                             <td class="col1">{{viewOn=='room' ? coder.roomPlace : coder.divPlace}}</td>
                                             <td class="colR" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
                                                 --><!-- avoid blank
@@ -123,7 +123,7 @@
                                                 --><!-- avoid blank
                                                 --><span class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
                                             </td>
-                                            <td data-ng-repeat="component in coder.components | orderBy:'defaultPoint' track by $index" class="colProblem">
+                                            <td data-ng-repeat="component in coder.components track by $index" class="colProblem">
                                                 <a data-ng-show="isViewable(contest.phaseData.phaseType, component)" data-ng-click=""><span class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span></a>
                                                 <span data-ng-hide="isViewable(contest.phaseData.phaseType, component)" class="{{getStatusColor(component.status, component.language)}}">{{showResult(component, 'points')}}</span>
                                             </td>
