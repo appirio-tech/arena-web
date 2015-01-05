@@ -108,8 +108,11 @@
  * Changes in version 1.28 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
  * - Added chat setting names.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.28
+ * Changes in version 1.29 (Web Arena - Leaderboard Performance Improvement v1.0):
+ * - Added event name LeaderboardRefreshed to refresh the leaderboard.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.29
  */
 'use strict';
 /*global module*/
@@ -219,6 +222,7 @@ module.exports = {
         // internal events
         Connected: 'Connected',
         Disconnected: 'Disconnected',
+        LeaderboardRefreshed: 'LeaderboardRefreshed',
         // socket events
         SocketConnected: 'connect',
         SocketConnectionFailed: 'connect_failed',
