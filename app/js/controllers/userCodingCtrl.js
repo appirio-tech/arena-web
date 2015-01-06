@@ -56,7 +56,7 @@
  * - Added logic to handle invalid roundId, problemId and divisionId,
  * which are side-effects of deep linking
  *
- * Changes in version 1.16 (Web Arena SRM Problem Deep Link Assembly):
+ * Changes in version 1.16 (Web Arena - Scrolling Issues Fixes):
  * - Refactored UI resizing logic to use flexbox layout
  *
  * @author dexy, amethystlei, savon_cn, TCSASSEMBLER, Helstein

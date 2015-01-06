@@ -55,8 +55,11 @@
  * Changes in version 1.15 (Web Arena Plugin API Part 1):
  * - Added plugin logic for coding editor panel.
  *
- * @author tangzx, amethystlei, flytoj2ee
- * @version 1.15
+ * Changes in version 1.16 (Scrolling Issues Fixes Assembly):
+ * - Changed CodeMirror scrollbar style.
+ *
+ * @author tangzx, amethystlei, flytoj2ee, Helstein
+ * @version 1.16
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */

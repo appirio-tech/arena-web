@@ -105,8 +105,11 @@
  * - Added ng-clip third party library to enable copy link functionality
  * - Enabled deep-linking for SRM Problems (user.coding state)
  *
+ * Changes in version 1.29 (Web Arena - Scrolling Issues Fixes):
+ * - Updated CodeMirror to latest version and added scrollbar plugin
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
- * @version 1.28
+ * @version 1.29
  */
 'use strict';
 /*jshint -W097*/
