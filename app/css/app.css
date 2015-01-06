@@ -769,6 +769,9 @@ body a {cursor: pointer;}
     padding: 62px 0;
     height: 100%;
 }
+.coding-page .codeArea #resizer {
+    height: 1px;
+}
 .coding-page .codeArea {
     min-height: 644px; /*768 minus the padding for header and footer */
     height: 100%;

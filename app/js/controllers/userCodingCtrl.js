@@ -117,6 +117,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $scope.$watch('problemAreaHeightRatio', function () {
             $timeout(function () {
                 $rootScope.$broadcast('problem-loaded');
+                if($scope.cmElem) {
+                    $scope.cmElem.CodeMirror.refresh();
+                }
+                if($scope.sharedObj.rebuildErrorBar) {
+                    $scope.sharedObj.rebuildErrorBar();
+                }
             });
         });
 
