@@ -81,8 +81,8 @@ var config = require('../config');
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'keyboardManager', 'appHelper',
-    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, keyboardManager, appHelper) {
+var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'tcTimeService', 'keyboardManager', 'appHelper',
+    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, tcTimeService, keyboardManager, appHelper) {
         $rootScope.$broadcast('hideFeedback');
         // shared between children scopes
         $scope.sharedObj = {};
@@ -90,6 +90,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $scope.problemAreaHeightRatio = 0.5;
         // problem data
         $scope.problem = {};
+        $scope.countdown = 1;
 
         $scope.roundID = Number($stateParams.roundId);
         $scope.problemID = Number($stateParams.problemId);
@@ -118,6 +119,33 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 $rootScope.$broadcast('problem-loaded');
             });
         });
+
+
+        /**
+         * Set and start the timer.
+         */
+        function startTimer() {
+            // start coding/challenge phase count down
+            var seconds = -1, phase;
+            $scope.noCountdown = false;
+            if ($scope.roundData && $scope.roundData[$scope.roundID] && $scope.roundData[$scope.roundID].phaseData) {
+                phase = $scope.roundData[$scope.roundID].phaseData;
+                if (phase.phaseType === helper.PHASE_TYPE_ID.CodingPhase ||
+                        phase.phaseType === helper.PHASE_TYPE_ID.ChallengePhase) {
+                    // how many seconds between now and the phase end time
+                    seconds = (phase.endTime - tcTimeService.getTime()) / 1000;
+                }
+            }
+            if (seconds > 0) {
+                // set and start the timer, see angular-timer code for implementation details.
+                $timeout(function () {
+                    $scope.$broadcast('timer-set-countdown', seconds - 0.2);
+                    $scope.$broadcast('timer-start');
+                }, 200);
+            } else {
+                $scope.noCountdown = true;
+            }
+        }
 
         /**
          * Check whether it is in Challenge Phase.
