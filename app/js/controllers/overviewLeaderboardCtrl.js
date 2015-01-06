@@ -88,6 +88,18 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', '$timeout', function ($s
         return rounds;
     };
 
+    // rebuild round list and scroll position if rounds are added or removed
+    $scope.$watch('getRounds().length', function () {
+        $timeout(function() {
+            $rootScope.$broadcast('rebuild:leaderBoardMethods');
+
+            var idx = $scope.getRounds().indexOf($scope.activeRound);
+            if(idx > 0) {
+                $rootScope.$broadcast('autoscroll', 'round-' + idx);
+            }
+        });
+    });
+
     // the sorting flags.
     $scope.sortlb = {
         column: 'points',
