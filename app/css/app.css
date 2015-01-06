@@ -959,7 +959,6 @@ body a {cursor: pointer;}
 }
 .tcTime {
     display: block;
-    width: 240px;
     padding-right: 33px;
     font-size: 14px;
     text-align: right;
