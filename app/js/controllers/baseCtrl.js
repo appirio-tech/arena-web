@@ -87,8 +87,12 @@
  * Changes in version 1.20 (Web Arena SRM Problem Deep Link Assembly):
  * - Added copy link functionality in coder info popup
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.20
+ * Changes in version 1.21 (TopCoder Competition Engine - Improve Automated Notification Messages)
+ * - If there is no buttons Phase change PopupGenericResponse won't be handled.
+ * Because these notifications are already handled based on PhaseDataResponse
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.21
  */
 'use strict';
 /*jshint -W097*/
@@ -521,32 +525,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         }
     });
     $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
-        var roundName, idx;
+        var roundName;
         // handle phase change messages
         if (data.title === helper.POP_UP_TITLES.PhaseChange) {
-            if (!data.buttons) {
-                idx = data.message.indexOf(helper.PHASE_DATA.START_MESSAGE);
-                if (idx === -1) {
-                    idx = data.message.indexOf(helper.PHASE_DATA.END_MESSAGE);
-                    if (idx === -1) {
-                        roundName = '';
-                    } else {
-                        roundName = data.message.substr(idx + helper.PHASE_DATA.END_MESSAGE.length);
-                    }
-                } else {
-                    roundName = data.message.substr(idx + helper.PHASE_DATA.START_MESSAGE.length);
-                }
-                if (roundName[roundName.length - 1] === '.') {
-                    roundName = roundName.substr(0, roundName.length - 1);
-                }
-                notificationService.addNotificationMessage({
-                    type: 'round',
-                    roundName: roundName,
-                    time: Date.now(),
-                    message: data.message,
-                    popUpContent: data.message
-                });
-            } else {
+            if (data.buttons) {
                 data.enableClose = true;
                 roundName = angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roomData)
                                 && angular.isDefined($rootScope.roomData[data.moveData[1]])

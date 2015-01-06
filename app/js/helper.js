@@ -422,12 +422,6 @@ module.exports = {
         'problem': 'Problem Broadcast'
     },
 
-    // Content of the phase date change messages to determine the cut and extract the round name
-    PHASE_DATA: {
-        START_MESSAGE: 'is starting for ',
-        END_MESSAGE: 'is ending for '
-    },
-
     // The survey question types.
     QUESTION_TYPE: {
         SINGLE_CHOICE: 1,
