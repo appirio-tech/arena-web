@@ -281,6 +281,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
         testCase.checked = false;
         testCase.toggle = true;
         testCase.name = 'Custom Test Case ' + (count + 1);
+        testCase.problemId = $scope.problem.problemID;
         testCase.params = [];
         /*jslint unparam: true*/
         angular.forEach($scope.problem.allArgTypes, function (arg) {
@@ -292,6 +293,15 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
         $rootScope.userTests.unshift(testCase);
         count += 1;
     };
+
+    /**
+     * Filters out test cases with problem ID different than current problem.
+     * @param testCase the test case to be checked.
+     */
+    $scope.filterTestCases = function (testCase) {
+        return !testCase.problemId || testCase.problemId === $scope.problem.problemID;
+    }
+
     /**
      * Delete test case.
      * @param index the test case index.

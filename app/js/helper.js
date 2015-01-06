@@ -108,8 +108,14 @@
  * Changes in version 1.28 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
  * - Added chat setting names.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.28
+ * Changes in version 1.29 (Web Arena - Leaderboard Performance Improvement v1.0):
+ * - Added event name LeaderboardRefreshed to refresh the leaderboard.
+ *
+ * Changes in version 1.30 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added event names for practice system test.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.30
  */
 'use strict';
 /*global module*/
@@ -167,6 +173,7 @@ module.exports = {
         TestInfoRequest: 'TestInfoRequest',
         TestRequest: 'TestRequest',
         SaveRequest: 'SaveRequest',
+        PracticeSystemTestRequest: 'PracticeSystemTestRequest',
         // backend responses
         BatchTestResponse: 'BatchTestResponse',
         ChallengeResponse: 'ChallengeResponse',
@@ -207,6 +214,8 @@ module.exports = {
         UpdateRoundListResponse: 'UpdateRoundListResponse',
         UpdateUserListResponse: 'UpdateUserListResponse',
         UserInfoResponse: 'UserInfoResponse',
+        PracticeSystemTestResponse: 'PracticeSystemTestResponse',
+        PracticeSystemTestResultResponse: 'PracticeSystemTestResultResponse',
         // admin backend requests
         ChangeRoundRequest: 'ChangeRoundRequest',
         LoadRoundRequest: 'LoadRoundRequest',
@@ -219,6 +228,7 @@ module.exports = {
         // internal events
         Connected: 'Connected',
         Disconnected: 'Disconnected',
+        LeaderboardRefreshed: 'LeaderboardRefreshed',
         // socket events
         SocketConnected: 'connect',
         SocketConnectionFailed: 'connect_failed',
@@ -316,7 +326,7 @@ module.exports = {
 
     // pop up titles
     POP_UP_TITLES: {
-        Error: 'Error.',
+        Error: 'Error',
         CompileResult: 'Compile Result',
         TestResults: 'Test Results',
         CoderInfo: 'Coder Info',

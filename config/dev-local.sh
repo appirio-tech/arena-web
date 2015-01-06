@@ -89,6 +89,9 @@ export CHALLENGE_ADVERTISING_INTERVAL=5000
 # The time interval between updates of challenge advertising data from TC-API server (in ms)
 export CHALLENGE_ADVERTISING_UPDATE=300000
 
+# The time interval between updates of leaderboard summay (in ms)
+export LEADERBOARD_REFRESH_TIME_GAP=1000
+
 # The TopCoder host name
 export TC_HOSTNAME=http://www.topcoder.com
 

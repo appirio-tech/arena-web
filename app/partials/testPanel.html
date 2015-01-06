@@ -28,12 +28,12 @@
                     <textarea>{{param.value}}</textarea>
                     <a data-ng-click="param.created=true; editting=false" class="btn btnAlt">OK</a>
                     <a data-ng-click="param.created=false; editting=false" class="btn btnAlt">Cancel</a>
-                </div>                                    
+                </div>
             </div>
         </div>
     </div>
     <!-- Custom test cases -->
-    <div class='testCase' data-ng-repeat="testCase in userTests track by $index" data-ng-init="caseNum=$index;">
+    <div class='testCase' data-ng-repeat="testCase in userTests | filter:filterTestCases track by $index" data-ng-init="caseNum=$index;">
         <header data-ng-hide="testCase.example"><!-- avoid unnecessary blank
         --><input type="checkbox" id="customTestCase-{{caseNum}}" name="customTestCase-{{caseNum}}" class="caseCheck" data-ng-disabled="isTesting" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" /><!-- avoid unnecessary blank
         --><a data-ng-click="testCase.toggle=!testCase.toggle; $parent.toggleTextCase()" data-ng-class="{open:testCase.toggle,collapsed:!testCase.toggle}" class="collapseIcon"></a><!-- avoid unnecessary blank
@@ -58,7 +58,7 @@
                     <textarea>{{param.value}}</textarea>
                     <a data-ng-click="param.created=true; editting=false" class="btn btnAlt">OK</a>
                     <a data-ng-click="param.created=false; editting=false" class="btn btnAlt">Cancel</a>
-                </div>                                    
+                </div>
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@
                     <textarea>{{param.value}}</textarea>
                     <a data-ng-click="param.created=true; editting=false" class="btn btnAlt">OK</a>
                     <a data-ng-click="param.created=false; editting=false" class="btn btnAlt">Cancel</a>
-                </div>                                    
+                </div>
             </div>
         </div>
     </div>

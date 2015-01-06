@@ -1,4 +1,5 @@
 <div class="panel panel-custom panelCodeEditor"> <!-- content start -->
+    <div class="preloader-window system-test-preloader-window" data-preloader data-num-requests='{{numContestRequests}}' text='Processing System Tests...'></div>
     <div class="panel-heading">
         Coding Area<a data-ng-click="collapseOther('bottom-content')" class="collapseIcon" data-ng-class="{expand:getBottomStatus()=='expand',normal:getBottomStatus()=='normal'}"></a>
     </div>
@@ -44,6 +45,7 @@
                 --><li class="link clearLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Clear</li><!--  avoid unnecessary blank
                 --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Compile</li><!--
                 --><li class="link submitLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Submit</li>
+                   <li class="link refreshSystemTestLink" data-ng-class="{disableLink : !submittedCode}" data-ng-click="runPracticeSystemTest()" data-ng-hide="!isShowRunPracticeSystemTest() || !isConnected()">Run System Tests</li>
                 </ul><!--  avoid unnecessary blank
                 --><div data-ng-show="currentStateName()==='user.viewCode'">{{languages[langIdx].name}}</div><!--
                 --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" data-ng-model="searchText" data-ng-keypress="inputSearchText($event)" data-ng-change="searchByText()"/><a id="searchByText" data-ng-click="searchByText()" class="searchIcon"></a></div><!--  avoid unnecessary blank
