@@ -1443,7 +1443,15 @@ footer .right .sponsorLogo {
 #challenges-advertiser .challenge-icon {
     color: #e9f2db;
 }
-
+/****** Loading spinner ******/
+.preloader-window {
+    background-color: #fff;
+    border: 1px solid #0bbbe7;
+    color: #316f99;
+}
+.preloader-indicator>img {
+    background-image: url(../img/light/preloader.gif);
+}
 /*
 *
 * Styles for chat area settings
