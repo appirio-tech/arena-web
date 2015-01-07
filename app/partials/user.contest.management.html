@@ -84,8 +84,8 @@
                                         <td class="colBtn colRegQuestion"><button class="btn" data-ng-class="{viewBtn: round.questions.length, addBtn: !round.questions.length}" data-ng-click="openRegistrationQuestions(round)">{{round.questions.length ? 'View' : 'Add'}}</button></td>
                                         <td class="colText colStatus">{{round.status}}</td>
                                         <!--<td class="colHide"><span data-ng-class="{on: item.isHide, off: !item.isHide}"></span></td>-->
-                                        <td class="colBtn colChangeRound"><div class="preloader-window" data-preloader data-num-requests='{{changeRoundRequest[round.id]}}' text='Changing round...'></div><button class="btn" data-ng-click="changeRound(round)" data-ng-class="{disabled: !$root.hasAccess[round.id] || commandsDisabled}">Change</button></td>
-                                        <td class="colBtn colLoadRound"><div class="preloader-window" data-preloader data-num-requests='{{loadRoundRequest[round.id]}}' text='Loading round...'></div><button class="btn" data-ng-click="loadRound(round)" data-ng-class="{disabled: !($root.hasAccess[round.id] && $root.changedRound[round.id]) || commandsDisabled}">Load</button></td>
+                                        <td class="colBtn colChangeRound"><div class="preloader-window" data-preloader data-num-requests='{{changeRoundRequest[round.id]}}' text='Changing round...'></div><button class="btn" data-ng-click="changeRound(round)" data-ng-class="{disabled: commandsDisabled}">Change</button></td>
+                                        <td class="colBtn colLoadRound"><div class="preloader-window" data-preloader data-num-requests='{{loadRoundRequest[round.id]}}' text='Loading round...'></div><button class="btn" data-ng-click="loadRound(round)" data-ng-class="{disabled: !($root.changedRound[round.id]) || commandsDisabled}">Load</button></td>
                                     </tr>
                                 </tbody>
                             </table>
