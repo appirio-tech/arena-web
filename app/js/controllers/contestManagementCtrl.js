@@ -1124,17 +1124,11 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
         });
     };
     $scope.commandsDisabled = false;
-    socket.emit(helper.EVENT_NAME.RoundAccessRequest, {});
+    
     if (angular.isUndefined($rootScope.hasAccess)) {
         $rootScope.hasAccess = {};
     }
-    $scope.$on(helper.EVENT_NAME.RoundAccessResponse, function (event, data) {
-        if (angular.isDefined(data.rounds)) {
-            angular.forEach(data.rounds, function (round) {
-                $rootScope.hasAccess[round.id] = true;
-            });
-        }
-    });
+    
     // handle the case when round access request failed
     // show the error message and reemit the request after 3s
     $scope.$$listeners[helper.EVENT_NAME.CommandFailedResponse] = [];

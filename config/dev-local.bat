@@ -84,6 +84,9 @@ set CHALLENGE_ADVERTISING_INTERVAL=5000
 :: The time interval between updates of challenge advertising data from TC-API server (in ms)
 set CHALLENGE_ADVERTISING_UPDATE=300000
 
+:: The time interval between updates of leaderboard summay (in ms) 
+set LEADERBOARD_REFRESH_TIME_GAP=1000
+
 :: The TopCoder host name
 set TC_HOSTNAME=http://www.topcoder.com
 
@@ -95,3 +98,6 @@ set NEWRELIC_BROWSER_LICENSCEKEY=28fb2fc79c
 set NEWRELIC_SERVER_APPNAME=testserver
 set NEWRELIC_SERVER_LICENSE_KEY=8f1eb71c599e28fb2b02e7e521488cbabb97174f
 set NEWRELIC_SERVER_LOGGING_LEVEL=trace
+
+:: Time interval for auto saving code (milliseconds)
+set AUTO_SAVING_CODE_INTERVAL=30000
