@@ -138,7 +138,6 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
           page.scrollHeight = transculdedContainer[0].scrollHeight;
 
           if (page.height < page.scrollHeight) {
-            redraw();
             scope.showYScrollbar = true;
             dragger.height = Math.round(page.height / page.scrollHeight * (page.height-18));
             dragger.trackHeight = page.height;
@@ -163,8 +162,10 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
             });
             if (keepBottom) {
               dragger.top = Math.max(0, parseInt(page.height, 10) - parseInt(dragger.height, 10));
-              redraw();
+            } else {
+              dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10)));
             }
+              redraw();
           } else {
             // the scroll bar is not shown, move dragger and page to top
             page.top = 0;
