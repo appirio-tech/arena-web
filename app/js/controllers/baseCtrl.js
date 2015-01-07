@@ -509,7 +509,6 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             message: 'Sorry, the request is timeout.',
             enableClose: true
         });
-        $scope.numCoderRequest = 0;
         modalTimeoutPromise = null;
         waitingCoderInfo = false;
     }
@@ -525,16 +524,11 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return;
         }
         waitingCoderInfo = true;
-		coderInfoUsername = name;		$scope.numCoderRequest = 1;        if (modalTimeoutPromise) {
+		coderInfoUsername = name;		
+        $scope.numCoderRequest = 1;        
+        if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
         }
-
-        /*$scope.openModal({
-            title: 'Getting coder info',
-            message: 'Please wait while we retrieve coder information',
-            enableClose: false
-        });*/
-
         modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
         socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
     };
