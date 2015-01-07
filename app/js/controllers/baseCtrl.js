@@ -520,8 +520,8 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return;
         }
         waitingCoderInfo = true;
-		coderInfoUsername = name;
-        $scope.numCoderRequest = 1;        
+        coderInfoUsername = name;
+        $scope.numCoderRequest = 1;
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
         }
