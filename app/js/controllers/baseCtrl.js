@@ -142,6 +142,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.coderInfoLink = function () { return data.coderInfoLink; };
             $scope.coderHistoryData = data.coderHistoryData;
             $scope.registrants = data.registrants;
+            $scope.numCoderRequest = 0;
             $scope.showError = data.showError;
 
             // define initial sorting order for registrants list
@@ -520,15 +521,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         }
         waitingCoderInfo = true;
         coderInfoUsername = name;
+        $scope.numCoderRequest = 1;
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
         }
-        $scope.openModal({
-            title: 'Getting coder info',
-            message: 'Please wait while we retrieve coder information',
-            enableClose: false
-        });
-
         modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
         socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
     };
@@ -599,6 +595,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 $timeout.cancel(modalTimeoutPromise);
             }
             waitingCoderInfo = false;
+            $scope.numCoderRequest = 0;
             $scope.openModal({
                 title: helper.POP_UP_TITLES.CoderInfo,
                 message: data.message,
