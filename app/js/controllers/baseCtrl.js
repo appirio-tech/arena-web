@@ -84,8 +84,24 @@
  * Changes in version 1.19 (Web Arena Plugin API Part 2):
  * - Fixed some undefined exceptions.
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.19
+ * Changes in version 1.20 (Web Arena SRM Problem Deep Link Assembly):
+ * - Added copy link functionality in coder info popup
+ *
+ * Changes in version 1.21 (Web Arena - Leaderboard Performance Improvement):
+ * - Added functions leaderboardViewChangeHandler, leaderboardRefreshHandler and
+ * injectLeaderboardRefresher to $rootScope to handle the updates of the leaderboards
+ * and improve the performance.
+ *
+ * Changes in version 1.22 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added the custom css for popup dialog.
+ * - Fixed the null pointer exception in popup dialog.
+ *
+ * Changes in version 1.23 (TopCoder Competition Engine - Improve Automated Notification Messages)
+ * - If there is no buttons Phase change PopupGenericResponse won't be handled.
+ * Because these notifications are already handled based on PhaseDataResponse
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.23
  */
 'use strict';
 /*jshint -W097*/
@@ -99,6 +115,11 @@
  * @type {exports}
  */
 var helper = require('../helper'),
+    /**
+     * The object containing configurable constants.
+     * @type {exports}
+     */
+    config = require('../config'),
     contestCreationCtrl = require('./contestCreationCtrl');
 
 /**
@@ -106,7 +127,7 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', '$filter', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window, $filter) {
     var /**
          * The modal controller.
          *
@@ -118,8 +139,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
             $scope.enableClose = data.enableClose;
             $scope.coderInfo = data.message;
+            $scope.coderInfoLink = function () { return data.coderInfoLink; };
             $scope.coderHistoryData = data.coderHistoryData;
             $scope.registrants = data.registrants;
+            $scope.showError = data.showError;
 
             // define initial sorting order for registrants list
             $scope.registrantPredicate = 'userRating';
@@ -184,7 +207,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
              */
             $scope.ok = function () {
                 ok();
-                if ($scope.title !== 'Event Registration') {
+                if ($scope.title !== 'Event Registration' && $scope.message.indexOf('You have made a change to your code since the last time you compiled. Do you want to continue with the submit?') === -1) {
                     $modalInstance.close();
                 }
             };
@@ -278,6 +301,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         },
         selTheme,
         waitingCoderInfo = false,
+        coderInfoUsername = '',
         modalTimeoutPromise = null,
         phaseChangeRoundId,
         /**
@@ -362,6 +386,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $rootScope.ldrbrdTimeoutPromise = $timeout(function () {
                 $rootScope.$broadcast('rebuild:leaderboardTable');
             }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
+            $rootScope.$broadcast(helper.EVENT_NAME.LeaderboardRefreshed);
         },
         /**
          * Update the room summary.
@@ -388,6 +413,27 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             if (updatedDivSummary) {
                 updateDivSummary(Number($rootScope.lastDivSummary.roundID), Number($rootScope.lastDivSummary.divisionID));
             }
+        },
+        /**
+         * Update the leaderboard.
+         * @param scope the scope where the leaderboard is in
+         * @param moveToFirstPage true if the leaderboard should show its first page
+         */
+        updateLeaderboard = function (scope, moveToFirstPage) {
+            var begin;
+            if (moveToFirstPage) {
+                scope.currentPage = 0;
+            }
+            begin = scope.currentPage * scope.numOfPage;
+            scope.leaderboardFiltered = $filter('filter')($rootScope.leaderboard, scope.currentKeys.lbFilter);
+            scope.leaderboardFiltered = $filter('orderBy')(scope.leaderboardFiltered, scope.currentKeys.leaderboardKey);
+            scope.leaderboardPageRange = scope.range(scope.leaderboardFiltered, scope.numOfPage);
+            scope.leaderboardToShow = scope.leaderboardFiltered.slice(begin, begin + scope.numOfPage);
+            if (scope.rebuildScrollbars) {
+                $timeout(function () {
+                    scope.rebuildScrollbars();
+                }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
+            }
         };
 
     // modal defined in the root scope can be used by other scopes.
@@ -413,6 +459,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
 
         if (templateUrl === 'partials/user.contest.registration.html') {
             cssName = 'marginTop';
+        }
+        if (templateUrl === 'popupSystemTestResultBase.html') {
+            cssName = 'systemTestResult';
         }
         $rootScope.currentModal = $modal.open({
             templateUrl: templateUrl,
@@ -470,6 +519,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return;
         }
         waitingCoderInfo = true;
+        coderInfoUsername = name;
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
         }
@@ -514,32 +564,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         }
     });
     $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
-        var roundName, idx;
+        var roundName;
         // handle phase change messages
         if (data.title === helper.POP_UP_TITLES.PhaseChange) {
-            if (!data.buttons) {
-                idx = data.message.indexOf(helper.PHASE_DATA.START_MESSAGE);
-                if (idx === -1) {
-                    idx = data.message.indexOf(helper.PHASE_DATA.END_MESSAGE);
-                    if (idx === -1) {
-                        roundName = '';
-                    } else {
-                        roundName = data.message.substr(idx + helper.PHASE_DATA.END_MESSAGE.length);
-                    }
-                } else {
-                    roundName = data.message.substr(idx + helper.PHASE_DATA.START_MESSAGE.length);
-                }
-                if (roundName[roundName.length - 1] === '.') {
-                    roundName = roundName.substr(0, roundName.length - 1);
-                }
-                notificationService.addNotificationMessage({
-                    type: 'round',
-                    roundName: roundName,
-                    time: Date.now(),
-                    message: data.message,
-                    popUpContent: data.message
-                });
-            } else {
+            if (data.buttons) {
                 data.enableClose = true;
                 roundName = angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roomData)
                                 && angular.isDefined($rootScope.roomData[data.moveData[1]])
@@ -574,6 +602,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.openModal({
                 title: helper.POP_UP_TITLES.CoderInfo,
                 message: data.message,
+                coderInfoLink: config.staticFileHost + '/#/u/dashboard/' + coderInfoUsername,
                 enableClose: true
             }, null, null, 'partials/user.chat.area.coderinfo.html');
         } else if (data.title === helper.POP_UP_TITLES.IncorrectUsage) {
@@ -770,6 +799,28 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         createContestWizzard(roundData);
     };
 
+    /**
+     * Logout.
+     */
+    $scope.logout = function () {
+        if (appHelper.isExistingCodeInLocalStorage()) {
+            $scope.openModal({
+                title: 'Warning',
+                message: 'Would you like to clear your cache code in browser?',
+                buttons: ['Yes', 'No'],
+                enableClose: true
+            }, function () {
+                // clear the cache here
+                appHelper.removeCurrentCodeInLocalStorage();
+                $state.go(helper.STATE_NAME.Logout);
+            }, function () {
+                $state.go(helper.STATE_NAME.Logout);
+            });
+        } else {
+            $state.go(helper.STATE_NAME.Logout);
+        }
+    };
+
     $rootScope.isDivLoading = false;
     /**
      * Close the last opened division summary.
@@ -781,6 +832,16 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         $rootScope.lastDivSummary = undefined;
     };
 
+    $rootScope.notifyCopyLink = function () {
+        $('.top-right').notify({
+            message: 'Link is ready to be pasted.',
+            type: 'copy',
+            fadeOut: {
+                enabled: true,
+                delay: 5000
+            }
+        }).show();
+    };
     /**
      * Get the division summary.
      * It is first sending close div summary for the summary we want to open.
@@ -842,7 +903,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return $rootScope.roomData && $rootScope.roomData[roomID] ? $rootScope.roomData[roomID].coders : [];
         }
         if (viewOn === 'divOne' || viewOn === 'divTwo') {
-            return $rootScope.leaderboard ? $rootScope.leaderboard : [];
+            return angular.isDefined($rootScope.leaderboard) ? $rootScope.leaderboard : [];
         }
 
         return [];
@@ -953,6 +1014,80 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             });
         }
     };
+
+    /**
+     * Handles the event when the leaderboard's view is changed except for the case the that the
+     * username filter is changed.
+     *
+     * @param scope the $scope where the leaderboard is in
+     * @param newValues the new values of the leaderboard settings
+     * @param oldValues the old values of the leaderboard settings
+     */
+    $rootScope.leaderboardViewChangeHandler = function (scope, newValues, oldValues) {
+        scope.refresher.addEvent({
+            moveToFirstPage: !angular.equals(newValues.currentKeys.lbFilter, oldValues.currentKeys.lbFilter),
+            updateNow: true
+        });
+    };
+
+    /**
+     * Handles the event when the leaderboard is going to refresh.
+     * @param scope the $scope where the leaderboard is in.
+     * @param options the options of the refresh, "updateNow" and "moveToFirstPage" are possible boolean options.
+     */
+    $rootScope.leaderboardRefreshHandler = function (scope, options) {
+        scope.refresher.addEvent(options);
+    };
+
+    /**
+     * Injects a periodic refresher to a given $scope.
+     * @param scope the $scope where the leaderboard is in.
+     */
+    $rootScope.injectLeaderboardRefresher = function (scope) {
+        scope.refresher = {
+            counter: 0,
+            refreshGap: Number(config.leaderboardRefreshTimeGap),
+            scope: scope,
+            /**
+             * Adds a refresh event with options.
+             * @param options the options
+             */
+            addEvent: function (options) {
+                this.counter += 1;
+                if (options && options.updateNow) {
+                    this.refresh(options);
+                }
+            },
+            /**
+             * Refreshes the scope's leaderboard with the given options.
+             * @param options the options to use
+             */
+            refresh: function (options) {
+                if (this.counter > 0 || (options && options.updateNow)) {
+                    updateLeaderboard(this.scope, options && options.moveToFirstPage);
+                    this.counter = 0;
+                }
+            },
+            /**
+             * Refreshes the leaderboard periodically.
+             */
+            refreshPeriodically: function () {
+                if (this.stopped) {
+                    return;
+                }
+                this.refresh(false);
+                var that = this;
+                $timeout(function () {
+                    that.refreshPeriodically();
+                }, this.refreshGap);
+            },
+            stop: function () {
+                this.stopped = true;
+            }
+        };
+        scope.refresher.refreshPeriodically();
+    };
+
     // Show the coder history.
     socket.on(helper.EVENT_NAME.CoderHistoryResponse, function (data) {
         var i, tmpDate, coderHistoryData = [];
@@ -960,8 +1095,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         for (i = 0; i < data.historyData.length; i++) {
             tmpDate = new Date(data.historyData[i].time);
 
-            coderHistoryData.push({"time": (tmpDate.getMonth() + 1) + "-" + tmpDate.getDate() + "-" + tmpDate.getFullYear()
-                + " " + tmpDate.getHours() + ":" + tmpDate.getMinutes() + ":" + tmpDate.getSeconds(),
+            coderHistoryData.push({"time": $filter('date')(tmpDate, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone,
                 "actionDescription": data.historyData[i].actionDescription, "userName": data.historyData[i].coder.userName,
                 "userRating": data.historyData[i].coder.userRating,
                 "componentValue": data.historyData[i].componentValue, "points": data.historyData[i].points, "detail": data.historyData[i].detail});

@@ -11,7 +11,11 @@
                 <span>{{ countdownPrefix(contest) }}</span>
                 <span class="textRed" data-ng-show="isCountingDown(contest)">{{ displayCountDown(contest) }}.</span>
             </p>
-            <div class="socialButtons" data-ng-show="isShownRegistered(contest)"><span class="challenge">Challenge your friends!</span><span class="facebookWrap" ng-click="sendFacebookMessage()"><span class="icon"></span></span><span class='twitter-custom'><span class="tweet-share" twitter data-url="{{tweetUrl}}" data-message="{{tweetText}}"></span></span></div>
+            <div class="socialButtons" data-ng-show="isShownRegistered(contest)"><span class="challenge">Challenge your friends!</span>
+                <span class="facebookWrap" ng-click="sendFacebookMessage()"><span class="icon"></span></span>
+                <span class='twitter-custom'><span class="tweet-share" twitter data-url="{{tweetUrl}}" data-message="{{tweetText}}"></span></span>
+                <span class="copyLink" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Copy Link"><span clip-copy="getContestLink(contest)" clip-click="notifyCopyLink()" class="icon"></span></span>
+            </div>
             <!-- /.infoRow -->
             <div class="tabs tabsMargin">
                 <ul class="nav nav-tabs hidden-xs">

@@ -38,6 +38,8 @@ module.exports = {
     feedbackMaxlength: '@@FEEDBACK_MAXLENGTH',
     keyboardShortcut: '@@KEYBOARD_SHORTCUT',
     chatIconDisappearTime: '@@CHAT_ICON_DISAPPEAR_TIME',
-    tcHostName: '@@TC_HOSTNAME'
+    tcHostName: '@@TC_HOSTNAME',
+    autoSavingCodeInterval: '@@AUTO_SAVING_CODE_INTERVAL',
+    leaderboardRefreshTimeGap: '@@LEADERBOARD_REFRESH_TIME_GAP'
 };
 

@@ -44,8 +44,14 @@
  * Changes in version 1.11 (Web Arena Plugin API Part 2):
  * - Added more trigger plugin logic.
  *
+ * Changes in version 1.12 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Added method to set / get / remove code in local storage.
+ *
+ * Changes in version 1.13 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
+ * - Added set / get setting from local storage.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.11
+ * @version 1.13
  */
 'use strict';
 /*jshint -W097*/
@@ -295,6 +301,39 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
         return date;
     };
 
+    /**
+     * Parse the date string formatted as 2014-12-10T21:41:00.000-0500 (ISO 8601 format)
+     * to Date object with date/time in local zone.
+     *
+     * @param dateString - the date string to parse
+     * @returns {Date} the parsed result
+     */
+    retHelper.parseTDate = function (dateString) {
+        var date = new Date(), tz_regex, tz, hours, minutes;
+        date.setFullYear(+dateString.substring(0, 4));
+        date.setMonth((+dateString.substring(5, 7)) - 1);
+        date.setDate(+dateString.substring(8, 10));
+        date.setHours(+dateString.substring(11, 13));
+        date.setMinutes(+dateString.substring(14, 16));
+        // Timezone
+        tz_regex = /(\+|-)(\d{4})$/;
+        tz = tz_regex.exec(dateString);
+
+        if (tz) {
+            hours = -Number(tz[2].substr(0, 2));
+            minutes = -Number(tz[2].substr(2, 2));
+
+            if (tz[1] === '-') {
+                hours = -hours;
+                minutes = -minutes;
+            }
+            date.setHours(date.getHours() + hours);
+            date.setMinutes(date.getMinutes() + minutes);
+        }
+        date.setMinutes(date.getMinutes() - (new Date()).getTimezoneOffset());
+        return date;
+    };
+
     retHelper.clickOnTarget = function (clicked, id, stepLimit) {
         if (!clicked) {
             return false;
@@ -402,6 +441,139 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
     };
 
     /**
+     * Generate the code cache key.
+     * @param handle - the user handle
+     * @param roundID - the round id.
+     * @param problemID - the problem id.
+     * @param componentID - the component id.
+     * @returns {string} the generated key
+     */
+    function generateCodeKey(handle, roundID, problemID, componentID) {
+        return 'code-' + handle + '-' + roundID + '-' + problemID + '-' + componentID;
+    }
+
+    /**
+     * Set the code to local storage.
+     * @param handle - the user handle
+     * @param roundID - the round id.
+     * @param problemID - the problem id.
+     * @param componentID - the component id.
+     * @param languageID - the language id.
+     * @param code the code value
+     */
+    retHelper.setCodeToLocalStorage = function (handle, roundID, problemID, componentID, languageID, code) {
+        if (localStorageService.isSupported) {
+            var obj = {languageID : languageID, code: code};
+            var key = generateCodeKey(handle, roundID, problemID, componentID);
+
+            localStorageService.set(key, obj);
+
+
+            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            if (codeList) {
+                var found = false;
+                for (var i = 0; i < codeList.length; i++) {
+                    if (codeList[i] === key) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    codeList.push(key);
+                }
+
+            } else {
+                codeList = [];
+                codeList.push(key);
+            }
+            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(codeList));
+        }
+    };
+
+    /**
+     * Get code from local storage.
+     * @param handle - the user handle
+     * @param roundID - the round id.
+     * @param problemID - the problem id.
+     * @param componentID - the component id.
+     * @returns {*} the cache code object
+     */
+    retHelper.getCodeFromLocalStorage = function (handle, roundID, problemID, componentID) {
+        if (localStorageService.isSupported) {
+            return localStorageService.get(generateCodeKey(handle, roundID, problemID, componentID));
+        }
+        return null;
+    };
+
+    /**
+     * Remove the code from local storage.
+     * @param handle - the user handle
+     * @param roundID - the round id.
+     * @param problemID - the problem id.
+     * @param componentID - the component id.
+     */
+    retHelper.removeCodeFromLocalStorage = function (handle, roundID, problemID, componentID) {
+        if (localStorageService.isSupported) {
+            var key = generateCodeKey(handle, roundID, problemID, componentID);
+            localStorageService.remove(key);
+
+            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            var newCodeList = [];
+            if (codeList) {
+                for (var i = 0; i < codeList.length; i++) {
+                    if (codeList[i] !== key) {
+                        newCodeList.push(codeList[i]);
+                    }
+                }
+            }
+            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(newCodeList));
+        }
+    };
+
+    /**
+     * Checks whether there is code in local storage for current user.
+     * @returns {boolean} the checked result
+     */
+    retHelper.isExistingCodeInLocalStorage = function () {
+        if (localStorageService.isSupported) {
+            var userName = $rootScope.username();
+            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+
+            if (codeList) {
+                for (var i = 0; i < codeList.length; i++) {
+                    if (codeList[i].indexOf(userName) !== -1) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    };
+
+    /**
+     * Remove code in local storage for current user.
+     */
+    retHelper.removeCurrentCodeInLocalStorage = function () {
+        if (localStorageService.isSupported) {
+            var userName = $rootScope.username();
+            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            var newCodeList = [];
+
+            if (codeList) {
+                for (var i = 0; i < codeList.length; i++) {
+                    if (codeList[i].indexOf(userName) !== -1) {
+                        localStorageService.remove(codeList[i]);
+                    } else {
+                        newCodeList.push(codeList[i]);
+                    }
+                }
+                localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(newCodeList));
+            }
+        }
+    };
+
+    /**
      * Get data from local storage.
      * @param roomId - the room id.
      */
@@ -473,6 +645,44 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
 
                 localStorageService.remove(helper.LOCAL_STORAGE.ROOM_LIST);
             }
+        }
+    };
+
+    /**
+     * Get chat setting from local storage by key.
+     * @param key the setting key
+     * @returns {*} the value in local storage.
+     */
+    retHelper.getChatSettingFromLocalStorage = function (key) {
+        if (localStorageService.isSupported) {
+            var allSetting = localStorageService.get('chat_setting');
+            if (allSetting) {
+                var chatSetting = allSetting[key];
+                if (chatSetting !== undefined) {
+                    return JSON.parse(chatSetting);
+                }
+            }
+        }
+
+        if (key === helper.LOCAL_STORAGE.CHAT_SETTING_TIMESTAMPS) {
+            return false;
+        }
+        return true;
+    };
+
+    /**
+     * Set the chat setting to local storage.
+     * @param key the setting key.
+     * @param value the setting value.
+     */
+    retHelper.setChatSettingToLocalStorage = function (key, value) {
+        if (localStorageService.isSupported) {
+            var allSetting = localStorageService.get('chat_setting');
+            if (!allSetting) {
+                allSetting = {};
+            }
+            allSetting[key] = value;
+            localStorageService.set('chat_setting', JSON.stringify(allSetting));
         }
     };
 

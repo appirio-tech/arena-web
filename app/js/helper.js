@@ -102,8 +102,20 @@
  * Changes in version 1.26 (Web Arena Plugin API Part 2):
  * - Added more plugin event names.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.26
+ * Changes in version 1.27 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Added save request and save results title.
+ *
+ * Changes in version 1.28 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
+ * - Added chat setting names.
+ *
+ * Changes in version 1.29 (Web Arena - Leaderboard Performance Improvement v1.0):
+ * - Added event name LeaderboardRefreshed to refresh the leaderboard.
+ *
+ * Changes in version 1.30 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added event names for practice system test.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.30
  */
 'use strict';
 /*global module*/
@@ -160,6 +172,8 @@ module.exports = {
         SynchTimeRequest: 'SynchTimeRequest',
         TestInfoRequest: 'TestInfoRequest',
         TestRequest: 'TestRequest',
+        SaveRequest: 'SaveRequest',
+        PracticeSystemTestRequest: 'PracticeSystemTestRequest',
         // backend responses
         BatchTestResponse: 'BatchTestResponse',
         ChallengeResponse: 'ChallengeResponse',
@@ -200,6 +214,8 @@ module.exports = {
         UpdateRoundListResponse: 'UpdateRoundListResponse',
         UpdateUserListResponse: 'UpdateUserListResponse',
         UserInfoResponse: 'UserInfoResponse',
+        PracticeSystemTestResponse: 'PracticeSystemTestResponse',
+        PracticeSystemTestResultResponse: 'PracticeSystemTestResultResponse',
         // admin backend requests
         ChangeRoundRequest: 'ChangeRoundRequest',
         LoadRoundRequest: 'LoadRoundRequest',
@@ -212,6 +228,7 @@ module.exports = {
         // internal events
         Connected: 'Connected',
         Disconnected: 'Disconnected',
+        LeaderboardRefreshed: 'LeaderboardRefreshed',
         // socket events
         SocketConnected: 'connect',
         SocketConnectionFailed: 'connect_failed',
@@ -309,7 +326,7 @@ module.exports = {
 
     // pop up titles
     POP_UP_TITLES: {
-        Error: 'Error.',
+        Error: 'Error',
         CompileResult: 'Compile Result',
         TestResults: 'Test Results',
         CoderInfo: 'Coder Info',
@@ -322,7 +339,8 @@ module.exports = {
         ForcedLogout: 'Client Connection Error',
         NotAssigned: 'Not Assigned',
         RoundAccessError: 'Round Access Error',
-        ChangeRoundError: 'Change round Error'
+        ChangeRoundError: 'Change round Error',
+        SaveResults: 'Save Results'
     },
 
     // custom pop up messages
@@ -414,12 +432,6 @@ module.exports = {
         'problem': 'Problem Broadcast'
     },
 
-    // Content of the phase date change messages to determine the cut and extract the round name
-    PHASE_DATA: {
-        START_MESSAGE: 'is starting for ',
-        END_MESSAGE: 'is ending for '
-    },
-
     // The survey question types.
     QUESTION_TYPE: {
         SINGLE_CHOICE: 1,
@@ -437,7 +449,13 @@ module.exports = {
     // The local storage prefix and room list key
     LOCAL_STORAGE: {
         PREFIX: 'chat_history_',
-        ROOM_LIST: 'chat_history_room_list'
+        ROOM_LIST: 'chat_history_room_list',
+        CACHE_CODE_LIST: 'cache_code_list',
+        CHAT_SETTING_CHAT: 'chat_setting_chat',
+        CHAT_SETTING_HISTORY: 'chat_setting_history',
+        CHAT_SETTING_AUTOSCROLL: 'chat_setting_autoscroll',
+        CHAT_SETTING_TIMESTAMPS: 'chat_setting_timestamps',
+        CHAT_SETTING_SOUNDS: 'chat_setting_sounds'
     },
 
     // Titles for Facebook pop-ups

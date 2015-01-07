@@ -30,7 +30,7 @@ var helper = require('../helper');
 /*jslint unparam: true*/
 /*global $:false, angular:false, module*/
 // contest plan widget
-var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '$compile', function ($rootScope, $scope, $http, $timeout, $filter, $compile) {
+var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '$compile', 'appHelper', function ($rootScope, $scope, $http, $timeout, $filter, $compile, appHelper) {
     $scope.events = [];
     $scope.eventSources = [$scope.events];
     $scope.listEvents = [];
@@ -43,21 +43,6 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
         day: tmpDate.getDate()
     };
     $scope.viewNow = 'calendar';
-    /**
-     * Parse the date string.
-     * @param dateString - the date string to parse
-     * @returns {Date} the parsed result
-     */
-    function parseDate(dateString) {
-        var date = new Date();
-        // ignore Timezone
-        date.setFullYear(+dateString.substring(0, 4));
-        date.setMonth((+dateString.substring(5, 7)) - 1);
-        date.setDate(+dateString.substring(8, 10));
-        date.setHours(+dateString.substring(11, 13));
-        date.setMinutes(+dateString.substring(14, 16));
-        return date;
-    }
 
     /**
      * Render the list view.
@@ -339,9 +324,9 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
             data.data.forEach(function (item) {
                 $scope.eventSources[0].push({
                     title: item.contestName,
-                    start: parseDate(item.registrationStartTime || item.startDate),
-                    regStart: new Date(item.registrationStartTime),
-                    codeStart: new Date(item.codingStartTime),
+                    start: appHelper.parseTDate(item.registrationStartTime || item.startDate),
+                    regStart: appHelper.parseTDate(item.registrationStartTime),
+                    codeStart: appHelper.parseTDate(item.codingStartTime),
                     allDay: false
                 });
             });
