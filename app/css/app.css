@@ -2820,6 +2820,9 @@ footer .right>span:nth-child(2) {
     padding: 12px 36px;
     line-height: normal;
 }
+.testReportPanel .modalBody .return p {
+    word-wrap: break-word;
+}
 .testReportPanel .infoBar {
     min-height: 40px;
     margin-bottom: 1px;
