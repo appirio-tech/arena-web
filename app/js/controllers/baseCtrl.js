@@ -87,8 +87,6 @@
  * Changes in version 1.20 (Web Arena SRM Problem Deep Link Assembly):
  * - Added copy link functionality in coder info popup
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.20
  * Changes in version 1.21 (Web Arena - Leaderboard Performance Improvement):
  * - Added functions leaderboardViewChangeHandler, leaderboardRefreshHandler and
  * injectLeaderboardRefresher to $rootScope to handle the updates of the leaderboards
@@ -129,7 +127,6 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-
 var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', '$filter', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window, $filter) {
     var /**
          * The modal controller.
@@ -442,7 +439,6 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
 
     // modal defined in the root scope can be used by other scopes.
     $rootScope.currentModal = null;
-
     socket.emit(helper.EVENT_NAME.GetAdminBroadcastsRequest, {});
 
     /**
@@ -524,7 +520,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return;
         }
         waitingCoderInfo = true;
-		coderInfoUsername = name;		
+		coderInfoUsername = name;
         $scope.numCoderRequest = 1;        
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
