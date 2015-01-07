@@ -87,8 +87,21 @@
  * Changes in version 1.20 (Web Arena SRM Problem Deep Link Assembly):
  * - Added copy link functionality in coder info popup
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.20
+ * Changes in version 1.21 (Web Arena - Leaderboard Performance Improvement):
+ * - Added functions leaderboardViewChangeHandler, leaderboardRefreshHandler and
+ * injectLeaderboardRefresher to $rootScope to handle the updates of the leaderboards
+ * and improve the performance.
+ *
+ * Changes in version 1.22 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added the custom css for popup dialog.
+ * - Fixed the null pointer exception in popup dialog.
+ *
+ * Changes in version 1.23 (TopCoder Competition Engine - Improve Automated Notification Messages)
+ * - If there is no buttons Phase change PopupGenericResponse won't be handled.
+ * Because these notifications are already handled based on PhaseDataResponse
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.23
  */
 'use strict';
 /*jshint -W097*/
@@ -102,6 +115,10 @@
  * @type {exports}
  */
 var helper = require('../helper'),
+    /**
+     * The object containing configurable constants.
+     * @type {exports}
+     */
     config = require('../config'),
     contestCreationCtrl = require('./contestCreationCtrl');
 
@@ -125,6 +142,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.coderInfoLink = function () { return data.coderInfoLink; };
             $scope.coderHistoryData = data.coderHistoryData;
             $scope.registrants = data.registrants;
+            $scope.showError = data.showError;
 
             // define initial sorting order for registrants list
             $scope.registrantPredicate = 'userRating';
@@ -189,7 +207,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
              */
             $scope.ok = function () {
                 ok();
-                if ($scope.title !== 'Event Registration') {
+                if ($scope.title !== 'Event Registration' && $scope.message.indexOf('You have made a change to your code since the last time you compiled. Do you want to continue with the submit?') === -1) {
                     $modalInstance.close();
                 }
             };
@@ -368,6 +386,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $rootScope.ldrbrdTimeoutPromise = $timeout(function () {
                 $rootScope.$broadcast('rebuild:leaderboardTable');
             }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
+            $rootScope.$broadcast(helper.EVENT_NAME.LeaderboardRefreshed);
         },
         /**
          * Update the room summary.
@@ -394,6 +413,27 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             if (updatedDivSummary) {
                 updateDivSummary(Number($rootScope.lastDivSummary.roundID), Number($rootScope.lastDivSummary.divisionID));
             }
+        },
+        /**
+         * Update the leaderboard.
+         * @param scope the scope where the leaderboard is in
+         * @param moveToFirstPage true if the leaderboard should show its first page
+         */
+        updateLeaderboard = function (scope, moveToFirstPage) {
+            var begin;
+            if (moveToFirstPage) {
+                scope.currentPage = 0;
+            }
+            begin = scope.currentPage * scope.numOfPage;
+            scope.leaderboardFiltered = $filter('filter')($rootScope.leaderboard, scope.currentKeys.lbFilter);
+            scope.leaderboardFiltered = $filter('orderBy')(scope.leaderboardFiltered, scope.currentKeys.leaderboardKey);
+            scope.leaderboardPageRange = scope.range(scope.leaderboardFiltered, scope.numOfPage);
+            scope.leaderboardToShow = scope.leaderboardFiltered.slice(begin, begin + scope.numOfPage);
+            if (scope.rebuildScrollbars) {
+                $timeout(function () {
+                    scope.rebuildScrollbars();
+                }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
+            }
         };
 
     // modal defined in the root scope can be used by other scopes.
@@ -419,6 +459,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
 
         if (templateUrl === 'partials/user.contest.registration.html') {
             cssName = 'marginTop';
+        }
+        if (templateUrl === 'popupSystemTestResultBase.html') {
+            cssName = 'systemTestResult';
         }
         $rootScope.currentModal = $modal.open({
             templateUrl: templateUrl,
@@ -521,32 +564,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         }
     });
     $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
-        var roundName, idx;
+        var roundName;
         // handle phase change messages
         if (data.title === helper.POP_UP_TITLES.PhaseChange) {
-            if (!data.buttons) {
-                idx = data.message.indexOf(helper.PHASE_DATA.START_MESSAGE);
-                if (idx === -1) {
-                    idx = data.message.indexOf(helper.PHASE_DATA.END_MESSAGE);
-                    if (idx === -1) {
-                        roundName = '';
-                    } else {
-                        roundName = data.message.substr(idx + helper.PHASE_DATA.END_MESSAGE.length);
-                    }
-                } else {
-                    roundName = data.message.substr(idx + helper.PHASE_DATA.START_MESSAGE.length);
-                }
-                if (roundName[roundName.length - 1] === '.') {
-                    roundName = roundName.substr(0, roundName.length - 1);
-                }
-                notificationService.addNotificationMessage({
-                    type: 'round',
-                    roundName: roundName,
-                    time: Date.now(),
-                    message: data.message,
-                    popUpContent: data.message
-                });
-            } else {
+            if (data.buttons) {
                 data.enableClose = true;
                 roundName = angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roomData)
                                 && angular.isDefined($rootScope.roomData[data.moveData[1]])
@@ -993,6 +1014,80 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             });
         }
     };
+
+    /**
+     * Handles the event when the leaderboard's view is changed except for the case the that the
+     * username filter is changed.
+     *
+     * @param scope the $scope where the leaderboard is in
+     * @param newValues the new values of the leaderboard settings
+     * @param oldValues the old values of the leaderboard settings
+     */
+    $rootScope.leaderboardViewChangeHandler = function (scope, newValues, oldValues) {
+        scope.refresher.addEvent({
+            moveToFirstPage: !angular.equals(newValues.currentKeys.lbFilter, oldValues.currentKeys.lbFilter),
+            updateNow: true
+        });
+    };
+
+    /**
+     * Handles the event when the leaderboard is going to refresh.
+     * @param scope the $scope where the leaderboard is in.
+     * @param options the options of the refresh, "updateNow" and "moveToFirstPage" are possible boolean options.
+     */
+    $rootScope.leaderboardRefreshHandler = function (scope, options) {
+        scope.refresher.addEvent(options);
+    };
+
+    /**
+     * Injects a periodic refresher to a given $scope.
+     * @param scope the $scope where the leaderboard is in.
+     */
+    $rootScope.injectLeaderboardRefresher = function (scope) {
+        scope.refresher = {
+            counter: 0,
+            refreshGap: Number(config.leaderboardRefreshTimeGap),
+            scope: scope,
+            /**
+             * Adds a refresh event with options.
+             * @param options the options
+             */
+            addEvent: function (options) {
+                this.counter += 1;
+                if (options && options.updateNow) {
+                    this.refresh(options);
+                }
+            },
+            /**
+             * Refreshes the scope's leaderboard with the given options.
+             * @param options the options to use
+             */
+            refresh: function (options) {
+                if (this.counter > 0 || (options && options.updateNow)) {
+                    updateLeaderboard(this.scope, options && options.moveToFirstPage);
+                    this.counter = 0;
+                }
+            },
+            /**
+             * Refreshes the leaderboard periodically.
+             */
+            refreshPeriodically: function () {
+                if (this.stopped) {
+                    return;
+                }
+                this.refresh(false);
+                var that = this;
+                $timeout(function () {
+                    that.refreshPeriodically();
+                }, this.refreshGap);
+            },
+            stop: function () {
+                this.stopped = true;
+            }
+        };
+        scope.refresher.refreshPeriodically();
+    };
+
     // Show the coder history.
     socket.on(helper.EVENT_NAME.CoderHistoryResponse, function (data) {
         var i, tmpDate, coderHistoryData = [];

@@ -1442,7 +1442,15 @@ footer .right .sponsorLogo {
 #challenges-advertiser .challenge-icon {
     color: #e9f2db;
 }
-
+/****** Loading spinner ******/
+.preloader-window {
+    background-color: #fff;
+    border: 1px solid #0bbbe7;
+    color: #316f99;
+}
+.preloader-indicator>img {
+    background-image: url(../img/light/preloader.gif);
+}
 /*
 *
 * Styles for chat area settings
@@ -1464,4 +1472,7 @@ footer .right .sponsorLogo {
 }
 .settings-panel, .settings-panel h3 {
     font-weight: normal;
+}
+.coder-history-modal-header {
+    border: 1px solid #e5e5e5!important;
 }

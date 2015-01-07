@@ -89,8 +89,11 @@
  * Changes in version 1.22 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
  * - Added the logic for chat setting and shown time in chat message.
  *
+ * Changes in version 1.23 (TopCoder Competition Engine - Improve Automated Notification Messages)
+ * - Updated phase change notifications to match with arena applet
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.22
+ * @version 1.23
  */
 ///////////////
 // RESOLVERS //
@@ -883,16 +886,31 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             function formattedTime(timeInMs) {
                 return $filter('date')(timeInMs, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone;
             }
+            // Represents the phase names.
+            var messages = [
+                'Inactive Phase',
+                'Starts In Phase',
+                'Registration is now open',
+                'Registration is closed',
+                'Coding Phase has started',
+                'Coding Phase has ended',
+                'Challenge Phase has started',
+                'Challenge Phase has ended',
+                'System Test Phase has started'
+            ],
+                msg = helper.PHASE_NAME[data.phaseData.phaseType];
+
             // Match has completed.
             if (phaseData.phaseType === helper.PHASE_TYPE_ID.ContestCompletePhase) {
                 return 'Match completed at ' + formattedTime(now);
             }
             // The next phase is the Registration Phase
             if (phaseData.phaseType === helper.PHASE_TYPE_ID.StartsInPhase) {
-                return helper.PHASE_NAME[data.phaseData.phaseType + 1] + ' will start at ' + formattedTime(data.phaseData.endTime) + '.';
+                return 'Registration will open at ' + formattedTime(data.phaseData.endTime) + '.';
             }
-
-            var msg = helper.PHASE_NAME[data.phaseData.phaseType];
+            if (phaseData.phaseType > helper.PHASE_TYPE_ID.StartsInPhase && phaseData.phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase) {
+                return messages[phaseData.phaseType];
+            }
             if (data.phaseData.startTime > 0) {
                 // has 'started at' message
                 msg += ' started at ' + formattedTime(data.phaseData.startTime);
@@ -912,6 +930,10 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         if ($rootScope.roundData[data.phaseData.roundID]) {
             $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
             $rootScope.$broadcast(helper.EVENT_NAME.PhaseDataResponse, data);
+            if (data.phaseData.phaseType === helper.PHASE_TYPE_ID.ContestCompletePhase) {
+                // Handled at popup generic response in baseCtrl
+                return;
+            }
             notificationService.addNotificationMessage({
                 type: 'round',
                 time: now,

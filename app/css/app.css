@@ -683,14 +683,20 @@ body a {cursor: pointer;}
     width: 180px;
     height: 40px;
     z-index: 1000;
-    background-color: #000000;
     opacity: 1;
-    border: 1px solid #0bbbe7;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    color: #ffffff;
     display: inline-block;
+}
+.preloader-indicator>img {
+    content: '';
+    background-repeat: no-repeat;
+    background-position-x: 2px;
+    background-position-y: 2px;
+    width: 29px;
+    height: 28px;
+    border: 0;
 }
 .preloader-window .preloader-indicator {
     position: absolute;
@@ -704,6 +710,11 @@ body a {cursor: pointer;}
 }
 .panelContestPlan .preloader-window {
     left: 28.1%;
+}
+
+.system-test-preloader-window {
+    top: 1% !important;
+    width: 200px!important;
 }
 @media only screen and (max-width: 1199px) {
     .panelContestPlan .preloader-window {
@@ -1031,6 +1042,11 @@ footer .right>span:nth-child(2) {
 
 .modal .modal-dialog {
     /*padding-top: 10%;*/
+}
+@media only screen and (min-height: 509px) and (min-width: 768px) {
+    .systemTestResult .modal-dialog {
+        width: 400px !important;
+    }
 }
 .modal .modal-lg {
     width: 892px;
@@ -2810,7 +2826,11 @@ footer .right>span:nth-child(2) {
     padding: 12px 36px;
     line-height: normal;
 }
+.testReportPanel .modalBody .return p {
+    word-wrap: break-word;
+}
 .testReportPanel .infoBar {
+    table-layout: fixed;
     min-height: 40px;
     margin-bottom: 1px;
     margin-left: 0;
@@ -2829,7 +2849,7 @@ footer .right>span:nth-child(2) {
 .testReportPanel .infoBar .caseName {
     padding-left: 35px;
     width: 169px;
-    word-break: break-all;
+    word-wrap: break-word;
 }
 .testReportPanel .caseName>a {
     height: 25px;
@@ -8403,7 +8423,7 @@ table thead .sort.desc{
         top: 0;
         padding-left: 0;
     }
-    .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 20px;}
+    .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 1px;}
     .panelCodeEditor .panel-body .middlePart .findInput {
         margin-right: 10px;
         margin-left: 20px;
@@ -8803,6 +8823,37 @@ table thead .sort.desc{
     -webkit-flex: 0 0 auto;
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
+}
+
+
+.middlePart .actionIcons .refreshSystemTestLink:before {
+    background-image: url(../img/refresh_system_test.png);
+    background-repeat: no-repeat;
+    height: 19px;
+    width: 19px;
+}
+
+.modal-dialog .passSystemTest {
+    color: rgb(113, 180, 10);
+    font-weight: bolder;
+}
+
+.modal-dialog .failSystemTest {
+    color: rgb(236, 39, 39);
+    font-weight: bolder;
+}
+.systemTestResult .modal-dialog .modal-content {
+    border-color: #1f444e;
+}
+.modal .modal-content .systemTestModalBody {
+    border-width: 0;
+    padding: 45px;
+    overflow: hidden;
+    height: 150px;
+}
+
+.modal .modal-content .modal-header .system-test-cancel-x {
+    margin-right: -15px;
 }
 
 /* One row layout for large displays */
