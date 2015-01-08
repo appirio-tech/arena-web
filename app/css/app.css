@@ -683,14 +683,20 @@ body a {cursor: pointer;}
     width: 180px;
     height: 40px;
     z-index: 1000;
-    background-color: #000000;
     opacity: 1;
-    border: 1px solid #0bbbe7;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    color: #ffffff;
     display: inline-block;
+}
+.preloader-indicator>img {
+    content: '';
+    background-repeat: no-repeat;
+    background-position-x: 2px;
+    background-position-y: 2px;
+    width: 29px;
+    height: 28px;
+    border: 0;
 }
 .preloader-window .preloader-indicator {
     position: absolute;
