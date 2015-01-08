@@ -608,10 +608,9 @@ footer .right .sponsorLogo {
     background: #eef2f5;
 }
 /* resizer */
-/*hover style of resizer*/
-/*#resizer:hover {
+#resizer {
     background: #b7c9d7;
-}*/
+}
 
 .panelCodeEditor .testReportPanel,
 .reportQtip.qtip-default {
