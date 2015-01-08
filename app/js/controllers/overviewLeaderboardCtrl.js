@@ -195,7 +195,7 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
             }
         }
     });
-    $.fn.qtip.zindex = 1030;
+    $.fn.qtip.zindex = 900;
 
     /**
      * triggle key action.
