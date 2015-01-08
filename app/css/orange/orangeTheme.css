@@ -537,6 +537,13 @@ footer .left>span {
 
 /* code editor widget */
 .panelCodeEditor .actionIcons > .link:hover {color: #687376;}
+
+.panelCodeEditor .actionIcons .refreshSystemTestLink:before {
+	background-image: url(../img/orange/sprite-codeArena.png);
+	background-position: -74px -20px;
+	background-repeat: no-repeat;
+}
+
 .panelCodeEditor .toolBar .actionIcons {
     color: #ff8a00;
 }

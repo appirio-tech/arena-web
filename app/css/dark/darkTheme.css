@@ -438,6 +438,12 @@ footer .right .sponsorLogo {
 /* code editor widget */
 .panelCodeEditor .actionIcons > .link:hover {color: #fff;}
 
+.panelCodeEditor .actionIcons .refreshSystemTestLink:before {
+	background-image: url(../img/dark/sprite-codeArena.png);
+	background-position: -45px -21px;
+	background-repeat: no-repeat;
+}
+
 .panelCodeEditor .toolBar .middlePart .findInput {
     background: #162f36;
 }
