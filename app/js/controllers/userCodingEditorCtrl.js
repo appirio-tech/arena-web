@@ -55,14 +55,18 @@
  * Changes in version 1.15 (Web Arena Plugin API Part 1):
  * - Added plugin logic for coding editor panel.
  *
+<<<<<<< HEAD
  * Changes in version 1.16 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Added logic to cache the code to local storage.
  *
  * Changes in version 1.17 (Web Arena - Run System Testing Support For Practice Problems):
  * - Added logic to support running practice system test.
  *
- * @author tangzx, amethystlei, flytoj2ee
- * @version 1.17
+ * Changes in version 1.18 (Scrolling Issues Fixes Assembly):
+ * - Changed CodeMirror scrollbar style.
+ *
+ * @author tangzx, amethystlei, flytoj2ee, Helstein
+ * @version 1.18
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -427,9 +431,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.setThemeIdx = function (themeIdx) {
             $scope.themeIdx = themeIdx;
-            var _elem = angular.element('ul.editorDropDown > li.dropdown');
-            if (_elem) {
-                closeDropdown(_elem);
+            var elem = angular.element('ul.editorDropDown > li.dropdown');
+            if (elem) {
+                closeDropdown(elem);
             }
         };
 
@@ -466,9 +470,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             $scope.langIdx = langIdx;
 
             updateArgTypeAndMethod($scope.lang($scope.langIdx).id);
-            var _elem = angular.element('ul.languageDropDown > li.dropdown');
-            if (_elem) {
-                closeDropdown(_elem);
+            var elem = angular.element('ul.languageDropDown > li.dropdown');
+            if (elem) {
+                closeDropdown(elem);
             }
         };
 
@@ -555,6 +559,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             theme: 'topcoder',
             lineNumbers: true,
             lineWrapping : true,
+            scrollbarStyle: "simple",
             mode: $scope.lang($scope.langIdx).langKey,
             foldGutter: $scope.lang($scope.langIdx).langGutter,
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
