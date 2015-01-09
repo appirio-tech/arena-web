@@ -691,6 +691,7 @@ body a {cursor: pointer;}
     display: inline-block;
 }
 .preloader-window.coderinfo {
+    position:fixed !important;
     top:15% !important;
 }
 .preloader-indicator>img {
