@@ -683,12 +683,17 @@ body a {cursor: pointer;}
     left: 40%;
     width: 180px;
     height: 40px;
-    z-index: 1000;
+    z-index: 1060;
+    background-color: #000000;
     opacity: 1;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     display: inline-block;
+}
+.preloader-window.coderinfo {
+    position:fixed !important;
+    top:15% !important;
 }
 .preloader-indicator>img {
     content: '';
