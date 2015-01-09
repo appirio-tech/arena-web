@@ -2,6 +2,7 @@
 .text-left{text-align:left;}
 .text-right{text-align:right;}
 
+.word-wrap{word-wrap: break-word;}
 .center{display:block;margin:0 auto;}
 .table-responsive {overflow-x: auto;}
 .auto-inline {float: left;width: auto !important;}
