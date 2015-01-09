@@ -288,6 +288,11 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     }
                 });
             };
+            $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
+                if (data.title === helper.POP_UP_TITLES.CoderInfo && $scope.title === helper.POP_UP_TITLES.CoderInfo) {
+                    $scope.coderInfo = data.message;
+                }
+            });
         }],
         isDisconnecting = false,
         closeThemeHandler = function (event) {
@@ -525,6 +530,12 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
         }
+        $scope.openModal({
+            title: helper.POP_UP_TITLES.CoderInfo,
+            message: " ",
+            coderInfoLink: config.staticFileHost + '/#/u/dashboard/' + coderInfoUsername,
+            enableClose: true
+        }, null, null, 'partials/user.chat.area.coderinfo.html');
         modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
         socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
     };
@@ -596,12 +607,6 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             }
             waitingCoderInfo = false;
             $scope.numCoderRequest = 0;
-            $scope.openModal({
-                title: helper.POP_UP_TITLES.CoderInfo,
-                message: data.message,
-                coderInfoLink: config.staticFileHost + '/#/u/dashboard/' + coderInfoUsername,
-                enableClose: true
-            }, null, null, 'partials/user.chat.area.coderinfo.html');
         } else if (data.title === helper.POP_UP_TITLES.IncorrectUsage) {
             $scope.openModal({
                 title: helper.POP_UP_TITLES.IncorrectUsage,
