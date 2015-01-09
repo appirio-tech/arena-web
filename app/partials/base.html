@@ -108,7 +108,7 @@
         <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
     </div>
     <div class="modal-body" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
-        <p ng-bind-html="message"></p>
+        <p class="word-wrap" ng-bind-html="message"></p>
         <br/>
     </div>
     <div class="modal-footer" ng-if="enableClose">
