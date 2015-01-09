@@ -18,12 +18,12 @@ var ngScrollbarAutoscroll = [function () {
     return {
         restrict: 'A',
         scope: {
-            ngScrollbarAutoscroll: '=',
-            autoscrollEvent: "@"
+            autoscrollEvent: "@",
+            id: '@ngScrollbarAutoscroll'
         },
         link: function (scope, element, attrs) {
-            scope.$watch('ngScrollbarAutoscroll', function(newValue) {
-                if(newValue === true) {
+            scope.$on('autoscroll', function(evt, targetId) {
+                if(targetId === scope.id) {
                     var data = $(element).position();
                     data.bottom = data.top + $(element).outerHeight();
                     scope.$root.$broadcast(scope.autoscrollEvent, data);

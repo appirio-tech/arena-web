@@ -43,18 +43,21 @@
  * - Added TC_HOSTNAME and CHALLENGE_ADVERTISING_UPDATE
  *   to handle showing and updating challenge advertising data.
  *
- * Changes in version 1.11 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * Changes in version 1.11 (Web Arena - Scrolling Issues Fixes Assembly):
+ * - Added CSS files for comirror's scroll plugin
+ *
+ * Changes in version 1.12 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Added AUTO_SAVING_CODE_INTERVAL setting.
  *
- * Changes in version 1.12 (Add Settings Panel for Chat Widget):
+ * Changes in version 1.13 (Add Settings Panel for Chat Widget):
  * - Added CSS references for switch widget
  *
- * Changes in version 1.13 (Web Arena - Leaderboard Performance Improvement v1.0):
+ * Changes in version 1.14 (Web Arena - Leaderboard Performance Improvement v1.0):
  * - Added LEADERBOARD_REFRESH_TIME_GAP to improve leaderboard performance.
  * - Fixed lint issues.
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus
- * @version 1.13
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein
+ * @version 1.14
  */
 'use strict';
 /*global module, process*/
@@ -152,6 +155,7 @@ module.exports = function (grunt) {
                     'app/css/bootstrap.min.css',
                     'bower_components/codemirror/lib/codemirror.css',
                     'bower_components/codemirror/addon/fold/foldgutter.css',
+                    'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                     'bower_components/fullcalendar/fullcalendar.css',
                     'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
@@ -172,6 +176,7 @@ module.exports = function (grunt) {
                         'app/css/bootstrap.min.css',
                         'bower_components/codemirror/lib/codemirror.css',
                         'bower_components/codemirror/addon/fold/foldgutter.css',
+                        'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
@@ -191,6 +196,7 @@ module.exports = function (grunt) {
                         'app/css/bootstrap.min.css',
                         'bower_components/codemirror/lib/codemirror.css',
                         'bower_components/codemirror/addon/fold/foldgutter.css',
+                        'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
