@@ -43,14 +43,14 @@ var preloader = ['$http', '$timeout', function ($http, $timeout) {
             attributes.$observe('numRequests', function (numRequests, oldNumRequests) {
                 if (numRequests > 0) {
                     if (scope.text) {
-                        element.html('<div class="preloader-indicator"><img src="../img/preloader.gif"/>' + scope.text + '</div>');
+                        element.html('<div class="preloader-indicator"><img/>' + scope.text + '</div>');
                     } else {
-                        element.html('<div class="preloader-indicator"><img src="../img/preloader.gif"/>Loading...</div>');
+                        element.html('<div class="preloader-indicator"><img/>Loading...</div>');
                     }
                     element.show();
                     $timeout.cancel(timeoutHndl);
                     timeoutHndl = $timeout(function () {
-                        element.html('<div class="preloader-indicator"><img src="../img/preloader.gif"/>Time out.</div>');
+                        element.html('<div class="preloader-indicator"><img/>Time out.</div>');
                         element.show();
                         $timeout(function () {
                             element.hide();
