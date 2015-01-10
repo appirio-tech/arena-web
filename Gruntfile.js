@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This module defines the grunt tasks used for packaging the application.
@@ -44,7 +44,7 @@
  *   to handle showing and updating challenge advertising data.
  *
  * Changes in version 1.11 (Web Arena - Scrolling Issues Fixes Assembly):
- * - Added CSS files for comirror's scroll plugin
+ * - Added CSS files for codemirror's scroll plugin
  *
  * Changes in version 1.12 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Added AUTO_SAVING_CODE_INTERVAL setting.
@@ -56,8 +56,11 @@
  * - Added LEADERBOARD_REFRESH_TIME_GAP to improve leaderboard performance.
  * - Fixed lint issues.
  *
+ * Changes in version 1.15 (Web Arena - Update Match Summary Tab Within Active Matches Widget):
+ * - Added ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT setting.
+ *
  * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein
- * @version 1.14
+ * @version 1.15
  */
 'use strict';
 /*global module, process*/
@@ -121,7 +124,8 @@ module.exports = function (grunt) {
                         { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME },
                         { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
                         { match : 'AUTO_SAVING_CODE_INTERVAL', replacement: process.env.AUTO_SAVING_CODE_INTERVAL },
-                        { match : 'LEADERBOARD_REFRESH_TIME_GAP', replacement: process.env.LEADERBOARD_REFRESH_TIME_GAP }
+                        { match : 'LEADERBOARD_REFRESH_TIME_GAP', replacement: process.env.LEADERBOARD_REFRESH_TIME_GAP },
+                        { match : 'ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT', replacement: process.env.ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT }
                     ]
                 },
                 files : [

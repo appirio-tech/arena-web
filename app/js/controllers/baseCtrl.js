@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file provides the base controller.
@@ -100,8 +100,11 @@
  * - If there is no buttons Phase change PopupGenericResponse won't be handled.
  * Because these notifications are already handled based on PhaseDataResponse
  *
+ * Changes in version 1.24 (Web Arena - Update Match Summary Tab Within Active Matches Widget):
+ * - Added shown match summary in active matches widget logic.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.23
+ * @version 1.24
  */
 'use strict';
 /*jshint -W097*/
@@ -393,6 +396,11 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 $rootScope.$broadcast('rebuild:leaderboardTable');
             }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
             $rootScope.$broadcast(helper.EVENT_NAME.LeaderboardRefreshed);
+
+            if (!angular.isDefined($rootScope.allLeaderboards)) {
+                $rootScope.allLeaderboards = {};
+            }
+            $rootScope.allLeaderboards[roundID + '-' + divisionID] = $rootScope.leaderboard;
         },
         /**
          * Update the room summary.
@@ -887,6 +895,15 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     });
     $rootScope.$on(helper.EVENT_NAME.CreateChallengeTableResponse, function (event, data) {
         updateRoomSummary(data.roomID);
+
+        if (!angular.isDefined($rootScope.pendingDivSummary)) {
+            $rootScope.loadedAllDivSummary = true;
+        }
+        if ($rootScope.currentlyLoaded === $rootScope.totalLoading && angular.isDefined($rootScope.pendingDivSummary)) {
+            var tmp = $rootScope.pendingDivSummary;
+            $rootScope.pendingDivSummary = undefined;
+            $rootScope.getDivSummary(tmp.roundID, tmp.viewId);
+        }
     });
     /*jslint unparam:false*/
     /**
@@ -909,6 +926,25 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         }
 
         return [];
+    };
+
+    /**
+     * Get round leaderboard by round id and view.
+     * @param roundID the round id.
+     * @param viewOn the view
+     * @returns {*} the leaderboard result
+     */
+    $rootScope.getRoundLeaderboard = function (roundID, viewOn) {
+        if (!angular.isDefined($rootScope.allLeaderboards)) {
+            return [];
+        }
+        var key = roundID + '-' + helper.VIEW_ID[viewOn];
+
+        if (!angular.isDefined($rootScope.allLeaderboards[key])) {
+            return [];
+        }
+
+        return $rootScope.allLeaderboards[key];
     };
 
     /**

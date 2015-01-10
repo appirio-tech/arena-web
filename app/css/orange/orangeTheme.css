@@ -1618,3 +1618,11 @@ footer .left>span {
 .settings-panel, .settings-panel h3 {
     font-weight: normal;
 }
+.detailPage .headerInDivisionSummary {
+    font-weight: 400 !important;
+    color: #636d70 !important;
+}
+
+.detailPage .summaryTables .innerWrapper .table>thead:first-child>tr:first-child>th {
+    border-top: 0 solid #fff;
+}
