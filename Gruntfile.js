@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This module defines the grunt tasks used for packaging the application.
@@ -53,8 +53,11 @@
  * - Added LEADERBOARD_REFRESH_TIME_GAP to improve leaderboard performance.
  * - Fixed lint issues.
  *
+ * Changes in version 1.14 (Web Arena - Update Match Summary Tab Within Active Matches Widget):
+ * - Added ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT setting.
+ *
  * @author amethystlei, flytoj2ee, dexy, shubhendus
- * @version 1.13
+ * @version 1.14
  */
 'use strict';
 /*global module, process*/
@@ -118,7 +121,8 @@ module.exports = function (grunt) {
                         { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME },
                         { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
                         { match : 'AUTO_SAVING_CODE_INTERVAL', replacement: process.env.AUTO_SAVING_CODE_INTERVAL },
-                        { match : 'LEADERBOARD_REFRESH_TIME_GAP', replacement: process.env.LEADERBOARD_REFRESH_TIME_GAP }
+                        { match : 'LEADERBOARD_REFRESH_TIME_GAP', replacement: process.env.LEADERBOARD_REFRESH_TIME_GAP },
+                        { match : 'ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT', replacement: process.env.ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT }
                     ]
                 },
                 files : [

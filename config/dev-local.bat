@@ -101,3 +101,6 @@ set NEWRELIC_SERVER_LOGGING_LEVEL=trace
 
 :: Time interval for auto saving code (milliseconds)
 set AUTO_SAVING_CODE_INTERVAL=30000
+
+:: The number of top coders shown in Active Matches Summary widget
+set ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
