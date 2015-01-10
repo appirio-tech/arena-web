@@ -105,3 +105,6 @@ export NEWRELIC_SERVER_LOGGING_LEVEL='trace'
 
 # Time interval for auto saving code (milliseconds)
 export AUTO_SAVING_CODE_INTERVAL=30000
+
+# The number of top coders shown in Active Matches Summary widget
+export ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3

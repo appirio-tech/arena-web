@@ -8352,6 +8352,10 @@ table thead .sort.desc{
     .detailPage .tHeadDiv {
         min-width: 540px;
     }
+    .detailPage .leaderboardWrapper .summaryTables .tableDiv,
+    .detailPage .leaderboardWrapper .summaryTables .tHeadDiv {
+        min-width: 10px;
+    }
     .detailPage .titleBar .btnBack,
     .codeArea .btnBack {
         margin-bottom: 5px;
@@ -9078,4 +9082,29 @@ table thead .sort.desc{
 }
 .settings-panel .bootstrap-switch.bootstrap-switch-off .bootstrap-switch-container {
     margin-left: -100%;
+}
+.detailPage .placeInDivisionSummary {
+    width: 15%;
+}
+.detailPage .handleInDivisionSummary {
+    width: 55%;
+}
+.detailPage .rInDivisionSummary {
+    width: 8%;
+}
+.detailPage .pointsInDivisionSummary {
+    width: 22%;
+}
+.detailPage .thInDivisionSummary {
+    padding-top: 0 !important;
+}
+.detailPage .headerInDivisionSummary {
+    font-weight: 400 !important;
+}
+.detailPage .tableDivisionSummary {
+    max-height: 100px!important;
+    min-height: 100px!important;
+}
+.detailPage .leaderboardWrapper .summaryTables {
+    width: 100%;
 }

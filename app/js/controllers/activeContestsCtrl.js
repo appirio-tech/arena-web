@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles active contests related logic.
@@ -49,8 +49,11 @@
  * - Added $scope.getContestLink
  * - Fixed some bugs in Registration deep-link logic
  *
+ * Changes in version 1.14 (Web Arena - Update Match Summary Tab Within Active Matches Widget):
+ * - Added shown match summary in active matches widget logic.
+ *
  * @author amethystlei, dexy, flytoj2ee, TCASSEMBLER
- * @version 1.13
+ * @version 1.14
  */
 'use strict';
 /*global module, angular, require*/
@@ -101,6 +104,8 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     }
     $scope.tweetText = config.tweetText.replace('#', '%23');
     $scope.tweetUrl = config.tweetUrl;
+
+    $scope.activeMatchesSummaryTopcoderCount = Number(config.activeMatchesSummaryTopcoderCount);
 
     /**
      * Send facebook message.
@@ -188,7 +193,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.getContests = function () {
         var result = [];
         angular.forEach($rootScope.roundData, function (contest) {
-            if(contest.roundType != 13) {
+            if (contest.roundType !== 13) {
                 result.push(contest);
             }
         });
@@ -220,6 +225,26 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     $scope.isShownRooms = function (contest) {
         return contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.AlmostContestPhase
             && contest.coderRooms && contest.coderRooms.length > 0;
+    };
+
+    /**
+     * Checks whether shows the summary detail.
+     * @param contest - the contest instance
+     * @returns {boolean} the checked result
+     */
+    $scope.isShownSummary = function (contest) {
+        return contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.ContestCompletePhase;
+    };
+
+    /**
+     * Return the flag whether all div summary is loaded.
+     * @returns {*} the flag.
+     */
+    $scope.isAllDivSummaryLoaded = function () {
+        if (angular.isDefined($rootScope.loadedAllDivSummary)) {
+            return $rootScope.loadedAllDivSummary;
+        }
+        return false;
     };
 
     // sets the current contest for viewing
@@ -535,6 +560,26 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
 
         if (index === 3) {
             $scope.$broadcast('rebuild:roomslist');
+        }
+
+        if (index === 0) {
+            if ($scope.isShownSummary(contest)) {
+                // get div summary only if need to show summary
+                var isLoading = false;
+                $rootScope.loadedAllDivSummary = false;
+                if (appHelper.isDivisionActive(contest, 'divOne')) {
+                    isLoading = true;
+                    $rootScope.getDivSummary(contest.roundID, helper.VIEW_ID.divOne);
+                }
+
+                if (appHelper.isDivisionActive(contest, 'divTwo')) {
+                    if (isLoading) {
+                        $rootScope.pendingDivSummary = {roundID: contest.roundID, viewId: helper.VIEW_ID.divTwo};
+                    } else {
+                        $rootScope.getDivSummary(contest.roundID, helper.VIEW_ID.divTwo);
+                    }
+                }
+            }
         }
 
         contest.detailIndex = index;
