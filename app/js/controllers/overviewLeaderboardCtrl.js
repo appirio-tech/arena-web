@@ -17,7 +17,7 @@
 /**
  * The leader board controller.
  */
-var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootScope) {
+var overviewLeaderboardCtrl = [ '$scope', '$rootScope', '$timeout', function ($scope, $rootScope, $timeout) {
     /**
      * Used in sort function to order rounds dropdown by round names
      * @param roundA Round ID of round to compare
@@ -88,6 +88,18 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
         return rounds;
     };
 
+    // rebuild round list and scroll position if rounds are added or removed
+    $scope.$watch('getRounds().length', function () {
+        $timeout(function() {
+            $rootScope.$broadcast('rebuild:leaderBoardMethods');
+
+            var idx = $scope.getRounds().indexOf($scope.activeRound);
+            if(idx > 0) {
+                $rootScope.$broadcast('autoscroll', 'round-' + idx);
+            }
+        });
+    });
+
     // the sorting flags.
     $scope.sortlb = {
         column: 'points',
@@ -130,7 +142,7 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
      */
     function handleKey(e){
         switch(e.which) {
-            case 13: // up
+            case 13: // enter
                 customDropdown.qtip('api').toggle(false);
             break;
 
@@ -141,6 +153,9 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
 
                     if(idx > 0) {
                         $scope.activeRound = rounds[idx-1];
+                        $timeout(function() {
+                            $scope.$broadcast('autoscroll', 'round-' + (idx-1));
+                        });
                     }
                 });
                 break;
@@ -152,6 +167,9 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
 
                     if(idx < rounds.length-1 && idx != -1) {
                         $scope.activeRound = rounds[idx+1];
+                        $timeout(function() {
+                            $scope.$broadcast('autoscroll', 'round-' + (idx+1));
+                        });
                     }
                 });
             break;
@@ -185,9 +203,13 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', function ($scope, $rootS
         events: {
             show: function (event, api) {
                 /*jslint unparam:true*/
-                $rootScope.$broadcast('rebuild:leaderBoardMethods');
-
                 $(document).keydown(handleKey);
+            },
+            visible: function() {
+                $timeout(function() {
+                    $rootScope.$broadcast('rebuild:leaderBoardMethods');
+                    $rootScope.$broadcast('autoscroll', 'round-' + $scope.getRounds().indexOf($scope.activeRound));
+                });
             },
             hide: function(event, api) {
 
