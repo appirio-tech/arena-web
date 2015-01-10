@@ -221,10 +221,14 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
         }
         if (!!attrs.scrollOn) {
           scope.$on(attrs.scrollOn, function(_, data) {
-              if(-(page.top || 0) > data.top) {
+              if (!page.height) {
+                  reload();
+              }
+
+              if (-(page.top || 0) > data.top) {
                   dragger.top = (dragger.trackHeight - dragger.height) * Math.min(data.top / (page.scrollHeight-page.height), 1);
               }
-              else if(-(page.top || 0) + page.height < data.bottom) {
+              else if (-(page.top || 0) + page.height < data.bottom) {
                   dragger.top = dragger.trackHeight * (data.bottom / page.scrollHeight) - dragger.height;
               }
               else return;

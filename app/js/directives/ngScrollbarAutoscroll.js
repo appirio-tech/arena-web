@@ -2,10 +2,10 @@
  * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
  */
 /**
- * This directive emits scroll event to be processed by custom ngCustomScrollbar
- * when the scroll condition is met.
+ * This directive procosses autoscroll event by scrolling ngScrollbar to position of
+ * element this directive is applied to.
  *
- * @author TCSASSEMBLER
+ * @author Helstein
  * @version 1.0
  */
 'use strict';

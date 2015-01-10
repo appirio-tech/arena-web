@@ -153,6 +153,9 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', '$timeout', function ($s
 
                     if(idx > 0) {
                         $scope.activeRound = rounds[idx-1];
+                        $timeout(function() {
+                            $scope.$broadcast('autoscroll', 'round-' + (idx-1));
+                        });
                     }
                 });
                 break;
@@ -164,6 +167,9 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', '$timeout', function ($s
 
                     if(idx < rounds.length-1 && idx != -1) {
                         $scope.activeRound = rounds[idx+1];
+                        $timeout(function() {
+                            $scope.$broadcast('autoscroll', 'round-' + (idx+1));
+                        });
                     }
                 });
             break;
@@ -197,10 +203,11 @@ var overviewLeaderboardCtrl = [ '$scope', '$rootScope', '$timeout', function ($s
         events: {
             show: function (event, api) {
                 /*jslint unparam:true*/
-                $rootScope.$broadcast('rebuild:leaderBoardMethods');
                 $(document).keydown(handleKey);
-
+            },
+            visible: function() {
                 $timeout(function() {
+                    $rootScope.$broadcast('rebuild:leaderBoardMethods');
                     $rootScope.$broadcast('autoscroll', 'round-' + $scope.getRounds().indexOf($scope.activeRound));
                 });
             },
