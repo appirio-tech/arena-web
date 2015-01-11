@@ -103,8 +103,11 @@
  * Changes in version 1.24 (Web Arena - Update Match Summary Tab Within Active Matches Widget):
  * - Added shown match summary in active matches widget logic.
  *
+ * Changes in version 1.25 (Web Arena - Recovery From Lost Connection)
+ * - Added logic to popup dialog after lost connection.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.24
+ * @version 1.25
  */
 'use strict';
 /*jshint -W097*/
@@ -130,7 +133,7 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', '$filter', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window, $filter) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', '$filter', 'sessionHelper', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window, $filter, sessionHelper) {
     var /**
          * The modal controller.
          *
@@ -549,6 +552,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     };
     /*jslint unparam: true*/
     $scope.$on(helper.EVENT_NAME.ForcedLogoutResponse, function (event, data) {
+        $rootScope.forcedLogout = true;
         $scope.openModal({
             title: helper.POP_UP_TITLES.ForcedLogout,
             message: helper.POP_UP_MESSAGES.ForcedLogout,
@@ -557,25 +561,66 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $state.go(helper.STATE_NAME.Logout);
         });
     });
+    /**
+     * Popup reconnection dialog.
+     */
+    $scope.popupReconnectDialog = function () {
+        $scope.openModal({
+            title: helper.POP_UP_TITLES.Reconnect,
+            message: helper.POP_UP_MESSAGES.Reconnect,
+            enableClose: true,
+            buttons: ['Reconnect', 'Ignore']
+        }, function () {
+            if ($rootScope.reconnected) {
+                $rootScope.loginPendingCount = 1;
+                socket.emit(helper.EVENT_NAME.SSOLoginRequest, {sso: sessionHelper.getTcsso()});
+            }
+        });
+    };
+    // disconnected event
     $scope.$on(helper.EVENT_NAME.Disconnected, function (event, data) {
         if (!isDisconnecting) {
             isDisconnecting = true;
-            $scope.openModal({
-                title: helper.POP_UP_TITLES.Disconnected,
-                message: helper.POP_UP_MESSAGES.LostConnection,
-                enableClose: true
-            });
+            $rootScope.isClosedDisconnectDialog = false;
+            $rootScope.reconnected = false;
+            // if already forced logout, it's unnecessary to connect again
+            if (!$rootScope.forcedLogout) {
+                $scope.openModal({
+                    title: helper.POP_UP_TITLES.Disconnected,
+                    message: helper.POP_UP_MESSAGES.LostConnection,
+                    enableClose: true,
+                    buttons: ['OK']
+                }, null, function () {
+                    // already reconnected, popup dialog to relogin
+                    if ($rootScope.reconnected) {
+                        $scope.popupReconnectDialog();
+                    }
+
+                    $rootScope.isClosedDisconnectDialog = true;
+                });
+            }
         }
     });
+    // connected event
     $scope.$on(helper.EVENT_NAME.Connected, function (event, data) {
         if (isDisconnecting) {
             isDisconnecting = false;
-            if ($rootScope.currentModal !== undefined && $rootScope.currentModal !== null) {
-                $rootScope.currentModal.dismiss('cancel');
+            $rootScope.reconnected = true;
+
+            if ($rootScope.isClosedDisconnectDialog && !$rootScope.forcedLogout) {
+                $scope.popupReconnectDialog();
             }
-            if (!$rootScope.reconnected) {
-                $state.go(helper.STATE_NAME.AnonymousHome);
-            }
+        }
+    });
+
+    $scope.$on(helper.EVENT_NAME.EmitInOfflineMode, function (event, data) {
+        if ($rootScope.isClosedDisconnectDialog) {
+            $scope.openModal({
+                title: 'Error',
+                message: 'The network is unavailable and it is in offline mode now.',
+                enableClose: true,
+                buttons: ['Close']
+            });
         }
     });
     $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This is the resolver.
@@ -92,8 +92,11 @@
  * Changes in version 1.23 (TopCoder Competition Engine - Improve Automated Notification Messages)
  * - Updated phase change notifications to match with arena applet
  *
+ * Changes in version 1.24 (Web Arena - Recovery From Lost Connection)
+ * - Added forwardAfterReconnected() method.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.23
+ * @version 1.24
  */
 ///////////////
 // RESOLVERS //
@@ -187,6 +190,59 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         requestId = data.requestId;
         $rootScope.startSyncResponse = true;
     });
+
+
+    /**
+     * Forward the page after reconnected.
+     */
+    function forwardAfterReconnected() {
+        if ($rootScope.reconnected) {
+            $rootScope.reconnected = false;
+            var currentStateName = $rootScope.currentStateName(),
+                params = $rootScope.currentState().params,
+                stateName,
+                stateData;
+
+            if (currentStateName === helper.STATE_NAME.DefaultContest || currentStateName === helper.STATE_NAME.Contest) {
+                stateName = currentStateName;
+                stateData = {contestId: params.contestId};
+            } else if (currentStateName === helper.STATE_NAME.Member) {
+                stateName = currentStateName;
+                stateData = {
+                    memberName: params.memberName
+                };
+            } else if (currentStateName === helper.STATE_NAME.PracticeCode) {
+                stateName = currentStateName;
+                stateData = {
+                    roundId : params.roundId,
+                    componentId : params.componentId,
+                    divisionId : params.divisionId,
+                    roomId : params.roomId
+                };
+            } else if (currentStateName === helper.STATE_NAME.Coding) {
+                $rootScope.competingRoomID = -1;
+                stateName = currentStateName;
+                stateData = {
+                    roundId : params.roundId,
+                    problemId : params.problemId,
+                    divisionId : params.divisionId
+                };
+            } else if (currentStateName === helper.STATE_NAME.Anonymous || currentStateName === helper.STATE_NAME.AnonymousHome
+                || currentStateName === helper.STATE_NAME.LoggingIn || currentStateName === helper.STATE_NAME.Logout) {
+                stateName = currentStateName;
+                stateData = {};
+            } else {
+                stateName = helper.STATE_NAME.Dashboard;
+                stateData = {};
+            }
+
+            $timeout(function () {
+                $rootScope.loginPendingCount = 0;
+                $state.go(stateName, stateData, {reload: true});
+            }, helper.LOGIN_WAITING_TIME);
+        }
+    }
+
     // handle the login response
     socket.on(helper.EVENT_NAME.LoginResponse, function (data) {
         if (data.success) {
@@ -197,6 +253,9 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 sessionHelper.clearRemember();
             }
             $rootScope.connectionID = data.connectionID;
+            $rootScope.connected = true;
+
+            forwardAfterReconnected();
         } else {
             // if fail to log in, remove sso
             $rootScope.isLoggedIn = false;

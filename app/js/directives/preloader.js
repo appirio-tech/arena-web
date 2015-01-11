@@ -54,6 +54,9 @@ var preloader = ['$http', '$timeout', function ($http, $timeout) {
                         element.show();
                         $timeout(function () {
                             element.hide();
+                            if (scope.callback) {
+                                scope[callback]();
+                            }
                         }, 1000);
                     }, config.spinnerTimeout);
                 } else {

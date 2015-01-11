@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This module contains constants.
@@ -114,8 +114,12 @@
  * Changes in version 1.30 (Web Arena - Run System Testing Support For Practice Problems):
  * - Added event names for practice system test.
  *
+ * Changes in version 1.31 (Web Arena - Recovery From Lost Connection)
+ * - Added LOGIN_WAITING_TIME setting.
+ * - Updated the message text for lost connection logic.
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.30
+ * @version 1.31
  */
 'use strict';
 /*global module*/
@@ -234,7 +238,8 @@ module.exports = {
         SocketConnectionFailed: 'connect_failed',
         SocketDisconnected: 'disconnect',
         SocketReconnect: 'reconnect',
-        SocketError: 'error'
+        SocketError: 'error',
+        EmitInOfflineMode: 'EmitInOfflineMode'
     },
 
     // Represents the phase names.
@@ -323,6 +328,8 @@ module.exports = {
     MAX_CHAT_LENGTH: 256,
     // Time gap between two leaderboad table rebuildings
     LEADERBOARD_TABLE_REBUILT_TIMEGAP: 0,
+    // the login waiting time
+    LOGIN_WAITING_TIME: 1000,
 
     // pop up titles
     POP_UP_TITLES: {
@@ -340,15 +347,17 @@ module.exports = {
         NotAssigned: 'Not Assigned',
         RoundAccessError: 'Round Access Error',
         ChangeRoundError: 'Change round Error',
-        SaveResults: 'Save Results'
+        SaveResults: 'Save Results',
+        Reconnect: 'Reconnect'
     },
 
     // custom pop up messages
     POP_UP_MESSAGES: {
         Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
         ForcedLogout: 'Logging off as you logged in to another session or browser.',
-        LostConnection: 'The connection to the server has been lost. Please log off and log in again.',
-        NotAssigned: 'You are not assigned to this room'
+        LostConnection: 'The communication with the competition server has been interrupted! Please verify your network connection, copy your work, and refresh this page.',
+        NotAssigned: 'You are not assigned to this room',
+        Reconnect: 'The network is available. Would you like to reconnect?'
     },
 
     // The mapper from time zone code (must be uppercase) to offset from UTC (in minutes).

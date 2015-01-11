@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles coding editor related logic.
@@ -46,24 +46,27 @@
  * Changes in version 1.9 (Module Assembly - Web Arena UI - Challenges and Challengers):
  * - Added logic to support challenges and challengers table.
  *
- * Changes in version 2.0 (Web Arena - Division Leaderboard Pagination):
+ * Changes in version 1.10 (Web Arena - Division Leaderboard Pagination):
  * - Added division leaderboard pagination
  *
- * Changes in version 2.1 (Module Assembly - Web Arena UI - Match Summary Widget):
+ * Changes in version 1.11 (Module Assembly - Web Arena UI - Match Summary Widget):
  * - Moved closeDivSummary, closeLastDivSummary, openDivSummary, getDivSummary, updateDivSummary
  *   updateRoomSummary, formatScore, getStatusColor, showResult, isViewable, ldrbrdTimeoutPromise,
  *   getCoderHistory to baseCtrl.js to have global support for leaderboard tables.
  *
- * Changes in version 2.2 (Sort is not retained in room summary):
+ * Changes in version 1.12 (Sort is not retained in room summary):
  * - Fix issue of Sort is not retained in room summary
  *
- * Changes in version 2.3 (Web Arena - Leaderboard Performance Improvement):
+ * Changes in version 1.13 (Web Arena - Leaderboard Performance Improvement):
  * - Updated to use the variable leaderboard instead of calling the function
  *   getCurrentLeaderboard() in the template app/partials/user.contest.detail.html
  *   to improve the performance of the leaderboard.
  *
+ * Changes in version 1.14 (Web Arena - Recovery From Lost Connection)
+ * - Fixed undefined data issue.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee, savon_cn, TCSASSEMBLER
- * @version 2.3
+ * @version 1.14
  */
 'use strict';
 /*jshint -W097*/
@@ -175,7 +178,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             return lastPageNums;
         }
 
-        if (num === 0) {
+        if (num === 0 || !data) {
             return [];
         }
         lastInvokeTime = new Date().getTime();
@@ -654,7 +657,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     };
 
     // Removes coder handle filter
-    $scope.stopHandleFilter = function(viewOn) {
+    $scope.stopHandleFilter = function (viewOn) {
         $scope.getKeys(viewOn).lbFilter.userName = '';
 
         $timeout.cancel($rootScope.ldrbrdTimeoutPromise);
@@ -662,7 +665,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         $rootScope.ldrbrdTimeoutPromise = $timeout(function () {
             $scope.$broadcast('rebuild:leaderboardTable');
         }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
-    }
+    };
 
     $scope.previousChallengeHandle = '';
 

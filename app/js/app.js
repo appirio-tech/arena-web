@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file provide the main app configurations.
@@ -111,8 +111,11 @@
  * Changes in version 1.30 (Web Arena - Scrolling Issues Fixes):
  * - Updated CodeMirror to latest version and added scrollbar plugin
  *
+ * Changes in version 1.31 (Web Arena - Recovery From Lost Connection)
+ * - Added logic to recovery from lost connection.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
- * @version 1.30
+ * @version 1.31
  */
 'use strict';
 /*jshint -W097*/
@@ -1214,6 +1217,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     //consider exposing states and state params to all templates
     $rootScope.$state = $state;
     $rootScope.connectionID = undefined;
+    $rootScope.forcedLogout = false;
     $rootScope.startSyncResponse = false;
     $rootScope.lastServerActivityTime = new Date().getTime();
     $rootScope.leaderboard = [];
@@ -1309,7 +1313,9 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         $rootScope.reconnected = false;
 
         socket.on(helper.EVENT_NAME.SocketConnected, function () {
-            $rootScope.connected = true;
+            if (!$rootScope.reconnected) {
+                $rootScope.connected = true;
+            }
             $rootScope.$broadcast(helper.EVENT_NAME.Connected, {});
         });
         socket.on(helper.EVENT_NAME.SocketDisconnected, function () {
@@ -1322,12 +1328,6 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         });
         socket.on(helper.EVENT_NAME.SocketError, function () {
             $rootScope.$broadcast(helper.EVENT_NAME.SocketError, {});
-        });
-
-        socket.on(helper.EVENT_NAME.SocketReconnect, function () {
-            // get reconnect, but it should login again, keep connected flag to false here.
-            // $rootScope.connected = true;
-            $rootScope.reconnected = true;
         });
     });
 
@@ -1353,6 +1353,14 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
      */
     $rootScope.currentStateName = function () {
         return $state.current.name;
+    };
+
+    /**
+     * Get current state.
+     * @returns {*} the state instance.
+     */
+    $rootScope.currentState = function () {
+        return $state;
     };
 
     /**

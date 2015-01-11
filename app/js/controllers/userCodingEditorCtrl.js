@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles user coding page logic.
@@ -55,7 +55,6 @@
  * Changes in version 1.15 (Web Arena Plugin API Part 1):
  * - Added plugin logic for coding editor panel.
  *
-<<<<<<< HEAD
  * Changes in version 1.16 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Added logic to cache the code to local storage.
  *
@@ -65,8 +64,11 @@
  * Changes in version 1.18 (Scrolling Issues Fixes Assembly):
  * - Changed CodeMirror scrollbar style.
  *
+ * Changes in version 1.19 (Web Arena - Recovery From Lost Connection)
+ * - Fixed the undefined test data issue.
+ *
  * @author tangzx, amethystlei, flytoj2ee, Helstein
- * @version 1.18
+ * @version 1.19
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -960,9 +962,11 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
              */
             $scope.isSelectedAll = function () {
                 var i;
-                for (i = 0; i < $scope.userData.tests.length; i += 1) {
-                    if (!$scope.userData.tests[i].checked) {
-                        return false;
+                if ($scope.userData && $scope.userData.tests) {
+                    for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                        if (!$scope.userData.tests[i].checked) {
+                            return false;
+                        }
                     }
                 }
                 for (i = 0; i < $rootScope.userTests.length; i += 1) {
@@ -985,7 +989,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
              */
             $scope.isSelectedAllDisable = function () {
                 if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
-                    if ($scope.userData.tests.length === 0 && $rootScope.userTests.length === 0) {
+                    if ((!$scope.userData || $scope.userData.tests.length === 0) && $rootScope.userTests.length === 0) {
                         return true;
                     }
                 }
