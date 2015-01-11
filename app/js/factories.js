@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file provide some global services.
@@ -50,8 +50,11 @@
  * Changes in version 1.13 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
  * - Added set / get setting from local storage.
  *
+ * Changes in version 1.14 (Web Arena - Recovery From Lost Connection)
+ * - Stop to send sync time request if lost connection.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.13
+ * @version 1.14
  */
 'use strict';
 /*jshint -W097*/
@@ -463,16 +466,16 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.setCodeToLocalStorage = function (handle, roundID, problemID, componentID, languageID, code) {
         if (localStorageService.isSupported) {
-            var obj = {languageID : languageID, code: code};
-            var key = generateCodeKey(handle, roundID, problemID, componentID);
+            var obj = {languageID : languageID, code: code}, key, i, codeList, found;
+            key = generateCodeKey(handle, roundID, problemID, componentID);
 
             localStorageService.set(key, obj);
 
 
-            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
             if (codeList) {
-                var found = false;
-                for (var i = 0; i < codeList.length; i++) {
+                found = false;
+                for (i = 0; i < codeList.length; i++) {
                     if (codeList[i] === key) {
                         found = true;
                         break;
@@ -514,13 +517,13 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.removeCodeFromLocalStorage = function (handle, roundID, problemID, componentID) {
         if (localStorageService.isSupported) {
-            var key = generateCodeKey(handle, roundID, problemID, componentID);
+            var key = generateCodeKey(handle, roundID, problemID, componentID), codeList, newCodeList, i;
             localStorageService.remove(key);
 
-            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
-            var newCodeList = [];
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            newCodeList = [];
             if (codeList) {
-                for (var i = 0; i < codeList.length; i++) {
+                for (i = 0; i < codeList.length; i++) {
                     if (codeList[i] !== key) {
                         newCodeList.push(codeList[i]);
                     }
@@ -536,11 +539,11 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.isExistingCodeInLocalStorage = function () {
         if (localStorageService.isSupported) {
-            var userName = $rootScope.username();
-            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            var userName = $rootScope.username(), codeList, i;
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
 
             if (codeList) {
-                for (var i = 0; i < codeList.length; i++) {
+                for (i = 0; i < codeList.length; i++) {
                     if (codeList[i].indexOf(userName) !== -1) {
                         return true;
                     }
@@ -556,12 +559,12 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.removeCurrentCodeInLocalStorage = function () {
         if (localStorageService.isSupported) {
-            var userName = $rootScope.username();
-            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
-            var newCodeList = [];
+            var userName = $rootScope.username(), codeList, newCodeList, i;
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            newCodeList = [];
 
             if (codeList) {
-                for (var i = 0; i < codeList.length; i++) {
+                for (i = 0; i < codeList.length; i++) {
                     if (codeList[i].indexOf(userName) !== -1) {
                         localStorageService.remove(codeList[i]);
                     } else {
@@ -655,9 +658,9 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.getChatSettingFromLocalStorage = function (key) {
         if (localStorageService.isSupported) {
-            var allSetting = localStorageService.get('chat_setting');
+            var allSetting = localStorageService.get('chat_setting'), chatSetting;
             if (allSetting) {
-                var chatSetting = allSetting[key];
+                chatSetting = allSetting[key];
                 if (chatSetting !== undefined) {
                     return JSON.parse(chatSetting);
                 }
@@ -751,7 +754,8 @@ factories.tcTimeService = ['$rootScope', '$timeout', '$filter', 'socket', functi
         counter = 0; // temporary solution before better handling of sync requests is added
     // makes sync time request to the TC server
     service.syncTimeRequest = function () {
-        if ($rootScope.connectionID !== undefined) {
+        if ($rootScope.connectionID !== undefined
+                && ($rootScope.isClosedDisconnectDialog === undefined || $rootScope.isClosedDisconnectDialog === true)) {
             socket.emit(helper.EVENT_NAME.SynchTimeRequest, {connectionID: $rootScope.connectionID});
         }
     };
@@ -993,6 +997,9 @@ factories.socket = ['$rootScope', function ($rootScope) {
             });
         },
         emit: function (eventName, data, callback) {
+            if (!$rootScope.connected) {
+                $rootScope.$broadcast(helper.EVENT_NAME.EmitInOfflineMode, {});
+            }
             socket.emit(eventName, data, function () {
                 var args = arguments;
                 $rootScope.$apply(function () {
