@@ -19,6 +19,9 @@ body{
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     background-image: url(../img/dark/sprite-2.png);
 }
+.CodeMirror-simplescroll-vertical > div {
+    background-color:  #2a2b2c;
+}
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
 .codeArea .socialLinks a:before,
@@ -436,6 +439,12 @@ footer .right .sponsorLogo {
 
 /* code editor widget */
 .panelCodeEditor .actionIcons > .link:hover {color: #fff;}
+
+.panelCodeEditor .actionIcons .refreshSystemTestLink:before {
+	background-image: url(../img/dark/sprite-codeArena.png);
+	background-position: -45px -21px;
+	background-repeat: no-repeat;
+}
 
 .panelCodeEditor .toolBar .middlePart .findInput {
     background: #162f36;
@@ -1252,13 +1261,13 @@ footer .right .sponsorLogo {
     .panelContestStat .breadcrumbHead {height: 63px; }
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
 #challenges-advertiser {
     border: 1px solid #1f444e;
-    background: #151718;   
+    background: #151718;
 }
 
 #challenges-advertiser .challenge-technologies-wrapper {
@@ -1280,6 +1289,15 @@ footer .right .sponsorLogo {
 
 #challenges-advertiser .challenge-icon {
     color: #e9f2db;
+}
+/****** Loading spinner ******/
+.preloader-window {
+    background-color: #000000;
+    border: 1px solid #0bbbe7;
+    color: #fff;
+}
+.preloader-indicator>img {
+    background-image: url(../img/dark/preloader.gif);
 }
 /*
 *

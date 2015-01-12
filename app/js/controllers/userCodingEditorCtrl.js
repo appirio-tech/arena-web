@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles user coding page logic.
@@ -58,8 +58,17 @@
  * Changes in version 1.16 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Added logic to cache the code to local storage.
  *
- * @author tangzx, amethystlei, flytoj2ee
- * @version 1.15
+ * Changes in version 1.17 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added logic to support running practice system test.
+ *
+ * Changes in version 1.18 (Scrolling Issues Fixes Assembly):
+ * - Changed CodeMirror scrollbar style.
+ *
+ * Changes in version 1.19 (Web Arena - Recovery From Lost Connection)
+ * - Fixed the undefined test data issue.
+ *
+ * @author tangzx, amethystlei, flytoj2ee, Helstein
+ * @version 1.19
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -424,9 +433,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.setThemeIdx = function (themeIdx) {
             $scope.themeIdx = themeIdx;
-            var _elem = angular.element('ul.editorDropDown > li.dropdown');
-            if (_elem) {
-                closeDropdown(_elem);
+            var elem = angular.element('ul.editorDropDown > li.dropdown');
+            if (elem) {
+                closeDropdown(elem);
             }
         };
 
@@ -463,9 +472,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             $scope.langIdx = langIdx;
 
             updateArgTypeAndMethod($scope.lang($scope.langIdx).id);
-            var _elem = angular.element('ul.languageDropDown > li.dropdown');
-            if (_elem) {
-                closeDropdown(_elem);
+            var elem = angular.element('ul.languageDropDown > li.dropdown');
+            if (elem) {
+                closeDropdown(elem);
             }
         };
 
@@ -552,6 +561,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             theme: 'topcoder',
             lineNumbers: true,
             lineWrapping : true,
+            scrollbarStyle: "simple",
             mode: $scope.lang($scope.langIdx).langKey,
             foldGutter: $scope.lang($scope.langIdx).langGutter,
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
@@ -575,9 +585,11 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 cmInstance.on('change', function () {
                     if ($scope.firstLoadCode || $scope.resizeCodeEditor) {
                         $scope.firstLoadCode = false;
+                        $scope.updatedCodeAfterSubmit = false;
                         $scope.resizeCodeEditor = false;
                     } else {
                         $scope.contentDirty = true;
+                        $scope.updatedCodeAfterSubmit = true;
                         if (($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode)) {
                             appHelper.setCodeToLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID,
                                 $scope.lang($scope.langIdx).id, $scope.cm.getValue());
@@ -777,6 +789,11 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 message: data.message,
                 enableClose: true
             });
+
+            if (data.message.indexOf('was successful for') !== -1) {
+                $scope.submittedCode = true;
+                $scope.updatedCodeAfterSubmit = false;
+            }
         });
 
         /**
@@ -945,9 +962,11 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
              */
             $scope.isSelectedAll = function () {
                 var i;
-                for (i = 0; i < $scope.userData.tests.length; i += 1) {
-                    if (!$scope.userData.tests[i].checked) {
-                        return false;
+                if ($scope.userData && $scope.userData.tests) {
+                    for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                        if (!$scope.userData.tests[i].checked) {
+                            return false;
+                        }
                     }
                 }
                 for (i = 0; i < $rootScope.userTests.length; i += 1) {
@@ -970,7 +989,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
              */
             $scope.isSelectedAllDisable = function () {
                 if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
-                    if ($scope.userData.tests.length === 0 && $rootScope.userTests.length === 0) {
+                    if ((!$scope.userData || $scope.userData.tests.length === 0) && $rootScope.userTests.length === 0) {
                         return true;
                     }
                 }
@@ -1017,6 +1036,89 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
             // set preferred theme, there is no theme data
             $scope.themeIdx = 0;
+
+            $scope.submittedCode = false;
+            $scope.updatedCodeAfterSubmit = false;
+
+            /**
+             * Check whether to show running practice system test link.
+             * @returns {boolean} the checked result
+             */
+            $scope.isShowRunPracticeSystemTest = function () {
+                if ($scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
+                    return true;
+                }
+
+                return false;
+            };
+
+            $scope.numContestRequests = 0;
+
+            /**
+             * Run practice system test.
+             */
+            $scope.runPracticeSystemTest = function () {
+                if (!$scope.submittedCode) {
+                    return;
+                }
+
+                /**
+                 * Run system test handler.
+                 */
+                var runSystemTestHandler = function () {
+                    $scope.numContestRequests = 1;
+                    disableUserInput();
+                    socket.emit(helper.EVENT_NAME.PracticeSystemTestRequest, {
+                        componentIds: [$scope.componentID],
+                        roomID: $scope.practiceRoomId
+                    });
+                };
+                if ($scope.updatedCodeAfterSubmit) {
+                    $scope.openModal({
+                        title: 'Warning',
+                        message: 'You have made a change to your code since the last time you submitted.' +
+                            ' System test result will be based on last submitted code. Do you want to continue with Running System Tests?',
+                        buttons: ['Yes', 'No'],
+                        enableClose: true
+                    }, runSystemTestHandler);
+                } else {
+                    runSystemTestHandler();
+                }
+            };
+
+            // The response which returned total system test case count
+            socket.on(helper.EVENT_NAME.PracticeSystemTestResponse, function (data) {
+                $scope.numContestRequests = data.testCaseCountByComponentId[$scope.componentID];
+            });
+
+            // The response which returned system test results
+            socket.on(helper.EVENT_NAME.PracticeSystemTestResultResponse, function (data) {
+                if (data.resultData.succeeded === false) {
+                    $scope.numContestRequests = 0;
+                    //popup error dialog
+                    $scope.openModal({
+                        title: 'Result',
+                        message: '',
+                        showError: true,
+                        buttons: ['Try Again'],
+                        enableClose: true
+                    }, null, null, 'popupSystemTestResultBase.html');
+                    enableUserInput();
+                } else {
+                    $scope.numContestRequests = $scope.numContestRequests - 1;
+                    if ($scope.numContestRequests === 0) {
+                        // popup success dialog
+                        $scope.openModal({
+                            title: 'Result',
+                            message: '',
+                            showError: false,
+                            buttons: ['OK'],
+                            enableClose: true
+                        }, null, null, 'popupSystemTestResultBase.html');
+                        enableUserInput();
+                    }
+                }
+            });
 
             // set line number visibility
             // comment out for now, there is no line number data

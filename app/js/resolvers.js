@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This is the resolver.
@@ -89,8 +89,14 @@
  * Changes in version 1.22 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
  * - Added the logic for chat setting and shown time in chat message.
  *
+ * Changes in version 1.23 (TopCoder Competition Engine - Improve Automated Notification Messages)
+ * - Updated phase change notifications to match with arena applet
+ *
+ * Changes in version 1.24 (Web Arena - Recovery From Lost Connection)
+ * - Added forwardAfterReconnected() method.
+ *
  * @author amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.22
+ * @version 1.24
  */
 ///////////////
 // RESOLVERS //
@@ -184,6 +190,59 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         requestId = data.requestId;
         $rootScope.startSyncResponse = true;
     });
+
+
+    /**
+     * Forward the page after reconnected.
+     */
+    function forwardAfterReconnected() {
+        if ($rootScope.reconnected) {
+            $rootScope.reconnected = false;
+            var currentStateName = $rootScope.currentStateName(),
+                params = $rootScope.currentState().params,
+                stateName,
+                stateData;
+
+            if (currentStateName === helper.STATE_NAME.DefaultContest || currentStateName === helper.STATE_NAME.Contest) {
+                stateName = currentStateName;
+                stateData = {contestId: params.contestId};
+            } else if (currentStateName === helper.STATE_NAME.Member) {
+                stateName = currentStateName;
+                stateData = {
+                    memberName: params.memberName
+                };
+            } else if (currentStateName === helper.STATE_NAME.PracticeCode) {
+                stateName = currentStateName;
+                stateData = {
+                    roundId : params.roundId,
+                    componentId : params.componentId,
+                    divisionId : params.divisionId,
+                    roomId : params.roomId
+                };
+            } else if (currentStateName === helper.STATE_NAME.Coding) {
+                $rootScope.competingRoomID = -1;
+                stateName = currentStateName;
+                stateData = {
+                    roundId : params.roundId,
+                    problemId : params.problemId,
+                    divisionId : params.divisionId
+                };
+            } else if (currentStateName === helper.STATE_NAME.Anonymous || currentStateName === helper.STATE_NAME.AnonymousHome
+                || currentStateName === helper.STATE_NAME.LoggingIn || currentStateName === helper.STATE_NAME.Logout) {
+                stateName = currentStateName;
+                stateData = {};
+            } else {
+                stateName = helper.STATE_NAME.Dashboard;
+                stateData = {};
+            }
+
+            $timeout(function () {
+                $rootScope.loginPendingCount = 0;
+                $state.go(stateName, stateData, {reload: true});
+            }, helper.LOGIN_WAITING_TIME);
+        }
+    }
+
     // handle the login response
     socket.on(helper.EVENT_NAME.LoginResponse, function (data) {
         if (data.success) {
@@ -194,6 +253,9 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 sessionHelper.clearRemember();
             }
             $rootScope.connectionID = data.connectionID;
+            $rootScope.connected = true;
+
+            forwardAfterReconnected();
         } else {
             // if fail to log in, remove sso
             $rootScope.isLoggedIn = false;
@@ -883,16 +945,31 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             function formattedTime(timeInMs) {
                 return $filter('date')(timeInMs, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone;
             }
+            // Represents the phase names.
+            var messages = [
+                'Inactive Phase',
+                'Starts In Phase',
+                'Registration is now open',
+                'Registration is closed',
+                'Coding Phase has started',
+                'Coding Phase has ended',
+                'Challenge Phase has started',
+                'Challenge Phase has ended',
+                'System Test Phase has started'
+            ],
+                msg = helper.PHASE_NAME[data.phaseData.phaseType];
+
             // Match has completed.
             if (phaseData.phaseType === helper.PHASE_TYPE_ID.ContestCompletePhase) {
                 return 'Match completed at ' + formattedTime(now);
             }
             // The next phase is the Registration Phase
             if (phaseData.phaseType === helper.PHASE_TYPE_ID.StartsInPhase) {
-                return helper.PHASE_NAME[data.phaseData.phaseType + 1] + ' will start at ' + formattedTime(data.phaseData.endTime) + '.';
+                return 'Registration will open at ' + formattedTime(data.phaseData.endTime) + '.';
             }
-
-            var msg = helper.PHASE_NAME[data.phaseData.phaseType];
+            if (phaseData.phaseType > helper.PHASE_TYPE_ID.StartsInPhase && phaseData.phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase) {
+                return messages[phaseData.phaseType];
+            }
             if (data.phaseData.startTime > 0) {
                 // has 'started at' message
                 msg += ' started at ' + formattedTime(data.phaseData.startTime);
@@ -912,6 +989,10 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         if ($rootScope.roundData[data.phaseData.roundID]) {
             $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
             $rootScope.$broadcast(helper.EVENT_NAME.PhaseDataResponse, data);
+            if (data.phaseData.phaseType === helper.PHASE_TYPE_ID.ContestCompletePhase) {
+                // Handled at popup generic response in baseCtrl
+                return;
+            }
             notificationService.addNotificationMessage({
                 type: 'round',
                 time: now,

@@ -1,6 +1,7 @@
 <div class="panel panel-custom panelCodeEditor"> <!-- content start -->
+    <div class="preloader-window system-test-preloader-window" data-preloader data-num-requests='{{numContestRequests}}' text='Processing System Tests...'></div>
     <div class="panel-heading">
-        Coding Area<a data-ng-click="collapseOther('bottom-content')" class="collapseIcon" data-ng-class="{expand:getBottomStatus()=='expand',normal:getBottomStatus()=='normal'}"></a>
+        Coding Area<a data-ng-click="problemAreaHeightRatio = (problemAreaHeightRatio == 0 ? 1 : 0)" class="collapseIcon" data-ng-class="{expand:problemAreaHeightRatio == 0,normal:problemAreaHeightRatio > 0}"></a>
     </div>
     <div class="panel-body row" id="bottom-content">
         <div class="toolBar">
@@ -13,17 +14,17 @@
                         <ul class="editorDropDown settingDropDown"><li class="dropdown"><a class="dropdown-toggle disabled">{{getThemeName(themeIdx)}}</a><!--
                          --><ul class="dropdown-menu">
                                 <li data-ng-repeat="t in themes track by $index"><a data-ng-click="setThemeIdx($index)" data-ng-class="{current: $index === themeIdx}">{{t.name}}</a></li>
-                            </ul></li><!-- 
+                            </ul></li><!--
                      --></ul>
                     </div>
                     <div class="languageRow">
                         <label>Language</label>
-                        <ul class="languageDropDown settingDropDown"><!-- 
-                         --><li class="dropdown"><!-- 
+                        <ul class="languageDropDown settingDropDown"><!--
+                         --><li class="dropdown"><!--
                              --><a class="dropdown-toggle">{{getLangName(langIdx)}}</a><!--
-                             --><ul class="dropdown-menu"><!-- 
+                             --><ul class="dropdown-menu"><!--
                                  --><li data-ng-repeat="l in languages track by $index"><a dropdown-toggle data-ng-click="setLangIdx($index)" data-ng-class="{current: $index === langIdx}">{{l.name}}</a></li><!--
-                             --></ul><!-- 
+                             --></ul><!--
                          --></li>
                         </ul>
                     </div>
@@ -44,6 +45,7 @@
                 --><li class="link clearLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Clear</li><!--  avoid unnecessary blank
                 --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Compile</li><!--
                 --><li class="link submitLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Submit</li>
+                   <li class="link refreshSystemTestLink" data-ng-class="{disableLink : !submittedCode}" data-ng-click="runPracticeSystemTest()" data-ng-hide="!isShowRunPracticeSystemTest() || !isConnected()">Run System Tests</li>
                 </ul><!--  avoid unnecessary blank
                 --><div data-ng-show="currentStateName()==='user.viewCode'">{{languages[langIdx].name}}</div><!--
                 --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" data-ng-model="searchText" data-ng-keypress="inputSearchText($event)" data-ng-change="searchByText()"/><a id="searchByText" data-ng-click="searchByText()" class="searchIcon"></a></div><!--  avoid unnecessary blank
@@ -57,7 +59,7 @@
             </div>
         </div>
         <div data-ng-class="{showLineNumberPadding:showLineNumber,hideLineNumberPadding:!showLineNumber}" class="paddingRow"></div>
-        <textarea id="codeArea" name="codeArea" data-ui-codemirror="cmOption" data-ng-model="code" data-ng-class="{disableCursor:cm.options.readOnly}"></textarea>
+        <ui-codemirror id="codeArea" ui-codemirror-opts="cmOption" data-ng-model="code" class="code-editor-area" data-ng-class="{disableCursor:cm.options.readOnly}"></ui-codemirror>
         <script id="script"></script>
         <div class="errorBar">
             <div data-ng-repeat="i in range(lineNumbers) track by $index" data-ng-class="{error:getErrorMessage($index).length > 0}">
