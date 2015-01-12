@@ -1,15 +1,2 @@
 {
-    "dashboardBalloons": {
-    "id":"uniqueID",
-    "balloonGuides":[{
-        "attachTo": ".panelContestPlan",
-        "width": "400",
-        "position": "rightBelow",
-        "content": "<p>The new and improved match plan widget makes it much easier for you to keep track of upcoming challenges!</p>"
-    }, {
-        "attachTo": ".carousel-inner",
-        "width": "300",
-        "position": "leftBelow",
-        "content": "<p>You have used your awesome coding skills to dominate in the arena, now it is time to make some cash in the topcoder development challenges!</p>"
-    }]}
 }
