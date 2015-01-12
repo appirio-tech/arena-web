@@ -58,11 +58,14 @@
                         <!-- /.tabs -->
                         <div class="content">
                             <div class="preloader-window" data-preloader data-num-requests='{{numContestRequests}}' text='Loading Matches...'></div>
+                            <div class="preloader-window" data-preloader data-num-requests='{{numProblemRequests}}' text='Loading Problems...'></div>
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
-                                        <th class="colTitle sortableHeading" data-ng-click="toggleSortKey(keys.managementKeys, 'title')">Match Title<span data-ng-class="{up: keys.managementKeys.indexOf('title') == 0,down: keys.managementKeys.indexOf('-title') == 0}"></span></th>
-                                        <th class="colStart sortableHeading" data-ng-click="toggleSortKey(keys.managementKeys, 'start')">Match Start<span data-ng-class="{up: keys.managementKeys.indexOf('start') == 0,down: keys.managementKeys.indexOf('-start') == 0}"></span></th>
+                                        <th class="colTitle sortableHeading" data-ng-click="toggleSortValue('name')">Match Title
+                                            <span data-ng-class="{up: keys.managementSortKey.name == 'Asc',down: keys.managementSortKey.name == 'Desc'}"></span></th>
+                                        <th class="colStart sortableHeading" data-ng-click="toggleSortValue('registrationPhaseStartTime')">Match Start
+                                            <span data-ng-class="{up: keys.managementSortKey.registrationPhaseStartTime == 'Asc',down: keys.managementSortKey.registrationPhaseStartTime == 'Desc'}"></span></th>
                                         <th class="colBtn colProblem">Problem Assignment <span class="redStar">*</span></th>
                                         <th class="colBtn colTerm">Terms <span class="redStar">*</span></th>
                                         <th class="colBtn colSchedule">Schedule</th>
@@ -74,14 +77,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr data-ng-show="allRoundsArray.length == 0"><td>Loading Rounds. Please wait...</td></tr>
-                                    <tr data-ng-repeat="round in allRoundsArray | filter: keys.managementFilter: stringsEqual | orderBy: keys.managementKeys | startFrom: currentPage*pageLength | limitTo: pageLength">
-                                        <td class="colText colTitle" data-ng-click="updateContest(round)"><a>{{round.title}}</a></td>
+                                    <tr data-ng-show="allRoundsArray.length == 0"><td>No records found</td></tr>
+                                    <tr data-ng-repeat="round in allRoundsArray">
+                                        <td class="colText colTitle"><a data-ng-click="updateContest(round)">{{round.title}}</a></td>
                                         <td class="colText colStart">{{round.start | date: 'MMM d, yyyy hh:mm a'}} <span data-ng-show="round.start != ''">{{timeZone}}</span></td>
-                                        <td class="colBtn colProblem"><button class="btn" data-ng-class="{viewBtn: round.problems, addBtn: !round.problems}" data-ng-disabled="disableAssign" data-ng-click="openAssignProblem(round)">{{round.problems ? 'View' : 'Add'}}</button></td>
-                                        <td class="colBtn colTerm"><button class="btn" data-ng-class="{viewBtn: round.terms, addBtn: !round.terms}" data-ng-click="openTerms(round)">{{round.terms ? 'View' : 'Add'}}</button></td>
-                                        <td class="colBtn colSchedule"><button class="btn" data-ng-class="{viewBtn: round.segments, addBtn: !round.segments}" data-ng-click="openSchedule(round)">{{round.segments ? 'View' : 'Set'}}</button>
-                                        <td class="colBtn colRegQuestion"><button class="btn" data-ng-class="{viewBtn: round.questions.length, addBtn: !round.questions.length}" data-ng-click="openRegistrationQuestions(round)">{{round.questions.length ? 'View' : 'Add'}}</button></td>
+                                        <td class="colBtn colProblem"><button class="btn" data-ng-class="{viewBtn: round.hasProblems, addBtn: !round.hasProblems}" data-ng-click="openAssignProblem(round)">{{round.hasProblems ? 'View' : 'Add'}}</button></td>
+                                        <td class="colBtn colTerm"><button class="btn" data-ng-class="{viewBtn: round.hasTerms, addBtn: !round.hasTerms}" data-ng-click="openTerms(round)">{{round.hasTerms ? 'View' : 'Add'}}</button></td>
+                                        <td class="colBtn colSchedule"><button class="btn" data-ng-class="{viewBtn: round.hasSchedule, addBtn: !round.hasSchedule}" data-ng-click="openSchedule(round)">{{round.roundSchedule.length > 0 ? 'View' : 'Set'}}</button>
+                                        <td class="colBtn colRegQuestion"><button class="btn" data-ng-class="{viewBtn: round.hasQuestions, addBtn: !round.hasQuestions}" data-ng-click="openRegistrationQuestions(round)">{{round.hasQuestions ? 'View' : 'Add'}}</button></td>
                                         <td class="colText colStatus">{{round.status}}</td>
                                         <!--<td class="colHide"><span data-ng-class="{on: item.isHide, off: !item.isHide}"></span></td>-->
                                         <td class="colBtn colChangeRound"><div class="preloader-window" data-preloader data-num-requests='{{changeRoundRequest[round.id]}}' text='Changing round...'></div><button class="btn" data-ng-click="changeRound(round)" data-ng-class="{disabled: commandsDisabled}">Change</button></td>
@@ -91,7 +94,7 @@
                             </table>
                         </div>
                         <div class="paginator">
-                            <span data-ng-repeat="n in range((allRoundsArray | filter: keys.managementFilter), pageLength) track by $index" data-ng-class="{'textActive': $index == currentPage}" data-ng-click="setCurrentPage($index)">{{$index+1}}</span>
+                            <span data-ng-repeat="n in range(totalRounds, pageLength) track by $index" data-ng-class="{'textActive': $index+1 == currentPage}" data-ng-click="getRounds($index+1)">{{$index+1}}</span>
                         </div>
                     </div>
                     <!-- /.panel-body -->

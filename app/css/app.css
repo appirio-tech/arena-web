@@ -705,6 +705,20 @@ body a {cursor: pointer;}
 .panelContestPlan .preloader-window {
     left: 28.1%;
 }
+.contestManagement .preloader-window {
+    position: fixed;
+    z-index: 1031;
+}
+.contestManagement .preloader-window:before {
+    position:fixed;
+    content: '';
+    top:0;
+    left:0;
+    background:#000;
+    opacity:0.6;
+    height:100%;
+    width:100%;
+}
 @media only screen and (max-width: 1199px) {
     .panelContestPlan .preloader-window {
         left: 36.1%;

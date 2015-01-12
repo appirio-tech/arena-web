@@ -53,7 +53,7 @@ var contestTermsConfigCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '
             return;
         }
         // set terms
-        $scope.round.terms = $scope.roundTerms;
+        $scope.round.roundTerms = $scope.roundTerms;
         $http.post(config.apiDomain + '/data/srm/rounds/' + $scope.round.id + '/terms', {terms: $scope.roundTerms}, header).
             success(function (data) {
                 if (data.error) {
@@ -82,8 +82,8 @@ var contestTermsConfigCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '
      */
     $scope.loadPreviousTerm = function () {
         //get terms
-        if ($scope.round.terms && $scope.round.terms.length > 0) {
-            $scope.roundTerms = $scope.round.terms;
+        if ($scope.round.roundTerms && $scope.round.roundTerms.length > 0) {
+            $scope.roundTerms = $scope.round.roundTerms;
         } else {
             $scope.openModal({
                 title: 'Warning',
