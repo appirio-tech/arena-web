@@ -13,7 +13,7 @@ set CALLBACK_URL=https://tc.cloud.topcoder.com/reg2/callback.action
 
 
 :: web socket server url
-set WEB_SOCKET_URL=http://tc.cloud.topcoder.com:5037
+set WEB_SOCKET_URL=http://tc.cloud.topcoder.com:5016
 
 :: the cookie key of sso token
 set SSO_KEY=tcsso_vm
