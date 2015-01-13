@@ -18,7 +18,7 @@ export AUTH0_CLIENT_ID=CMaBuwSnY0Vu68PLrWatvvu3iIiGPh7t
 export CALLBACK_URL=https://tc.cloud.topcoder.com/reg2/callback.action
 
 # web socket server url
-export WEB_SOCKET_URL=http://tc.cloud.topcoder.com:5037
+export WEB_SOCKET_URL=http://tc.cloud.topcoder.com:5016
 
 # the cookie key of sso token
 export SSO_KEY=tcsso_vm
