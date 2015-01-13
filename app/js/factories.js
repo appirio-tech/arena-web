@@ -218,7 +218,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
     return service;
 }];
 
-factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', function ($rootScope, localStorageService, sessionHelper) {
+factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$filter', function ($rootScope, localStorageService, sessionHelper, $filter) {
     var retHelper = {};
 
     // return an empty array of fixed length
@@ -463,16 +463,16 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.setCodeToLocalStorage = function (handle, roundID, problemID, componentID, languageID, code) {
         if (localStorageService.isSupported) {
-            var obj = {languageID : languageID, code: code};
-            var key = generateCodeKey(handle, roundID, problemID, componentID);
+            var obj = {languageID : languageID, code: code}, key, i, codeList, found;
+            key = generateCodeKey(handle, roundID, problemID, componentID);
 
             localStorageService.set(key, obj);
 
 
-            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
             if (codeList) {
-                var found = false;
-                for (var i = 0; i < codeList.length; i++) {
+                found = false;
+                for (i = 0; i < codeList.length; i++) {
                     if (codeList[i] === key) {
                         found = true;
                         break;
@@ -514,13 +514,13 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.removeCodeFromLocalStorage = function (handle, roundID, problemID, componentID) {
         if (localStorageService.isSupported) {
-            var key = generateCodeKey(handle, roundID, problemID, componentID);
+            var key = generateCodeKey(handle, roundID, problemID, componentID), codeList, newCodeList, i;
             localStorageService.remove(key);
 
-            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
-            var newCodeList = [];
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            newCodeList = [];
             if (codeList) {
-                for (var i = 0; i < codeList.length; i++) {
+                for (i = 0; i < codeList.length; i++) {
                     if (codeList[i] !== key) {
                         newCodeList.push(codeList[i]);
                     }
@@ -536,11 +536,11 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.isExistingCodeInLocalStorage = function () {
         if (localStorageService.isSupported) {
-            var userName = $rootScope.username();
-            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            var userName = $rootScope.username(), codeList, i;
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
 
             if (codeList) {
-                for (var i = 0; i < codeList.length; i++) {
+                for (i = 0; i < codeList.length; i++) {
                     if (codeList[i].indexOf(userName) !== -1) {
                         return true;
                     }
@@ -556,12 +556,12 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.removeCurrentCodeInLocalStorage = function () {
         if (localStorageService.isSupported) {
-            var userName = $rootScope.username();
-            var codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
-            var newCodeList = [];
+            var userName = $rootScope.username(), codeList, newCodeList, i;
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            newCodeList = [];
 
             if (codeList) {
-                for (var i = 0; i < codeList.length; i++) {
+                for (i = 0; i < codeList.length; i++) {
                     if (codeList[i].indexOf(userName) !== -1) {
                         localStorageService.remove(codeList[i]);
                     } else {
@@ -655,9 +655,9 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
      */
     retHelper.getChatSettingFromLocalStorage = function (key) {
         if (localStorageService.isSupported) {
-            var allSetting = localStorageService.get('chat_setting');
+            var allSetting = localStorageService.get('chat_setting'), chatSetting;
             if (allSetting) {
-                var chatSetting = allSetting[key];
+                chatSetting = allSetting[key];
                 if (chatSetting !== undefined) {
                     return JSON.parse(chatSetting);
                 }
@@ -684,6 +684,104 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
             allSetting[key] = value;
             localStorageService.set('chat_setting', JSON.stringify(allSetting));
         }
+    };
+
+    /**
+     * Parse match schedule data.
+     * @param data the schedule data
+     * @param pendingPlanMonth the pending plan months
+     * @param eventSources the event sources
+     * @returns {*} the parsed result
+     */
+    retHelper.parseMatchScheduleData = function (data, pendingPlanMonth, eventSources) {
+        var i, name;
+        if (data.data) {
+            data.data.forEach(function (item) {
+                name = item.name;
+                if (name && name.length > 27) {
+                    name = name.substr(0, 24) + '...';
+                }
+                eventSources[0].push({
+                    title: name,
+                    start: retHelper.parseTDate(item.registrationStartTime),
+                    regStart: retHelper.parseTDate(item.registrationStartTime),
+                    codeStart: retHelper.parseTDate(item.codingStartTime),
+                    allDay: false
+                });
+            });
+            for (i = 0; i < pendingPlanMonth.length; i++) {
+                $rootScope.loadedContestPlanList.push(pendingPlanMonth[i]);
+            }
+        }
+
+        return eventSources;
+    };
+
+    /**
+     * Get registration start time range url
+     * @param increaseDays the increase days
+     * @returns {string} the url
+     */
+    retHelper.getRegistrationStartTimeRangeUrl = function (increaseDays) {
+        var currentDate = new Date(),
+            newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+            url;
+        url = '&registrationStartTimeAfter=' + encodeURIComponent($filter('date')(newDate, helper.REQUEST_TIME_FORMAT));
+        newDate = new Date(newDate.getFullYear(), newDate.getMonth() + increaseDays, 1);
+        url = url + '&registrationStartTimeBefore=' + encodeURIComponent($filter('date')(newDate, helper.REQUEST_TIME_FORMAT));
+
+        return url;
+    };
+
+    /**
+     * Checks whether the match schedule exists
+     * @param monthDate the month data
+     * @returns {boolean} the checked result
+     */
+    retHelper.isExistingMatchPlan = function (monthDate) {
+        var tmpDateStr = monthDate.getFullYear() + '-' + monthDate.getMonth(), flag, i;
+        flag = false;
+        for (i = 0; i < $rootScope.loadedContestPlanList.length; i++) {
+            if ($rootScope.loadedContestPlanList[i] === tmpDateStr) {
+                flag = true;
+                break;
+            }
+        }
+
+        return flag;
+    };
+
+    /**
+     * Get coming three months start dates.
+     * @returns {*[]} the months array
+     */
+    retHelper.getComingThreeMonths = function () {
+        var currentDate = new Date(),
+            nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
+            nextNextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 1);
+
+        return [currentDate.getFullYear() + '-' + currentDate.getMonth(),
+            nextMonth.getFullYear() + '-' + nextMonth.getMonth(),
+            nextNextMonth.getFullYear() + '-' + nextNextMonth.getMonth()];
+    };
+
+    /**
+     * Get month view status.
+     * @param monthDate the month date
+     * @returns {*} the url.
+     */
+    retHelper.getMonthViewStatus = function (monthDate) {
+        var currentDate = new Date(),
+            newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+            tmpUrl;
+
+        if (monthDate.getTime() > newDate.getTime()) {
+            tmpUrl = '&statuses=F';
+        } else {
+            tmpUrl = '&statuses=P';
+        }
+
+        return tmpUrl;
     };
 
     /**

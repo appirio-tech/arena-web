@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This module contains constants.
@@ -114,8 +114,11 @@
  * Changes in version 1.30 (Web Arena - Run System Testing Support For Practice Problems):
  * - Added event names for practice system test.
  *
+ * Changes in version 1.31 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
+ *  - Added REQUEST_TIME_FORMAT setting.
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.30
+ * @version 1.31
  */
 'use strict';
 /*global module*/
@@ -424,6 +427,9 @@ module.exports = {
 
     // Date format used in notifications
     DATE_NOTIFICATION_FORMAT: 'MM/dd/yy h:mm a',
+
+    // The time format in http request parameter
+    REQUEST_TIME_FORMAT: 'yyyy-MM-ddTHH:mm:ss.sssZ',
 
     // Pop-up titles used for notification details
     NOTIFICATION_TITLES: {

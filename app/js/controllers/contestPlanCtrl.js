@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file provides the contest plan controller.
@@ -17,8 +17,11 @@
  *  - Added tooltip and updated methods eventsADay and eventAfterAllRender to support tooltips
  *    with brief contest information.
  *
+ * Changes in version 1.4 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
+ *  - Improved the logic of loading match plan data.
+ *
  * @author TCASSEMBLER, dexy
- * @version 1.3
+ * @version 1.4
  */
 'use strict';
 
@@ -28,6 +31,7 @@ var helper = require('../helper');
 /*jshint -W097*/
 /*jshint strict:false*/
 /*jslint unparam: true*/
+/*jslint plusplus: true*/
 /*global $:false, angular:false, module*/
 // contest plan widget
 var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '$compile', 'appHelper', function ($rootScope, $scope, $http, $timeout, $filter, $compile, appHelper) {
@@ -42,6 +46,7 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
         month: tmpDate.getMonth(),
         day: tmpDate.getDate()
     };
+    $rootScope.selectedDate = $scope.currentDate;
     $scope.viewNow = 'calendar';
 
     /**
@@ -67,6 +72,7 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
             month: d.getMonth(),
             day: d.getDate()
         };
+        $rootScope.selectedDate = $scope.currentDate;
         listRender($scope.events, $scope.currentDate);
         return true;
     };
@@ -80,6 +86,70 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
             ($scope.currentDate.month > 8 ? '' : '0') + ($scope.currentDate.month + 1) + '-' +
             ($scope.currentDate.day > 9 ? '' : '0') + $scope.currentDate.day;
         return monthString;
+    };
+
+    /**
+     * Init the calendar with events.
+     */
+    function initCalendar() {
+        $scope.uiConfig = {
+            calendar: {
+                height: 255,
+                editable: false,
+                header: {
+                    left: 'title',
+                    center: '',
+                    right: 'month, prev, next'
+                },
+                titleFormat: {
+                    month: 'MMMM yyyy',
+                    day: 'MMM d, yyyy'
+                },
+                buttonText: {
+                    month: 'Back'
+                },
+                timeFormat: 'HH:mm',
+                year: tmpDate.getFullYear(), //the initial year when the calendar loads
+                month: tmpDate.getMonth(), //the initial month when the calendar loads
+                day: tmpDate.getDate(),    //the initial day when the calendar loads
+                eventRender: $scope.eventRender, // add color tag and events number qtip to day number when events are loading
+                dayClick: $scope.changeView, // change to day view when clicking day number
+                viewRender: $scope.viewRender, // when view loads, implement some style issues
+                eventAfterAllRender: $scope.eventAfterAllRender, //try to add a sign to indicate number of events that day
+                dayRender: $scope.dayRender
+            }
+        };
+    }
+
+    /**
+     * Load contest plan data.
+     * @param url - the url parameters in string format
+     * @param pendingPlanMonth - the pending month which is getting data
+     */
+    $scope.loadMatchSchedule = function (url, pendingPlanMonth) {
+        $scope.numCalendarRequests = 1;
+        // Call tc-api server to get srm schedule
+        $http.get(config.apiDomain + '/data/srm/schedule?pageIndex=-1&sortColumn=registrationstarttime&sortOrder=asc' + url).success(function (data, status, headers) {
+            $scope.numCalendarRequests -= 1;
+            $scope.eventSources = appHelper.parseMatchScheduleData(data, pendingPlanMonth, $scope.eventSources);
+            $rootScope.contestPlanList = $scope.eventSources[0];
+            initCalendar();
+        }).error(function (data, status, headers, config) {
+            $scope.numCalendarRequests -= 1;
+            //skip the error, simply print to console
+            console.log(data);
+        });
+    };
+
+    /**
+     * Load month view data.
+     * @param monthDate the first date of month
+     */
+    $scope.loadMonthViewData = function (monthDate) {
+        if (!appHelper.isExistingMatchPlan(monthDate)) {
+            $scope.loadMatchSchedule(appHelper.getMonthViewStatus(monthDate) + appHelper.getRegistrationStartTimeRangeUrl(1),
+                [monthDate.getFullYear() + '-' + monthDate.getMonth()]);
+        }
     };
 
     /**
@@ -100,6 +170,10 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
                 day: d.day
             };
         }
+
+        $rootScope.selectedDate = $scope.currentDate;
+
+        $scope.loadMonthViewData(new Date($scope.currentDate.year, $scope.currentDate.month, $scope.currentDate.day));
         listRender($scope.events, $scope.currentDate);
     };
     /**
@@ -120,6 +194,9 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
                 day: d.day
             };
         }
+        $rootScope.selectedDate = $scope.currentDate;
+
+        $scope.loadMonthViewData(new Date($scope.currentDate.year, $scope.currentDate.month, $scope.currentDate.day));
         listRender($scope.events, $scope.currentDate);
     };
 
@@ -184,6 +261,12 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
             month: view.start.getMonth(),
             day: view.start.getDate()
         };
+
+        $rootScope.selectedDate = $scope.currentDate;
+
+        if (view.name === 'month') {
+            $scope.loadMonthViewData(view.start);
+        }
     };
 
     /**
@@ -193,7 +276,7 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
      * @returns {*[]} the events number
      */
     function eventsADay(data) {
-        var nums = [], dates = [], events = [], dateString, index, i, event;
+        var nums = [], dates = [], events = [], dateString, index, event, i;
         if (angular.isArray(data)) {
             for (i = 0; i < data[0].length; i += 1) {
                 event = data[0][i];
@@ -237,7 +320,7 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
      * @param view - the view flag.
      */
     $scope.eventAfterAllRender = function (view) {
-        var i, j, data = eventsADay($scope.eventSources), element, htmlTip;
+        var j, data = eventsADay($scope.eventSources), element, htmlTip, i;
         for (i = 0; i < data[0].length; i += 1) {
             element = $('#calendar .fc-view-month').find('[data-date=' + data[0][i] + ']').find('.fc-day-number');
             htmlTip = data[1][i].toString() + ' event' + ((data[1][i] !== 1) ? 's' : '');
@@ -261,6 +344,9 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
      * @param cell - the date sell instance
      */
     $scope.dayRender = function (date, cell) {
+        if (date.getDate() < 10) {
+            cell.find('.fc-day-number').css('padding-left', '20px');
+        }
         angular.element(cell).append('<span class="numOfEvents"></span>');
     };
 
@@ -283,60 +369,11 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
             }
         }
     };
-    /**
-     * Init the calendar with events.
-     */
-    function initCalendar() {
-        $scope.uiConfig = {
-            calendar: {
-                height: 255,
-                editable: false,
-                header: {
-                    left: 'title',
-                    center: '',
-                    right: 'month, prev, next'
-                },
-                titleFormat: {
-                    month: 'MMMM yyyy',
-                    day: 'MMM d, yyyy'
-                },
-                buttonText: {
-                    month: 'Back'
-                },
-                timeFormat: 'HH:mm',
-                year: tmpDate.getFullYear(), //the initial year when the calendar loads
-                month: tmpDate.getMonth(), //the initial month when the calendar loads
-                day: tmpDate.getDate(),    //the initial day when the calendar loads
-                eventRender: $scope.eventRender, // add color tag and events number qtip to day number when events are loading
-                dayClick: $scope.changeView, // change to day view when clicking day number
-                viewRender: $scope.viewRender, // when view loads, implement some style issues
-                eventAfterAllRender: $scope.eventAfterAllRender, //try to add a sign to indicate number of events that day
-                dayRender: $scope.dayRender
-            }
-        };
-    }
 
-    $scope.numCalendarRequests = 1;
-    // Call tc-api server to get srm schedule
-    $http.get(config.apiDomain + '/data/srm/schedule?pageIndex=-1&sortColumn=startDate&sortOrder=asc').success(function (data, status, headers) {
-        $scope.numCalendarRequests -= 1;
-        if (data.data) {
-            data.data.forEach(function (item) {
-                $scope.eventSources[0].push({
-                    title: item.contestName,
-                    start: appHelper.parseTDate(item.registrationStartTime || item.startDate),
-                    regStart: appHelper.parseTDate(item.registrationStartTime),
-                    codeStart: appHelper.parseTDate(item.codingStartTime),
-                    allDay: false
-                });
-            });
-        }
-        initCalendar();
-    }).error(function (data, status, headers, config) {
-        $scope.numCalendarRequests -= 1;
-        //skip the error, simply print to console
-        console.log(data);
-    });
+    $rootScope.loadedContestPlanList = [];
+
+    $scope.loadMatchSchedule(appHelper.getRegistrationStartTimeRangeUrl(3) + '&statuses=F,A,P',
+        appHelper.getComingThreeMonths());
 
     /**
      * Checks if the calendar date is the current month.
@@ -359,6 +396,8 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
             month: tmpDate.getMonth(),
             year: tmpDate.getFullYear()
         };
+
+        $rootScope.selectedDate = $scope.currentDate;
         listRender($scope.events, $scope.currentDate);
     };
 }];

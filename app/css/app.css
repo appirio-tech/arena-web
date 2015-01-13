@@ -3338,7 +3338,7 @@ footer .right>span:nth-child(2) {
     padding-top: 2px;
 }
 .calendar .fc-day.fc-first .fc-day-number {
-    padding-left: 13px;
+    padding-left: 17px;
 }
 .calendar .fc-day .numOfEvents {
     position: absolute;
