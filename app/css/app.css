@@ -2353,6 +2353,11 @@ footer .right>span:nth-child(2) {
     height: auto;
     overflow: hidden;
 }
+.panelCodeProblem .panel-body{
+    height: 169px;
+    position: relative;
+    overflow: hidden;
+}
 .panelCodeProblem .panel-body .statement {
     padding: 14px 31px 14px;
     line-height: 20px;
@@ -9281,4 +9286,13 @@ table thead .sort.desc{
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+/*
+* Perfect Scrollbar styles
+*/
+/* to make scrollbars always visible */
+.always-visible.ps-container > .ps-scrollbar-x-rail,
+.always-visible.ps-container > .ps-scrollbar-y-rail {
+    opacity: 0.6;
 }

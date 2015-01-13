@@ -2,7 +2,7 @@
     <div class="panel-heading">
         Problem Area<a data-ng-click="problemAreaHeightRatio = (problemAreaHeightRatio < 1 ? 1 : 0)" class="collapseIcon" data-ng-class="{expand:problemAreaHeightRatio == 1,normal:problemAreaHeightRatio < 1}"></a>
     </div>
-    <div class="panel-body row" id="top-content" data-ng-custom-scrollbar data-rebuild-on="problem-loaded" data-reload-on="reload:problem" data-rebuild-on-resize>
+    <div class="panel-body row always-visible" id="top-content" data-perfect-scrollbar data-rebuild-on="problem-loaded" data-reload-on="reload:problem" data-rebuild-on-resize>
         <div class="statement" ng-if="!problemLoaded">
             Please wait while the requested problem is loaded. This may take several minutes ...
         </div>
