@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file is the controller for create contest.
@@ -18,8 +18,12 @@
  * - Added roundDataIn to handle the case when contest will be updated and not created.
  * - Adjusted parameters from the loaded contest if it is not undefined.
  *
- * @author flytoj2ee, dexy
- * @version 1.4
+ * Changes in version 1.5 (Web Arena - Match Management Page Load Improvement):
+ * - Added validation for roundData.roomAssignment and roundData.languages fields.
+ * If they are not there, then default values will be used
+ *
+ * @author flytoj2ee, dexy, TCSASSEMBLER
+ * @version 1.5
  */
 'use strict';
 /*jshint -W097*/
@@ -99,6 +103,16 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
         $scope.languageChoice = [];
         $scope.assignByRegion = false;
         $scope.type = 'Public';
+
+        /**
+         * Check whether the current language is common set.
+         * @param lang - the language
+         * @param commonSet - the common language set
+         * @returns {boolean} the checked result
+         */
+        function isCommonLanguage(lang, commonSet) {
+            return commonSet.indexOf(lang) > -1;
+        }
         // get language data
         $http.get('data/languages.json').success(function (data) {
             $scope.languages = data;
@@ -114,14 +128,18 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 }
                 $scope.languageChoice.push(item);
             });
-            if ($scope.isUpdate) {
+            if ($scope.isUpdate && $scope.roundData.languages) {
                 angular.forEach($scope.languageChoice, function (item) {
                     item.checked = false;
-                    angular.forEach($scope.roundData.languages.languages, function (language) {
-                        if (language.id === item.id) {
-                            item.checked = true;
-                        }
-                    });
+                    if ($scope.roundData.languages.length === 0) {
+                        item.checked = isCommonLanguage(item.language, $scope.languages.commonSet);
+                    } else {
+                        angular.forEach($scope.roundData.languages, function (language) {
+                            if (language.id === item.id) {
+                                item.checked = true;
+                            }
+                        });
+                    }
                 });
             }
         });
@@ -156,12 +174,17 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             if ($scope.contestName.indexOf(' Round', $scope.contestName.length - ' Round'.length) !== -1) {
                 $scope.contestName = $scope.contestName.substr(0, $scope.contestName.length - ' Round'.length);
             }
-            $scope.roomAssignmentMethod.id = $scope.roundData.roomAssignment.type;
-            $scope.assignByRegion = $scope.roundData.roomAssignment.isByRegion === 1;
-            $scope.type = $scope.roundData.invitationalType === 0 ? 'Public' : 'Invitational';
-            $scope.assignByDiv = $scope.roundData.roomAssignment.isByDivision === 1;
+            if ($scope.roundData.roomAssignment) {
+                $scope.roomAssignmentMethod.id = $scope.roundData.roomAssignment.type;
+                $scope.assignByRegion = $scope.roundData.roomAssignment.isByRegion === 1;
+                $scope.assignByDiv = $scope.roundData.roomAssignment.isByDivision === 1;
+                $scope.coderPerRoom = $scope.roundData.roomAssignment.codersPerRoom;
+            }
+            if (angular.isDefined($scope.roundData.invitationalType)) {
+                $scope.type = $scope.roundData.invitationalType === 'Not' ? 'Public' : 'Invitational';
+            }
             $scope.regLimit = $scope.roundData.registrationLimit;
-            $scope.currentSelectedDate = new Date($scope.roundData.segments.registrationStartTime);
+            $scope.currentSelectedDate = new Date($scope.roundData.roundSchedule[0].startTime);
             $scope.marker = 'AM';
             $scope.startHh = $scope.currentSelectedDate.getHours();
             if ($scope.startHh >= 12) {
@@ -197,7 +220,6 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             } else {
                 $scope.challengeLengthMm = ($scope.roundData.segments.challengeLength % 60).toString();
             }
-            $scope.coderPerRoom = $scope.roundData.roomAssignment.codersPerRoom;
         }
 
         /**
@@ -394,15 +416,15 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             }
             modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
             if ($scope.isUpdate) {
-                contestData.contestId = $scope.roundData.contest.id;
-                contestData.id = $scope.roundData.contest.id;
+                contestData.contestId = $scope.roundData.contestId;
+                contestData.id = $scope.roundData.contestId;
+                roundData.auto_end = angular.isDefined($scope.roundData.autoEnd) ? $scope.roundData.autoEnd : false;
 
-
-                $http.put(config.apiDomain + '/data/srm/contests/' + $scope.roundData.contest.id, contestData, header).success(function (data, status, headers) {
+                $http.put(config.apiDomain + '/data/srm/contests/' + $scope.roundData.contestId, contestData, header).success(function (data, status, headers) {
                     if (data.error && data.error !== '') {
                         showDetailModal(data, status);
                     } else {
-                        roundData.contest_id = $scope.roundData.contest.id;
+                        roundData.contest_id = $scope.roundData.contestId;
                         roundData.id = $scope.roundData.id;
                         $http.put(config.apiDomain + '/data/srm/rounds/' + $scope.roundData.id, roundData, header).success(function (data, status, headers) {
                             if (data.error && data.error !== '') {
@@ -426,16 +448,16 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                                             showDetailModal(data, status);
                                         });
                                     }
-                                }).error(function (data, status, headers, config) {
+                                }).error(function (data, status) {
                                     showDetailModal(data, status);
                                 });
 
                             }
-                        }).error(function (data, status, headers, config) {
+                        }).error(function (data, status) {
                             showDetailModal(data, status);
                         });
                     }
-                }).error(function (data, status, headers, config) {
+                }).error(function (data, status) {
                     showDetailModal(data, status);
                 });
             } else {
@@ -695,15 +717,6 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
             }
             return true;
         };
-        /**
-         * Check whether the current language is common set.
-         * @param lang - the language
-         * @param commonSet - the common language set
-         * @returns {boolean} the checked result
-         */
-        function isCommonLanguage(lang, commonSet) {
-            return commonSet.indexOf(lang) > -1;
-        }
 
         /**
          * Checks whether it's selected set.

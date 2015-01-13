@@ -41,7 +41,115 @@
                 <span data-ng-show="isShownRegistered(contest)" data-ng-disabled="okDisabled" class="btntext">Registered</span>
             </div>
             <div  data-ng-show="contest.detailIndex == 0" class="summaryPanel">
-                <div data-ng-bind-html="contest.summary" class="summaries textWhite"></div>
+                <section class="detailPage shortLeaderboard">
+                    <section class="leaderboardWrapper" data-rebuild-on="rebuild:leaderboardTable" id="leaderboardPanel">
+                        <p data-ng-show="!isShownSummary(contest)">The match summary will be available after the match is complete.</p>
+
+                        <table data-ng-show="isShownSummary(contest) && isAllDivSummaryLoaded()" class="summaryTables">
+                            <thead>
+                                <tr><th class="headerInDivisionSummary" data-ng-show="getRoundLeaderboard(contest.roundID, 'divOne').length > 0">Division I</th><th class="headerInDivisionSummary" data-ng-show="getRoundLeaderboard(contest.roundID, 'divTwo').length > 0">Division II</th></tr>
+                            </thead>
+                            <tr>
+                            <td data-ng-show="getRoundLeaderboard(contest.roundID, 'divOne').length > 0">
+                                <div class="tableWrapper" data-ng-show="isShownSummary(contest)" data-rebuild-on="rebuild:leaderboardTable">
+                                    <div class="tHeadDiv normal">
+                                        <div class="innerWrapper">
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                <tr>
+                                                    <th class="placeInDivisionSummary thInDivisionSummary">
+                                                        Place
+                                                    </th>
+                                                    <th class="rInDivisionSummary thInDivisionSummary">
+                                                        R
+                                                    </th>
+                                                    <th class="handleInDivisionSummary thInDivisionSummary">
+                                                        Handle
+                                                    </th>
+                                                    <th class="pointsInDivisionSummary thInDivisionSummary">
+                                                        Points
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div><!--/.innerWrapper-->
+                                    </div><!--/.tHeadDiv-->
+                                    <div class="tableDiv scroll normal tableDivisionSummary" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize>
+                                        <div class="innerWrapper">
+                                            <table class="table table-condensed divisionTableInSummary">
+                                                <tbody>
+                                                <tr data-ng-repeat="coder in getRoundLeaderboard(contest.roundID, 'divOne') | orderBy: ['-totalPoints', '-userRating', 'userName'] | limitTo: activeMatchesSummaryTopcoderCount">
+                                                    <td class="placeInDivisionSummary">{{coder.divPlace}}</td>
+                                                    <td class="rInDivisionSummary" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
+                                                        --><!-- avoid blank
+                                                        --><a data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!--
+                                                            --><span class="name {{getRatingClass(coder.userRating)}}"><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span></span><!--
+                                                        --></a>
+                                                    </td>
+                                                    <td class="handleInDivisionSummary"><!-- avoid blank
+                                                        --><!-- avoid blank
+                                                        --><span data-ng-click="showCoderInfo(coder.userName, coder.userType);" class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
+                                                    </td>
+                                                    <td class="pointsInDivisionSummary">{{$root.formatScore(coder.totalPoints)}}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div><!-- /.tableDiv .scroll -->
+                                </div>
+                            </td>
+                            <td data-ng-show="getRoundLeaderboard(contest.roundID, 'divTwo').length > 0">
+                                <div class="tableWrapper" data-ng-show="isShownSummary(contest)" data-rebuild-on="rebuild:leaderboardTable">
+                                    <div class="tHeadDiv normal">
+                                        <div class="innerWrapper">
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                <tr>
+                                                    <th class="placeInDivisionSummary thInDivisionSummary">
+                                                        Place
+                                                    </th>
+                                                    <th class="rInDivisionSummary thInDivisionSummary">
+                                                        R
+                                                    </th>
+                                                    <th class="handleInDivisionSummary thInDivisionSummary">
+                                                        Handle
+                                                    </th>
+                                                    <th class="pointsInDivisionSummary thInDivisionSummary">
+                                                        Points
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div><!--/.innerWrapper-->
+                                    </div><!--/.tHeadDiv-->
+                                    <div class="tableDiv scroll normal tableDivisionSummary" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize>
+                                        <div class="innerWrapper">
+                                            <table class="table table-condensed divisionTableInSummary">
+                                                <tbody>
+                                                <tr data-ng-repeat="coder in getRoundLeaderboard(contest.roundID, 'divTwo') | orderBy: ['-totalPoints', '-userRating', 'userName'] | limitTo: activeMatchesSummaryTopcoderCount">
+                                                    <td class="placeInDivisionSummary">{{coder.divPlace}}</td>
+                                                    <td class="rInDivisionSummary" data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!-- avoid blank
+                                                        --><!-- avoid blank
+                                                        --><a data-ng-click="showCoderInfo(coder.userName, coder.userType);"><!--
+                                                            --><span class="name {{getRatingClass(coder.userRating)}}"><span data-rating-indicator="{{coder.userRating}}" data-username="{{coder.userName}}" class="ratingIcon"></span></span><!--
+                                                        --></a>
+                                                    </td>
+                                                    <td class="handleInDivisionSummary"><!-- avoid blank
+                                                        --><!-- avoid blank
+                                                        --><span data-ng-click="showCoderInfo(coder.userName, coder.userType);" class="name {{getRatingClass(coder.userRating)}} {{getLeaderRoomClass(coder.roomPlace)}}">{{coder.userName}}</span>
+                                                    </td>
+                                                    <td class="pointsInDivisionSummary">{{$root.formatScore(coder.totalPoints)}}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div><!-- /.tableDiv .scroll -->
+                                </div>
+                            </td>
+                        </tr>
+                        </table>
+                    </section>
+                </section>
             </div>
             <!-- /.summaryPanel -->
             <div data-ng-show="contest.detailIndex == 1" class="schedulePanel">

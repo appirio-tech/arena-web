@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file provide some global services.
@@ -50,8 +50,11 @@
  * Changes in version 1.13 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
  * - Added set / get setting from local storage.
  *
+ * Changes in version 1.14 (Web Arena - Recovery From Lost Connection)
+ * - Stop to send sync time request if lost connection.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.13
+ * @version 1.14
  */
 'use strict';
 /*jshint -W097*/
@@ -849,7 +852,8 @@ factories.tcTimeService = ['$rootScope', '$timeout', '$filter', 'socket', functi
         counter = 0; // temporary solution before better handling of sync requests is added
     // makes sync time request to the TC server
     service.syncTimeRequest = function () {
-        if ($rootScope.connectionID !== undefined) {
+        if ($rootScope.connectionID !== undefined
+                && ($rootScope.isClosedDisconnectDialog === undefined || $rootScope.isClosedDisconnectDialog === true)) {
             socket.emit(helper.EVENT_NAME.SynchTimeRequest, {connectionID: $rootScope.connectionID});
         }
     };
@@ -1091,6 +1095,9 @@ factories.socket = ['$rootScope', function ($rootScope) {
             });
         },
         emit: function (eventName, data, callback) {
+            if (!$rootScope.connected) {
+                $rootScope.$broadcast(helper.EVENT_NAME.EmitInOfflineMode, {});
+            }
             socket.emit(eventName, data, function () {
                 var args = arguments;
                 $rootScope.$apply(function () {

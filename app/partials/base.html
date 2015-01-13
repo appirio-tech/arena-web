@@ -84,6 +84,7 @@
             </div><!-- /.container-fluid -->
         </div>
     </div>
+    <div class="preloader-window re-login" data-preloader data-num-requests='{{loginPendingCount}}' text='Login...' callback="popupReconnectDialog"></div>
     <div class='notifications top-right'></div>
     <div class='notifications bottom-right'></div>
     <div data-ui-view class="mainContainer"></div>
@@ -101,6 +102,7 @@
         </div>
     </footer>
     <div data-member-feedback class="memberFeedback" data-ng-show="loggedIn() && !$state.includes('user.coding') && !$state.includes('user.viewCode')"></div>
+    <div class="preloader-window coderinfo" data-preloader data-num-requests='{{numCoderRequest}}' text='Loading Coder...'></div>
 
 <script type="text/ng-template" id="popupModalBase.html">
     <div class="modal-header">
@@ -108,7 +110,7 @@
         <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
     </div>
     <div class="modal-body" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
-        <p ng-bind-html="message"></p>
+        <p class="word-wrap" ng-bind-html="message"></p>
         <br/>
     </div>
     <div class="modal-footer" ng-if="enableClose">

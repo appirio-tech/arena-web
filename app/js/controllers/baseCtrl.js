@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file provides the base controller.
@@ -96,8 +96,18 @@
  * - Added the custom css for popup dialog.
  * - Fixed the null pointer exception in popup dialog.
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.22
+ * Changes in version 1.23 (TopCoder Competition Engine - Improve Automated Notification Messages)
+ * - If there is no buttons Phase change PopupGenericResponse won't be handled.
+ * Because these notifications are already handled based on PhaseDataResponse
+ *
+ * Changes in version 1.24 (Web Arena - Update Match Summary Tab Within Active Matches Widget):
+ * - Added shown match summary in active matches widget logic.
+ *
+ * Changes in version 1.25 (Web Arena - Recovery From Lost Connection)
+ * - Added logic to popup dialog after lost connection.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
+ * @version 1.25
  */
 'use strict';
 /*jshint -W097*/
@@ -123,7 +133,7 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', '$filter', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window, $filter) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', '$filter', 'sessionHelper', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window, $filter, sessionHelper) {
     var /**
          * The modal controller.
          *
@@ -138,6 +148,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.coderInfoLink = function () { return data.coderInfoLink; };
             $scope.coderHistoryData = data.coderHistoryData;
             $scope.registrants = data.registrants;
+            $scope.numCoderRequest = 0;
             $scope.showError = data.showError;
 
             // define initial sorting order for registrants list
@@ -283,6 +294,11 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     }
                 });
             };
+            $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
+                if (data.title === helper.POP_UP_TITLES.CoderInfo && $scope.title === helper.POP_UP_TITLES.CoderInfo) {
+                    $scope.coderInfo = data.message;
+                }
+            });
         }],
         isDisconnecting = false,
         closeThemeHandler = function (event) {
@@ -383,6 +399,11 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 $rootScope.$broadcast('rebuild:leaderboardTable');
             }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
             $rootScope.$broadcast(helper.EVENT_NAME.LeaderboardRefreshed);
+
+            if (!angular.isDefined($rootScope.allLeaderboards)) {
+                $rootScope.allLeaderboards = {};
+            }
+            $rootScope.allLeaderboards[roundID + '-' + divisionID] = $rootScope.leaderboard;
         },
         /**
          * Update the room summary.
@@ -516,20 +537,22 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         }
         waitingCoderInfo = true;
         coderInfoUsername = name;
+        $scope.numCoderRequest = 1;
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
         }
         $scope.openModal({
-            title: 'Getting coder info',
-            message: 'Please wait while we retrieve coder information',
-            enableClose: false
-        });
-
+            title: helper.POP_UP_TITLES.CoderInfo,
+            message: " ",
+            coderInfoLink: config.staticFileHost + '/#/u/dashboard/' + coderInfoUsername,
+            enableClose: true
+        }, null, null, 'partials/user.chat.area.coderinfo.html');
         modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
         socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
     };
     /*jslint unparam: true*/
     $scope.$on(helper.EVENT_NAME.ForcedLogoutResponse, function (event, data) {
+        $rootScope.forcedLogout = true;
         $scope.openModal({
             title: helper.POP_UP_TITLES.ForcedLogout,
             message: helper.POP_UP_MESSAGES.ForcedLogout,
@@ -538,54 +561,73 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $state.go(helper.STATE_NAME.Logout);
         });
     });
+    /**
+     * Popup reconnection dialog.
+     */
+    $scope.popupReconnectDialog = function () {
+        $scope.openModal({
+            title: helper.POP_UP_TITLES.Reconnect,
+            message: helper.POP_UP_MESSAGES.Reconnect,
+            enableClose: true,
+            buttons: ['Reconnect', 'Ignore']
+        }, function () {
+            if ($rootScope.reconnected) {
+                $rootScope.loginPendingCount = 1;
+                socket.emit(helper.EVENT_NAME.SSOLoginRequest, {sso: sessionHelper.getTcsso()});
+            }
+        });
+    };
+    // disconnected event
     $scope.$on(helper.EVENT_NAME.Disconnected, function (event, data) {
         if (!isDisconnecting) {
             isDisconnecting = true;
-            $scope.openModal({
-                title: helper.POP_UP_TITLES.Disconnected,
-                message: helper.POP_UP_MESSAGES.LostConnection,
-                enableClose: true
-            });
+            $rootScope.isClosedDisconnectDialog = false;
+            $rootScope.reconnected = false;
+            // if already forced logout, it's unnecessary to connect again
+            if (!$rootScope.forcedLogout) {
+                $scope.openModal({
+                    title: helper.POP_UP_TITLES.Disconnected,
+                    message: helper.POP_UP_MESSAGES.LostConnection,
+                    enableClose: true,
+                    buttons: ['OK']
+                }, null, function () {
+                    // already reconnected, popup dialog to relogin
+                    if ($rootScope.reconnected) {
+                        $scope.popupReconnectDialog();
+                    }
+
+                    $rootScope.isClosedDisconnectDialog = true;
+                });
+            }
         }
     });
+    // connected event
     $scope.$on(helper.EVENT_NAME.Connected, function (event, data) {
         if (isDisconnecting) {
             isDisconnecting = false;
-            if ($rootScope.currentModal !== undefined && $rootScope.currentModal !== null) {
-                $rootScope.currentModal.dismiss('cancel');
-            }
-            if (!$rootScope.reconnected) {
-                $state.go(helper.STATE_NAME.AnonymousHome);
+            $rootScope.reconnected = true;
+
+            if ($rootScope.isClosedDisconnectDialog && !$rootScope.forcedLogout) {
+                $scope.popupReconnectDialog();
             }
         }
     });
+
+    $scope.$on(helper.EVENT_NAME.EmitInOfflineMode, function (event, data) {
+        if ($rootScope.isClosedDisconnectDialog) {
+            $scope.openModal({
+                title: 'Error',
+                message: 'The network is unavailable and it is in offline mode now.',
+                enableClose: true,
+                buttons: ['Close']
+            });
+        }
+    });
     $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
-        var roundName, idx;
+        var roundName;
         // handle phase change messages
         if (data.title === helper.POP_UP_TITLES.PhaseChange) {
-            if (!data.buttons) {
-                idx = data.message.indexOf(helper.PHASE_DATA.START_MESSAGE);
-                if (idx === -1) {
-                    idx = data.message.indexOf(helper.PHASE_DATA.END_MESSAGE);
-                    if (idx === -1) {
-                        roundName = '';
-                    } else {
-                        roundName = data.message.substr(idx + helper.PHASE_DATA.END_MESSAGE.length);
-                    }
-                } else {
-                    roundName = data.message.substr(idx + helper.PHASE_DATA.START_MESSAGE.length);
-                }
-                if (roundName[roundName.length - 1] === '.') {
-                    roundName = roundName.substr(0, roundName.length - 1);
-                }
-                notificationService.addNotificationMessage({
-                    type: 'round',
-                    roundName: roundName,
-                    time: Date.now(),
-                    message: data.message,
-                    popUpContent: data.message
-                });
-            } else {
+            if (data.buttons) {
                 data.enableClose = true;
                 roundName = angular.isDefined($rootScope.roundData) && angular.isDefined($rootScope.roomData)
                                 && angular.isDefined($rootScope.roomData[data.moveData[1]])
@@ -617,12 +659,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 $timeout.cancel(modalTimeoutPromise);
             }
             waitingCoderInfo = false;
-            $scope.openModal({
-                title: helper.POP_UP_TITLES.CoderInfo,
-                message: data.message,
-                coderInfoLink: config.staticFileHost + '/#/u/dashboard/' + coderInfoUsername,
-                enableClose: true
-            }, null, null, 'partials/user.chat.area.coderinfo.html');
+            $scope.numCoderRequest = 0;
         } else if (data.title === helper.POP_UP_TITLES.IncorrectUsage) {
             $scope.openModal({
                 title: helper.POP_UP_TITLES.IncorrectUsage,
@@ -903,6 +940,15 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     });
     $rootScope.$on(helper.EVENT_NAME.CreateChallengeTableResponse, function (event, data) {
         updateRoomSummary(data.roomID);
+
+        if (!angular.isDefined($rootScope.pendingDivSummary)) {
+            $rootScope.loadedAllDivSummary = true;
+        }
+        if ($rootScope.currentlyLoaded === $rootScope.totalLoading && angular.isDefined($rootScope.pendingDivSummary)) {
+            var tmp = $rootScope.pendingDivSummary;
+            $rootScope.pendingDivSummary = undefined;
+            $rootScope.getDivSummary(tmp.roundID, tmp.viewId);
+        }
     });
     /*jslint unparam:false*/
     /**
@@ -925,6 +971,25 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         }
 
         return [];
+    };
+
+    /**
+     * Get round leaderboard by round id and view.
+     * @param roundID the round id.
+     * @param viewOn the view
+     * @returns {*} the leaderboard result
+     */
+    $rootScope.getRoundLeaderboard = function (roundID, viewOn) {
+        if (!angular.isDefined($rootScope.allLeaderboards)) {
+            return [];
+        }
+        var key = roundID + '-' + helper.VIEW_ID[viewOn];
+
+        if (!angular.isDefined($rootScope.allLeaderboards[key])) {
+            return [];
+        }
+
+        return $rootScope.allLeaderboards[key];
     };
 
     /**

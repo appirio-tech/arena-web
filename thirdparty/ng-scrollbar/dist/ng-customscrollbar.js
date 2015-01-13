@@ -63,7 +63,7 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
           if ((attrs.hasOwnProperty('scrollTop') && dragger.top === 0) || dragger.top > maxDraggerTop) {
                 if (dragger.top >= (page.height - Math.round(page.height / page.scrollHeight * page.height))) {
                   dragger.top = page.height - Math.round(page.height / page.scrollHeight * page.height);
-                  dragger.height = Math.round(page.height / page.scrollHeight * (page.height-18));
+                  dragger.height = Math.round(page.height / page.scrollHeight * page.height);
                 }
                 maxDraggerTop = dragger.top;
                 scope.rebuildScroll = true;
@@ -138,9 +138,8 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
           page.scrollHeight = transculdedContainer[0].scrollHeight;
 
           if (page.height < page.scrollHeight) {
-            redraw();
             scope.showYScrollbar = true;
-            dragger.height = Math.round(page.height / page.scrollHeight * (page.height-18));
+            dragger.height = Math.round(page.height / page.scrollHeight * page.height);
             dragger.trackHeight = page.height;
             calcStyles();
             element.css({ overflow: 'hidden' });
@@ -161,10 +160,13 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
               win.bind('mousemove', dragHandler);
               event.preventDefault();
             });
+            tools.bind('click', function(e) {e.stopPropagation()});
             if (keepBottom) {
               dragger.top = Math.max(0, parseInt(page.height, 10) - parseInt(dragger.height, 10));
-              redraw();
+            } else {
+              dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10)));
             }
+              redraw();
           } else {
             // the scroll bar is not shown, move dragger and page to top
             page.top = 0;
@@ -219,10 +221,14 @@ angular.module('ngCustomScrollbar', []).directive('ngCustomScrollbar', [
         }
         if (!!attrs.scrollOn) {
           scope.$on(attrs.scrollOn, function(_, data) {
-              if(-(page.top || 0) > data.top) {
+              if (!page.height) {
+                  reload();
+              }
+
+              if (-(page.top || 0) > data.top) {
                   dragger.top = (dragger.trackHeight - dragger.height) * Math.min(data.top / (page.scrollHeight-page.height), 1);
               }
-              else if(-(page.top || 0) + page.height < data.bottom) {
+              else if (-(page.top || 0) + page.height < data.bottom) {
                   dragger.top = dragger.trackHeight * (data.bottom / page.scrollHeight) - dragger.height;
               }
               else return;
