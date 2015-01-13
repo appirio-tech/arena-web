@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file provide the main app configurations.
@@ -108,17 +108,23 @@
  * Changes in version 1.29 (Add Settings Panel for Chat Widget)
  * - Added directives for chat area widget settings
  *
- * Changes in version 1.30 (Web Arena - Fix Empty Problem Statement Arena Issue):
+ * Changes in version 1.30 (Web Arena - Scrolling Issues Fixes):
+ * - Updated CodeMirror to latest version and added scrollbar plugin
+ *
+ * Changes in version 1.31 (Web Arena - Recovery From Lost Connection)
+ * - Added logic to recovery from lost connection.
+ *
+ * Changes in version 1.32 (Web Arena - Fix Empty Problem Statement Arena Issue):
  * - Added new library perfect-scrollbar to fix scrolling issues
  *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
- * @version 1.30
+ * @version 1.32
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
 /*global arena:true */
-/*global require, console*/
+/*global require*/
 require('./../../thirdparty/jquery/jquery');
 require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
@@ -127,7 +133,7 @@ require('./../../bower_components/angular-themer');
 require('./../../bower_components/angular-ui-angular/angular-cookies.min.js');
 require('./../../bower_components/angular-ui-router/release/angular-ui-router');
 require('./../../bower_components/angular-bootstrap/ui-bootstrap-tpls');
-require('./../../bower_components/codemirror/lib/codemirror');
+global.CodeMirror = require('./../../bower_components/codemirror/lib/codemirror');
 require('./../../bower_components/angular-ui-codemirror/ui-codemirror');
 require('./../../bower_components/codemirror/mode/clike/clike');
 require('./../../bower_components/codemirror/mode/vb/vb');
@@ -1215,6 +1221,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     //consider exposing states and state params to all templates
     $rootScope.$state = $state;
     $rootScope.connectionID = undefined;
+    $rootScope.forcedLogout = false;
     $rootScope.startSyncResponse = false;
     $rootScope.lastServerActivityTime = new Date().getTime();
     $rootScope.leaderboard = [];
@@ -1310,7 +1317,9 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         $rootScope.reconnected = false;
 
         socket.on(helper.EVENT_NAME.SocketConnected, function () {
-            $rootScope.connected = true;
+            if (!$rootScope.reconnected) {
+                $rootScope.connected = true;
+            }
             $rootScope.$broadcast(helper.EVENT_NAME.Connected, {});
         });
         socket.on(helper.EVENT_NAME.SocketDisconnected, function () {
@@ -1323,12 +1332,6 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         });
         socket.on(helper.EVENT_NAME.SocketError, function () {
             $rootScope.$broadcast(helper.EVENT_NAME.SocketError, {});
-        });
-
-        socket.on(helper.EVENT_NAME.SocketReconnect, function () {
-            // get reconnect, but it should login again, keep connected flag to false here.
-            // $rootScope.connected = true;
-            $rootScope.reconnected = true;
         });
     });
 
@@ -1354,6 +1357,14 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
      */
     $rootScope.currentStateName = function () {
         return $state.current.name;
+    };
+
+    /**
+     * Get current state.
+     * @returns {*} the state instance.
+     */
+    $rootScope.currentState = function () {
+        return $state;
     };
 
     /**

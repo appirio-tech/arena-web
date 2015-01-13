@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This module contains constants.
@@ -108,8 +108,21 @@
  * Changes in version 1.28 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
  * - Added chat setting names.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.28
+ * Changes in version 1.29 (Web Arena - Leaderboard Performance Improvement v1.0):
+ * - Added event name LeaderboardRefreshed to refresh the leaderboard.
+ *
+ * Changes in version 1.30 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added event names for practice system test.
+ *
+ * Changes in version 1.31 (Web Arena - Recovery From Lost Connection)
+ * - Added LOGIN_WAITING_TIME setting.
+ * - Updated the message text for lost connection logic.
+ *
+ * Changes in version 1.31 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
+ *  - Added REQUEST_TIME_FORMAT setting.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
+ * @version 1.32
  */
 'use strict';
 /*global module*/
@@ -167,6 +180,7 @@ module.exports = {
         TestInfoRequest: 'TestInfoRequest',
         TestRequest: 'TestRequest',
         SaveRequest: 'SaveRequest',
+        PracticeSystemTestRequest: 'PracticeSystemTestRequest',
         // backend responses
         BatchTestResponse: 'BatchTestResponse',
         ChallengeResponse: 'ChallengeResponse',
@@ -207,6 +221,8 @@ module.exports = {
         UpdateRoundListResponse: 'UpdateRoundListResponse',
         UpdateUserListResponse: 'UpdateUserListResponse',
         UserInfoResponse: 'UserInfoResponse',
+        PracticeSystemTestResponse: 'PracticeSystemTestResponse',
+        PracticeSystemTestResultResponse: 'PracticeSystemTestResultResponse',
         // admin backend requests
         ChangeRoundRequest: 'ChangeRoundRequest',
         LoadRoundRequest: 'LoadRoundRequest',
@@ -219,12 +235,14 @@ module.exports = {
         // internal events
         Connected: 'Connected',
         Disconnected: 'Disconnected',
+        LeaderboardRefreshed: 'LeaderboardRefreshed',
         // socket events
         SocketConnected: 'connect',
         SocketConnectionFailed: 'connect_failed',
         SocketDisconnected: 'disconnect',
         SocketReconnect: 'reconnect',
-        SocketError: 'error'
+        SocketError: 'error',
+        EmitInOfflineMode: 'EmitInOfflineMode'
     },
 
     // Represents the phase names.
@@ -313,10 +331,12 @@ module.exports = {
     MAX_CHAT_LENGTH: 256,
     // Time gap between two leaderboad table rebuildings
     LEADERBOARD_TABLE_REBUILT_TIMEGAP: 0,
+    // the login waiting time
+    LOGIN_WAITING_TIME: 1000,
 
     // pop up titles
     POP_UP_TITLES: {
-        Error: 'Error.',
+        Error: 'Error',
         CompileResult: 'Compile Result',
         TestResults: 'Test Results',
         CoderInfo: 'Coder Info',
@@ -330,15 +350,17 @@ module.exports = {
         NotAssigned: 'Not Assigned',
         RoundAccessError: 'Round Access Error',
         ChangeRoundError: 'Change round Error',
-        SaveResults: 'Save Results'
+        SaveResults: 'Save Results',
+        Reconnect: 'Reconnect'
     },
 
     // custom pop up messages
     POP_UP_MESSAGES: {
         Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
         ForcedLogout: 'Logging off as you logged in to another session or browser.',
-        LostConnection: 'The connection to the server has been lost. Please log off and log in again.',
-        NotAssigned: 'You are not assigned to this room'
+        LostConnection: 'The communication with the competition server has been interrupted! Please verify your network connection, copy your work, and refresh this page.',
+        NotAssigned: 'You are not assigned to this room',
+        Reconnect: 'The network is available. Would you like to reconnect?'
     },
 
     // The mapper from time zone code (must be uppercase) to offset from UTC (in minutes).
@@ -415,17 +437,14 @@ module.exports = {
     // Date format used in notifications
     DATE_NOTIFICATION_FORMAT: 'MM/dd/yy h:mm a',
 
+    // The time format in http request parameter
+    REQUEST_TIME_FORMAT: 'yyyy-MM-ddTHH:mm:ss.sssZ',
+
     // Pop-up titles used for notification details
     NOTIFICATION_TITLES: {
         'general': 'Admin Broadcast',
         'round': 'Round Broadcast',
         'problem': 'Problem Broadcast'
-    },
-
-    // Content of the phase date change messages to determine the cut and extract the round name
-    PHASE_DATA: {
-        START_MESSAGE: 'is starting for ',
-        END_MESSAGE: 'is ending for '
     },
 
     // The survey question types.

@@ -19,6 +19,16 @@ body{
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     background-image: url(../img/orange/sprite-2.png);
 }
+.CodeMirror-simplescroll-vertical > div {
+    background: #ff8a00;
+}
+.coding-page .btnSplitView {
+    background-image: url(../img/orange/sprite-room-summary.png);
+    background-position: -45px -21px;
+}
+.coding-page .btnSplitView.disabled {
+    background-position: -45px 0;
+}
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
 .codeArea .socialLinks a:before,
@@ -119,7 +129,6 @@ body{
 .contestManagementPanel .filterToggle:before,
 .contestFilter.qtip-default,
 .contestManagement .table .viewBtn:before,
-.contestManagement .sortableHeading span,
 .contestManagementPanel .panel-heading .close:before,
 .contestManagementPanel .searchIcon:before,
 .contestManagementPanel .searchArea .tags .closeIcon:before,
@@ -537,6 +546,13 @@ footer .left>span {
 
 /* code editor widget */
 .panelCodeEditor .actionIcons > .link:hover {color: #687376;}
+
+.panelCodeEditor .actionIcons .refreshSystemTestLink:before {
+	background-image: url(../img/orange/sprite-codeArena.png);
+	background-position: -74px -20px;
+	background-repeat: no-repeat;
+}
+
 .panelCodeEditor .toolBar .actionIcons {
     color: #ff8a00;
 }
@@ -1190,7 +1206,7 @@ footer .left>span {
     border-bottom-width: 1px;
     padding-top: 12px;
     padding-bottom: 9px;
-    border-color: #ffe6c7; 
+    border-color: #ffe6c7;
 }
 .contestManagementPanel .table>thead>tr>th {
     color: #636d70;
@@ -1543,13 +1559,13 @@ footer .left>span {
     }
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
 #challenges-advertiser {
     border: 1px solid #e7e7e7;
-    background: #fff;   
+    background: #fff;
 }
 
 #challenges-advertiser .challenge-technologies-wrapper {
@@ -1567,6 +1583,16 @@ footer .left>span {
 
 #challenges-advertiser .challenge-icon {
     color: #e9f2db;
+}
+
+/****** Loading spinner ******/
+.preloader-window {
+    background-color: #fff;
+    border: 1px solid #ff8a00;
+    color: #333;
+}
+.preloader-indicator>img {
+    background-image: url(../img/orange/preloader.gif);
 }
 
 /*
@@ -1590,4 +1616,12 @@ footer .left>span {
 }
 .settings-panel, .settings-panel h3 {
     font-weight: normal;
+}
+.detailPage .headerInDivisionSummary {
+    font-weight: 400 !important;
+    color: #636d70 !important;
+}
+
+.detailPage .summaryTables .innerWrapper .table>thead:first-child>tr:first-child>th {
+    border-top: 0 solid #fff;
 }

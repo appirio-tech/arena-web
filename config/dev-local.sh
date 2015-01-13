@@ -71,7 +71,7 @@ export PRACTICE_PROBLEM_LIST_PAGE_SIZE=10
 export REGISTRATION_URL='http://tcqa1.topcoder.com/?action=callback'
 
 # The time (in ms) after which the loading spinner times out if there is no activity.
-export SPINNER_TIMEOUT=10000
+export SPINNER_TIMEOUT=90000
 
 # Google Docs Spreadsheet URL for saving feedbacks and its maxlength
 export FEEDBACK_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbxSDbXXaz5y1wDKWa_XToU2yyi0yAvAobXh8vF2WuT3VrFd14YN/exec
@@ -89,6 +89,9 @@ export CHALLENGE_ADVERTISING_INTERVAL=5000
 # The time interval between updates of challenge advertising data from TC-API server (in ms)
 export CHALLENGE_ADVERTISING_UPDATE=300000
 
+# The time interval between updates of leaderboard summay (in ms)
+export LEADERBOARD_REFRESH_TIME_GAP=1000
+
 # The TopCoder host name
 export TC_HOSTNAME=http://www.topcoder.com
 
@@ -102,3 +105,6 @@ export NEWRELIC_SERVER_LOGGING_LEVEL='trace'
 
 # Time interval for auto saving code (milliseconds)
 export AUTO_SAVING_CODE_INTERVAL=30000
+
+# The number of top coders shown in Active Matches Summary widget
+export ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3

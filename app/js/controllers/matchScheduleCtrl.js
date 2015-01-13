@@ -1,11 +1,14 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles match schedule page related logic.
  *
+ * Changes in version 1.1 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
+ *  - Improved the logic of loading match plan data.
+ *
  * @author TCASSEMBLER
- * @version 1.0
+ * @version 1.1
  */
 'use strict';
 /*jshint -W097*/
@@ -19,10 +22,10 @@ var helper = require('../helper');
 /**
  * The match schedule page controller.
  */
-var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', 'appHelper', function ($scope, $http, $timeout, $rootScope, appHelper) {
+var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', 'appHelper', '$filter', function ($scope, $http, $timeout, $rootScope, appHelper, $filter) {
     $scope.events = [];
     $scope.eventSources = [$scope.events];
-    var tmpDate = new Date();
+    var tmpDate = new Date(), existingFlag, currentDate, currentDateStr, index;
 
     // config calendar plugin
     $scope.matchScheduleConfig = {
@@ -62,30 +65,55 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', 'appHelper
                 year: tmpDate.getFullYear(), //the initial year when the calendar loads
                 month: tmpDate.getMonth(), //the initial month when the calendar loads
                 day: tmpDate.getDate(),    //the initial day when the calendar loads
+                viewRender: $scope.viewRender,
                 eventClick: $scope.changeView
             }
         };
     }
-    $scope.numScheduleRequests = 1;
-    // Call tc-api server to get srm schedule
-    $http.get(config.apiDomain + '/data/srm/schedule?pageIndex=-1&sortColumn=startDate&sortOrder=asc').success(function (data, status, headers) {
-        $scope.numScheduleRequests -= 1;
-        if (data.data) {
-            data.data.forEach(function (item) {
-                $scope.eventSources[0].push({
-                    title: item.contestName,
-                    start: appHelper.parseTDate(item.registrationStartTime || item.startDate),
-                    end: appHelper.parseTDate(item.challengeEndTime),
-                    allDay: false
-                });
-            });
+
+    /**
+     * Load contest plan data.
+     * @param url - the url parameters in string format
+     * @param pendingPlanMonth - the pending month which is getting data
+     */
+    $scope.loadMatchSchedule = function (url, pendingPlanMonth) {
+        $scope.numScheduleRequests = 1;
+        // Call tc-api server to get srm schedule
+        $http.get(config.apiDomain + '/data/srm/schedule?pageIndex=-1&sortColumn=registrationstarttime&sortOrder=asc' + url).success(function (data, status, headers) {
+            $scope.numScheduleRequests -= 1;
+            $scope.eventSources = appHelper.parseMatchScheduleData(data, pendingPlanMonth, $scope.eventSources);
+            $rootScope.contestPlanList = $scope.eventSources[0];
+            initCalendar();
+        }).error(function (data, status, headers, config) {
+            $scope.numScheduleRequests -= 1;
+            //skip the error, simply print to console
+            console.log(data);
+        });
+    };
+
+    /**
+     * Load month view data.
+     * @param monthDate the first date of month.
+     */
+    $scope.loadMonthViewData = function (monthDate) {
+        if (!appHelper.isExistingMatchPlan(monthDate)) {
+            $scope.loadMatchSchedule(appHelper.getMonthViewStatus(monthDate) + appHelper.getRegistrationStartTimeRangeUrl(1),
+                [monthDate.getFullYear() + '-' + monthDate.getMonth()]);
         }
-        initCalendar();
-    }).error(function (data, status, headers, config) {
-        $scope.numScheduleRequests -= 1;
-        //skip the error, simply print to console
-        console.log(data);
-    });
+    };
+
+    /**
+     * View render.
+     * @param view the view.
+     * @param element the element.
+     */
+    $scope.viewRender = function (view, element) {
+        if (view.name === 'basicWeek') {
+            $scope.loadMonthViewData(view.end);
+        } else {
+            $scope.loadMonthViewData(view.start);
+        }
+    };
 
     /**
      * Change the view.
@@ -114,6 +142,33 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', 'appHelper
             $scope.matchSchedule.fullCalendar('gotoDate', appHelper.parseTDate(result + 'T00:00:00'));
         }
     };
+
+    existingFlag = false;
+    currentDate = new Date();
+    currentDateStr = currentDate.getFullYear() + '-' + currentDate.getMonth();
+    if (angular.isDefined($rootScope.loadedContestPlanList)) {
+        for (index = 0; index < $rootScope.loadedContestPlanList.length; index++) {
+            if ($rootScope.loadedContestPlanList[index] === currentDateStr) {
+                existingFlag = true;
+                break;
+            }
+        }
+    }
+
+    if (existingFlag) {
+        $scope.eventSources[0] = $rootScope.contestPlanList;
+        initCalendar();
+    } else {
+        $scope.loadMatchSchedule(appHelper.getRegistrationStartTimeRangeUrl(3) + '&statuses=F,A,P',
+            appHelper.getComingThreeMonths());
+    }
+
+    $timeout(function () {
+        if ($rootScope.selectedDate) {
+            $scope.matchSchedule.fullCalendar('gotoDate', $rootScope.selectedDate.year, $rootScope.selectedDate.month);
+
+        }
+    }, 10);
 }];
 
 module.exports = matchScheduleCtrl;
