@@ -143,6 +143,7 @@ require('./../../bower_components/codemirror/addon/fold/foldgutter');
 require('./../../bower_components/codemirror/addon/fold/brace-fold');
 require('./../../bower_components/codemirror/addon/fold/comment-fold');
 require('./../../bower_components/codemirror/addon/fold/indent-fold');
+require('./../../bower_components/codemirror/addon/scroll/simplescrollbars');
 require('./../../bower_components/codemirror/addon/search/match-highlighter');
 require('./../../bower_components/codemirror/addon/search/searchcursor');
 require('./../../bower_components/codemirror/addon/search/search');
