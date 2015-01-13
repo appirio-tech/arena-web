@@ -465,7 +465,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             controller: 'userCodingCtrl'
         })
         .state('user.practiceCode', {
-            url: '/practiceCode/{roundId}/{componentId}/{divisionId}/{roomId}',
+            url: '/practiceCode/{roundId}/{componentId}/{problemId}/{divisionId}/{roomId}',
             data: {
                 pageTitle: "Practice",
                 pageMetaKeywords: "practice,code,arena"
@@ -1253,6 +1253,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
                 case helper.STATE_NAME.PracticeCode:
                     deepLink.roundId = toParams.roundId;
                     deepLink.componentId = toParams.componentId;
+                    deepLink.problemId = toParams.problemId;
                     deepLink.divisionId = toParams.divisionId;
                     deepLink.roomId = toParams.roomId;
                     break;
@@ -1287,6 +1288,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
                 $state.go(deepLink.state, {
                     roundId : deepLink.roundId,
                     componentId : deepLink.componentId,
+                    problemId: deepLink.problemId,
                     divisionId : deepLink.divisionId,
                     roomId : deepLink.roomId
                 }, {reload: true});

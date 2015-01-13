@@ -755,7 +755,7 @@ body a {cursor: pointer;}
     min-height:760px;
 }
 .dashboard .titleBar {
-    padding: 15px 15px 19px 0;
+    padding: 28px 15px 19px 0;
     min-height: 78px;/*update*/
     position: relative;
 }
@@ -927,6 +927,16 @@ body a {cursor: pointer;}
     padding-top: 5px;
     padding-right: 0;
 }
+.code-area-controls .matchEditorial {
+    width: 115px;
+    height: 20px;
+    color: #0973BA;
+    background: url(../img/match_editorial_ico.png) no-repeat;
+    padding-left: 20px;
+    margin-right: 10px;
+    line-height: 25px;
+}
+
 .dashboard .breadcrumb,
 .dashboard .connection,
 .codeArea .definition {

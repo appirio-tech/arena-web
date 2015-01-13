@@ -87,8 +87,8 @@ var config = require('../config');
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'tcTimeService', 'keyboardManager', 'appHelper',
-    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, tcTimeService, keyboardManager, appHelper) {
+var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'tcTimeService', 'keyboardManager', 'appHelper', '$http',
+    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, tcTimeService, keyboardManager, appHelper, $http) {
         $rootScope.$broadcast('hideFeedback');
         // shared between children scopes
         $scope.sharedObj = {};
@@ -103,6 +103,22 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $scope.divisionID = Number($stateParams.divisionId);
         $scope.problemLoaded = false;
         $scope.hasExampleTest = false;
+
+        $scope.editorialLink = '';
+        if ($scope.currentStateName() === 'user.practiceCode') {
+            $http.get(config.apiDomain + '/data/srm/problems/' + $scope.problemID + '/rounds').success(function (data) {
+                if (data && data.rounds) {
+                    angular.forEach(data.rounds, function (round) {
+                        if (round && round.editorialLink && round.editorialLink.trim() !== ''
+                                && $scope.editorialLink.trim() === '') {
+                            $scope.editorialLink = round.editorialLink.trim();
+                        }
+                    });
+                }
+            }).error(function () {
+                $scope.editorialLink = '';
+            });
+        }
 
         $rootScope.previousStateName = $scope.currentStateName();
 
