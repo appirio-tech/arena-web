@@ -1,11 +1,15 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * The contest schedule configuration controller.
  *
+ * Changes in version 1.1 (Web Arena - Match Management Page Load Improvement)
+ * - Segments are no longer received in new api.
+ * So added logic to deal with segments created client side
+ *
  * @author TCSASSEMBLER
- * @version 1.0
+ * @version 1.1
  */
 
 'use strict';
@@ -259,22 +263,20 @@ var contestScheduleConfigCtrl = ['$scope', '$http', 'sessionHelper', '$filter', 
         if ($scope.hasError) {
             return;
         }
+        date = Date.now();
         // If no existing schedule exist use current date as registration start date
         if (!segments) {
-            date = Date.now();
             segments = {};
-            segments.registrationStart = $filter('date')(date, 'yyyy-MM-dd HH:mm:ssZ');
-            segments.codingStart = $filter('date')(new Date(date + ((+$scope.displaySchedule.regStartH) * 60
-                + (+$scope.displaySchedule.regStartMm) + 1) * 60 * 1000), 'yyyy-MM-dd HH:mm:ssZ');
-            segments.registrationStatus = 'F';
-            segments.codingStatus = 'F';
-            segments.intermissionStatus = 'F';
-            segments.challengeStatus = 'F';
-            segments.systemTestStatus = 'F';
-        } else {
-            segments.registrationStart = $filter('date')(segments.registrationStartTime, 'yyyy-MM-dd HH:mm:ssZ');
-            segments.codingStart = $filter('date')(segments.codingStartTime, 'yyyy-MM-dd HH:mm:ssZ');
         }
+        segments.registrationStatus = 'F';
+        segments.codingStatus = 'F';
+        segments.intermissionStatus = 'F';
+        segments.challengeStatus = 'F';
+        segments.systemTestStatus = 'F';
+        segments.registrationStart = $scope.round.roundSchedule && $scope.round.roundSchedule[0] ? $filter('date')($scope.round.roundSchedule[0].startTime, 'yyyy-MM-dd HH:mm:ssZ') : $filter('date')(date, 'yyyy-MM-dd HH:mm:ssZ');
+        segments.codingStart = $scope.round.roundSchedule && $scope.round.roundSchedule[1] ? $filter('date')($scope.round.roundSchedule[1].startTime, 'yyyy-MM-dd HH:mm:ssZ') : $filter('date')(new Date(date + ((+$scope.displaySchedule.regStartH) * 60
+        + (+$scope.displaySchedule.regStartMm) + 1) * 60 * 1000), 'yyyy-MM-dd HH:mm:ssZ');
+
         segments.registrationLength = (+$scope.displaySchedule.regStartH) * 60 + (+$scope.displaySchedule.regStartMm);
         segments.codingLength = (+$scope.displaySchedule.codeLengthH) * 60 + (+$scope.displaySchedule.codeLengthMm);
         if (!!$scope.displaySchedule.removeInter) {
