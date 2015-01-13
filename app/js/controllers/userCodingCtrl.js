@@ -59,8 +59,11 @@
  * Changes in version 1.16 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Cancel the timer for auto save logic while leaving the page.
  *
+ * Changes in version 1.17 (Web Arena - Fix Empty Problem Statement Arena Issue)
+ * - Added timeout of 10ms to problem-loaded event, so that perfect-scrollbar works perfect
+ *
  * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.16
+ * @version 1.17
  */
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -276,7 +279,9 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     });
                     $scope.problemLoaded = true;
                     // broadcast problem-load message to child states.
-                    $rootScope.$broadcast('problem-loaded');
+                    $timeout(function () {
+                        $rootScope.$broadcast('problem-loaded');
+                    }, 10);
                     startTimer();
                 }
             }
