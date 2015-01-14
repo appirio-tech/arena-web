@@ -428,7 +428,7 @@ body a {cursor: pointer;}
     position: absolute;
     top: 21px;
     left: 0;
-    background-position: right -10px;
+    background-position: -365px -10px;
 }
 .header .navIcons .themePanel .themeItem .themeRadio {display: none;}
 .header .navIcons .themePanel .btn {
