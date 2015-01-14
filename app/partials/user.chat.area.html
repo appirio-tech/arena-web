@@ -67,10 +67,10 @@
         <div class="infoSection" data-ng-show="showRegistrant">
             <header><a data-ng-click="collapseRegistrant=!collapseRegistrant; rebuildScrollbar('info');" data-ng-class="{collapsed: collapseRegistrant}">Registrants <span>({{registrantsArray.length}})</span></a></header>
             <ul class="scrollable users {{registrantsScrollHeight}}" data-ng-hide="collapseRegistrant" data-ng-custom-scrollbar data-rebuild-on="rebuild:registrants" data-rebuild-on-resize data-scroll-top>
-                <li data-ng-repeat="member in registrantsArray | orderBy:registrantOrderPredicate"><!-- avoid blank
+                <li data-ng-repeat="member in registrantsArray | orderBy:registrantOrderPredicate" data-ng-class="{current: member.userName == username()}"><!-- avoid blank
                     --><a data-ng-click="showCoderInfo(member.userName, member.userType);"><!--avoid blank
                         --><span data-rating-indicator="{{member.userRating}}" data-username="{{member.userName}}Reg" class="ratingIcon"></span><!--avoid blank
-                        --><span class="user {{getRatingClass(member.userRating)}}" data-ng-class="{current: member.userName == username()}">{{member.userName}}</span>
+                        --><span class="user {{getRatingClass(member.userRating)}}">{{member.userName}}</span>
                     </a>
                 </li>
             </ul>
@@ -78,10 +78,10 @@
         <div class="infoSection" data-ng-show="showMemberHere">
             <header><a data-ng-click="collapseMemberHere=!collapseMemberHere; rebuildScrollbar('info');" data-ng-class="{collapsed: collapseMemberHere}">Who's here <span>({{whosHereArrayFullList.length}})</span></a></header>
             <ul class="scrollable users {{whosHereScrollHeight}}" data-ng-hide="collapseMemberHere" data-ng-custom-scrollbar data-rebuild-on="rebuild:whosHere" data-rebuild-on-resize data-scroll-top>
-                <li data-ng-repeat="member in whosHereArrayFullList | orderBy:whosHereOrderPredicate"><!-- avoid blank
+                <li data-ng-repeat="member in whosHereArrayFullList | orderBy:whosHereOrderPredicate" data-ng-class="{current: member.name == username()}"><!-- avoid blank
                     --><a sglclick="showCoderInfo(member.name, member.userListItem.userType);" data-ng-dblclick="setReplyToCoder(member.name)" title="{{member.name}}"><!-- avoid blank
                         --><span data-rating-indicator="{{member.rating}}" data-username="{{member.name}}Who" class="ratingIcon"></span><!-- avoid blank
-                        --><span class="user {{getRatingClass(member.rating)}}" data-ng-class="{current: member.name == username()}"><span>{{getMemberShortName(member.name)}}</span> <span class="userEnteringIcon" data-ng-show="userEnteringIcons[member.name]"></span><span class="userLeavingIcon" data-ng-show="userLeavingIcons[member.name]"></span></span>
+                        --><span class="user {{getRatingClass(member.rating)}}"><span>{{getMemberShortName(member.name)}}</span> <span class="userEnteringIcon" data-ng-show="userEnteringIcons[member.name]"></span><span class="userLeavingIcon" data-ng-show="userLeavingIcons[member.name]"></span></span>
                     </a>
                 </li>
             </ul>

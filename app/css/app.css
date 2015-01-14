@@ -4064,13 +4064,12 @@ footer .right>span:nth-child(2) {
 .panelChatArea .membersInfo .infoSection .scrollable{
     overflow-y: hidden;
     list-style: none;
-    padding-left: 5px;
 }
 .panelChatArea .membersInfo .infoSection .scrollable li a{
     width: 100%;
     height: 100%;
     display: block;
-    padding-left: 15px;
+    padding-left: 20px;
     position: relative;
 }
 .panelChatArea .membersInfo .infoSection .scrollable li a .user {
@@ -5152,7 +5151,7 @@ footer .right>span:nth-child(2) {
     width: 21px;
     height: 20px;
     position: absolute;
-    left: 0;
+    left: 5px;
     top: 5px;
 }
 .detailPage section .table td .ratingIcon {
