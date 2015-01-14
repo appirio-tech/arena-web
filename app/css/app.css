@@ -7238,7 +7238,7 @@ table thead .sort.desc{
 .downScrollButton {
     background-image: url(../img/dark/sprite-room-summary.png);
     position: absolute;
-    top:calc(100% - 8px);
+    top:calc(100% - 7px);
     right: 4px;
     width: 9px;
     height: 9px;
