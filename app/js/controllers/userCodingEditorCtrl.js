@@ -793,6 +793,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             if (data.message.indexOf('was successful for') !== -1) {
                 $scope.submittedCode = true;
                 $scope.updatedCodeAfterSubmit = false;
+                $scope.submittedTime = Date.now();
             }
         });
 
@@ -812,13 +813,15 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             enableUserInput();
 
             if (data.title === helper.POP_UP_TITLES.SaveResults
-                || data.title === helper.POP_UP_TITLES.CompileResult
-                || data.title === helper.POP_UP_TITLES.MultipleSubmission) {
+                    || data.title === helper.POP_UP_TITLES.CompileResult
+                    || data.title === helper.POP_UP_TITLES.MultipleSubmission) {
                 //success to save code in server, remove local cache code.
                 appHelper.removeCodeFromLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID);
                 $scope.isSaving = false;
             }
-
+            if (data.title === helper.POP_UP_TITLES.SaveResults) {
+                $scope.savedTime = Date.now();
+            }
             if (data.title !== helper.POP_UP_TITLES.Error &&
                     data.title !== helper.POP_UP_TITLES.CompileResult &&
                     data.title !== helper.POP_UP_TITLES.TestResults &&
@@ -880,6 +883,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 // set content dirty to false when compile successfully.
                 $scope.contentDirty = false;
                 $scope.codeCompiled = true;
+                $scope.compiledTime = Date.now();
             }
         });
 

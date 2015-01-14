@@ -1,7 +1,19 @@
 <div class="panel panel-custom panelCodeEditor"> <!-- content start -->
     <div class="preloader-window system-test-preloader-window" data-preloader data-num-requests='{{numContestRequests}}' text='Processing System Tests...'></div>
-    <div class="panel-heading">
-        Coding Area<a data-ng-click="problemAreaHeightRatio = (problemAreaHeightRatio == 0 ? 1 : 0)" class="collapseIcon" data-ng-class="{expand:problemAreaHeightRatio == 0,normal:problemAreaHeightRatio > 0}"></a>
+    <div class="panel-heading toolBar">
+        Coding Area <div class="middlePart">
+                <ul class="actionIcons"><!-- avoid unnecessary blank
+                --><li class="link saveLink disableLink"  data-ng-hide="currentStateName()==='user.viewCode' || !isConnected() || !isSaving">Saving</li>  <!-- avoid unnecessary blank
+                --><li class="link saveLink"  data-ng-hide="currentStateName()==='user.viewCode' || !isConnected() || isSaving" data-ng-class="{disableLink : !contentDirty}" data-ng-click="saveCode()">Save</li>  <!-- avoid unnecessary blank
+                --><li class="link clearLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Clear</li><!--  avoid unnecessary blank
+                --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Compile</li><!--
+                --><li class="link submitLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Submit</li>
+                   <li class="link refreshSystemTestLink" data-ng-class="{disableLink : !submittedCode}" data-ng-click="runPracticeSystemTest()" data-ng-hide="!isShowRunPracticeSystemTest() || !isConnected()">Run System Tests</li>
+                </ul><!--  avoid unnecessary blank
+                --><div data-ng-show="currentStateName()==='user.viewCode'">{{languages[langIdx].name}}</div><!--
+                --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" data-ng-model="searchText" data-ng-keypress="inputSearchText($event)" data-ng-change="searchByText()"/><a id="searchByText" data-ng-click="searchByText()" class="searchIcon"></a></div><!--  avoid unnecessary blank
+                --><div class="gotoInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><label for="goto">Go To</label><input type="text" name="goto" id="goto" data-ng-model="gotoLine" data-ng-keypress="inputGotoText($event)"/></div>
+            </div><a data-ng-click="problemAreaHeightRatio = (problemAreaHeightRatio == 0 ? 1 : 0)" class="collapseIcon" data-ng-class="{expand:problemAreaHeightRatio == 0,normal:problemAreaHeightRatio > 0}"></a>
     </div>
     <div class="panel-body row" id="bottom-content">
         <div class="toolBar">
@@ -39,17 +51,11 @@
                 </div>
             </div>
             <div class="middlePart">
-                <ul class="actionIcons"><!-- avoid unnecessary blank
-                --><li class="link saveLink disableLink"  data-ng-hide="currentStateName()==='user.viewCode' || !isConnected() || !isSaving">Saving</li>  <!-- avoid unnecessary blank
-                --><li class="link saveLink"  data-ng-hide="currentStateName()==='user.viewCode' || !isConnected() || isSaving" data-ng-class="{disableLink : !contentDirty}" data-ng-click="saveCode()">Save</li>  <!-- avoid unnecessary blank
-                --><li class="link clearLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="clearEditor()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Clear</li><!--  avoid unnecessary blank
-                --><li class="link compileLink" data-ng-click="compileSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Compile</li><!--
-                --><li class="link submitLink" data-ng-class="{disableLink : disableSubmit()}" data-ng-click="submitSolution()" data-ng-hide="currentStateName()==='user.viewCode' || !isConnected()">Submit</li>
-                   <li class="link refreshSystemTestLink" data-ng-class="{disableLink : !submittedCode}" data-ng-click="runPracticeSystemTest()" data-ng-hide="!isShowRunPracticeSystemTest() || !isConnected()">Run System Tests</li>
-                </ul><!--  avoid unnecessary blank
-                --><div data-ng-show="currentStateName()==='user.viewCode'">{{languages[langIdx].name}}</div><!--
-                --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" data-ng-model="searchText" data-ng-keypress="inputSearchText($event)" data-ng-change="searchByText()"/><a id="searchByText" data-ng-click="searchByText()" class="searchIcon"></a></div><!--  avoid unnecessary blank
-                --><div class="gotoInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><label for="goto">Go To</label><input type="text" name="goto" id="goto" data-ng-model="gotoLine" data-ng-keypress="inputGotoText($event)"/></div>
+                <ul class="statusIcons"><!-- avoid unnecessary blank
+                --><li class="compiledStatus" data-ng-show="!!compiledTime">Compiled <span class="statusTime">[{{ compiledTime | date: 'MM/dd/yy - HH:mm:ss' }}]</span></li>  <!-- avoid unnecessary blank
+                --><li class="submittedStatus" data-ng-show="!!submittedTime">Submitted <span class="statusTime">[{{ submittedTime | date: 'MM/dd/yy - HH:mm:ss' }}]</span></li>  <!-- avoid unnecessary blank
+                --><li class="savedStatus" data-ng-show="!!savedTime">Saved <span class="statusTime">[{{ savedTime | date: 'MM/dd/yy - HH:mm:ss' }}]</span></li>  <!-- avoid unnecessary blank
+            !--></ul>
             </div>
             <div class="rightPart">
                 <div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged. &nbsp;</div><div data-ng-show="(currentStateName()=='user.coding' || currentStateName()==='user.practiceCode' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isInSameRoom()) && !isChallenged()" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>

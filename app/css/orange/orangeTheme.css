@@ -61,7 +61,26 @@ body{
 .panelCodeEditor .panel-body .settingsPanel {
     background-image: url(../img/orange/popup-bg.png);
 }
-
+.panelCodeEditor .statusIcons .compiledStatus {
+    background: url(../img/orange/compiled.png) no-repeat;
+    background-position: left center;
+}
+.panelCodeEditor .statusIcons .submittedStatus {
+    background: url(../img/orange/submitted.png) no-repeat;
+    background-position: left center;
+}
+.panelCodeEditor .statusIcons .savedStatus {
+    background: url(../img/orange/saved.png) no-repeat;
+    background-position: left center;
+}
+.panelCodeEditor .statusIcons .compiledStatus,
+.panelCodeEditor .statusIcons .submittedStatus,
+.panelCodeEditor .statusIcons .savedStatus {
+    color: rgb(255, 138, 0);
+}
+.panelCodeEditor .statusIcons .statusTime {
+    color: black;
+}
 .header .navIcons>li>.icon:before,
 .header .pastNoti,
 .userInfo .notification,

@@ -2359,6 +2359,12 @@ footer .right>span:nth-child(2) {
 .panelCodeEditor .panel-body {
     border-top: 0;
 }
+.panelCodeEditor .panel-heading {
+    display: inherit;
+}
+.panelCodeEditor .panel-heading div {
+    display:inline-block;
+}
 #bottom-content {
     height: auto;
     overflow: hidden;
@@ -2382,6 +2388,30 @@ footer .right>span:nth-child(2) {
     -moz-border-radius: 0;
     border-radius: 0;
 }
+.panelCodeEditor .statusIcons {
+    padding-top: 5px;
+}
+.panelCodeEditor .statusIcons li {
+    list-style: none;
+    display: inline-block;
+    padding-left: 24px;
+    padding-right: 16px;
+    font-size: 13px;
+    color: #0bbbe7;
+    padding-top: 1px;
+}
+/* compiledStatus submittedStatus savedStatus
+.code-area-controls .matchEditorial {
+    width: 115px;
+    height: 20px;
+    color: #0973BA;
+    background: url(../img/match_editorial_ico.png) no-repeat;
+    padding-left: 20px;
+    margin-right: 10px;
+    line-height: 25px;
+}
+*/
+
 .panelCodeEditor .actionIcons li, .panelCodeEditor .panel-body .toolBar div {display: inline-block;}
 .panelCodeEditor .toolBar .actionIcons {
     list-style: none;

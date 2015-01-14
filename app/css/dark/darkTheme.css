@@ -54,6 +54,24 @@ body{
 .panelCodeEditor .panel-body .settingsPanel {
     background-image: url(../img/dark/popup-bg.png);
 }
+.panelCodeEditor .statusIcons .compiledStatus {
+    background: url(../img/dark/compiled.png) no-repeat;
+    background-position: left center;
+    color: rgb(232, 204, 105);
+}
+.panelCodeEditor .statusIcons .submittedStatus {
+    background: url(../img/dark/submitted.png) no-repeat;
+    background-position: left center;
+    color: rgb(155, 199, 66);
+}
+.panelCodeEditor .statusIcons .savedStatus {
+    background: url(../img/dark/saved.png) no-repeat;
+    background-position: left center;
+    color: rgb(40, 171, 220);
+}
+.panelCodeEditor .statusIcons .statusTime {
+    color: gray;
+}
 .searched {
     color: #000 !important;
 }

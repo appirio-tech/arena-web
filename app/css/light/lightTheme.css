@@ -497,7 +497,13 @@ footer .right .sponsorLogo {
 	background-position: -49px -20px;
 	background-repeat: no-repeat;
 }
-
+.panelCodeEditor .toolBar .actionIcons {
+    color: #7fe3fc;
+}
+.disableLink:hover,
+.disableLink {
+    color: rgb(101, 101, 101) !important;
+}
 .panelCodeEditor .toolBar .middlePart .findInput {
     background: #fff;
     border: 1px solid #b7c9d7;
@@ -550,6 +556,24 @@ footer .right .sponsorLogo {
 }
 .panelCodeEditor .settingsPanel .btn-settings {
     background: #0999d1;
+}
+.panelCodeEditor .statusIcons .compiledStatus {
+    background: url(../img/light/compiled.png) no-repeat;
+    background-position: left center;
+    color: rgb(232, 204, 105);
+}
+.panelCodeEditor .statusIcons .submittedStatus {
+    background: url(../img/light/submitted.png) no-repeat;
+    background-position: left center;
+    color: rgb(155, 199, 66);
+}
+.panelCodeEditor .statusIcons .savedStatus {
+    background: url(../img/light/saved.png) no-repeat;
+    background-position: left center;
+    color: rgb(40, 171, 220);
+}
+.panelCodeEditor .statusIcons .statusTime {
+    color: black;
 }
 .panelCodeEditor .panel-body .toolBar .rightPart {
     color: #316f99;

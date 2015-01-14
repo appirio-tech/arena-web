@@ -401,6 +401,15 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             $scope.userData = {};
             $scope.userData.code = data.code.replace(/(\r\n|\n|\r)/gm, "\n");
             $scope.languageID = data.languageID;
+            if (data.lastCompiledTime) {
+                $scope.compiledTime = new Date(data.lastCompiledTime);
+            }
+            if (data.lastSavedTime) {
+                $scope.savedTime = new Date(data.lastSavedTime);
+            }
+            if (data.lastSubmitTime) {
+                $scope.submittedTime = new Date(data.lastSubmitTime);
+            }
 
             // if there is no language id, read it from user preferences
             // the key of LANGUAGE is 0, from ContestConstants.java

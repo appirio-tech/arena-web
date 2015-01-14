@@ -1151,10 +1151,10 @@ factories.keyboardManager = ['$window', '$timeout', function ($window, $timeout)
             fct = function (e) {
                 e = e || $window.event;
                 var keys = label.split("+"),
-                    // Key Pressed - counts the number of valid keypresses 
+                    // Key Pressed - counts the number of valid keypresses
                     // - if it is same as the number of keys, the shortcut function is invoked
                     kp = 0,
-                    // Work around for stupid Shift key bug created by using lowercase 
+                    // Work around for stupid Shift key bug created by using lowercase
                     // - as a result the shift+num combination was broken
                     shift_nums = {
                         "`": "~",
