@@ -153,7 +153,7 @@ require('./../../bower_components/angular-ui-calendar/src/calendar.js');
 require('./../../bower_components/fullcalendar/fullcalendar.js');
 require('./../../bower_components/angulartics/dist/angulartics.min');
 require('./../../bower_components/angulartics/dist/angulartics-ga.min');
-require('./../../bower_components/angular-table/ng-table.min.js');
+require('./../../bower_components/angular-table/dist/ng-table.min.js');
 require('./../../bower_components/angular-facebook/lib/angular-facebook');
 require('./../../thirdparty/jquery.qtip/jquery.qtip.min.js');
 require('./../../thirdparty/ng-scrollbar/dist/ng-scrollbar.js');
