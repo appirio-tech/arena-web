@@ -98,9 +98,6 @@
                                             <th class="colName sortableHeading"
                                                 data-ng-click="toggleSortKey('problemName')">Problem Name<span
                                                     data-ng-class="{up: problemKeys[0] =='problemName',down: problemKeys[0] == '-problemName'}"></span></th>
-                                            <th class="colType sortableHeading"
-                                                data-ng-click="toggleSortKey('problemType')">Problem Type<span
-                                                    data-ng-class="{up: problemKeys[0] == 'problemType',down: problemKeys[0] == '-problemType'}"></span></th>
                                             <th class="colPoints sortableHeading"
                                                 data-ng-click="toggleSortKey('points')">Points<span
                                                     data-ng-class="{up: problemKeys[0] == 'points',down: problemKeys[0] == '-points'}"></span></th>
@@ -118,7 +115,6 @@
                                     <tbody>
                                         <tr data-ng-repeat="item in problems">
                                             <td class="colName"><a data-ng-bind-html="item.problemName | highlight:searchText:false" data-ng-click="openProblem(item.roundId, item.componentId, item.divisionId, item.roomId)"></a></td>
-                                            <td class="colType">{{item.problemType}}</td>
                                             <td class="colPoints {{item.pointsColor}}">{{item.points}}</td>
                                             <td class="colDifficulty">{{item.difficulty}}</td>
                                             <td class="colStatus"><label class="statusIcon icon{{item.status}}">{{item.status}}</label></td>

@@ -137,7 +137,6 @@ body{
     background-image: url(../img/dark/sprite-contestManagement.png);
     background-repeat: no-repeat;
 }
-.practiceProblemFilter.qtip-default,
 .problemListPanel .statusIcon:before{
     background-image: url(../img/dark/sprite-practiceRoom.png);
     background-repeat: no-repeat;
