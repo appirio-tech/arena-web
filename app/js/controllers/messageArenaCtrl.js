@@ -48,7 +48,7 @@ var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', '$window', 
                             // notification has actions
                             message = {
                                 html: notification.message + ' <a class="notifAction" href="' + notification.action.target +
-                                    '/">Yes</a> or <a class="notifAction">No</a>?'
+                                    '">Yes</a> or <a class="notifAction">No</a>?'
                             };
                         } else {
                             message = notification.message;
@@ -71,7 +71,7 @@ var messageArenaCtrl = ['$scope', '$timeout', 'notificationService', '$window', 
          */
         $scope.goTo = function (link) {
             $rootScope.competingRoomID = -1;
-            $window.location.href = link + "/";
+            $window.location.href = link;
         };
 
     });

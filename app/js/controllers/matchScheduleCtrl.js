@@ -48,12 +48,29 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', function (
      */
     function parseDate(dateString) {
         var date = new Date();
-        // ignore Timezone
         date.setFullYear(+dateString.substring(0, 4));
         date.setMonth((+dateString.substring(5, 7)) - 1);
         date.setDate(+dateString.substring(8, 10));
         date.setHours(+dateString.substring(11, 13));
         date.setMinutes(+dateString.substring(14, 16));
+
+        // Timezone
+        var tz_regex = /(\+|-)(\d{4})$/;
+        var tz = tz_regex.exec(dateString);
+
+        if(tz) {
+            var hours = Number(tz[2].substr(0, 2));
+            var minutes = Number(tz[2].substr(2, 2));
+
+            if(tz[1] === '-') {
+                hours = -hours;
+                minutes = -minutes;
+            }
+
+            date.setHours(date.getHours() + hours);
+            date.setMinutes(date.getMinutes() + minutes);
+        }
+
         return date;
     }
     /**

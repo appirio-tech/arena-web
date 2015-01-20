@@ -81,8 +81,14 @@
  * - Added methods createContest and updateContest to handle creation and updating of the contest.
  * - Updated method createContestWizzard to include roundDataIn if the contest is updated.
  *
+ * Changes in version 1.19 (Web Arena Plugin API Part 2):
+ * - Fixed some undefined exceptions.
+ *
+ * Changes in version 1.20 (Module Assembly - Web Arena Max Live Leaderboard Assembly):
+ * - Added new variable exceedLeaderBoardLimit.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee
- * @version 1.18
+ * @version 1.20
  */
 'use strict';
 /*jshint -W097*/
@@ -391,6 +397,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     $rootScope.currentModal = null;
     socket.emit(helper.EVENT_NAME.GetAdminBroadcastsRequest, {});
 
+    // used to define if exceeds the leaderboard limit
+    $rootScope.exceedLeaderBoardLimit = appHelper.exceedLeaderBoardLimit;
+
     /**
      * Open modal function.
      *
@@ -557,7 +566,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     popUpContent: data.message,
                     action : {
                         question: '',
-                        target: '#/u/contests/' + phaseChangeRoundId
+                        target: '#/u/contests/' + phaseChangeRoundId + '/room'
                     }
                 });
             }
@@ -833,11 +842,13 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return [];
         }
         if (viewOn === 'room') {
-            return $rootScope.roomData[roomID].coders || [];
+            return $rootScope.roomData && $rootScope.roomData[roomID] ? $rootScope.roomData[roomID].coders : [];
         }
         if (viewOn === 'divOne' || viewOn === 'divTwo') {
-            return $rootScope.leaderboard;
+            return $rootScope.leaderboard ? $rootScope.leaderboard : [];
         }
+
+        return [];
     };
 
     /**

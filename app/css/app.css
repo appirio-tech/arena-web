@@ -605,7 +605,7 @@ body a {cursor: pointer;}
     height: 0;
     width: 0;
     overflow: hidden;
-    margin-left: -13px;
+    margin-left: 74px;
 }
 .hero .loginBox footer>p:last-child {
     margin-top: 16px;
@@ -675,7 +675,6 @@ body a {cursor: pointer;}
     color: #ffffff;
     display: inline-block;
 }
-
 .preloader-window .preloader-indicator {
     position: absolute;
     padding: 5px 0px 0px 5px;
@@ -685,6 +684,14 @@ body a {cursor: pointer;}
     display: inline-block !important;
     vertical-align: middle;
     padding: 2px 4px 2px 2px;
+}
+.panelContestPlan .preloader-window {
+    left: 28.1%;
+}
+@media only screen and (max-width: 1199px) {
+    .panelContestPlan .preloader-window {
+        left: 36.1%;
+    }
 }
 
 /*************** dashboard page */
@@ -786,7 +793,7 @@ body a {cursor: pointer;}
 }
 .tcTime {
     display: block;
-    width: 240px;  
+    width: 240px;
     padding-right: 33px;
     font-size: 14px;
     text-align: right;
@@ -1262,7 +1269,7 @@ footer .right>span:nth-child(2) {
 .contestManagementPanel textarea,
 .contestManagementPanel .inputBorder>input,
 .wizardBody .inputBorder>input {
-    font-weight: 300;    
+    font-weight: 300;
 }
 
 .wizardBody .inputBorder>input[name="startDate"] {
@@ -3238,13 +3245,71 @@ footer .right>span:nth-child(2) {
     opacity: 1;
 }
 .panelContestPlan .panel-body {
-    padding-top: 19px;
+    padding-top: 0px;
     padding-left: 29px;
     padding-right: 12px;
 }
+.panelContestPlan .panel-footer {
+    cursor: pointer;
+}
+
 .panelContestPlan .calendarView {
     padding-right: 16px;
 }
+
+.panelContestPlan .matchScheduleLink {
+    position: absolute;
+    bottom: 20px;
+    color: #0bbbe7;
+}
+.panelContestPlan .btnToday {
+    position: absolute;
+    top: 9px;
+    right: 85px;
+    width: 60px;
+    height: 25px;
+    background: #0f9abd;
+    padding: 0;
+    vertical-align: middle;
+    text-align: center;
+}
+.panelContestPlan .btnToday:hover {
+    opacity: 0.7;
+}
+.panelContestPlan .fc-day>div {
+    min-height: 30px !important;
+}
+.panelContestPlan .calendar .fc-today {
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius: 5px !important;
+    border-radius: 5px !important;
+    text-align: center !important;
+    border-color: #0f9abd !important;
+    border-width: 1px !important;
+}
+.matchSchedule .fc-button {
+    height: 26px;
+    text-align: center;
+    margin-bottom: 0px !important;
+    background: #0f9abd !important;
+    color: #ffffff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    z-index: 0 !important;
+    cursor: pointer;
+}
+.matchSchedule .fc-button:not(.fc-state-disabled):hover,
+.matchSchedule .fc-button:not(.fc-state-active):hover {
+    color: #ffffff;
+    opacity: 0.7;
+    z-index: 0 !important;
+}
+.matchSchedule .fc-state-disabled,
+.matchSchedule .fc-state-active {
+    opacity: 0.7;
+}
+
 /*for calendar and list view*/
 .calendar .fc-header .fc-button-month.fc-state-active,
 .calendar .fc-view-month .fc-event-container .fc-event,
@@ -3253,7 +3318,7 @@ footer .right>span:nth-child(2) {
 .calendar .fc-view-month .fc-day {position: relative;}
 .calendar .fc-day .fc-day-number {
     float: left;
-    padding-left: 15px;
+    padding-left: 17px;
     padding-top: 2px;
 }
 .calendar .fc-day.fc-first .fc-day-number {
@@ -3295,8 +3360,8 @@ footer .right>span:nth-child(2) {
     color: #687376;
     text-align: left;
     padding-left: 15px;
-    padding-top: 9px;
-    padding-bottom: 9px;
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 .calendar .fc-border-separate thead .fc-day-header.fc-first {
     padding-left: 13px;
@@ -3415,6 +3480,9 @@ footer .right>span:nth-child(2) {
 .listView .eventsContent .tableDiv .eventDate {
     width: 90px;
 }
+.listView .eventsContent .tableDiv .phaseDate {
+    width: 200px;
+}
 .listView .eventsContent .tableDiv {
     padding-right: 16px;
 }
@@ -3423,8 +3491,12 @@ footer .right>span:nth-child(2) {
 }
 .listView .eventsContent .table>tbody>tr>td {
     border-color: #1f444e;
-    padding-top: 11px;
-    padding-bottom: 12px;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    border: none;
+}
+.listView .eventsContent .table .lastPhase {
+    border-bottom: 2px solid;
 }
 .listView .eventsContent .table>tbody>tr:first-child>td{
     border-top-width: 0;
@@ -4866,7 +4938,7 @@ footer .right>span:nth-child(2) {
     padding-left: 0px;
     padding-right: 0;
 }
-.contestManagement .panel-body .tabs, 
+.contestManagement .panel-body .tabs,
 .contestManagement .panel-body .content {
     padding: 0 28px 0 29px;
     position: relative;
@@ -4878,13 +4950,13 @@ footer .right>span:nth-child(2) {
     padding: 0 25px;
     position: relative;
     cursor: pointer;
-} 
+}
 .contestManagement .tabs .nav li:hover {
     /*text-decoration: underline;*/
 }
 .contestManagement .tabs .nav li:nth-child(2) {
     padding: 0 27px;
-} 
+}
 .contestManagement .tabs .nav li:last-child {
     padding: 0 24px;
 }
@@ -4990,7 +5062,7 @@ footer .right>span:nth-child(2) {
     margin-bottom: 2px;
 }
 .contestManagement .table>tbody>tr:last-child>td {
-    border-bottom-width: 0; 
+    border-bottom-width: 0;
 }
 .contestManagement .table>thead>tr>th {
     line-height: 1.29em;
@@ -5113,7 +5185,7 @@ footer .right>span:nth-child(2) {
 }
 .popupOpen .problemAssignmentPanel {
     overflow-x: auto;
-    overflow-y: auto;  
+    overflow-y: auto;
 }
 .problemAssignmentPanel {
     display: none;
@@ -5616,7 +5688,7 @@ footer .right>span:nth-child(2) {
 /*contest terms*/
 .popupOpen .contestManagementPanel {
     overflow-x: hidden;
-    overflow-y: auto;  
+    overflow-y: auto;
 }
 .contestManagementPanel {
     display: none;
@@ -5664,7 +5736,7 @@ contestManagementPanel .panel-footer .btn {
     margin-bottom: 0;
 }
 
-.contestManagementPanel .table>tbody>tr>td:last-child, 
+.contestManagementPanel .table>tbody>tr>td:last-child,
 .contestManagementPanel .table>thead>tr>th:last-child {
     text-align: left;
 }
@@ -5825,7 +5897,7 @@ contestManagementPanel .panel-footer .btn {
     padding: 10px 0 7px;
 }
 .registrationQuestionsPanel .table>tbody>tr:last-child>td {
-    border-bottom-width: 0; 
+    border-bottom-width: 0;
 }
 .registrationQuestionsPanel .table .colKeyword {
     padding-left: 9px;
@@ -5857,7 +5929,7 @@ contestManagementPanel .panel-footer .btn {
 }
 .registrationQuestionsPanel .panel-footer {
     border-top-width: 0;
-    padding-top: 18px; 
+    padding-top: 18px;
 }
 .registrationQuestionsPanel .panel-footer .btnRow {
     padding-left: 7px;
@@ -5999,7 +6071,7 @@ contestManagementPanel .panel-footer .btn {
     padding: 10px 0 7px;
 }
 .manageQuestionPanel .table>tbody>tr:last-child>td {
-    border-bottom-width: 0; 
+    border-bottom-width: 0;
 }
 .manageQuestionPanel .table .colSortOrder {
     padding-left: 9px;
@@ -6031,7 +6103,7 @@ contestManagementPanel .panel-footer .btn {
     margin-left: 13px;
 }
 .manageQuestionPanel .panel-footer {
-    padding-top: 20px; 
+    padding-top: 20px;
     height: 70px;
     padding-left: 20px;
     padding-right: 22px;
@@ -6072,7 +6144,7 @@ contestManagementPanel .panel-footer .btn {
 }
 .manageAnswerPanel .panel-body {
     padding-top: 26px;
-    padding-left: 39px; 
+    padding-left: 39px;
 }
 .manageAnswerPanel .panel-body fieldset>label:first-child {
     width: 87px;
@@ -6826,6 +6898,7 @@ contestManagementPanel .panel-footer .btn {
 .leaderboard .rounds .val{
     margin-left: 56px;
 }
+
 @-webkit-keyframes rotating {
     from{
         -webkit-transform: rotate(0deg);
@@ -7097,12 +7170,266 @@ table thead .sort.desc{
     right: 5px;
     z-index: 2;
 }
+.mainContainer{
+    position: relative;
+}
+.centerBox{
+    overflow: auto;
+}
+/* ballonsWrap 
+-------------------------*/
+.ballonsWrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -60px;
+    background: #000;
+    background: rgba(0,0,0,0.78);
+    z-index: 100;    
+    display: none;
+    overflow: hidden;
+}
+    .ballonsWrap .ballonWrap{
+        position: absolute;
+        bottom: auto;
+        right: -500px;
+        width: 120px;
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+    }    
+    .ballonsWrap .ballonWrap:hover{
+        z-index: 10; 
+    }
+    .ballonsWrap .ballon{
+        border: 1px solid #0498d6;
+        background: #0498d6;
+        background: rgba(4,152,214,0.44);
+        padding: 24px 30px 7px;
+    }
+    .ballonsWrap .ballon:hover{
+        background: #054661;
+    }
+   .ballonsWrap .ballon .con{
+        color: #fff;
+        font-size: 18px;
+        line-height: 20px;
+        overflow: auto;
+        max-height: 100%;
+        padding-right: 20px;
+        margin-right: -20px;
+   }
+    .ballonsWrap .ballon .con p{
+        margin-bottom: 24px;
+        line-height: 20px;
+    }
+   .ballonsWrap .ballon .actns{
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 21px;
+   }
+   .ballonsWrap .ballon .actns .btnBlnDefault{
+        border-radius: 2px;
+        background: #f79423;
+        padding: 0 10px;
+        display: inline-block;
+        color: #fff;
+        font-size: 18px;
+        text-decoration: none;
+   }
+   .ballonsWrap .ballon .actns .btnBlnDefault:hover{
+        opacity: 0.8;
+   }
+   .ballonsWrap .ballon .actns .btnMore{
+        height: 36px;
+        line-height: 36px;
+        width: 180px;
+   }
+   .ballonsWrap .ballon .lnkClose{
+        position: absolute;
+        background: url(../img/ico-close.png) 50% 50% no-repeat;
+        height: 16px;
+        width: 16px;
+        z-index: 1;
+        right: 10px;
+        top: 9px;
+   }
+   .ballonsWrap .ballon .lnkClose:hover{
+        opacity: 0.7;
+   }
+   .ballonsWrap .ballon .arrow{
+        position: absolute;
+        width: 19px;
+        height: 15px;
+        background: url(../img/baloon-arrow.png) 0 0 no-repeat;
+        left: 122px;
+        top: -14px;
+        border-color: #054661;
+        border-style: solid;
+        border-width: 0 0 1px 0;
+   }   
+   .ballonsWrap .rightBelow .ballon .arrow{
+        left: auto;
+        right: 57px;
+   } 
+   .ballonsWrap .leftAbove .ballon .arrow{
+        left: auto;
+        right: 57px;
+        top: auto;
+        bottom: -14px;
+        background: url(../img/baloon-arrow-d.png) 0 -1px no-repeat;
+        border-width: 1px 0 0 0;
+   } 
+   .ballonsWrap .rightAbove .ballon .arrow{
+        left: auto;
+        top: auto;
+        bottom: -14px;
+        right: 57px;
+        background: url(../img/baloon-arrow-d.png) 0 -1px no-repeat;
+        border-width: 1px 0 0 0;
+   }
+   .ballonsWrap .ballon .arrow.rt{
+        left: auto;
+        right: 10px;
+   }
+   .ballonsWrap .ballon .arrow.dn{
+        background: url(../img/baloon-arrow-d.png) 0 -1px no-repeat;
+        top: auto;
+        bottom: 0;
+   }
+   .ballonsWrap .ballon .arrow.dn.rt{
+        left: auto;
+        right: 10px;
+   }
+
+
+/*Media blocks should be placed after the normal code!!!*/
+@media only screen and (max-width: 1245px) {
+    .inner { padding: 0;}
+    .dashboard .titleBar .brand,
+    .contest .titleBar .shareLink {right: 15px; }
+    .dashboard .titleBar{padding-left: 15px; }
+    .codeArea .titleBar {padding-left: 0;}
+}
+@media only screen and (min-width: 1200px) {
+    .ballonsWrap{
+        bottom: -140px;
+    }
+    /* fix dashboard content size */
+    .dashboard .mainContent {
+        width: 1186px;
+        margin: 0 auto;
+        padding: 0;
+    }
+    .dashboard .mainContent .rightBox {margin-left: 20px; }
+    .contest .mainContent .rightBox {margin-left: 0; left: 778px; }
+    .contest .mainContent .leftBox {right: 407px; }
+    .codeArea .mainContent,
+    .detailPage .mainContent {
+        width: auto;
+        padding: 0 15px;
+    }
+    /* add scrollbar for contest schedule in contest overview */
+    .panelContestStat .panel-body .scheduleContent {
+        width: 380px;
+        max-height: 325px;
+    }
+}
 .panelFeedback {
     width: 407px;
     float: right;
 }
 .feedbackHead {
     text-align: right;
+}
+
+/* when device or screen is middle size, force hide navbar-collapse*/
+@media only screen and (max-width: 1199px) {
+    .dashboard .mainContent {width: 789px; margin: 0 auto; }
+    .dashboard .mainContent .rightBox {width: 759px; }
+    .dashboard .mainContent .rightBox img {display: block; margin: 0 auto; }
+    .panelContestStat {width: auto; }
+    .panelContestStat, .panelContestStat .panel-body {height: auto; }
+    .panelContestStat .phaseDetails {padding-bottom: 28px; }
+    .panelContestStat .compStatus > .column:first-child,
+    .panelContestStat .panel-body .overview > div > .column:first-child,
+    .panelContestStat .panel-body .schedule .details .column:first-child {
+        width: 41%;
+        min-width: 132px;
+    }
+    .panelContestStat .compStatus > .column:nth-child(2),
+    .panelContestStat .panel-body .overview > div > .column:nth-child(2),
+    .panelContestStat .panel-body .schedule .details .column:nth-child(2) {
+        width: 59%;
+        min-width: 200px;
+    }
+    .codeArea .mainContent,
+    .detailPage .mainContent,
+    .panelContestPlan {width: auto;}
+    .codeArea .connection {
+        text-align: left;
+        padding-left: 15px;
+        padding-top: 15px;
+        float: left;
+        width: auto;
+    }
+    .codeArea .connection>div:first-child {width: 151px;}
+    .codeArea .titleBar {height: 85px;}
+    .panelOverview {width: 759px;}
+    .detailPage .panelSummary .panel-body .leftSec,
+    .detailPage .panelSummary .panel-body .rightSec {
+        padding-left: 10px;
+        padding-right: 0;
+    }
+    .detailPage .leaderboardWrapper .heading .expandIcon {
+        right: 11px;
+    }
+    .detailPage .table>thead>tr>th,
+    .detailPage .table>tbody>tr>td {
+        padding: 4px;
+    }
+    .panelContestStat .panel-body .scheduleContent {
+        height: auto;
+    }
+    .calendar .fc-event-inner .fc-event-title {
+        float: none;
+        width: 100%;
+    }
+    .panelContestPlan .listView .default .tableDiv {height: 100%; overflow-x: hidden; overflow-y: hidden;}
+
+
+    /* ballonsWrap  
+    -------------------*/
+    .ballonsWrap .ballonWrap{
+        font-size: 12px;
+        max-width: 300px;
+    }
+    .ballonsWrap .ballon{
+        padding: 18px 15px 7px 10px;
+    }
+    .ballonsWrap .ballon .con{
+        line-height: 18px;
+        font-size: 14px;
+        margin-right: -10px;
+        padding-right: 10px;
+    }
+    .ballonsWrap .ballon .con p{
+        margin-bottom: 12px;
+        line-height: 18px;
+    }
+    .ballonsWrap .ballon .lnkClose{
+        right: 4px;
+        top: 4px;
+    }
+    .ballonsWrap .ballon .actns{
+        margin: 15px 0;
+    }
+    .ballonsWrap .ballon .actns .btnBlnDefault{
+        font-size: 14px;
+    }
+    .ballonsWrap .ballon .actns .btnMore{
+        width: auto;
+    }
 }
 /*btns*/
 .panelFeedback .btn {
@@ -7294,7 +7621,7 @@ table thead .sort.desc{
     position: fixed;
     bottom: 0;
     right: 0;
-    z-index: 4;
+    z-index: 10;
 }
 .codeArea .chatWidget .dropdown-toggle,
 .codeArea .infoSection li {
@@ -7381,7 +7708,7 @@ table thead .sort.desc{
 .codeArea .chatWidget .panel .chatBoard {
     height: 315px;
 }
-.codeArea .chatWidget .memberDropdown .dropdown-menu, 
+.codeArea .chatWidget .memberDropdown .dropdown-menu,
 .codeArea .chatWidget .methodDropdown .dropdown-menu {
     margin: -134px 0 0;
 }
@@ -7407,7 +7734,7 @@ table thead .sort.desc{
 }
 .codeArea .leaderboardWidget .panel-body .summaryWrapper,
 .codeArea .leaderboardWidget .leaderboardWrapper .heading,
-.codeArea .leaderboardWidget .tHeadDiv .innerWrapper, 
+.codeArea .leaderboardWidget .tHeadDiv .innerWrapper,
 .codeArea .leaderboardWidget .tableDiv .innerWrapper {
     padding-right: 14px;
 }
@@ -7723,8 +8050,15 @@ table thead .sort.desc{
     .panelCodeEditor .panel-body .middlePart .actionIcons li+li {margin-left: 20px;}
     .panelCodeEditor .panel-body .middlePart .findInput {margin-right: 10px; margin-left: 20px;}
 }
-/*bootstrap small devices tablets*/
+/*bootstrap small devices tablets !!*/
 @media only screen and (max-width: 991px) {
+
+    /* ballonsWrap 
+    -------------------------*/
+    .ballonsWrap {
+        top: -6px;
+    }
+
     .header .navbar-brand {
         padding-left: 216px;
     }
@@ -7873,11 +8207,11 @@ table thead .sort.desc{
     }
 }
 @media only screen and (max-width: 955px) {
-    .codeArea .chatWidget, 
+    .codeArea .chatWidget,
     .codeArea .leaderboardWidget {
         margin-right: 10px;
     }
-    .codeArea .chatArea-min .panel, 
+    .codeArea .chatArea-min .panel,
     .codeArea .leaderboard-min .panel {
         width: 249px;
     }
@@ -7954,8 +8288,14 @@ table thead .sort.desc{
         width: 350px!important;
     }
 }
+
+
+
+
+
 /* boostrap extra small devices */
 @media only screen and (max-width: 767px) {
+
     /* fix position of header */
     .dashboard .titleBar .brand {padding: 22px 0 0 60px; }
     .anon-header .navbar-title,
@@ -8090,12 +8430,12 @@ table thead .sort.desc{
     .codeArea .leaderboardWidget .panel {
         width: 400px;
     }
-    .codeArea .chatArea-min .panel, 
+    .codeArea .chatArea-min .panel,
     .codeArea .leaderboard-min .panel{
         width: 207px;
         min-width: 207px;
     }
-    .codeArea .chatArea-min .panel-heading, 
+    .codeArea .chatArea-min .panel-heading,
     .codeArea .leaderboard-min .panel-heading {
         padding: 8px 8px 10px;
     }
@@ -8329,7 +8669,7 @@ table thead .sort.desc{
     .coderHistoryTblDiv {
         padding: 0 5px;
     }
-    .coderHistoryTblDiv .coderHistoryTable>tbody>tr>td, 
+    .coderHistoryTblDiv .coderHistoryTable>tbody>tr>td,
     .coderHistoryTblDiv .coderHistoryTable>thead>tr>th {
         padding-left: 0;
         padding-bottom: 0;
@@ -8471,7 +8811,7 @@ table thead .sort.desc{
     cursor: not-allowed;
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
@@ -8628,7 +8968,7 @@ table thead .sort.desc{
     -ms-flex-align: center;
     align-items: center;
  }
- 
+
  #challenges-advertiser .challenge-left-part, #challenges-advertiser .challenge-left-part > *
  #challenges-advertiser .challenge-right-part, #challenges-advertiser .challenge-right-part > * {
     -webkit-box-ordinal-group: 1;
@@ -8640,23 +8980,23 @@ table thead .sort.desc{
     -ms-flex-item-align: auto;
     align-self: auto;
  }
- 
+
 #challenges-advertiser .challenge-left-part,
 #challenges-advertiser .challenge-title,
  #challenges-advertiser .challenge-technologies-wrapper,
 #challenges-advertiser .challenge-right-part {
-    -webkit-box-flex: 0; 
-    -moz-box-flex: 0; 
-    -webkit-flex: 0 1 auto; 
-    -ms-flex: 0 1 auto; 
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
     flex: 0 1 auto;
 }
 
 #challenges-advertiser .challenge-icon, #challenges-advertiser .challenge-prize, #challenges-advertiser .challenge-timer {
-    -webkit-box-flex: 0; 
-    -moz-box-flex: 0; 
-    -webkit-flex: 0 0 auto; 
-    -ms-flex: 0 0 auto; 
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
     flex: 0 0 auto;
 }
 
@@ -8665,7 +9005,7 @@ table thead .sort.desc{
     #challenges-advertiser .challenge-advertisement{
         height: 40px;
     }
-    
+
     #challenges-advertiser .challenge-timer {
         line-height: 26px;
         height: 26px;
@@ -8688,7 +9028,7 @@ table thead .sort.desc{
     #challenges-advertiser {
         padding: 10px 29px;
     }
-    
+
     #challenges-advertiser .challenge-right-part {
         margin-top: 10px;
     }
@@ -8703,7 +9043,7 @@ table thead .sort.desc{
         display: block;
         margin-top: 10px;
     }
-    
+
     #challenges-advertiser .challenge-timer {
         border-right: none;
         margin-right: 0;
@@ -8718,7 +9058,7 @@ table thead .sort.desc{
     #challenges-advertiser .challenge-title {
         display: block;
     }
-    
+
     #challenges-advertiser .challenge-title {
         margin-top: 10px;
     }

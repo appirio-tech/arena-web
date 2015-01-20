@@ -1,5 +1,6 @@
 <div class="panel panelContestPlan">
     <div class="panel-heading">Match Plan
+        <a class="btn btnToday" data-ng-class="{disabled: isToday()}" data-ng-click="goToday();">today</a>
         <ul class="iconsWrapper">
             <li class="listItem" data-ng-click="getCurrentMonth()">
                 <input type="radio" name="viewSelect" data-ng-model="viewNow" value="list" id="viewSelectList" class="viewRadio" />
@@ -28,9 +29,17 @@
                 <div class="tableDiv">
                     <table class="table">
                         <tbody>
-                            <tr data-ng-repeat="event in listEvents track by $index">
+                            <tr data-ng-repeat-start="event in listEvents track by $index">
                                 <td>{{event.title}}</td>
                                 <td class="eventDate">{{event.start | date: 'MMM dd, yyyy'}}</td>
+                            </tr>
+                            <tr>
+                                <td class="phaseName">Registration starts at</td>
+                                <td class="phaseDate">{{event.regStart | date: 'MMM dd, yyyy h:mm a'}} {{timeZone}}</td>
+                            </tr>
+                            <tr class="lastPhase" data-ng-repeat-end>
+                                <td class="phaseName">Coding starts at</td>
+                                <td class="phaseDate"> {{event.codeStart | date: 'MMM dd, yyyy h:mm a'}} {{timeZone}}</td>
                             </tr>
                             <tr data-ng-hide="listEvents.length">
                                 <td>No Event</td>
@@ -44,11 +53,19 @@
                 <div class="tableDiv">
                     <table class="table">
                         <tbody>
-                            <tr data-ng-repeat="event in eventsAfterFilter = (events | showByMonth: currentDate)">
+                            <tr data-ng-repeat-start="event in eventsAfterFilter = (events | showByMonth: currentDate)">
                                 <td>{{event.title}}</td>
                                 <td class="eventDate">{{event.start | date: 'MMM dd, yyyy'}}</td>
                             </tr>
-                            <tr data-ng-hide="eventsAfterFilter.length">
+                            <tr>
+                                <td class="phaseName">Registration starts at</td>
+                                <td class="phaseDate">{{event.regStart | date: 'MMM dd, yyyy h:mm a'}} {{timeZone}}</td>
+                            </tr>
+                            <tr class="lastPhase" data-ng-repeat-end>
+                                <td class="phaseName">Coding starts at</td>
+                                <td class="phaseDate"> {{event.codeStart | date: 'MMM dd, yyyy h:mm a'}} {{timeZone}}</td>
+                            </tr>
+                            <tr data-ng-hide="listEvents.length">
                                 <td>No Event</td>
                                 <td>&nbsp;</td>
                             </tr>
@@ -57,5 +74,6 @@
                 </div>
             </div>
         </div>
+        <a class="matchScheduleLink" data-ui-sref="user.matchSchedule">View Details</a>
     </div>
 </div>
