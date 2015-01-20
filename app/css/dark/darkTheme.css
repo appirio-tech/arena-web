@@ -1339,3 +1339,8 @@ footer .right .sponsorLogo {
 .settings-panel, .settings-panel h3 {
     font-weight: 300;
 }
+
+/* live scoring widget */
+.live-scoring.panel-custom .panel-body {
+    color: #ffffff;
+}

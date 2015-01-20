@@ -1,0 +1,34 @@
+<div class="panel panel-custom live-scoring"
+     data-ng-show="!!scoringData"
+     data-ng-class="{'live-scoring-minimized': minimized}">
+    <!-- widget heading -->
+    <div class="panel-heading" data-ng-click="toggleMinimized()">
+        <!-- heading score -->
+        <div class="heading-score">{{scoringData.score}}/{{scoringData.problemPoint}}</div>
+        <!-- end heading score -->
+        Live Scoring
+    </div>
+    <!-- end widget heading -->
+    <div class="panel-body">
+        <!-- elapsed time -->
+        <div class="timer">
+            <span class="elapsed-title">Elapsed time:</span>
+            <span class="elapsed-time">{{scoringData.elapsedTime | date:'HH:mm:ss'}}</span>
+        </div>
+        <!-- end elapsed time -->
+        <!-- gauge -->
+        <div class="gauge">
+            <div class="gauge-elapsed" data-ng-style="{width: scoringData.elapsedPercent + '%'}"></div>
+        </div>
+        <!-- end gauge -->
+        <!-- points -->
+        <div class="score-label" data-ng-show="!(scoringData.numSubmissions > 0)">Your Possible Score</div>
+        <div class="score-label" data-ng-show="scoringData.numSubmissions > 0">Your Possible Resubmission&nbsp;Score</div>
+        <div class="score">{{scoringData.score}}</div>
+        <div class="max-score">of {{scoringData.problemPoint}} point</div>
+        <div class="score-label current-score-label" data-ng-show="scoringData.numSubmissions > 0">
+            Current Score <span class="current-score">{{scoringData.currentScore}}</span>
+        </div>
+        <!-- end points -->
+    </div>
+</div>

@@ -1516,3 +1516,20 @@ footer .right .sponsorLogo {
 .coder-history-modal-header {
     border: 1px solid #e5e5e5!important;
 }
+
+/* live scoring widget */
+.live-scoring .heading-score {
+    color: #b1f26f;
+}
+
+.live-scoring-minimized .gauge {
+    background: #b1f26f;
+}
+
+.live-scoring .panel-heading {
+    color: #ffffff;
+}
+
+.live-scoring .panel-heading:before {
+    background-image: url('../../img/light/liveScoringArrow.png');
+}

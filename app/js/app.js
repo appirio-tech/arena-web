@@ -225,6 +225,7 @@ controllers.matchScheduleCtrl = require('./controllers/matchScheduleCtrl');
 controllers.memberFeedbackCtrl = require('./controllers/memberFeedbackCtrl');
 controllers.leaderboardCtrl = require('./controllers/leaderboardCtrl');
 controllers.challengesAdvertisingCtrl = require('./controllers/challengesAdvertisingCtrl');
+controllers.liveScoringCtrl = require('./controllers/liveScoringCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -264,6 +265,7 @@ directives.challengesAdvertiser = require('./directives/challengesAdvertiser');
 directives.ngScrollbarAutoscroll = require('./directives/ngScrollbarAutoscroll');
 directives.chatSettings = require('./directives/chatSettings');
 directives.toggleSetting = require('./directives/toggleSetting');
+directives.liveScoring = require('./directives/liveScoring');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -336,6 +338,7 @@ main.controller('matchScheduleCtrl', controllers.matchScheduleCtrl);
 main.controller('memberFeedbackCtrl', controllers.memberFeedbackCtrl);
 main.controller('leaderboardCtrl', controllers.leaderboardCtrl);
 main.controller('challengesAdvertisingCtrl', controllers.challengesAdvertisingCtrl);
+main.controller('liveScoringCtrl', controllers.liveScoringCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -377,6 +380,7 @@ main.directive('challengesAdvertiser', directives.challengesAdvertiser);
 main.directive('ngScrollbarAutoscroll', directives.ngScrollbarAutoscroll);
 main.directive('chatSettings', directives.chatSettings);
 main.directive('toggleSetting', directives.toggleSetting);
+main.directive('liveScoring', directives.liveScoring);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //

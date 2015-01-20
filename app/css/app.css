@@ -7643,6 +7643,11 @@ table thead .sort.desc{
     overflow: hidden;
 }
 
+.modeMinimized.panelFeedback,
+.modeDashboard.panelFeedback {
+    width: 120px;
+}
+
 /**
  * This hack targets the Webkit browser engine
  * which includes Safari and Chrome.
@@ -9334,4 +9339,128 @@ table thead .sort.desc{
 .always-visible.ps-container > .ps-scrollbar-x-rail,
 .always-visible.ps-container > .ps-scrollbar-y-rail {
     opacity: 0.6;
+}
+
+/* live scoring widget */
+.live-scoring.panel-custom {
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+    right: 130px;
+    width: 229px;
+    height: auto;
+    margin: 0;
+    border-bottom: 0;
+}
+
+.live-scoring .panel-heading {
+    padding: 7px 11px 7px 35px;
+    font-weight: 300;
+    cursor: pointer;
+}
+
+.live-scoring .panel-heading:before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 16px;
+    width: 15px;
+    height: 8px;
+    background: url('../img/liveScoringArrow.png') 0 0 no-repeat;
+}
+
+.live-scoring.panel-custom .panel-body {
+    text-align: center;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 400;
+    padding: 0 16px 5px 13px;
+}
+
+.live-scoring .timer {
+    height: 28px;
+    line-height: 28px;
+}
+
+.live-scoring .elapsed-title {
+    font-size: 16px;
+    font-weight: 300;
+    float: left;
+}
+
+.live-scoring .elapsed-time {
+    color: #f40000;
+    float: right;
+    line-height: 32px;
+}
+
+.live-scoring .score {
+    height: 60px;
+    line-height: 56px;
+    font-size: 60px;
+    font-weight: 600;
+    color: #5fb806;
+}
+
+.live-scoring .score-label {
+    font-weight: 300;
+}
+
+.live-scoring .gauge {
+    width: 100%;
+    height: 14px;
+    background: #5fb806;
+    margin: 6px 0;
+}
+
+.live-scoring .gauge-elapsed {
+    height: 100%;
+    background: #f40000;
+}
+
+.live-scoring .current-score {
+    color: #5fb806;
+    font-weight: 600;
+}
+
+.live-scoring .current-score-label {
+    margin-top: 4px;
+}
+
+.live-scoring .heading-score {
+    display: none;
+    float: right;
+    color: #5fb806;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.live-scoring.live-scoring-minimized .panel-body {
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: 0;
+    padding: 0;
+    height: 3px;
+    overflow: hidden;
+}
+
+.live-scoring-minimized .heading-score {
+    display: inline-block;
+}
+
+.live-scoring-minimized .gauge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 3px;
+    margin: 0;
+    z-index: 5;
+}
+
+.live-scoring-minimized .panel-heading:before {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
 }
