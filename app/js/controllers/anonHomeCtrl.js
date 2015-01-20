@@ -34,11 +34,13 @@ var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$r
     }
     $scope.password = '';
 
-    $scope.register = function() {
+    $scope.register = function($event) {
+        $event.preventDefault();
         window.location = config.registrationUrl;
     };
 
-    $scope.resetPw = function() {
+    $scope.resetPw = function($event) {
+        $event.preventDefault();
         window.location = config.pwResetURL;
     }
 
