@@ -173,18 +173,20 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     }
     $rootScope.loginTimeout = false;
     // if the listener is not ready, redirect
-    setTimeout(function () {
+    var checkLoginTimeOut = function () {
         if (angular.isUndefined($rootScope.isLoggedIn)) {
-            $rootScope.$apply(function () {
-                $rootScope.loginTimeout = true;
-            });
-            return forceLogout();
+            var inactivityInterval = new Date().getTime() - $rootScope.lastServerActivityTime;
+            if (inactivityInterval >= connectionTimeout) {
+                $rootScope.$apply(function () {
+                    $rootScope.loginTimeout = true;
+                });
+                return forceLogout();
+            }
+            $timeout(checkLoginTimeOut, connectionTimeout);
         }
-        // comment it now, it maybe change in final fix.
-//        if (!$rootScope.connected) {
-//            return forceLogout();
-//        }
-    }, connectionTimeout);
+    };
+    checkLoginTimeOut();
+
     // handle the start sync response
     socket.on(helper.EVENT_NAME.StartSyncResponse, function (data) {
         requestId = data.requestId;
