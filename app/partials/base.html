@@ -59,7 +59,7 @@
                             <a class="btn" data-ng-click="applyTheme()">APPLY</a>
                           </div>
                         </li>
-                        <li data-ng-class="{ active: $state.includes('user.contestManagement') }" data-ng-show="userInfo() && (userInfo().admin === true)">
+                        <li data-ng-class="{ active: $state.includes('user.contestManagement') }" data-ng-show="userInfo() && (userInfo().admin === true || userInfo().admin4Web === true)">
                           <a data-ui-sref="user.contestManagement" class="icon iconCM">MATCH MANAGEMENT</a><a data-ui-sref="user.contestManagement" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Match Management"></a>
                         </li>
                         <li data-ng-class="{ active: $state.includes('user.practiceProblemList') }">
