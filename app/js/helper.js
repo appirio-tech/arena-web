@@ -363,8 +363,7 @@ module.exports = {
     POP_UP_MESSAGES: {
         Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
         ForcedLogout: 'Logging off as you logged in to another session or browser.',
-        LostConnection: 'The communication with the competition server has been interrupted! Please verify your network connection, copy your work, and refresh this page.',
-        Reconnect: 'The network is available. Would you like to reconnect?'
+        Reconnect: 'The network is available. Would you like to reconnect?',
         LostConnection: 'The connection to the server has been lost. Please log off and log in again.',
         NotAssigned: 'Sorry, you cannot perform this operation because you are not assigned to this room. The likely cause is that you did not successfuly register for the match during the registration period.'
     },
