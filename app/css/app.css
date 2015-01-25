@@ -7799,7 +7799,7 @@ table thead .sort.desc{
 /*min*/
 .codeArea .chatArea-min .panel,
 .codeArea .leaderboard-min .panel{
-    width: 300px;
+    width: 320px;
 }
 .codeArea .chatArea-min .panel-heading {
     padding-right: 26px;
@@ -7810,7 +7810,7 @@ table thead .sort.desc{
 }
 .codeArea .chatArea-min .panel-heading,
 .codeArea .leaderboard-min .panel-heading {
-    padding-left: 33px;
+    padding-left: 13px;
     padding-top: 8px;
 }
 .codeArea .chatArea-min .panel-heading:hover,
