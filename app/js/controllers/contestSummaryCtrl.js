@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
+'use strict';
 /**
  * This controller handles coding editor related logic.
  *
@@ -27,15 +28,18 @@
  * Changes in version 1.7 (Sort is not retained in room summary):
  * - Reset isKeepSort to false.
  *
+
  * Changes in version 1.8 (Web Arena - Leaderboard Performance Improvement):
  * - Updated to use the variable leaderboard instead of calling the function
  *   getCurrentLeaderboard() in the template app/partials/user.contest.summary.html
  *   to improve the performance of the leaderboard in the summary page.
  *
- * @author amethystlei, flytoj2ee, dexy, TCSASSEMBLER
- * @version 1.8
+ * Changes in version 1.9 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Added timeout of 10ms to rebuild:leaderboardTable event, so that the perfect-scrollbar work fine in contest summary
+ *
+ * @author amethystlei, flytoj2ee, dexy, xjtufreeman
+ * @version 1.9
  */
-'use strict';
 /*global module, angular*/
 /*jslint plusplus: true*/
 
@@ -47,7 +51,7 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$window', '$stateParams', function ($scope, $state, $rootScope, appHelper, $window, $stateParams) {
+var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$window', '$stateParams', '$timeout', function ($scope, $state, $rootScope, appHelper, $window, $stateParams, $timeout) {
     var preserveLastDivSummary = false,
         cleanBeforeUnload = function () {
             if (!preserveLastDivSummary) {
@@ -78,6 +82,9 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
             $scope.viewDivisionID = divID;
             $rootScope.getDivSummary($scope.contest.roundID, divID);
         }
+        $timeout(function () {
+            $scope.$broadcast('rebuild:leaderboardTable');
+        }, helper.COMMON_TIMEGAP);
     };
     // default to 50
     $scope.pageSize = 50;

@@ -117,14 +117,17 @@
  * Changes in version 1.32 (Web Arena - Fix Empty Problem Statement Arena Issue):
  * - Added new library perfect-scrollbar to fix scrolling issues
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
- * @version 1.32
+ * Changes in version 1.33 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Remove js references for ng-scrollbar
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, xjtufreeman
+ * @version 1.33
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
 /*global arena:true */
-/*global require*/
+/*global require, console*/
 require('./../../thirdparty/jquery/jquery');
 require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
@@ -156,11 +159,9 @@ require('./../../bower_components/angulartics/dist/angulartics-ga.min');
 require('./../../bower_components/angular-table/dist/ng-table.min.js');
 require('./../../bower_components/angular-facebook/lib/angular-facebook');
 require('./../../thirdparty/jquery.qtip/jquery.qtip.min.js');
-require('./../../thirdparty/ng-scrollbar/dist/ng-scrollbar.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-transition.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-alert.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-notify.js');
-require('./../../thirdparty/ng-scrollbar/dist/ng-customscrollbar.js');
 require('./../../thirdparty/perfect-scrollbar/perfect-scrollbar.js');
 require('./../../thirdparty/perfect-scrollbar/angular-perfect-scrollbar.js');
 require('./../../bower_components/angular-local-storage/dist/angular-local-storage.js');
@@ -275,7 +276,7 @@ directives.toggleSetting = require('./directives/toggleSetting');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'ngCustomScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook', 'ngClipboard', 'frapontillo.bootstrap-switch', 'perfect_scrollbar']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook', 'ngClipboard', 'frapontillo.bootstrap-switch', 'perfect_scrollbar']);
 
 ///////////////
 // FACTORIES //

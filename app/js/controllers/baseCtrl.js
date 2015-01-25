@@ -106,8 +106,11 @@
  * Changes in version 1.25 (Web Arena - Recovery From Lost Connection)
  * - Added logic to popup dialog after lost connection.
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.25
+ * Changes in version 1.26 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Fix to support the perfect-scrollbar in notification message pop window
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, xjtufreeman
+ * @version 1.26
  */
 'use strict';
 /*jshint -W097*/
@@ -294,11 +297,13 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     }
                 });
             };
+            /*jslint unparam: true*/
             $scope.$on(helper.EVENT_NAME.PopUpGenericResponse, function (event, data) {
                 if (data.title === helper.POP_UP_TITLES.CoderInfo && $scope.title === helper.POP_UP_TITLES.CoderInfo) {
                     $scope.coderInfo = data.message;
                 }
             });
+            /*jslint unparam: true*/
         }],
         isDisconnecting = false,
         closeThemeHandler = function (event) {
@@ -782,6 +787,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         // Hide all notifications
         var $notifications = $('.alert');
         $notifications.children('.close').trigger('click');
+    };
+    $scope.changeNotificationType = function (type) {
+        $scope.notificationType = type;
+        $scope.$broadcast("rebuild:messages");
     };
 
     /**

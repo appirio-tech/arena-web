@@ -109,7 +109,7 @@
         {{ title }}
         <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
+    <div class="modal-body" data-perfect-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
         <p class="word-wrap" ng-bind-html="message"></p>
         <br/>
     </div>
@@ -125,7 +125,7 @@
         {{ title }}
         <span class="cancel-x" data-ng-click="ok()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body textAlign textColor" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:popupModalDetail">
+    <div class="modal-body textAlign textColor" data-perfect-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:popupModalDetail">
         <p ng-bind-html="message" class="coder-history-textMargin"></p>
     </div>
     <div class="modal-footer textAlign">
@@ -138,7 +138,7 @@
         {{ title }}
         <span class="cancel-x" data-ng-click="ok()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body validation-modal-body" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:inputValidation">
+    <div class="modal-body validation-modal-body" data-perfect-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:inputValidation">
         <p ng-bind-html="message"></p>
     </div>
     <div class="modal-footer textAlign" ng-if="enableClose">
@@ -151,7 +151,7 @@
         {{ title }}
         <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body overflowX" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
+    <div class="modal-body overflowX" data-perfect-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
         <p ng-bind-html="message"></p>
         <input type="text" class="fbMsg-input" data-ng-model="$root.facebookMessage" name="facebookMessage"/>
     </div>

@@ -118,11 +118,14 @@
  * - Added LOGIN_WAITING_TIME setting.
  * - Updated the message text for lost connection logic.
  *
- * Changes in version 1.31 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
+ * Changes in version 1.32 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
  *  - Added REQUEST_TIME_FORMAT setting.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.32
+ * Changes in version 1.33 (Web Arena - Replace ng-scrollbar with prefect-scrollbar):
+ *  - Added COMMON_TIMEGAP constant.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman
+ * @version 1.33
  */
 'use strict';
 /*global module*/
@@ -331,6 +334,8 @@ module.exports = {
     MAX_CHAT_LENGTH: 256,
     // Time gap between two leaderboad table rebuildings
     LEADERBOARD_TABLE_REBUILT_TIMEGAP: 0,
+    // Common time gap before broadcast a message
+    COMMON_TIMEGAP: 10,
     // the login waiting time
     LOGIN_WAITING_TIME: 1000,
 

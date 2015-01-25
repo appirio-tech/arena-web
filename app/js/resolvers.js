@@ -95,8 +95,11 @@
  * Changes in version 1.24 (Web Arena - Recovery From Lost Connection)
  * - Added forwardAfterReconnected() method.
  *
- * @author amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.24
+ * Changes in version 1.25 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Fix to support the perfect-scrollbar
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman
+ * @version 1.25
  */
 ///////////////
 // RESOLVERS //
@@ -833,6 +836,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             }
         }
         $rootScope.$broadcast('rebuild:chatboard');
+        $rootScope.$broadcast('chatboardScrollToBottom');
     });
 
     // handle create room list response

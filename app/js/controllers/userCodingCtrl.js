@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles user coding page logic.
@@ -68,7 +68,7 @@
  * Changes in version 1.19 (Web Arena - Fix Empty Problem Statement Arena Issue)
  * - Added timeout of 10ms to problem-loaded event, so that perfect-scrollbar works perfect
  *
- * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
+ * @author dexy, amethystlei, savon_cn, xjtufreeman
  * @version 1.19
  */
 /*jshint -W097*/
@@ -231,7 +231,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     // broadcast problem-load message to child states.
                     $timeout(function () {
                         $rootScope.$broadcast('problem-loaded');
-                    }, 10);
+                    }, helper.COMMON_TIMEGAP);
                     startTimer();
                 }
             }
