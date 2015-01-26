@@ -59,8 +59,11 @@
  * Changes in version 1.15 (Web Arena - Update Match Summary Tab Within Active Matches Widget):
  * - Added ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT setting.
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein
- * @version 1.15
+ * Changes in version 1.16 (Web Arena - Add Sponsorship Logo Configs):
+ * - Added FOOTER_SPONSOR_IMAGE_URL, LOGIN_SPONSOR_IMAGE_URL setting.
+ *
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, xjtufreeman
+ * @version 1.16
  */
 'use strict';
 /*global module, process*/
@@ -125,7 +128,9 @@ module.exports = function (grunt) {
                         { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
                         { match : 'AUTO_SAVING_CODE_INTERVAL', replacement: process.env.AUTO_SAVING_CODE_INTERVAL },
                         { match : 'LEADERBOARD_REFRESH_TIME_GAP', replacement: process.env.LEADERBOARD_REFRESH_TIME_GAP },
-                        { match : 'ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT', replacement: process.env.ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT }
+                        { match : 'ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT', replacement: process.env.ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT },
+                        { match : 'FOOTER_SPONSOR_IMAGE_URL', replacement: process.env.FOOTER_SPONSOR_IMAGE_URL },
+                        { match : 'LOGIN_SPONSOR_IMAGE_URL', replacement: process.env.LOGIN_SPONSOR_IMAGE_URL }
                     ]
                 },
                 files : [

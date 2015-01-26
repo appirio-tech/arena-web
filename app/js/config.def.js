@@ -41,6 +41,8 @@ module.exports = {
     tcHostName: '@@TC_HOSTNAME',
     autoSavingCodeInterval: '@@AUTO_SAVING_CODE_INTERVAL',
     leaderboardRefreshTimeGap: '@@LEADERBOARD_REFRESH_TIME_GAP',
-    activeMatchesSummaryTopcoderCount: '@@ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT'
+    activeMatchesSummaryTopcoderCount: '@@ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT',
+    footerSponsorImageUrl: '@@FOOTER_SPONSOR_IMAGE_URL',
+    loginSponsorImageUrl: '@@LOGIN_SPONSOR_IMAGE_URL'
 };
 
