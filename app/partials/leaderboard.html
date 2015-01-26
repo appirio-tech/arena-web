@@ -31,15 +31,15 @@
                     </div><!--/.tabs-->
                     <div class="summaryWrapper">
                         <div data-ng-show="viewOn=='room'" class="roomDiv sumDiv">
-                            <div class="scroll" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.roomSummary}}</div></div>
+                            <div class="scroll" data-perfect-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.roomSummary}}</div></div>
                             <div class="default"><div class="innerWrapper">{{contest.roomSummary}}</div></div>
                         </div>
                         <div data-ng-show="viewOn=='divOne'" class="divOneDiv sumDiv">
-                            <div class="scroll" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
+                            <div class="scroll" data-perfect-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
                             <div class="default"><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
                         </div>
                         <div data-ng-show="viewOn=='divTwo'" data-ng-class="{divOneDiv: !isDivisionActive(contest, 'divOne'), divTwoDiv: isDivisionActive(contest, 'divOne')}" class="sumDiv">
-                            <div class="scroll" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
+                            <div class="scroll" data-perfect-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:summary"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
                             <div class="default"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
                         </div>
                     </div><!-- /.summaryWrapper -->
@@ -105,7 +105,7 @@
                                 </table>
                             </div><!--/.innerWrapper-->
                         </div><!--/.tHeadDiv-->
-                        <div class="tableDiv scroll" data-ng-if="!isTouchDevice" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:leaderboardTable" data-ng-class="{moreProblemTbl:contest.problems[divisionID].length>3,normal:contest.problems[divisionID].length<=3}">
+                        <div class="tableDiv scroll" data-ng-if="!isTouchDevice" data-perfect-scrollbar data-scroll-top data-rebuild-on-resize data-rebuild-on="rebuild:leaderboardTable" data-ng-class="{moreProblemTbl:contest.problems[divisionID].length>3,normal:contest.problems[divisionID].length<=3}">
                             <div class="innerWrapper">
                                 <table class="table table-condensed">
                                     <tbody>

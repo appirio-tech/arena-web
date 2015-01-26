@@ -13,7 +13,7 @@
       </thead>
     </table>
     <div class="activeUserList">
-      <div data-ng-scrollbar rebuild-on-resize rebuild-on="rebuild:activeUser" class="tableWrap">
+      <div data-perfect-scrollbar data-up-down-arrow="true" rebuild-on-resize rebuild-on="rebuild:activeUser" class="tableWrap">
         <table class="activeUserTable">
           <tr data-ng-repeat="user in getActiveUsers() | orderBy:sortAu.column:!sortAu.descending">
             <td class="colR text-center" data-header-class="colR text-center"><span

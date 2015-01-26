@@ -33,7 +33,7 @@
                                             <label>Type</label>
                                             <div class="dropdown">
                                                 <button class="dropdown-toggle" data-ng-click="rebuildTypeFilter();">{{getFilterKey('management', 'type')}}<span class="arrow"></span></button>
-                                                <ul class="dropdown-menu typeFilter" data-ng-custom-scrollbar data-rebuild-on="rebuild:typeFilter" data-reload-on="reload:typeFilter" data-rebuild-on-resize>
+                                                <ul class="dropdown-menu typeFilter" data-perfect-scrollbar data-rebuild-on="rebuild:typeFilter" data-reload-on="reload:typeFilter" data-rebuild-on-resize>
                                                     <li data-ng-repeat="type in contestKeys.type track by $index" data-ng-class="{active:getFilterKey('management', 'type')==type,inactive:getFilterKey('management', 'type')!=type}"><a dropdown-toggle data-ng-click="setFilterKey('management', 'type', $index)">{{type}}</a></li>
                                                 </ul>
                                             </div><!--/.dropdown-->
@@ -167,7 +167,7 @@
                                 </tr>
                             </thead>
                         </table>
-                        <div class="tableDiv" data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:availableProblems" data-reload-on="reload:availableProblems">
+                        <div class="tableDiv" data-perfect-scrollbar data-up-down-arrow="true" data-rebuild-on-resize data-rebuild-on="rebuild:availableProblems" data-reload-on="reload:availableProblems">
                             <div>
                                 <table class="table table-condensed problemTable">
                                 <tbody>
@@ -209,7 +209,7 @@
                                 </tr>
                             </thead>
                         </table>
-                        <div class="tableDiv" data-ng-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:assignedProblems" data-reload-on="reload:assignedProblems">
+                        <div class="tableDiv" data-perfect-scrollbar data-up-down-arrow="true" data-rebuild-on-resize data-rebuild-on="rebuild:assignedProblems" data-reload-on="reload:assignedProblems">
                             <div>
                                 <table class="table table-condensed problemTable">
                                 <tbody>
