@@ -494,10 +494,6 @@ footer .left>span {
     color: #707070;
 }
 
-/* ng-scrollbar style */
-.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #ff8a00;
-}
 /*********************  widgets */
 /* active contests widget */
 .panel-custom {
@@ -852,9 +848,7 @@ footer .left>span {
 .listView .eventsContent .table .lastPhase {
     border-color: #ffe6c9;
 }
-.panelContestPlan .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #e7e7e7;
-}
+
 .panelContestPlan .matchScheduleLink {
     color: #656565;
 }
@@ -992,9 +986,6 @@ footer .left>span {
 }
 .panelChatArea .chatInput input:-ms-input-placeholder{
     color: #333;
-}
-.panelChatArea .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #e7e7e7;
 }
 
 /** Modal style **/
@@ -1188,9 +1179,6 @@ footer .left>span {
 .filterPanel .contentWrapper .filterInput:focus {
     color: #333;
 }
-.detailPage .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #e7e7e7;
-}
 
 .contestManagement .panel-body .nav {
     border-color: #ff8a00;
@@ -1317,10 +1305,7 @@ footer .left>span {
     background: #343434;
     color: #fff;
 }
-.contestManagementPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb,
-.problemAssignmentPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #ff890c;
-}
+
 .contestTermsConfigPanel textarea {
     border-style: solid;
 }
@@ -1473,10 +1458,7 @@ footer .left>span {
     border: 1px solid #C3C3C3;
     background-image: url(../img/orange/select.png);
 }
-.leadarboardList .ngsb-scrollbar,
-.activeUserList .ngsb-scrollbar{
-    background: #fff;
-}
+
 .dashboard .textBlack{
     color: #687376!important;
 }
@@ -1643,4 +1625,17 @@ footer .left>span {
 
 .detailPage .summaryTables .innerWrapper .table>thead:first-child>tr:first-child>th {
     border-top: 0 solid #fff;
+}
+
+/*
+*
+* Styles for perfect scrollbar
+*
+*/
+.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y, .ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x{
+    background-color: #ff8a00;
+}
+
+.ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x{
+    background-color: #ff8a00;
 }

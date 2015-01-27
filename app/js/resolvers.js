@@ -95,8 +95,11 @@
  * Changes in version 1.24 (Web Arena - Recovery From Lost Connection)
  * - Added forwardAfterReconnected() method.
  *
- * @author amethystlei, dexy, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.24
+ * Changes in version 1.25 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Fix to support the perfect-scrollbar
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman
+ * @version 1.25
  */
 ///////////////
 // RESOLVERS //
@@ -173,18 +176,20 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     }
     $rootScope.loginTimeout = false;
     // if the listener is not ready, redirect
-    setTimeout(function () {
+    var checkLoginTimeOut = function () {
         if (angular.isUndefined($rootScope.isLoggedIn)) {
-            $rootScope.$apply(function () {
-                $rootScope.loginTimeout = true;
-            });
-            return forceLogout();
+            var inactivityInterval = new Date().getTime() - $rootScope.lastServerActivityTime;
+            if (inactivityInterval >= connectionTimeout) {
+                $rootScope.$apply(function () {
+                    $rootScope.loginTimeout = true;
+                });
+                return forceLogout();
+            }
+            $timeout(checkLoginTimeOut, connectionTimeout);
         }
-        // comment it now, it maybe change in final fix.
-//        if (!$rootScope.connected) {
-//            return forceLogout();
-//        }
-    }, connectionTimeout);
+    };
+    checkLoginTimeOut();
+
     // handle the start sync response
     socket.on(helper.EVENT_NAME.StartSyncResponse, function (data) {
         requestId = data.requestId;
@@ -831,6 +836,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             }
         }
         $rootScope.$broadcast('rebuild:chatboard');
+        $rootScope.$broadcast('chatboardScrollToBottom');
     });
 
     // handle create room list response

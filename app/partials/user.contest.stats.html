@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div><!--/.default-->
-                <div class="scheduleContent scroll" data-ng-show="!isTouchDevice" data-ng-custom-scrollbar data-rebuild-on="rebuild:contestSchedule" data-rebuild-on-resize data-scroll-top>
+                <div class="scheduleContent scroll" data-ng-show="!isTouchDevice" data-perfect-scrollbar data-rebuild-on="rebuild:contestSchedule" data-rebuild-on-resize data-scroll-top>
                     <div data-ng-repeat="phase in contest.phases"
                      data-ng-init="time0=getPhaseTime(phase, 0, contest.phaseData); time1=getPhaseTime(phase, 1, contest.phaseData);" class="details"  data-ng-class="{singleLine: !time1.value}">
                         <div class="column">

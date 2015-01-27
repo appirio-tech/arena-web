@@ -234,7 +234,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     // broadcast problem-load message to child states.
                     $timeout(function () {
                         $rootScope.$broadcast('problem-loaded');
-                    }, 10);
+                    }, helper.COMMON_TIMEGAP);
                     startTimer();
                 }
             }
