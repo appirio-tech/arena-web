@@ -117,8 +117,11 @@
  * Changes in version 1.32 (Web Arena - Fix Empty Problem Statement Arena Issue):
  * - Added new library perfect-scrollbar to fix scrolling issues
  *
+ * Changes in version 1.33 (Web Arena - Show Code Image Instead of Text in Challenge Phase):
+ * - Added support to the compile provider.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
- * @version 1.32
+ * @version 1.33
  */
 'use strict';
 /*jshint -W097*/
@@ -381,7 +384,8 @@ main.directive('toggleSetting', directives.toggleSetting);
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
 
-main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpProvider', 'FacebookProvider', 'ngClipProvider', function ($stateProvider, $urlRouterProvider, themerProvider, $httpProvider, FacebookProvider, ngClipProvider) {
+main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpProvider', 'FacebookProvider', 'ngClipProvider', '$compileProvider', function ($stateProvider, $urlRouterProvider, themerProvider, $httpProvider, FacebookProvider, ngClipProvider, $compileProvider) {
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|data):/);
     if (config.staticFileHost === 'undefined') {
         config.staticFileHost = "";
     }

@@ -67,8 +67,11 @@
  * Changes in version 1.19 (Web Arena - Recovery From Lost Connection)
  * - Fixed the undefined test data issue.
  *
- * @author tangzx, amethystlei, flytoj2ee, Helstein
- * @version 1.19
+ * Changes in version 1.20 (Web Arena - Show Code Image Instead of Text in Challenge Phase)
+ * - Enable code editor if the user is the owner of the code during challenge phase.
+ *
+ * @author tangzx, amethystlei, flytoj2ee, Helstein, onsky
+ * @version 1.20
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -224,9 +227,8 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * @param enable whether enable
          */
         function enableEditor(enable) {
-
             if ($scope.cm) {
-                $scope.cm.setOption('readOnly', enable === false ? 'nocursor' : false);
+                $scope.cm.setOption('readOnly', enable === false && $scope.defendant !== $rootScope.username() ? 'nocursor' : false);
             }
         }
 
