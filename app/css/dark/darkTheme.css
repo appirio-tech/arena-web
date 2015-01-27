@@ -19,6 +19,9 @@ body{
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     background-image: url(../img/dark/sprite-2.png);
 }
+.CodeMirror-simplescroll-vertical > div {
+    background-color:  #2a2b2c;
+}
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
 .codeArea .socialLinks a:before,
@@ -51,7 +54,27 @@ body{
 .panelCodeEditor .panel-body .settingsPanel {
     background-image: url(../img/dark/popup-bg.png);
 }
-
+.panelCodeEditor .statusIcons .compiledStatus {
+    background: url(../img/dark/compiled.png) no-repeat;
+    background-position: left center;
+    color: rgb(232, 204, 105);
+}
+.panelCodeEditor .statusIcons .submittedStatus {
+    background: url(../img/dark/submitted.png) no-repeat;
+    background-position: left center;
+    color: rgb(155, 199, 66);
+}
+.panelCodeEditor .statusIcons .savedStatus {
+    background: url(../img/dark/saved.png) no-repeat;
+    background-position: left center;
+    color: rgb(40, 171, 220);
+}
+.panelCodeEditor .statusIcons .statusTime {
+    color: gray;
+}
+.searched {
+    color: #000 !important;
+}
 .header .navIcons>li>.icon:before,
 .header .pastNoti,
 .userInfo .notification,
@@ -118,7 +141,6 @@ body{
 .problemAssignmentPanel .filterToggle:before,
 .contestFilter.qtip-default,
 .contestManagement .table .viewBtn:before,
-.contestManagement .sortableHeading span,
 .contestManagementPanel .panel-heading .close:before,
 .contestManagementPanel .searchIcon:before,
 .contestManagementPanel .searchArea .tags .closeIcon:before,
@@ -435,6 +457,12 @@ footer .right .sponsorLogo {
 
 /* code editor widget */
 .panelCodeEditor .actionIcons > .link:hover {color: #fff;}
+
+.panelCodeEditor .actionIcons .refreshSystemTestLink:before {
+	background-image: url(../img/dark/sprite-codeArena.png);
+	background-position: -45px -21px;
+	background-repeat: no-repeat;
+}
 
 .panelCodeEditor .toolBar .middlePart .findInput {
     background: #162f36;
@@ -972,10 +1000,6 @@ footer .right .sponsorLogo {
     color: #5e676a;
 }
 
-.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #2a2b2c;
-}
-
 .contestManagement .titleBar .btn {
     background: #0f9abd;
 }
@@ -1091,10 +1115,6 @@ footer .right .sponsorLogo {
     background: #343434;
     color: #fff;
 }
-.contestManagementPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb,
-.problemAssignmentPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #1f444e;
-}
 .practiceProblemList .resultCount {
     color: #555;
 }
@@ -1144,14 +1164,14 @@ footer .right .sponsorLogo {
 .registration-modal-body .questionDiv{
     border: 1px solid;
     padding: 5px;
-    margin-left: 36px;
+    margin-left: 18px;
     margin-right: 18px;
     border-color: #1f444e;
     min-height: 250px;
 }
 .registration-modal-body .surveyDiv .index{
     color:white;
-    margin:5px 5px 5px 20px !important;
+    margin:5px 5px 5px 0px !important;
 }
 .registration-modal-body .questionTitle{
     padding-top: 20px;
@@ -1161,7 +1181,6 @@ footer .right .sponsorLogo {
     border: 1px solid;
     border-color: #1f444e;
     margin-right: 18px;
-    margin-left: 18px;
     min-height: 80px;
 }
 .testReportPanel .reportItem .textGray {color: #687376; }
@@ -1252,13 +1271,13 @@ footer .right .sponsorLogo {
     .panelContestStat .breadcrumbHead {height: 63px; }
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
 #challenges-advertiser {
     border: 1px solid #1f444e;
-    background: #151718;   
+    background: #151718;
 }
 
 #challenges-advertiser .challenge-technologies-wrapper {
@@ -1281,3 +1300,48 @@ footer .right .sponsorLogo {
 #challenges-advertiser .challenge-icon {
     color: #e9f2db;
 }
+/****** Loading spinner ******/
+.preloader-window {
+    background-color: #000000;
+    border: 1px solid #0bbbe7;
+    color: #fff;
+}
+.preloader-indicator>img {
+    background-image: url(../img/dark/preloader.gif);
+}
+/*
+*
+* Styles for chat area settings
+*
+*/
+.settings-qtip:after {
+    border-color: transparent transparent #151718 transparent;
+}
+.settings-qtip:before {
+    border-color: transparent transparent #335159 transparent;
+}
+.settings-panel {
+    color: #fff;
+    background: #151718;
+    border: 1px solid #2d2f30;
+}
+.settings-panel header, .settings-panel .setting {
+    border-bottom: 1px solid #1f444e;
+}
+.settings-panel, .settings-panel h3 {
+    font-weight: 300;
+}
+
+/*
+*
+* Styles for perfect scrollbar
+*
+*/
+.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y, .ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x {
+    background-color: #2a2b2c;
+}
+
+.ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {
+    background-color: #2a2b2c;
+}
+

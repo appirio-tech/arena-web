@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles user coding page logic.
@@ -52,13 +52,32 @@
  * Changes in version 1.14 (Web Arena Plugin API Part 2):
  * - Added plugin logic for ready.
  *
+ * Changes in version 1.15 (Web Arena SRM Problem Deep Link Assembly):
+ * - Added logic to handle invalid roundId, problemId and divisionId,
+ * which are side-effects of deep linking
+ *
+ * Changes in version 1.16 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Cancel the timer for auto save logic while leaving the page.
+ *
+ * Changes in version 1.17 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added logic to support running practice system test.
+ *
+ * Changes in version 1.18 (Web Arena - Scrolling Issues Fixes):
+ * - Refactored UI resizing logic to use flexbox layout
+ *
+ * Changes in version 1.19 (Web Arena - Fix Empty Problem Statement Arena Issue)
+ * - Added timeout of 10ms to problem-loaded event, so that perfect-scrollbar works perfect
+ *
+ * Changes in version 1.20 (Web Arena - Show Code Image Instead of Text in Challenge Phase):
+ * - Added function to show the generated code image in the challenge phase if the logged user is not writer
+ *
  * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.14
+ * @version 1.20
  */
 /*jshint -W097*/
 /*jshint strict:false*/
 'use strict';
-/*global module, angular, document, $, require, console*/
+/*global module, angular, document, $, require, console, startTimer*/
 /*jslint browser:true */
 
 /**
@@ -74,17 +93,16 @@ var config = require('../config');
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', 'tcTimeService', 'keyboardManager', 'appHelper',
-    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, tcTimeService, keyboardManager, appHelper) {
+var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'tcTimeService', 'keyboardManager', 'appHelper', '$http',
+    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, tcTimeService, keyboardManager, appHelper, $http) {
         $rootScope.$broadcast('hideFeedback');
         // shared between children scopes
         $scope.sharedObj = {};
-        $scope.topStatus = 'normal';
-        $scope.bottomStatus = 'normal';
         $scope.noCountdown = true;
-
+        $scope.problemAreaHeightRatio = 0.5;
         // problem data
         $scope.problem = {};
+        $scope.countdown = 1;
 
         $scope.roundID = Number($stateParams.roundId);
         $scope.problemID = Number($stateParams.problemId);
@@ -92,114 +110,50 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $scope.problemLoaded = false;
         $scope.hasExampleTest = false;
 
+        $scope.editorialLink = '';
+        if ($scope.currentStateName() === 'user.practiceCode') {
+            $http.get(config.apiDomain + '/data/srm/problems/' + $scope.problemID + '/rounds').success(function (data) {
+                if (data && data.rounds) {
+                    angular.forEach(data.rounds, function (round) {
+                        if (round && round.editorialLink && round.editorialLink.trim() !== ''
+                                && $scope.editorialLink.trim() === '') {
+                            $scope.editorialLink = round.editorialLink.trim();
+                        }
+                    });
+                }
+            }).error(function () {
+                $scope.editorialLink = '';
+            });
+        }
+
         $rootScope.previousStateName = $scope.currentStateName();
 
-        var componentOpened = false, problemRetrieved = false, notified = false, round,
-            topHeight, bottomHeight, toolBarHeight, totalHeight;
+        var componentOpened = false, problemRetrieved = false, notified = false, round, isValidComponent = false;
 
-        /**
-         * Check whether it is in Challenge Phase.
-         *
-         * @returns {boolean} is this phase or not.
-         */
-        $scope.isChallengePhase = function () {
-            var roundData = $scope.roundData[$scope.roundID];
-            if (!angular.isDefined(roundData) || !angular.isDefined(roundData.phaseData)) {
-                return false;
-            }
-            return roundData.phaseData.phaseType === helper.PHASE_TYPE_ID.ChallengePhase;
+        $scope.getFlexProperties = function (flexRatio) {
+            var flex = String(flexRatio) + ' ' + String(flexRatio) + ' ' + 100 * flexRatio + '%';
+
+            return {
+                '-webkit-box-flex': String(flexRatio),
+                '-moz-box-flex': String(flexRatio),
+                '-webkit-flex': flex,
+                '-ms-flex': flex,
+                'flex': flex
+            };
         };
 
-        $scope.getTopStatus = function () {
-            return $scope.topStatus;
-        };
+        $scope.$watch('problemAreaHeightRatio', function () {
+            $timeout(function () {
+                $rootScope.$broadcast('problem-loaded');
+                if ($scope.cmElem) {
+                    $scope.cmElem.CodeMirror.refresh();
+                }
+                if ($scope.sharedObj.rebuildErrorBar) {
+                    $scope.sharedObj.rebuildErrorBar();
+                }
+            });
+        });
 
-        $scope.getBottomStatus = function () {
-            return $scope.bottomStatus;
-        };
-
-        $scope.collapseOther = function (target) {
-            // origin height of top-content: 169(with 1px padding)
-            // origin height of bottom-content: 516
-            // origin height of codemirror: 475
-            var windowWidth = $window.innerWidth;
-
-            totalHeight = document.getElementById('top-content').offsetHeight + document.getElementById('bottom-content').offsetHeight;
-            toolBarHeight = 34 + 7;
-            if (windowWidth <= 502) {
-                toolBarHeight = 41 + 30;
-            } else if (windowWidth <= 741) {
-                toolBarHeight = 41 + 60;
-            }
-
-            if($scope.topStatus === 'normal') {
-                this.theCode = $scope.cmElem.CodeMirror.getValue();
-            } else if (this.theCode) {
-                $scope.cmElem.CodeMirror.setValue(this.theCode);
-            }
-
-            if ((target === 'top-content' && $scope.topStatus === 'expand') ||
-                    (target === 'bottom-content' && $scope.bottomStatus === 'expand')) {
-                //return to normal status
-                $('#top-content').css({
-                    height: topHeight + 'px'
-                });
-                $('#bottom-content').css({
-                    height: bottomHeight + 'px'
-                });
-                $('#codeArea').css({
-                    height: (bottomHeight - toolBarHeight) + 'px'
-                });
-                $('#testPanelDiv').css({
-                    height: (bottomHeight - toolBarHeight + 5) + 'px'
-                });
-                $scope.$broadcast('test-panel-loaded');
-                $scope.topStatus = 'normal';
-                $scope.bottomStatus = 'normal';
-                $scope.cmElem.CodeMirror.refresh();
-                $scope.sharedObj.rebuildErrorBar();
-            } else if (target === 'top-content') {
-                // expand top-content and collapse bottom-content with codemirror
-                topHeight = document.getElementById('top-content').offsetHeight;
-                bottomHeight = document.getElementById('bottom-content').offsetHeight;
-                $('#top-content').css({
-                    height: totalHeight + 'px'
-                });
-                $('#bottom-content').css({
-                    height: '0' + 'px'
-                });
-                $('#codeArea').css({
-                    height: '0' + 'px'
-                });
-                $scope.topStatus = 'expand';
-                $scope.bottomStatus = 'normal';
-                // close test report
-                $('#testReport').addClass('hide');
-            } else if (target === 'bottom-content') {
-                // expand bottom-content and collapse top one
-                topHeight = document.getElementById('top-content').offsetHeight;
-                bottomHeight = document.getElementById('bottom-content').offsetHeight;
-                $('#top-content').css({
-                    height: 1 + 'px'
-                });
-                $('#bottom-content').css({
-                    height: (totalHeight - 1) + 'px'
-                });
-                $('#codeArea').css({
-                    height: (totalHeight - 1 - toolBarHeight) + 'px'
-                });
-                $('#testPanelDiv').css({
-                    height: (totalHeight - 1 - toolBarHeight + 5) + 'px'
-                });
-                $scope.$broadcast('test-panel-loaded');
-                $scope.bottomStatus = 'expand';
-                $scope.topStatus = 'normal';
-                $scope.cmElem.CodeMirror.refresh();
-                $scope.sharedObj.rebuildErrorBar();
-            }
-            $rootScope.$broadcast('problem-loaded');
-        };
-        $scope.countdown = 1;
 
         /**
          * Set and start the timer.
@@ -226,6 +180,20 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 $scope.noCountdown = true;
             }
         }
+
+        /**
+         * Check whether it is in Challenge Phase.
+         *
+         * @returns {boolean} is this phase or not.
+         */
+        $scope.isChallengePhase = function () {
+            var roundData = $scope.roundData[$scope.roundID];
+            if (!angular.isDefined(roundData) || !angular.isDefined(roundData.phaseData)) {
+                return false;
+            }
+            return roundData.phaseData.phaseType === helper.PHASE_TYPE_ID.ChallengePhase;
+        };
+
 
         /*jslint unparam: true*/
         // handle phase data response
@@ -264,7 +232,9 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     });
                     $scope.problemLoaded = true;
                     // broadcast problem-load message to child states.
-                    $rootScope.$broadcast('problem-loaded');
+                    $timeout(function () {
+                        $rootScope.$broadcast('problem-loaded');
+                    }, helper.COMMON_TIMEGAP);
                     startTimer();
                 }
             }
@@ -375,7 +345,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             if (component.componentId !== $scope.componentID) {
                 return;
             }
-
+            $timeout(function () { return; }, 0);
             // make visit fields easily
             $scope.problem.component = component;
             $scope.problem.className = component.className;
@@ -434,6 +404,20 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             $scope.userData = {};
             $scope.userData.code = data.code.replace(/(\r\n|\n|\r)/gm, "\n");
             $scope.languageID = data.languageID;
+            // add code image if it is available
+            // only show the code image if it is available and current user is not the author
+            if (data.codeImage && $rootScope.username() !== data.writerHandle) {
+                $scope.codeImage = data.codeImage;
+            }
+            if (data.lastCompiledTime) {
+                $scope.compiledTime = new Date(data.lastCompiledTime);
+            }
+            if (data.lastSavedTime) {
+                $scope.savedTime = new Date(data.lastSavedTime);
+            }
+            if (data.lastSubmitTime) {
+                $scope.submittedTime = new Date(data.lastSubmitTime);
+            }
 
             // if there is no language id, read it from user preferences
             // the key of LANGUAGE is 0, from ContestConstants.java
@@ -515,6 +499,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     problemID: $scope.componentID
                 });
             }
+
+
+            // if leaving page, it should cancel the auto saving logic
+            if ($rootScope.autoSavingCodePromise) {
+                $timeout.cancel($rootScope.autoSavingCodePromise);
+            }
         }
 
         $window.onbeforeunload = onLeavingCodingPage;
@@ -537,6 +527,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                         if (angular.isDefined(round.problems[$scope.divisionID])) {
                             angular.forEach(round.problems[$scope.divisionID], function (problem) {
                                 if (problem.problemID === $scope.problemID) {
+                                    isValidComponent = true;
                                     $scope.problem = problem;
                                     $scope.componentID = problem.components[0].componentID;
                                     appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemClosed, {
@@ -557,6 +548,9 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                         }
                     }
                 }
+            }
+            if (!isValidComponent) {
+                $state.go(helper.STATE_NAME.Dashboard);
             }
         } else if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
             // close the previous problem if any
@@ -598,6 +592,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     });
                 }, 100);
             });
+            $scope.practiceRoomId = $stateParams.roomId;
             socket.emit(helper.EVENT_NAME.MoveRequest, { moveType: helper.ROOM_TYPE_ID.PracticeRoom, roomID: $stateParams.roomId });
             socket.emit(helper.EVENT_NAME.EnterRequest, { roomID: -1 });
         }
@@ -653,12 +648,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     angular.element('.chatInput').width(292);
                     angular.element('.chatInputText').width(282);
                 } else {
-                    $.fn.qtip.zindex = 1030;
+                    $.fn.qtip.zindex = 900;
                 }
                 $scope.$broadcast('rebuild:chatboard');
             }, 100);
         };
-        // back to normal 
+        // back to normal
         $scope.collapsePanel = function (panel) {
             $timeout(function () {
                 $scope.windowStatus[panel] = 'normal';
@@ -671,12 +666,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     angular.element('.chatInput').width(292);
                     angular.element('.chatInputText').width(282);
                 } else {
-                    $.fn.qtip.zindex = 1030;
+                    $.fn.qtip.zindex = 900;
                 }
                 $scope.$broadcast('rebuild:chatboard');
             }, 100);
         };
-        // set the panel to max 
+        // set the panel to max
         $scope.expandPanel = function (panel) {
             $timeout(function () {
                 $scope.windowStatus[panel] = 'max';
@@ -703,7 +698,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     angular.element('#leaderboardWidget').removeClass('hide');
                     angular.element('#chatWidget').addClass('hide');
                     $('#leaderboardFilter').qtip('api').set('show.modal', true);
-                    $.fn.qtip.zindex = 1030;
+                    $.fn.qtip.zindex = 900;
                 }
                 $scope.$broadcast('rebuild:chatboard');
             }, 100);

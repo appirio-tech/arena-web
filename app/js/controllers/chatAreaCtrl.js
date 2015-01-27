@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles chat area related logic.
@@ -37,8 +37,19 @@
  * - Added getMemberName() method.
  * - Prevent the double click event while user is leaving the room
  *
+ * Changes in version 1.10 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Fixed the undefined error while calling $rootScope.roomData.
+ *
+ * Changes in version 1.11 Add Settings Panel for Chat Widget):
+ * - Added scope variables for chat settings.
+ * - Added disable chat checking in submit chat action.
+ *
+ * Changes in version 1.12 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Added timeout of 10ms to rebuild:whosHere, rebuild:members, rebuild:methods, rebuild:registrants, rebuild:ratingKey
+ *   event, so that the perfect-scrollbar work fine in chat area.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.9
+ * @version 1.12
  */
 'use strict';
 /*global require, module, angular, $, window, document */
@@ -57,7 +68,7 @@ var helper = require('../helper');
  *
  * @type {*[]}
  */
-var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($scope, $rootScope, socket, $timeout) {
+var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'appHelper', function ($scope, $rootScope, socket, $timeout, appHelper) {
     var roundData,
         rebuildAllScrollbar = function () {
             $scope.$broadcast('rebuild:methods');
@@ -109,6 +120,14 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
     ];
     $scope.currentFontSize = "Medium";
 
+    $scope.chatSettings = {
+        chat: appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_CHAT),
+        history: appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_HISTORY),
+        autoscroll: appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_AUTOSCROLL),
+        timestamps: appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_TIMESTAMPS),
+        sounds: appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_SOUNDS)
+    };
+
     /**
      * Sets the font size.
      * @param size - the font size.
@@ -152,7 +171,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
     this.init = function (registrantsConfig) {
         if (registrantsConfig !== undefined && registrantsConfig === "true") {
             $scope.showRegistrant = true;
-            $scope.registrantsArray = $rootScope.roomData[$rootScope.currentRoomInfo.roomID].coders;
+            $scope.registrantsArray = $rootScope.roomData[$rootScope.currentRoomInfo.roomID] ? $rootScope.roomData[$rootScope.currentRoomInfo.roomID].coders : [];
         }
         rebuildAllScrollbar();
     };
@@ -194,10 +213,13 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         if (+roomID === +$rootScope.currentRoomInfo.roomID) {
             return;
         }
+        $rootScope.chatContent[$rootScope.currentRoomInfo.roomID] = [];
         $rootScope.chatContent[roomID] = [];
         socket.emit(helper.EVENT_NAME.MoveRequest, {moveType: $rootScope.roomMenu[roomID].roomType, roomID: roomID});
         socket.emit(helper.EVENT_NAME.EnterRequest, {roomID: -1});
-        $scope.$broadcast('rebuild:chatboard');
+        $timeout(function () {
+            $scope.$broadcast('reload:chatboard');
+        }, 90);
     };
     /*jslint unparam: false*/
 
@@ -333,7 +355,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         if (!isOpen) {
             $timeout(function () {
                 angular.element('#usersDropdownList').trigger('click');
-            }, 10);
+            }, helper.COMMON_TIMEGAP);
         }
 
         if ($scope.talkToUser !== '') {
@@ -348,8 +370,10 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         } else {
             $scope.whosHereArray = $scope.whosHereArrayFullList;
         }
-        $scope.$broadcast('rebuild:whosHere');
-        $scope.$broadcast('rebuild:members');
+        $timeout(function () {
+            $scope.$broadcast('rebuild:whosHere');
+            $scope.$broadcast('rebuild:members');
+        }, helper.COMMON_TIMEGAP);
     };
 
 
@@ -362,8 +386,10 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         } else {
             angular.element('#usersList').css("margin-top", '0px');
         }
-        $scope.$broadcast('rebuild:whosHere');
-        $scope.$broadcast('rebuild:members');
+        $timeout(function () {
+            $scope.$broadcast('rebuild:whosHere');
+            $scope.$broadcast('rebuild:members');
+        }, helper.COMMON_TIMEGAP);
     };
 
     /**
@@ -375,8 +401,9 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         } else {
             angular.element('#methodsList').removeClass('dropdown-menu-up');
         }
-
-        $scope.$broadcast('rebuild:methods');
+        $timeout(function () {
+            $scope.$broadcast('rebuild:methods');
+        }, helper.COMMON_TIMEGAP);
     };
 
     /**
@@ -419,13 +446,13 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
     };
 
     /**
-     * Rebuilds the multi ng-scrollbars in this widget.
+     * Rebuilds the multi perfect-scrollbars in this widget.
      *
      * @param {object} bar the scroll bar(s) to rebuild
      */
     $scope.rebuildScrollbar = function (bar) {
         //the left aside have a fixed height, so we need to customize the height of each
-        // ng-scrollbar which belong to registrants, who's here and rating key section.
+        // perfect-scrollbar which belong to registrants, who's here and rating key section.
         //
         // the height is calculate by the height of left aside, header of each section and
         // height of the rating key ul
@@ -437,15 +464,21 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
 
             if ($scope.collapseRatingKey === false) {
                 $scope.ratingKeyScrollHeight = "scroll-height-" + String(sectionOpen);
-                $scope.$broadcast('rebuild:ratingKey');
+                $timeout(function () {
+                    $scope.$broadcast('rebuild:ratingKey');
+                }, helper.COMMON_TIMEGAP);
             }
             if ($scope.collapseRegistrant === false) {
                 $scope.registrantsScrollHeight = "scroll-height-" + String(sectionOpen);
-                $scope.$broadcast('rebuild:registrants');
+                $timeout(function () {
+                    $scope.$broadcast('rebuild:registrants');
+                }, helper.COMMON_TIMEGAP);
             }
             if ($scope.collapseMemberHere === false) {
                 $scope.whosHereScrollHeight = "scroll-height-" + String(sectionOpen);
-                $scope.$broadcast('rebuild:whosHere');
+                $timeout(function () {
+                    $scope.$broadcast('rebuild:whosHere');
+                }, helper.COMMON_TIMEGAP);
             }
         } else if (bar === 'methods') {
             $scope.$broadcast('rebuild:methods');
@@ -554,7 +587,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
      */
     $scope.getMemberShortName = function (name) {
         if ((($rootScope.userLeavingIcons && $rootScope.userLeavingIcons[name]) || ($rootScope.userEnteringIcons && $rootScope.userEnteringIcons[name]))
-            && name.length > 14) {
+                && name.length > 14) {
             return name.substring(0, 12) + '...';
         }
         return name;
@@ -565,6 +598,20 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
      */
     $scope.chatSubmit = function () {
         var msg, tmpName = '', i;
+        if (appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_CHAT) === false) {
+            $rootScope.chatContent[$rootScope.currentRoomInfo.roomID + tmpName].push(
+                {
+                    userRating: 0,
+                    text: 'System> Chat mode is currently disabled. To enable chat mode, set "Chat" option to "ON" in the "Chat Settings" panel.',
+                    hasLink: false,
+                    links: [],
+                    type: 'system',
+                    time: new Date()
+                }
+            );
+
+            return;
+        }
         if ($scope.chatText === '') {
             return;
         }
@@ -625,6 +672,40 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', function ($sco
         socket.emit(helper.EVENT_NAME.ChatRequest, {msg: msg, roomID: $rootScope.currentRoomInfo.roomID, scope: $rootScope.chatScope});
         $scope.chatText = "";
     };
+
+
+    $scope.$watch('chatSettings.chat', function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+            appHelper.setChatSettingToLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_CHAT, newValue);
+        }
+    });
+
+    $scope.$watch('chatSettings.history', function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+            appHelper.setChatSettingToLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_HISTORY, newValue);
+            if (newValue === false) {
+                appHelper.clearLocalStorage();
+            }
+        }
+    });
+
+    $scope.$watch('chatSettings.autoscroll', function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+            appHelper.setChatSettingToLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_AUTOSCROLL, newValue);
+        }
+    });
+
+    $scope.$watch('chatSettings.timestamps', function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+            appHelper.setChatSettingToLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_TIMESTAMPS, newValue);
+        }
+    });
+
+    $scope.$watch('chatSettings.sounds', function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+            appHelper.setChatSettingToLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_SOUNDS, newValue);
+        }
+    });
 }];
 
 module.exports = chatAreaCtrl;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles test panel logic.
@@ -18,8 +18,11 @@
  * Changes in version 1.4 (Web Arena Plugin API Part 1):
  * - Added plugin logic for test panel.
  *
- * @author amethystlei, flytoj2ee
- * @version 1.4
+ * Changes in version 1.5 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Added timeout of 10ms to test-panel-loaded event, so that the perfect-scrollbar work fine in test panel
+ *
+ * @author amethystlei, flytoj2ee, TCASSEMBLER
+ * @version 1.5
  */
 'use strict';
 /*jshint -W097*/
@@ -281,6 +284,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
         testCase.checked = false;
         testCase.toggle = true;
         testCase.name = 'Custom Test Case ' + (count + 1);
+        testCase.problemId = $scope.problem.problemID;
         testCase.params = [];
         /*jslint unparam: true*/
         angular.forEach($scope.problem.allArgTypes, function (arg) {
@@ -292,13 +296,24 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
         $rootScope.userTests.unshift(testCase);
         count += 1;
     };
+
+    /**
+     * Filters out test cases with problem ID different than current problem.
+     * @param testCase the test case to be checked.
+     */
+    $scope.filterTestCases = function (testCase) {
+        return !testCase.problemId || testCase.problemId === $scope.problem.problemID;
+    };
+
     /**
      * Delete test case.
      * @param index the test case index.
      */
     $scope.deleteTestCase = function (index) {
         $rootScope.userTests.splice(index, 1);
-        $scope.$broadcast('test-panel-loaded');
+        $timeout(function () {
+            $scope.$broadcast('test-panel-loaded');
+        }, helper.COMMON_TIMEGAP);
     };
     /**
      * Edit the name of test case.
@@ -330,7 +345,9 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
      * Run tests.
      */
     $scope.runTests = function () {
-        $scope.$broadcast('test-panel-loaded');
+        $timeout(function () {
+            $scope.$broadcast('test-panel-loaded');
+        }, helper.COMMON_TIMEGAP);
         $scope.report = [];
         $scope.allTestCases = [];
         $scope.allTestCaseNames = [];
@@ -368,7 +385,9 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
     };
 
     $scope.toggleTextCase = function () {
-        $scope.$broadcast('test-panel-loaded');
+        $timeout(function () {
+            $scope.$broadcast('test-panel-loaded');
+        }, helper.COMMON_TIMEGAP);
     };
 
     $scope.toggleTextReport = function () {
