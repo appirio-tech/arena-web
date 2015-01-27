@@ -1,6 +1,12 @@
+<!--
 <div class="panel-heading" data-ng-class="{active:showSection==='users',inactive:showSection!=='users'}" data-ng-click="refreshActiveUser(true)">
   <input type="radio" data-ng-model="showSection" value="users" id="radioUsers" class="showSectionRadio" /><label
     for="radioUsers" class="showSectionLbl">Active Users {{getActiveUsersCountDetail()}}</label>
+</div>
+-->
+<div class="panel-heading">
+  <input type="radio" value="users" id="radioUsers" class="showSectionRadio" /><label
+         class="showSectionLbl">Active Users (coming soon)</label>
 </div>
 <div class="panel-body">
   <div class="contentWrapper" data-ng-show="showSection==='users'">
