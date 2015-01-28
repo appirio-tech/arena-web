@@ -3,7 +3,7 @@
     <h3>Notification ({{notificationService.pastNotifications.length}})</h3>
     <a data-ng-click="closePastNoti()" class="btnClose"></a>
 </div><!--/.panelHeader -->
-<div class="messageBox visible-lg visible-md" data-ng-scrollbar data-rebuild-on="rebuild:pastNotifications" data-reload-on="reload:pastNotifications">
+<div class="messageBox visible-lg visible-md" data-perfect-scrollbar data-up-down-arrow="true" data-rebuild-on="rebuild:pastNotifications" data-reload-on="reload:pastNotifications">
     <div class="messageWrapper">
         <div data-ng-repeat="item in notificationService.pastNotifications | limitTo: showLimit() track by $index " class="mItem {{item.type}}">
             <p class="topRow" data-ng-bind-html="item.message"></p>

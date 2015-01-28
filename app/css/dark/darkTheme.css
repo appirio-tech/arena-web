@@ -1000,10 +1000,6 @@ footer .right .sponsorLogo {
     color: #5e676a;
 }
 
-.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #2a2b2c;
-}
-
 .contestManagement .titleBar .btn {
     background: #0f9abd;
 }
@@ -1118,10 +1114,6 @@ footer .right .sponsorLogo {
 .contestManagementPanel .tags label {
     background: #343434;
     color: #fff;
-}
-.contestManagementPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb,
-.problemAssignmentPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #1f444e;
 }
 .practiceProblemList .resultCount {
     color: #555;
@@ -1343,4 +1335,17 @@ footer .right .sponsorLogo {
 /* live scoring widget */
 .live-scoring.panel-custom .panel-body {
     color: #ffffff;
+}
+
+/*
+*
+* Styles for perfect scrollbar
+*
+*/
+.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y, .ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x {
+    background-color: #2a2b2c;
+}
+
+.ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {
+    background-color: #2a2b2c;
 }

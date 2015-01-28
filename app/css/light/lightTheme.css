@@ -1079,14 +1079,6 @@ footer .right .sponsorLogo {
     color: #5e676a;
 }
 
-.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #0999d1;
-}
-.body  .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos:hover .ngsb-thumb {
-    background: #0885B6;
-    filter: "alpha(opacity=100)";
-    -ms-filter: "alpha(opacity=100)";
-}
 .contestManagement .panel-custom,
 .contestManagement .panel {
     border-width: 0;
@@ -1214,10 +1206,7 @@ footer .right .sponsorLogo {
     background: #343434;
     color: #fff;
 }
-.contestManagementPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb ,
-.problemAssignmentPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #75a5c8;
-}
+
 .contestTermsConfigPanel textarea {
     border-style: solid;
 }
@@ -1332,11 +1321,6 @@ footer .right .sponsorLogo {
 .customDropdown .dropdown-toggle{
     color: #316F99;
     border: 1px solid #B7C9D7;
-}
-
-.leadarboardList .ngsb-scrollbar,
-.activeUserList .ngsb-scrollbar{
-    background: #F5F8FA;
 }
 
 /*member feedback widget*/
@@ -1514,7 +1498,19 @@ footer .right .sponsorLogo {
     font-weight: normal;
 }
 .coder-history-modal-header {
-    border: 1px solid #e5e5e5!important;
+    border: 1px solid #e5e5e5 !important;
+}
+
+/*
+*
+* Styles for perfect scrollbar
+*
+*/
+.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y, .ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x {
+    background-color: #0999d1;
+}
+.ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {
+    background-color: #0999d1;
 }
 
 /* live scoring widget */

@@ -43,6 +43,9 @@
  * - Added TC_HOSTNAME and CHALLENGE_ADVERTISING_UPDATE
  *   to handle showing and updating challenge advertising data.
  *
+ * Changes in version 1.11 (Module Assembly - Web Arena Max Live Leaderboard Assembly):
+ * - Added MAX_LIVE_LEADERBOARD setting.
+ *
  * Changes in version 1.11 (Web Arena - Scrolling Issues Fixes Assembly):
  * - Added CSS files for codemirror's scroll plugin
  *
@@ -59,8 +62,11 @@
  * Changes in version 1.15 (Web Arena - Update Match Summary Tab Within Active Matches Widget):
  * - Added ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT setting.
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein
- * @version 1.15
+ * Changes in version 1.16 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Remove CSS references for ng-scrollbar
+ *
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, xjtufreeman
+ * @version 1.16
  */
 'use strict';
 /*global module, process*/
@@ -123,6 +129,7 @@ module.exports = function (grunt) {
                         { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT },
                         { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME },
                         { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
+                        { match : 'MAX_LIVE_LEADERBOARD', replacement: process.env.MAX_LIVE_LEADERBOARD },
                         { match : 'AUTO_SAVING_CODE_INTERVAL', replacement: process.env.AUTO_SAVING_CODE_INTERVAL },
                         { match : 'LEADERBOARD_REFRESH_TIME_GAP', replacement: process.env.LEADERBOARD_REFRESH_TIME_GAP },
                         { match : 'ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT', replacement: process.env.ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT }
@@ -163,7 +170,6 @@ module.exports = function (grunt) {
                     'bower_components/fullcalendar/fullcalendar.css',
                     'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
-                    'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                     'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                     'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
                     'app/css/notifications.css',
@@ -185,7 +191,6 @@ module.exports = function (grunt) {
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
-                        'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                         'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
                         'app/css/notifications.css',
@@ -206,7 +211,6 @@ module.exports = function (grunt) {
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
-                        'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                         'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
                         'app/css/notifications.css',
