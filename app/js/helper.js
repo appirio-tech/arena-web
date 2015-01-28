@@ -118,11 +118,14 @@
  * - Added LOGIN_WAITING_TIME setting.
  * - Updated the message text for lost connection logic.
  *
- * Changes in version 1.31 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
+ * Changes in version 1.32 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
  *  - Added REQUEST_TIME_FORMAT setting.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.32
+ * Changes in version 1.33 (Web Arena Keyboard shortcuts)
+ * - Added shortcut key events
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
+ * @version 1.33
  */
 'use strict';
 /*global module*/
@@ -582,5 +585,16 @@ module.exports = {
         runTestCaseFromPlugin: 'runTestCaseFromPlugin',
         setTestCasesFromPlugin: 'setTestCasesFromPlugin',
         registerFromPlugin: 'registerFromPlugin'
+    },
+    SHORTCUT_KEY_EVENT: {
+        goto: 'goto',
+        search: 'search',
+        compile: 'compile',
+        runAllTestCases: 'runAllTestCases',
+        runSingleTestCase: 'runSingleTestCase',
+        maximizeCodeArea: 'maximizeCodeArea',
+        maximizeProblemArea: 'maximizeProblemArea',
+        toggleChat: 'toggleChat',
+        toggleLeaderboard: 'toggleLeaderboard'
     }
 };

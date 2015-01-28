@@ -1334,8 +1334,23 @@ footer .right .sponsorLogo {
     border: 1px solid #2d2f30;
 }
 .settings-panel header, .settings-panel .setting {
-    border-bottom: 1px solid #1f444e;
+    border-bottom: 1px solid #48474B;
 }
 .settings-panel, .settings-panel h3 {
     font-weight: 300;
+}
+.shortcut-keys-list-color {
+    background-color: #636d70;
+    border: 1px solid #0bbbe7;
+}
+.shortcut-keys-list .main-div .table .item-color {
+    color: yellow;
+}
+
+.shortcut-keys-list .main-div .table .item .notes {
+    color: grey;
+    width: 350px;
+}
+.panelCodeEditor .panel-heading .actionIcons .helpLink:before {
+    background-image: url(../../img/dark/help-dark.png)
 }
