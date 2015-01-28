@@ -90,6 +90,9 @@ set LEADERBOARD_REFRESH_TIME_GAP=1000
 :: The TopCoder host name
 set TC_HOSTNAME=http://www.topcoder.com
 
+:: The max live leaderboard number
+set MAX_LIVE_LEADERBOARD=200
+
 ::The New Relic Browser KEY
 set NEWRELIC_BROWSER_APPLICATIONID=4447207
 set NEWRELIC_BROWSER_LICENSCEKEY=28fb2fc79c

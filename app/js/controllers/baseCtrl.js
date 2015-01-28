@@ -84,6 +84,9 @@
  * Changes in version 1.19 (Web Arena Plugin API Part 2):
  * - Fixed some undefined exceptions.
  *
+ * Changes in version 1.20 (Module Assembly - Web Arena Max Live Leaderboard Assembly):
+ * - Added new variable exceedLeaderBoardLimit.
+ *
  * Changes in version 1.20 (Web Arena SRM Problem Deep Link Assembly):
  * - Added copy link functionality in coder info popup
  *
@@ -461,6 +464,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     // modal defined in the root scope can be used by other scopes.
     $rootScope.currentModal = null;
     socket.emit(helper.EVENT_NAME.GetAdminBroadcastsRequest, {});
+
+    // used to define if exceeds the leaderboard limit
+    $rootScope.exceedLeaderBoardLimit = appHelper.exceedLeaderBoardLimit;
 
     /**
      * Open modal function.

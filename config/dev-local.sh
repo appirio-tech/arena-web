@@ -95,6 +95,9 @@ export LEADERBOARD_REFRESH_TIME_GAP=1000
 # The TopCoder host name
 export TC_HOSTNAME=http://www.topcoder.com
 
+# The max live leaderboard number
+export MAX_LIVE_LEADERBOARD=200
+
 #The New Relic Browser KEY
 export NEWRELIC_BROWSER_APPLICATIONID='4447207'
 export NEWRELIC_BROWSER_LICENSCEKEY='28fb2fc79c'
