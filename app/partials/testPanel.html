@@ -17,7 +17,7 @@
             <div class="testParam" data-ng-repeat="param in $parent.customTest track by $index" data-ng-init="paramNum=$index; editting=false">
                 <div data-ng-hide="editting">
                     <label for="param-{{caseNum}}-{{paramNum}}">{{problem.allArgTypes[paramNum].typeMapping[lang(langIdx).id]}} {{problem.paramNames[paramNum]}}</label>
-                    <div class="inputBorder"><input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType" /></div>
+                    <div class="inputBorder"><input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType" data-ng-keydown="handleShortcut($event)"/></div>
                     <a data-ng-show="!!param.complexType && param.complexType.length > 0" data-ng-click="editting=true; editParam($caseNum, $paramNum)" class="btn">
                         <span data-ng-show="!param.created">Create</span>
                         <span data-ng-show="param.created">Modify</span>
@@ -35,11 +35,11 @@
     <!-- Custom test cases -->
     <div class='testCase' data-ng-repeat="testCase in userTests | filter:filterTestCases track by $index" data-ng-init="caseNum=$index;">
         <header data-ng-hide="testCase.example"><!-- avoid unnecessary blank
-        --><input type="checkbox" id="customTestCase-{{caseNum}}" name="customTestCase-{{caseNum}}" class="caseCheck" data-ng-disabled="isTesting" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" /><!-- avoid unnecessary blank
+        --><input type="checkbox" id="customTestCase-{{caseNum}}" name="customTestCase-{{caseNum}}" class="caseCheck" data-ng-disabled="isTesting" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" data-ng-keydown="handleShortcut($event)"/><!-- avoid unnecessary blank
         --><a data-ng-click="testCase.toggle=!testCase.toggle; $parent.toggleTextCase()" data-ng-class="{open:testCase.toggle,collapsed:!testCase.toggle}" class="collapseIcon"></a><!-- avoid unnecessary blank
         --><label for="customTestCase-{{caseNum}}" class="caseLbl"></label><!--
         --><label class="nameLbl" data-ng-click="editName($index, $event)">{{testCase.name}}</label><!--
-        --><input type="text" placeholder="{{testCase.name}}" data-ng-model="$parent.$parent.caseName" data-ng-blur="updateName($index, $event);" class="nameInput hide" maxlength="18"/>
+        --><input type="text" placeholder="{{testCase.name}}" data-ng-model="$parent.$parent.caseName" data-ng-blur="updateName($index, $event);" class="nameInput hide" maxlength="18" data-ng-keydown="handleShortcut($event)"/>
             <a data-ng-click="runSingleTest(testCase)" class="runIcon">Run</a>
             <a data-ng-click="deleteTestCase($index)" class="deleteIcon">Delete</a>
         </header>
@@ -47,7 +47,7 @@
             <div class="testParam" data-ng-repeat="param in testCase.params track by $index" data-ng-init="paramNum=$index; editting=false">
                 <div data-ng-hide="editting">
                     <label for="param-{{caseNum}}-{{paramNum}}">{{problem.allArgTypes[paramNum].typeMapping[lang(langIdx).id]}} {{problem.paramNames[paramNum]}}</label>
-                    <div class="inputBorder"><input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType"/></div>
+                    <div class="inputBorder"><input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType" data-ng-keydown="handleShortcut($event)"/></div>
                     <a data-ng-show="(!!param.complexType && param.complexType.length > 0)" data-ng-click="editting=true; editParam($caseNum, $paramNum)" class="btn">
                         <span data-ng-show="!param.created">Create</span>
                         <span data-ng-show="param.created">Modify</span>
@@ -75,7 +75,7 @@
             <div class="testParam" data-ng-repeat="param in testCase.params track by $index" data-ng-init="paramNum=$index; editting=false">
                 <div data-ng-hide="editting">
                     <label for="param-{{caseNum}}-{{paramNum}}">{{problem.allArgTypes[paramNum].typeMapping[lang(langIdx).id]}} {{problem.paramNames[paramNum]}}</label><!-- avoid whitespace
-                    --><div class="inputBorder"><input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType" readonly/></div>
+                    --><div class="inputBorder"><input type="text" id="param-{{caseNum}}-{{paramNum}}" name="param-{{caseNum}}-{{paramNum}}" data-ng-model="param.value" data-ng-show="!param.complexType" readonly data-ng-keydown="handleShortcut($event)"/></div>
                     <a data-ng-show="(!!param.complexType && param.complexType.length > 0)" data-ng-click="editting=true; editParam($caseNum, $paramNum)" class="btn">
                         <span data-ng-show="!param.created">Create</span>
                         <span data-ng-show="param.created">Modify</span>

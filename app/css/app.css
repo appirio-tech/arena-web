@@ -9335,3 +9335,63 @@ table thead .sort.desc{
 .always-visible.ps-container > .ps-scrollbar-y-rail {
     opacity: 0.6;
 }
+
+.shortcut-keys-list {
+    top: 20%!important;
+    width: 880px!important;
+    height: 426px!important;
+    position: absolute;
+    left: 15%;
+    z-index: 1060;
+    opacity: 1;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.shortcut-keys-list:before {
+    display: block;
+    content: "";
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.shortcut-keys-list .main-div {
+    position: absolute;
+    padding: 10px 15px;
+    height: 426px;
+}
+
+.shortcut-keys-list .main-div .title {
+    font-size: larger;
+    font-weight: 400;
+}
+
+.shortcut-keys-list .main-div .cancel {
+    float: right;
+    cursor: pointer;
+}
+
+.shortcut-keys-list .main-div .table {
+    margin-top: 30px;
+}
+
+.shortcut-keys-list .main-div .table .left {
+    width: 440px;
+}
+.shortcut-keys-list .main-div .table .right {
+    width: 440px;
+}
+.shortcut-keys-list .main-div .table .item {
+    border-bottom: 1px solid #575757;
+    border-top: none;
+}
+
+.shortcut-keys-list .main-div .table .item.bottom-item {
+    border-bottom: none!important;
+}
