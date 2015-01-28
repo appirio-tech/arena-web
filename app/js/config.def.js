@@ -30,6 +30,7 @@ module.exports = {
     tweetUrl: '@@TWEET_URL',
     facebookLink: '@@FACEBOOK_LINK',
     registrationUrl: '@@REGISTRATION_URL',
+    pwResetURL: '@@PW_RESET_URL',
     spinnerTimeout: '@@SPINNER_TIMEOUT',
     divsionLearderBoardLimit: '@@DIVISION_LEADERBOARD_LIMIT',
     summaryTopCoderCount: '@@SUMMARY_TOPCODER_COUNT',

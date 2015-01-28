@@ -1521,11 +1521,24 @@ footer .left>span {
 }
 .socialButtons .challenge {
     color: rgb(49, 111, 153);
+
+/* ballonsWrap 
+-------------------------*/
+.ballonsWrap{
+    background: #000;
+    background: rgba(0,0,0,0.7); 
+}
+.ballonsWrap .ballon:hover{
+    background: #2A6B86;
+}
+.ballonsWrap .ballon .arrow{
+    border-color: #2A6B86;
 }
 
 /*Media blocks should be placed after the normal code!!!*/
 /*bootstrap small devices tablets*/
 @media only screen and (max-width: 991px) {
+
     .header .navIcons > li {
         background-image: url(../img/black-header.png);
     }
