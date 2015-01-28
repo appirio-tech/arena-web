@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file provide the main app configurations.
@@ -100,14 +100,39 @@
  * Changes in version 1.27 (Web Arena Plugin API Part 2):
  * - Added more implementations for plugin api.
  *
+ * Changes in version 1.28 (Web Arena SRM Problem Deep Link Assembly):
+ * - Added resolver enterCompetingRoom to Coding state. Now enter request will be sent before opening problem
+ * - Added ng-clip third party library to enable copy link functionality
+ * - Enabled deep-linking for SRM Problems (user.coding state)
+ *
+ * Changes in version 1.29 (Add Settings Panel for Chat Widget)
+ * - Added directives for chat area widget settings
+ *
+ * Changes in version 1.30 (Web Arena - Scrolling Issues Fixes):
+ * - Updated CodeMirror to latest version and added scrollbar plugin
+ *
+ * Changes in version 1.31 (Web Arena - Recovery From Lost Connection)
+ * - Added logic to recovery from lost connection.
+ *
+ * Changes in version 1.32 (Web Arena - Fix Empty Problem Statement Arena Issue):
+ * - Added new library perfect-scrollbar to fix scrolling issues
+ *
+ * Changes in version 1.33 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Remove js references for ng-scrollbar
+ *
+ * Changes in version 1.34 (Web Arena - Show Code Image Instead of Text in Challenge Phase):
+ * - Added support to the compile provider.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
- * @version 1.27
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, xjtufreeman
+ * @version 1.34
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
 /*global arena:true */
-/*global require*/
+/*global require, console*/
 require('./../../thirdparty/jquery/jquery');
 require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
@@ -116,7 +141,7 @@ require('./../../bower_components/angular-themer');
 require('./../../bower_components/angular-ui-angular/angular-cookies.min.js');
 require('./../../bower_components/angular-ui-router/release/angular-ui-router');
 require('./../../bower_components/angular-bootstrap/ui-bootstrap-tpls');
-require('./../../bower_components/codemirror/lib/codemirror');
+global.CodeMirror = require('./../../bower_components/codemirror/lib/codemirror');
 require('./../../bower_components/angular-ui-codemirror/ui-codemirror');
 require('./../../bower_components/codemirror/mode/clike/clike');
 require('./../../bower_components/codemirror/mode/vb/vb');
@@ -126,6 +151,7 @@ require('./../../bower_components/codemirror/addon/fold/foldgutter');
 require('./../../bower_components/codemirror/addon/fold/brace-fold');
 require('./../../bower_components/codemirror/addon/fold/comment-fold');
 require('./../../bower_components/codemirror/addon/fold/indent-fold');
+require('./../../bower_components/codemirror/addon/scroll/simplescrollbars');
 require('./../../bower_components/codemirror/addon/search/match-highlighter');
 require('./../../bower_components/codemirror/addon/search/searchcursor');
 require('./../../bower_components/codemirror/addon/search/search');
@@ -135,15 +161,19 @@ require('./../../bower_components/angular-ui-calendar/src/calendar.js');
 require('./../../bower_components/fullcalendar/fullcalendar.js');
 require('./../../bower_components/angulartics/dist/angulartics.min');
 require('./../../bower_components/angulartics/dist/angulartics-ga.min');
-require('./../../bower_components/angular-table/ng-table.min.js');
+require('./../../bower_components/angular-table/dist/ng-table.min.js');
 require('./../../bower_components/angular-facebook/lib/angular-facebook');
 require('./../../thirdparty/jquery.qtip/jquery.qtip.min.js');
-require('./../../thirdparty/ng-scrollbar/dist/ng-scrollbar.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-transition.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-alert.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-notify.js');
-require('./../../thirdparty/ng-scrollbar/dist/ng-customscrollbar.js');
+require('./../../thirdparty/perfect-scrollbar/perfect-scrollbar.js');
+require('./../../thirdparty/perfect-scrollbar/angular-perfect-scrollbar.js');
 require('./../../bower_components/angular-local-storage/dist/angular-local-storage.js');
+require('./../../thirdparty/ng-clip/ngClip.js');
+require('./../../thirdparty/ng-clip/ZeroClipboard.js');
+require('./../../bower_components/bootstrap-switch/dist/js/bootstrap-switch');
+require('./../../bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch');
 
 var config = require('./config.js');
 
@@ -238,6 +268,9 @@ directives.preloader = require('./directives/preloader');
 directives.memberFeedback = require('./directives/memberFeedback');
 directives.leaderboard = require('./directives/leaderboard');
 directives.challengesAdvertiser = require('./directives/challengesAdvertiser');
+directives.ngScrollbarAutoscroll = require('./directives/ngScrollbarAutoscroll');
+directives.chatSettings = require('./directives/chatSettings');
+directives.toggleSetting = require('./directives/toggleSetting');
 directives.ngBallons = require('./directives/ngBallons');
 
 /*global $ : false, angular : false, twttr : true */
@@ -250,7 +283,7 @@ directives.ngBallons = require('./directives/ngBallons');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'ngCustomScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook', 'ngClipboard', 'frapontillo.bootstrap-switch', 'perfect_scrollbar']);
 
 ///////////////
 // FACTORIES //
@@ -350,12 +383,19 @@ main.directive('preloader', directives.preloader);
 main.directive('memberFeedback', directives.memberFeedback);
 main.directive('leaderboard', directives.leaderboard);
 main.directive('challengesAdvertiser', directives.challengesAdvertiser);
+<<<<<<< HEAD
+=======
+main.directive('ngScrollbarAutoscroll', directives.ngScrollbarAutoscroll);
+main.directive('chatSettings', directives.chatSettings);
+main.directive('toggleSetting', directives.toggleSetting);
+>>>>>>> release
 main.directive('ngBallons', directives.ngBallons);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
 
-main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpProvider', 'FacebookProvider', function ($stateProvider, $urlRouterProvider, themerProvider, $httpProvider, FacebookProvider) {
+main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpProvider', 'FacebookProvider', 'ngClipProvider', '$compileProvider', function ($stateProvider, $urlRouterProvider, themerProvider, $httpProvider, FacebookProvider, ngClipProvider, $compileProvider) {
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|data):/);
     if (config.staticFileHost === 'undefined') {
         config.staticFileHost = "";
     }
@@ -379,6 +419,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
 
     //default is homepage not logged in
     $urlRouterProvider.otherwise('/a/home');
+    ngClipProvider.setPath(config.staticFileHost + "/data/ZeroClipboard.swf");
 
     //setup state machine logic (routing) for the entire app
     $stateProvider
@@ -428,7 +469,10 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
                 pageMetaKeywords: "coding"
             },
             templateUrl: 'partials/user.coding.html',
-            controller: 'userCodingCtrl'
+            controller: 'userCodingCtrl',
+            resolve: {
+                enterRoom: resolvers.enterCompetingRoom
+            }
         })
         .state('user.viewCode', {
             url: '/viewCode/{roundId}/{componentId}/{divisionId}/{roomId}/{defendant}/{page}',
@@ -440,7 +484,7 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
             controller: 'userCodingCtrl'
         })
         .state('user.practiceCode', {
-            url: '/practiceCode/{roundId}/{componentId}/{divisionId}/{roomId}',
+            url: '/practiceCode/{roundId}/{componentId}/{problemId}/{divisionId}/{roomId}',
             data: {
                 pageTitle: "Practice",
                 pageMetaKeywords: "practice,code,arena"
@@ -750,7 +794,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
             setLanguage : function (languageName) {
                 languageName = languageName ? languageName.toLowerCase() : '';
                 if (languageName === 'java' || languageName === 'c++' || languageName === 'c#' ||
-                    languageName === 'vb.net' || languageName === 'python') {
+                        languageName === 'vb.net' || languageName === 'python') {
                     $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.setLanguageFromPlugin, languageName);
                 } else {
                     console.log('The language name is invalid.');
@@ -1192,6 +1236,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     //consider exposing states and state params to all templates
     $rootScope.$state = $state;
     $rootScope.connectionID = undefined;
+    $rootScope.forcedLogout = false;
     $rootScope.startSyncResponse = false;
     $rootScope.lastServerActivityTime = new Date().getTime();
     $rootScope.leaderboard = [];
@@ -1199,7 +1244,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         //use whitelist approach
         var allowedStates = [helper.STATE_NAME.Anonymous, helper.STATE_NAME.AnonymousHome, helper.STATE_NAME.LoggingIn, helper.STATE_NAME.Logout],
             publicState = false,
-            deepLinks = [helper.STATE_NAME.DefaultContest, helper.STATE_NAME.Contest, helper.STATE_NAME.Member, helper.STATE_NAME.PracticeCode],
+            deepLinks = [helper.STATE_NAME.DefaultContest, helper.STATE_NAME.Contest, helper.STATE_NAME.Member, helper.STATE_NAME.PracticeCode, helper.STATE_NAME.Coding],
             isDeepLink = false,
             deepLink = {};
 
@@ -1227,8 +1272,14 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
                 case helper.STATE_NAME.PracticeCode:
                     deepLink.roundId = toParams.roundId;
                     deepLink.componentId = toParams.componentId;
+                    deepLink.problemId = toParams.problemId;
                     deepLink.divisionId = toParams.divisionId;
                     deepLink.roomId = toParams.roomId;
+                    break;
+                case helper.STATE_NAME.Coding:
+                    deepLink.roundId = toParams.roundId;
+                    deepLink.problemId = toParams.problemId;
+                    deepLink.divisionId = toParams.divisionId;
                     break;
                 }
                 sessionHelper.setDeepLink(deepLink);
@@ -1256,8 +1307,17 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
                 $state.go(deepLink.state, {
                     roundId : deepLink.roundId,
                     componentId : deepLink.componentId,
+                    problemId: deepLink.problemId,
                     divisionId : deepLink.divisionId,
                     roomId : deepLink.roomId
+                }, {reload: true});
+            } else if (deepLink.state === helper.STATE_NAME.Coding) {
+                sessionHelper.setDeepLink({});
+                event.preventDefault();
+                $state.go(deepLink.state, {
+                    roundId : deepLink.roundId,
+                    problemId : deepLink.problemId,
+                    divisionId : deepLink.divisionId
                 }, {reload: true});
             }
         }
@@ -1274,7 +1334,9 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         $rootScope.reconnected = false;
 
         socket.on(helper.EVENT_NAME.SocketConnected, function () {
-            $rootScope.connected = true;
+            if (!$rootScope.reconnected) {
+                $rootScope.connected = true;
+            }
             $rootScope.$broadcast(helper.EVENT_NAME.Connected, {});
         });
         socket.on(helper.EVENT_NAME.SocketDisconnected, function () {
@@ -1287,12 +1349,6 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
         });
         socket.on(helper.EVENT_NAME.SocketError, function () {
             $rootScope.$broadcast(helper.EVENT_NAME.SocketError, {});
-        });
-
-        socket.on(helper.EVENT_NAME.SocketReconnect, function () {
-            // get reconnect, but it should login again, keep connected flag to false here.
-            // $rootScope.connected = true;
-            $rootScope.reconnected = true;
         });
     });
 
@@ -1318,6 +1374,14 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
      */
     $rootScope.currentStateName = function () {
         return $state.current.name;
+    };
+
+    /**
+     * Get current state.
+     * @returns {*} the state instance.
+     */
+    $rootScope.currentState = function () {
+        return $state;
     };
 
     /**

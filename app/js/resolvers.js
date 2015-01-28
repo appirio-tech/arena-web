@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This is the resolver.
@@ -83,8 +83,23 @@
  * Changes in version 1.20 (Web Arena Plugin API Part 2):
  * - Added plugin logic to trigger events.
  *
- * @author amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.18
+ * Changes in version 1.21 (Web Arena SRM Problem Deep Link Assembly):
+ * - Updated enterCompetingRoom resolver to accommodate user.coding state as well
+ *
+ * Changes in version 1.22 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
+ * - Added the logic for chat setting and shown time in chat message.
+ *
+ * Changes in version 1.23 (TopCoder Competition Engine - Improve Automated Notification Messages)
+ * - Updated phase change notifications to match with arena applet
+ *
+ * Changes in version 1.24 (Web Arena - Recovery From Lost Connection)
+ * - Added forwardAfterReconnected() method.
+ *
+ * Changes in version 1.25 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Fix to support the perfect-scrollbar
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman
+ * @version 1.25
  */
 ///////////////
 // RESOLVERS //
@@ -96,6 +111,7 @@
 
 var config = require('./config');
 var helper = require('./helper');
+require('./server_newrelic');
 /**
  * Represents the timeout of establishing socket connection.
  *
@@ -160,23 +176,78 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     }
     $rootScope.loginTimeout = false;
     // if the listener is not ready, redirect
-    setTimeout(function () {
+    var checkLoginTimeOut = function () {
         if (angular.isUndefined($rootScope.isLoggedIn)) {
-            $rootScope.$apply(function () {
-                $rootScope.loginTimeout = true;
-            });
-            return forceLogout();
+            var inactivityInterval = new Date().getTime() - $rootScope.lastServerActivityTime;
+            if (inactivityInterval >= connectionTimeout) {
+                $rootScope.$apply(function () {
+                    $rootScope.loginTimeout = true;
+                });
+                return forceLogout();
+            }
+            $timeout(checkLoginTimeOut, connectionTimeout);
         }
-        // comment it now, it maybe change in final fix.
-//        if (!$rootScope.connected) {
-//            return forceLogout();
-//        }
-    }, connectionTimeout);
+    };
+    checkLoginTimeOut();
+
     // handle the start sync response
     socket.on(helper.EVENT_NAME.StartSyncResponse, function (data) {
         requestId = data.requestId;
         $rootScope.startSyncResponse = true;
     });
+
+
+    /**
+     * Forward the page after reconnected.
+     */
+    function forwardAfterReconnected() {
+        if ($rootScope.reconnected) {
+            $rootScope.reconnected = false;
+            var currentStateName = $rootScope.currentStateName(),
+                params = $rootScope.currentState().params,
+                stateName,
+                stateData;
+
+            if (currentStateName === helper.STATE_NAME.DefaultContest || currentStateName === helper.STATE_NAME.Contest) {
+                stateName = currentStateName;
+                stateData = {contestId: params.contestId};
+            } else if (currentStateName === helper.STATE_NAME.Member) {
+                stateName = currentStateName;
+                stateData = {
+                    memberName: params.memberName
+                };
+            } else if (currentStateName === helper.STATE_NAME.PracticeCode) {
+                stateName = currentStateName;
+                stateData = {
+                    roundId : params.roundId,
+                    componentId : params.componentId,
+                    divisionId : params.divisionId,
+                    roomId : params.roomId
+                };
+            } else if (currentStateName === helper.STATE_NAME.Coding) {
+                $rootScope.competingRoomID = -1;
+                stateName = currentStateName;
+                stateData = {
+                    roundId : params.roundId,
+                    problemId : params.problemId,
+                    divisionId : params.divisionId
+                };
+            } else if (currentStateName === helper.STATE_NAME.Anonymous || currentStateName === helper.STATE_NAME.AnonymousHome
+                || currentStateName === helper.STATE_NAME.LoggingIn || currentStateName === helper.STATE_NAME.Logout) {
+                stateName = currentStateName;
+                stateData = {};
+            } else {
+                stateName = helper.STATE_NAME.Dashboard;
+                stateData = {};
+            }
+
+            $timeout(function () {
+                $rootScope.loginPendingCount = 0;
+                $state.go(stateName, stateData, {reload: true});
+            }, helper.LOGIN_WAITING_TIME);
+        }
+    }
+
     // handle the login response
     socket.on(helper.EVENT_NAME.LoginResponse, function (data) {
         if (data.success) {
@@ -187,6 +258,9 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 sessionHelper.clearRemember();
             }
             $rootScope.connectionID = data.connectionID;
+            $rootScope.connected = true;
+
+            forwardAfterReconnected();
         } else {
             // if fail to log in, remove sso
             $rootScope.isLoggedIn = false;
@@ -671,6 +745,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         if (data.type === helper.CHAT_TYPES.SystemChat && data.data && (data.data.indexOf('has left the room.') !== -1
             || data.data.indexOf('has entered the room.') !== -1 || data.data.indexOf('has logged out.') !== -1)) {
             //skip the entering and leaving message
+            $rootScope.$broadcast('rebuild:chatboard');
             return;
         }
 
@@ -722,7 +797,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 text: data.data,
                 hasLink: links.length !== 0,
                 links: links,
-                type: 'toMe'
+                type: 'toMe',
+                time: new Date()
             };
         } else {
             tmp = {
@@ -731,12 +807,19 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
                 text: data.data,
                 hasLink: links.length !== 0,
                 links: links,
-                type: getChatType(data.type)
+                type: getChatType(data.type),
+                time: new Date()
             };
         }
 
-        $rootScope.chatContent[roomId].push(tmp);
-        appHelper.setLocalStorage(roomId, tmp);
+        if (appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_CHAT)) {
+            $rootScope.chatContent[roomId].push(tmp);
+        }
+
+        if (appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_CHAT)
+                && appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_HISTORY)) {
+            appHelper.setLocalStorage(roomId, tmp);
+        }
 
         if ($rootScope.chatContent[roomId].length > Number(config.chatLength)) {
             $rootScope.chatContent[roomId].shift();
@@ -744,7 +827,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
 
         appHelper.triggerPluginRoomEvent(helper.PLUGIN_ROOMS_EVENT.chatMessageReceived, roomId, data);
 
-        if (data.type === helper.CHAT_TYPES.WhisperToYouChat || user === $rootScope.username()) {
+        if ((data.type === helper.CHAT_TYPES.WhisperToYouChat || user === $rootScope.username())
+                && appHelper.getChatSettingFromLocalStorage(helper.LOCAL_STORAGE.CHAT_SETTING_SOUNDS)) {
             chatSound = document.getElementById('chatSound');
             if (chatSound) {
                 chatSound.load();
@@ -752,6 +836,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             }
         }
         $rootScope.$broadcast('rebuild:chatboard');
+        $rootScope.$broadcast('chatboardScrollToBottom');
     });
 
     // handle create room list response
@@ -866,16 +951,31 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             function formattedTime(timeInMs) {
                 return $filter('date')(timeInMs, helper.DATE_NOTIFICATION_FORMAT) + ' ' + $rootScope.timeZone;
             }
+            // Represents the phase names.
+            var messages = [
+                'Inactive Phase',
+                'Starts In Phase',
+                'Registration is now open',
+                'Registration is closed',
+                'Coding Phase has started',
+                'Coding Phase has ended',
+                'Challenge Phase has started',
+                'Challenge Phase has ended',
+                'System Test Phase has started'
+            ],
+                msg = helper.PHASE_NAME[data.phaseData.phaseType];
+
             // Match has completed.
             if (phaseData.phaseType === helper.PHASE_TYPE_ID.ContestCompletePhase) {
                 return 'Match completed at ' + formattedTime(now);
             }
             // The next phase is the Registration Phase
             if (phaseData.phaseType === helper.PHASE_TYPE_ID.StartsInPhase) {
-                return helper.PHASE_NAME[data.phaseData.phaseType + 1] + ' will start at ' + formattedTime(data.phaseData.endTime) + '.';
+                return 'Registration will open at ' + formattedTime(data.phaseData.endTime) + '.';
             }
-
-            var msg = helper.PHASE_NAME[data.phaseData.phaseType];
+            if (phaseData.phaseType > helper.PHASE_TYPE_ID.StartsInPhase && phaseData.phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase) {
+                return messages[phaseData.phaseType];
+            }
             if (data.phaseData.startTime > 0) {
                 // has 'started at' message
                 msg += ' started at ' + formattedTime(data.phaseData.startTime);
@@ -895,6 +995,10 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         if ($rootScope.roundData[data.phaseData.roundID]) {
             $rootScope.roundData[data.phaseData.roundID].phaseData = data.phaseData;
             $rootScope.$broadcast(helper.EVENT_NAME.PhaseDataResponse, data);
+            if (data.phaseData.phaseType === helper.PHASE_TYPE_ID.ContestCompletePhase) {
+                // Handled at popup generic response in baseCtrl
+                return;
+            }
             notificationService.addNotificationMessage({
                 type: 'round',
                 time: now,
@@ -1042,7 +1146,8 @@ resolvers.enterLobbyRoom = ['$q', 'socket', '$rootScope', function ($q, socket, 
  */
 resolvers.enterCompetingRoom = ['$q', 'socket', '$rootScope', '$stateParams', function ($q, socket, $rootScope, $stateParams) {
     var deferred = $q.defer(),
-        requestId = null;
+        requestId = null,
+        contestId = angular.isDefined($stateParams.contestId) ? $stateParams.contestId : $stateParams.roundId;
 
     // handle end-sync response
     socket.on(helper.EVENT_NAME.EndSyncResponse, function (data) {
@@ -1060,13 +1165,13 @@ resolvers.enterCompetingRoom = ['$q', 'socket', '$rootScope', '$stateParams', fu
     });
 
     if (angular.isDefined($rootScope.competingRoomID) && $rootScope.competingRoomID > -1) {
-        $rootScope.currentRoomInfo = $rootScope.competingRoomID;
+        $rootScope.currentRoomInfo.roomID = $rootScope.competingRoomID;
         socket.emit(helper.EVENT_NAME.MoveRequest, {
             moveType: $rootScope.roomData[$rootScope.competingRoomID].roomType,
             roomID: $rootScope.competingRoomID
         });
     } else {
-        socket.emit(helper.EVENT_NAME.EnterRoundRequest, {roundID: Number($stateParams.contestId)});
+        socket.emit(helper.EVENT_NAME.EnterRoundRequest, {roundID: Number(contestId)});
     }
     return deferred.promise;
 }];

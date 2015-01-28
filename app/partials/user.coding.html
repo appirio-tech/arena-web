@@ -1,40 +1,43 @@
 <div class="container-fluid inner"><!-- content start -->
     <div class="row-fluid dashboard codeArea">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left titleBar" id="titleBar">
-            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+        <div class="row-fluid heading">
+            <div class="col-xs-8 text-left titleBar" id="titleBar">
                 <div class="definition"><!-- avoid unnecessary whitespace
                     --><span class="item">Class Name&nbsp;:&nbsp;<span class="textWhite textBlack">{{problem.className}}</span>&nbsp;</span><!--
                     --><span class="item">Method Name&nbsp;:&nbsp;<span class="textWhite textBlack">{{problem.methodName}}</span>&nbsp;</span><br class="visible-xs"/><!--
                     --><span class="item">Return Type&nbsp;:&nbsp;<span class="textWhite textBlack">{{problem.allReturnType.typeMapping[lang(langIdx).id]}}</span></span><!--
                     --><span class="item">Arg Types&nbsp;:&nbsp;<span class="textWhite textBlack" data-ng-if="problemLoaded">({{problem.argTypeText}})</span></span><!--
                 --></div>
+
+                <!--div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 connection">
+                    <div class="rate">Rate<a class="voteUp textGreen vote">+1</a><a class="voteDown textRed vote">-1</a></div>
+                </div-->
+                <!--div class="shareLink">
+                    <ul>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-ng-click="showLinks=!showLinks">Share</a>
+                            <ul class="dropdown-menu socialLinks">
+                                <li><a data-ng-click="" class="btn btn-primary btn-lg btn-facebook">Facebook</a></li>
+                                <li><a data-ng-click="" class="btn btn-primary btn-lg btn-twitter">Twitter</a></li>
+                                <li><a data-ng-click="" class="btn btn-primary btn-lg btn-google">Google+</a></li>
+                                <li><a data-ng-click="" class="btn btn-primary btn-lg btn-github">GitHub</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div-->
             </div>
-            <!--div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 connection">
-                <div class="rate">Rate<a class="voteUp textGreen vote">+1</a><a class="voteDown textRed vote">-1</a></div>
-            </div-->
-            <!--div class="shareLink">
-                <ul>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-ng-click="showLinks=!showLinks">Share</a>
-                        <ul class="dropdown-menu socialLinks">
-                            <li><a data-ng-click="" class="btn btn-primary btn-lg btn-facebook">Facebook</a></li>
-                            <li><a data-ng-click="" class="btn btn-primary btn-lg btn-twitter">Twitter</a></li>
-                            <li><a data-ng-click="" class="btn btn-primary btn-lg btn-google">Google+</a></li>
-                            <li><a data-ng-click="" class="btn btn-primary btn-lg btn-github">GitHub</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div-->
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" data-ng-hide="currentStateName()==='user.practiceCode'">
-            <a data-ng-click="goBack()" class="btn btnBack">Back to Match</a>
+            <div class="col-xs-4 text-right code-area-controls">
+                <a data-ng-show="currentStateName()==='user.practiceCode' && editorialLink!==''" class="matchEditorial" href="{{editorialLink}}" target="_blank">Match Editorial</a>
+                <a data-ng-click="goBack()" class="btn btnBack" data-ng-hide="currentStateName()==='user.practiceCode'">Back to Match</a>
+                <a class="btnSplitView" data-ng-click="problemAreaHeightRatio = 0.5" data-ng-class="{disabled:problemAreaHeightRatio == 0.5}"></a>
+            </div>
         </div>
         <div class="container-fluid row-fluid mainContent">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-codingproblem></div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="resizer" data-resizer data-resizer-height="0" data-resizer-top="#top-content" data-resizer-bottom="#bottom-content" data-resizer-code-mirror="#codeArea" data-resizer-title-bar="#titleBar" data-resizer-max="400"><span></span></div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-codingeditor></div>
-            </div>
+
+            <div id="problem-statement" data-codingproblem data-ng-style="getFlexProperties(problemAreaHeightRatio)"></div>
+            <div id="resizer" data-resizer="problemAreaHeightRatio"><span></span></div>
+            <div id="code-editor" data-codingeditor data-ng-style="getFlexProperties(1-problemAreaHeightRatio)"></div>
+
         </div>
         <div class="docker" data-ng-hide="$state.includes('user.practiceCode')">
             <div data-chatarea data-chatarea-coding class="chatWidget chatArea chatArea-{{windowStatus.chatArea}}" id="chatWidget"></div><!-- avoid whitespace

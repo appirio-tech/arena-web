@@ -24,6 +24,16 @@ body{
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     background-image: url(../img/light/sprite-2.png);
 }
+.CodeMirror-simplescroll-vertical > div {
+    background: #0999d1;
+}
+.coding-page .btnSplitView {
+    background-image: url(../img/light/sprite-room-summary.png);
+    background-position: -45px -21px;
+}
+.coding-page .btnSplitView.disabled {
+    background-position: -45px 0;
+}
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
 .codeArea .socialLinks a:before,
@@ -123,9 +133,10 @@ body{
 .contestManagement .filterToggle:before,
 .problemAssignmentPanel .filterToggle:before,
 .contestManagementPanel .filterToggle:before,
+.detailPage section .heading .filterArea>a:before,
+.filterPanel .closeLink:before,
 .contestFilter.qtip-default,
 .contestManagement .table .viewBtn:before,
-.contestManagement .sortableHeading span,
 .contestManagementPanel .panel-heading .close:before,
 .contestManagementPanel .searchIcon:before,
 .contestManagementPanel .searchArea .tags .closeIcon:before,
@@ -144,7 +155,16 @@ body{
     background-image: url(../img/light/sprite-contestManagement.png);
     background-repeat: no-repeat;
 }
-
+.detailPage section .heading .filterArea>a:before,
+ .filterPanel .closeLink:before {
+    background-position: -100px 0;
+}
+.filterPanel .closeLink:before {
+    -webkit-transform:rotate(90deg);
+      -ms-transform:rotate(90deg);
+          transform:rotate(90deg);
+}
+.practiceProblemFilter.qtip-default,
 .problemListPanel .statusIcon:before{
     background-image: url(../img/light/sprite-practiceRoom.png);
     background-repeat: no-repeat;
@@ -472,6 +492,18 @@ footer .right .sponsorLogo {
 /* code editor widget */
 .panelCodeEditor .actionIcons > .link:hover {color: #316f99;}
 
+.panelCodeEditor .actionIcons .refreshSystemTestLink:before {
+	background-image: url(../img/light/sprite-codeArena.png);
+	background-position: -49px -20px;
+	background-repeat: no-repeat;
+}
+.panelCodeEditor .toolBar .actionIcons {
+    color: #7fe3fc;
+}
+.disableLink:hover,
+.disableLink {
+    color: rgb(101, 101, 101) !important;
+}
 .panelCodeEditor .toolBar .middlePart .findInput {
     background: #fff;
     border: 1px solid #b7c9d7;
@@ -524,6 +556,24 @@ footer .right .sponsorLogo {
 }
 .panelCodeEditor .settingsPanel .btn-settings {
     background: #0999d1;
+}
+.panelCodeEditor .statusIcons .compiledStatus {
+    background: url(../img/light/compiled.png) no-repeat;
+    background-position: left center;
+    color: rgb(232, 204, 105);
+}
+.panelCodeEditor .statusIcons .submittedStatus {
+    background: url(../img/light/submitted.png) no-repeat;
+    background-position: left center;
+    color: rgb(155, 199, 66);
+}
+.panelCodeEditor .statusIcons .savedStatus {
+    background: url(../img/light/saved.png) no-repeat;
+    background-position: left center;
+    color: rgb(40, 171, 220);
+}
+.panelCodeEditor .statusIcons .statusTime {
+    color: black;
 }
 .panelCodeEditor .panel-body .toolBar .rightPart {
     color: #316f99;
@@ -656,7 +706,7 @@ footer .right .sponsorLogo {
     line-height: 40px;
 }
 .panelContestStat .breadcrumbHead .breadcrumb li:last-child {
-    padding-right: 11px; 
+    padding-right: 11px;
     float: right;
 }
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
@@ -840,10 +890,6 @@ footer .right .sponsorLogo {
 .rating-grey,
 .rating-grey:hover{
     color: #999;
-}
-.rating-none,
-.rating-none:hover{
-    color: #000;
 }
 .rating-admin,
 .rating-admin:hover{
@@ -1033,14 +1079,6 @@ footer .right .sponsorLogo {
     color: #5e676a;
 }
 
-.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #0999d1;
-}
-.body  .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos:hover .ngsb-thumb {
-    background: #0885B6;
-    filter: "alpha(opacity=100)";
-    -ms-filter: "alpha(opacity=100)";
-}
 .contestManagement .panel-custom,
 .contestManagement .panel {
     border-width: 0;
@@ -1168,10 +1206,7 @@ footer .right .sponsorLogo {
     background: #343434;
     color: #fff;
 }
-.contestManagementPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb ,
-.problemAssignmentPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #75a5c8;
-}
+
 .contestTermsConfigPanel textarea {
     border-style: solid;
 }
@@ -1234,13 +1269,13 @@ footer .right .sponsorLogo {
 .registration-modal-body .questionDiv{
     border: 1px solid;
     padding: 5px;
-    margin-left: 36px;
+    margin-left: 18px;
     margin-right: 18px;
     border-color: #b7c9d7;
     min-height: 250px;
 }
 .registration-modal-body .surveyDiv .index{
-    margin:5px 5px 5px 20px !important;
+    margin:5px 5px 5px 0px !important;
 }
 .registration-modal-body .questionTitle{
     padding-top: 20px;
@@ -1249,7 +1284,6 @@ footer .right .sponsorLogo {
     border: 1px solid;
     border-color: #b7c9d7;
     margin-right: 18px;
-    margin-left: 18px;
     min-height: 80px;
 }
 .notifications .alert {
@@ -1287,11 +1321,6 @@ footer .right .sponsorLogo {
 .customDropdown .dropdown-toggle{
     color: #316F99;
     border: 1px solid #B7C9D7;
-}
-
-.leadarboardList .ngsb-scrollbar,
-.activeUserList .ngsb-scrollbar{
-    background: #F5F8FA;
 }
 
 /*member feedback widget*/
@@ -1356,6 +1385,19 @@ footer .right .sponsorLogo {
 }
 .socialButtons .challenge {
     color: rgb(48, 110, 157);
+
+/* ballonsWrap 
+-------------------------*/
+.ballonsWrap{
+    background: #000;
+    background: rgba(0,0,0,0.7);     
+    top: -1px;  
+}
+.ballonsWrap .ballon:hover{
+    background: #286985;
+}
+.ballonsWrap .ballon .arrow{
+    border-color: #286985;
 }
 
 /* ballonsWrap 
@@ -1431,13 +1473,13 @@ footer .right .sponsorLogo {
     }
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
 #challenges-advertiser {
     border: 1px solid #b7c9d7;
-    background: #f5f8fa;   
+    background: #f5f8fa;
 }
 
 #challenges-advertiser .challenge-technologies-wrapper {
@@ -1455,4 +1497,50 @@ footer .right .sponsorLogo {
 
 #challenges-advertiser .challenge-icon {
     color: #e9f2db;
+}
+/****** Loading spinner ******/
+.preloader-window {
+    background-color: #fff;
+    border: 1px solid #0bbbe7;
+    color: #316f99;
+}
+.preloader-indicator>img {
+    background-image: url(../img/light/preloader.gif);
+}
+/*
+*
+* Styles for chat area settings
+*
+*/
+.settings-qtip:after {
+    border-color: transparent transparent rgba(245,248,250,.98) transparent;
+}
+.settings-qtip:before {
+    border-color: transparent transparent rgba(245,248,250,.98) transparent;
+}
+.settings-panel {
+    color: rgb(49, 111, 153);
+    background: rgba(245,248,250,.98);
+    border: 1px solid #b7c9d7;
+}
+.settings-panel header, .settings-panel .setting {
+    border-bottom: 1px solid #b7c9d7;
+}
+.settings-panel, .settings-panel h3 {
+    font-weight: normal;
+}
+.coder-history-modal-header {
+    border: 1px solid #e5e5e5 !important;
+}
+
+/*
+*
+* Styles for perfect scrollbar
+*
+*/
+.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y, .ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x {
+    background-color: #0999d1;
+}
+.ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {
+    background-color: #0999d1;
 }

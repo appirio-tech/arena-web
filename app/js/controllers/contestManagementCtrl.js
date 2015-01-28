@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * Handles all Round Management related logic
@@ -14,12 +14,18 @@
  * Changes in version 1.3 (Module Assembly - Web Arena -Match Management Update):
  * - Added load round terms logic.
  *
- * @author TCASSEMBLER, dexy
- * @version 1.3
+ * Changes in version 1.4 (Web Arena - Match Management Page Load Improvement):
+ * - Added getRounds method which will use new api to retrieve all rounds.
+ * - Updated logic to include server-side pagination, sorting and filtering
+ *
+ * @author dexy, TCASSEMBLER
+ * @version 1.4
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
+/*jslint todo: true*/
+/*jslint continue: true*/
 /*jslint plusplus: true*/
 /*jslint unparam: true*/
 /*global document, angular:false, $:false, module, window, require, angular*/
@@ -48,6 +54,11 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
      * @type {number}
      */
     $scope.currentPage = 0;
+    /**
+     * Flag to keep track whether filter is changed or not
+     * @type {boolean}
+     */
+    $scope.hasFilterChanged = false;
 
     /**
      * Default filter keys
@@ -63,9 +74,9 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
             type: 'Any',
             status: 'Any'
         },
-        managementFilter: {
-            type: '',
-            status: ''
+        managementSortKey: {
+            name: 'Any',
+            registrationPhaseStartTime: 'Any'
         },
         assignmentFilterKey: {
             type: 'Any',
@@ -236,26 +247,16 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
 
     /**
      * Generates page list to display for pagination
-     * @param data Data to which no. of pages needs to be calculated
+     * @param actualLength Total no. of records available
      * @param num total num of records per page
      * @returns {*} Array of numbers starting from 1 representing pages
      */
-    $scope.range = function (data, num) {
-        var len, actualLength = 0;
-        if (num === 0) {
-            return [];
-        }
-        if (data instanceof Array) {
-            actualLength = data.length;
-
-        }
-        if (data instanceof Object) {
-            actualLength = Object.keys(data).length;
-        }
+    $scope.range = function (actualLength, num) {
+        var len;
         len = actualLength % num !== 0 ?
                 (actualLength - actualLength % num) / num + 1 : (actualLength - actualLength % num) / num;
         // If no. of pages is 1 then don't display pagination
-        if (len === 1) {
+        if (len === 1 || isNaN(len)) {
             len = 0;
         }
         return new [].constructor(len);
@@ -349,7 +350,10 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
     $scope.setFilterKey = function (panel, key, index) {
         switch (panel) {
         case 'management':
-            $scope.keys.managementFilterKey[key] = $scope.contestKeys[key][index];
+            if ($scope.keys.managementFilterKey[key] !== $scope.contestKeys[key][index]) {
+                $scope.hasFilterChanged = true;
+                $scope.keys.managementFilterKey[key] = $scope.contestKeys[key][index];
+            }
             break;
         case 'assignment':
             $scope.keys.assignmentFilterKey[key] = $scope.problemKeys[key][index];
@@ -368,10 +372,10 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
         $scope.closeQtip(panel);
         switch (panel) {
         case 'management':
-            angular.forEach($scope.keys.managementFilterKey, function (val, key) {
-                $scope.keys.managementFilter[key] = val === 'Any' ? '' : val;
-            });
-            $scope.currentPage = 0;
+            if ($scope.hasFilterChanged) {
+                $scope.hasFilterChanged = false;
+                $scope.getRounds(1);
+            }
             break;
         case 'assignment':
             clearTags();
@@ -391,34 +395,18 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
             return;
         }
     };
-
     /**
      * Sort implementation
-     * @param keywords Sort keyword
-     * @param key Sort column
      */
-    $scope.toggleSortKey = function (keywords, key) {
-        var index = keywords.indexOf(key),
-            i,
-            targetKey = key,
-            toggleKey = function (key) {
-                return key[0] === '-' ? key.substring(1, key.length) : ('-' + key);
-            };
-        if (index < 0) {
-            index = keywords.indexOf('-' + key);
-            targetKey = '-' + key;
-            if (index < 0) {
-                return;
+    $scope.toggleSortValue = function (sortKey) {
+        angular.forEach($scope.keys.managementSortKey, function (val, key) {
+            if (key === sortKey) {
+                $scope.keys.managementSortKey[key] = val === 'Any' || val === 'Asc' ? 'Desc' : 'Asc';
+            } else {
+                $scope.keys.managementSortKey[key] = 'Any';
             }
-        }
-        if (index === 0) {
-            targetKey = toggleKey(targetKey);
-        } else {
-            for (i = index; i > 0; i -= 1) {
-                keywords[i] = keywords[i - 1];
-            }
-        }
-        keywords[0] = targetKey;
+        });
+        $scope.getRounds(1);
     };
     /**
      * Model to search text
@@ -479,11 +467,6 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
     // ----------------------- Live Data Implementation ---------------
     // ----------------------- Round management Panel -----------------
     /**
-     * Represents all contests
-     * @type {{contestId : {contestId: Number, groupId: Number, name: String, status: String }}}
-     */
-    $scope.allContests = {};
-    /**
      * Represents all available rounds
      * @type {{roundId:
      *              {contest: Object,
@@ -530,11 +513,6 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
      */
     $scope.currentRound = undefined;
 
-    /**
-     * Disable assign button initially to give some time to load problems
-     * @type {boolean}
-     */
-    $scope.disableAssign = true;
     /**
      * Error handler for all ajax requests to API
      * This will ignore 404s and handles all other requests
@@ -586,37 +564,22 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
     $scope.$on('genericApiError', function (event, data) {
         genericErrorHandler(data);
     });
-    /*jslint unparam:false*/
-    /**
-     * It loads all rounds from $scope.allRounds to array to use in ng-repeat
-     * Make sure to call this method whenever there is change in $scope.allRounds
-     */
-    function loadRoundsArray() {
-        var roundKey;
-        $scope.allRoundsArray = [];
-        for (roundKey in $scope.allRounds) {
-            if ($scope.allRounds.hasOwnProperty(roundKey)) {
-                $scope.allRoundsArray.push($scope.allRounds[roundKey]);
-            }
-        }
-    }
-
     /**
      * Retrieves response of all problems to given round as ajax response
      * Save them to respective rounds
      * @param data Ajax response of all problems assigned to given round
      */
-    function saveRoundProblems(data) {
+    function saveRoundProblems(round, data) {
         var i = 0;
         if (data.error) {
             genericErrorHandler(data);
             return;
         }
-        $scope.allRounds[data.assignedProblems[i].problemData.roundId].problems = {};
+        round.problems = {};
         for (i = 0; i < data.assignedProblems.length; i++) {
-            $scope.allRounds[data.assignedProblems[i].problemData.roundId].
-                problems[data.assignedProblems[i].problemData.id] = data.assignedProblems[i].problemData;
+            round.problems[data.assignedProblems[i].problemData.id] = data.assignedProblems[i].problemData;
         }
+        return round;
     }
 
     /**
@@ -624,93 +587,61 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
      * Save them to respective rounds
      * @param data Ajax response of all problem components assigned to given round
      */
-    function saveRoundComponents(data) {
+    function saveRoundComponents(round, data) {
+        if (data.error) {
+            genericErrorHandler(data);
+            return;
+        }
         var i = 0;
-        if (data.error) {
-            genericErrorHandler(data);
-            return;
-        }
         for (i = 0; i < data.components.length; i++) {
-            if (!$scope.allRounds[data.components[i].roundId].components) {
-                $scope.allRounds[data.components[i].roundId].components = {};
+            if (!round.components) {
+                round.components = {};
             }
-            if (!$scope.allRounds[data.components[i].roundId].components[data.components[i].componentData.problemId]) {
-                $scope.allRounds[data.components[i].roundId].components[data.components[i].componentData.problemId] = {};
+            if (!round.components[data.components[i].componentData.problemId]) {
+                round.components[data.components[i].componentData.problemId] = {};
             }
-            $scope.allRounds[data.components[i].roundId].
-                components[data.components[i].componentData.problemId][data.components[i].division.id] = data.components[i];
+            round.components[data.components[i].componentData.problemId][data.components[i].division.id] = data.components[i];
         }
+        return round;
     }
-    /**
-     * Retrieves response of all registration qustions to given round as ajax response
-     * Save them to respective rounds
-     * @param data Ajax response of all registration questions assigned to given round
-     */
-    function saveRoundQustions(data) {
-        if (data.error) {
-            genericErrorHandler(data);
-            return;
-        }
-        $scope.allRounds[data.roundId].questions = data.questions;
-    }
-
-    /**
-     * Retrieves response of all terms to given round as ajax response
-     * Save them to respective rounds
-     * @param roundId - the round id.
-     * @return the funtion to get ajax response terms data.
-     */
-    function saveRoundTerms(roundId) {
-        return function (data) {
-            if (data.error) {
-                genericErrorHandler(data);
-                return;
-            }
-            $scope.allRounds[roundId].terms = data.roundTermsContent;
-        };
-    }
-
     /**
      * Retrieves response of all rounds to given contest as ajax response
      * Once round data is received, requests will be sent to retrieve respective problems and problem components
      * @param rounds Ajax response of all rounds assigned to given contest
      */
     function saveContestRounds(rounds) {
-        var i = 0, roundId;
+        var i = 0;
         $scope.numContestRequests -= 1;
         if (rounds.error) {
             genericErrorHandler(rounds);
             return;
         }
-        /**
-         * Give 20 seconds for every problem to load
-         */
-        $timeout(function () {
-            $scope.disableAssign = false;
-        }, 2000);
+        $scope.totalRounds = rounds.total;
+        $scope.allRounds = {};
+        $scope.allRoundsArray = [];
         for (i = 0; i < rounds.data.length; i++) {
-            $scope.allRounds[rounds.data[i].id] = rounds.data[i];
-            if (rounds.data[i].name === $scope.allContests[rounds.data[i].contest.id].name) {
-                $scope.allRounds[rounds.data[i].id].title = rounds.data[i].name;
-            } else {
-                $scope.allRounds[rounds.data[i].id].title = $scope.allContests[rounds.data[i].contest.id].name + " " + rounds.data[i].name;
+            // TODO remove this when api is updated to skip lobby round. Also remove jslint todo: true and continue: true
+            if (rounds.data[i].id === 0) {
+                continue;
             }
-
-            $scope.allRounds[rounds.data[i].id].status = helper.ROUND_STATUS[rounds.data[i].status];
+            $scope.allRounds[rounds.data[i].id] = rounds.data[i];
+            $scope.allRounds[rounds.data[i].id].title = $scope.allRounds[rounds.data[i].id].name;
             $scope.allRounds[rounds.data[i].id].start =
-                    undefined === rounds.data[i].segments ? '' : rounds.data[i].segments.registrationStartTime;
-            $http.get(config.apiDomain + '/data/srm/rounds/' + rounds.data[i].id + '/problems', header).
-                success(saveRoundProblems).error(genericErrorHandler);
-            $http.get(config.apiDomain + '/data/srm/rounds/' + rounds.data[i].id + '/components', header).
-                success(saveRoundComponents).error(genericErrorHandler);
-            $http.get(config.apiDomain + '/data/srm/rounds/' + rounds.data[i].id + '/questions', header).
-                success(saveRoundQustions).error(genericErrorHandler);
-            //Retrieves response of terms to given round
-            roundId = rounds.data[i].id;
-            $http.get(config.apiDomain + '/data/srm/rounds/' + roundId + '/terms', header).
-                success(saveRoundTerms(roundId)).error(genericErrorHandler);
+                    undefined === rounds.data[i].roundSchedule[0].startTime ? '' : rounds.data[i].roundSchedule[0].startTime;
+            // Generate segments with various lengths in minutes
+            $scope.allRounds[rounds.data[i].id].segments = {};
+            if (rounds.data[i].roundSchedule) {
+                $scope.allRounds[rounds.data[i].id].segments.registrationLength =
+                    rounds.data[i].roundSchedule[0] ? +Math.floor((Date.parse(rounds.data[i].roundSchedule[0].endTime) - Date.parse(rounds.data[i].roundSchedule[0].startTime)) / (60 * 1000)) : 0;
+                $scope.allRounds[rounds.data[i].id].segments.codingLength =
+                    rounds.data[i].roundSchedule[1] ? +Math.floor((Date.parse(rounds.data[i].roundSchedule[1].endTime) - Date.parse(rounds.data[i].roundSchedule[1].startTime)) / (60 * 1000)) : 0;
+                $scope.allRounds[rounds.data[i].id].segments.intermissionLength =
+                    rounds.data[i].roundSchedule[2] ? +Math.floor((Date.parse(rounds.data[i].roundSchedule[2].endTime) - Date.parse(rounds.data[i].roundSchedule[2].startTime)) / (60 * 1000)) : 0;
+                $scope.allRounds[rounds.data[i].id].segments.challengeLength =
+                    rounds.data[i].roundSchedule[3] ? +Math.floor((Date.parse(rounds.data[i].roundSchedule[3].endTime) - Date.parse(rounds.data[i].roundSchedule[3].startTime)) / (60 * 1000)) : 0;
+            }
+            $scope.allRoundsArray.push($scope.allRounds[rounds.data[i].id]);
         }
-        loadRoundsArray();
     }
 
 
@@ -728,43 +659,27 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
 
     $scope.numContestRequests = 1;
     /**
-     * Sends request to api to get all contests
-     * Once contests are received request will be sent to retrieve respective rounds
+     * Sends request to api to get all rounds
      */
-    $http.get(config.apiDomain + '/data/srm/contests', header).success(function (contests) {
-        var i = 0;
-        $scope.numContestRequests -= 1;
-        if (contests.error) {
-            genericErrorHandler(contests);
-            return;
-        }
-        for (i = 0; i < contests.length; i++) {
-            $scope.allContests[contests[i].contestId] = contests[i];
-            $scope.numContestRequests += 1;
-            $http.get(config.apiDomain + '/data/srm/rounds/' + contests[i].contestId, header)
-                .success(saveContestRounds)
-                .error(errorLoadingRounds);
-        }
-    });
-    /**
-     * Sends api request to ret
-     */
-    $scope.numContestRequests += 1;
-    $http.get(config.apiDomain + '/data/srm/problems', header).success(function (data) {
-        var i = 0;
-        $scope.numContestRequests -= 1;
-        if (data.error) {
-            genericErrorHandler(data);
-            return;
-        }
-        $scope.allProblemsArray = data.problems;
-        for (i = 0; i < data.problems.length; i++) {
-            $scope.allProblems[data.problems[i].id] = data.problems[i];
-        }
-    }).error(function (data) {
-        $scope.numContestRequests -= 1;
-        genericErrorHandler(data);
-    });
+    $scope.getRounds = function (pageNum) {
+        var query = 'pageIndex=' + pageNum + '&pageSize=' + $scope.pageLength;
+        angular.forEach($scope.keys.managementFilterKey, function (val, key) {
+            if (val !== 'Any') {
+                query += '&' + key + '=' + val;
+            }
+        });
+        angular.forEach($scope.keys.managementSortKey, function (val, key) {
+            if (val !== 'Any') {
+                query += '&sortColumn=' + key + '&sortOrder=' + val;
+            }
+        });
+        $scope.setCurrentPage(pageNum);
+        $scope.numContestRequests = 1;
+        $http.get(config.apiDomain + '/data/rounds?' + query, header)
+            .success(saveContestRounds)
+            .error(errorLoadingRounds);
+    };
+    $scope.getRounds(1);
 
     // --------------- Problem Assignment panel ---------------------
     /**
@@ -777,13 +692,11 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
      * @type {Array}
      */
     $scope.problemsToAssign = [];
-
     /**
-     * Opens Assign Problems popup
-     * It loads problem in appropriate divisions
-     * @param round Selected round to assign problems
+     * After problem and components are loaded this method will be called to open popup
+     * @param round
      */
-    $scope.openAssignProblem = function (round) {
+    function openAssignProblemPopup(round) {
         $scope.currentRound = round;
         $scope.problemsToAssign = [];
         $scope.assignedProblems = [];
@@ -805,11 +718,64 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
                 }
             }
         }
+        $scope.numProblemRequests -= 1;
         $scope.showPopup('problemAssignmentPanel');
         $timeout(function () {
             $scope.$broadcast('reload:assignedProblems');
             $scope.$broadcast('reload:availableProblems');
         }, 50);
+    }
+    /**
+     * Loads components for given round
+     * @param round
+     */
+    function loadComponents(round) {
+        $http.get(config.apiDomain + '/data/srm/rounds/' + round.id + '/components', header).success(function (data) {
+            round = saveRoundComponents(round, data);
+            openAssignProblemPopup(round);
+        }).error(function (data) {
+            if (data.error.value === 404) {
+                round.problems = {};
+                openAssignProblemPopup(round);
+            } else {
+                $scope.numProblemRequests -= 1;
+                genericErrorHandler(data);
+            }
+        });
+    }
+    /**
+     * Opens Assign Problems popup
+     * It loads problem in appropriate divisions
+     * @param round Selected round to assign problems
+     */
+    $scope.openAssignProblem = function (round) {
+        $scope.numProblemRequests = 1;
+        $http.get(config.apiDomain + '/data/srm/problems', header).success(function (data) {
+            var i = 0;
+            if (data.error) {
+                genericErrorHandler(data);
+                return;
+            }
+            $scope.allProblemsArray = data.problems;
+            for (i = 0; i < data.problems.length; i++) {
+                $scope.allProblems[data.problems[i].id] = data.problems[i];
+            }
+            $http.get(config.apiDomain + '/data/srm/rounds/' + round.id + '/problems', header).success(function (data) {
+                round = saveRoundProblems(round, data);
+                loadComponents(round);
+            }).error(function (data) {
+                if (data.error.value === 404) {
+                    round.components = {};
+                    loadComponents(round);
+                } else {
+                    $scope.numProblemRequests -= 1;
+                    genericErrorHandler(data);
+                }
+            });
+        }).error(function (data) {
+            $scope.numProblemRequests -= 1;
+            genericErrorHandler(data);
+        });
     };
     /**
      * Implementation of Assign button action
@@ -897,13 +863,7 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
         // save problem configuration
         $scope.assignedProblems.push(angular.copy($scope.problemToAssign));
 
-        // remove from the list of problems to assign
-//        for (i = 0; i < $scope.problemsToAssign.length; i += 1) {
-//            if ($scope.problemsToAssign[i].id === $scope.problemToAssign.id) {
-//                $scope.problemsToAssign.splice(i, 1);
-//            }
-//        }
-        $scope.hidePopup('assignment');
+        $scope.hidePopup('problemAssignment');
         $timeout(function () {
             $scope.$broadcast('reload:assignedProblems');
             $scope.$broadcast('reload:availableProblems');
@@ -933,11 +893,7 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
                     genericErrorHandler(data);
                     return;
                 }
-                // Refresh rounds data upon successful submission of components
-                $http.get(config.apiDomain + '/data/srm/rounds/' + $scope.currentRound.id + '/problems', header).
-                    success(saveRoundProblems).error(genericErrorHandler);
-                $http.get(config.apiDomain + '/data/srm/rounds/' + $scope.currentRound.id + '/components', header).
-                    success(saveRoundComponents).error(genericErrorHandler);
+                $scope.currentRound.hasProblems = components.length > 0;
                 $scope.currentRound = undefined;
                 $scope.hidePopup('problemAssignmentPanel');
             }).error(genericErrorHandler);
@@ -1124,17 +1080,11 @@ var contestManagementCtrl = ['$rootScope', '$scope', '$http', '$timeout', 'appHe
         });
     };
     $scope.commandsDisabled = false;
-    socket.emit(helper.EVENT_NAME.RoundAccessRequest, {});
+
     if (angular.isUndefined($rootScope.hasAccess)) {
         $rootScope.hasAccess = {};
     }
-    $scope.$on(helper.EVENT_NAME.RoundAccessResponse, function (event, data) {
-        if (angular.isDefined(data.rounds)) {
-            angular.forEach(data.rounds, function (round) {
-                $rootScope.hasAccess[round.id] = true;
-            });
-        }
-    });
+
     // handle the case when round access request failed
     // show the error message and reemit the request after 3s
     $scope.$$listeners[helper.EVENT_NAME.CommandFailedResponse] = [];

@@ -104,7 +104,7 @@
         </div>
         <!-- step 3. Advance Setting-->
         <div class="tabContent step-3" data-ng-show="index==3">
-            <p class="info">On this step you can customize exactly how your match will run. These are preset to [topcoder] standard SRM settings; <br/>leave them unchanged to adhere to [topcoder]'s tried and true match style.</p>
+            <p class="info">On this step you can customize exactly how your match will run. These are preset to [topcoder]'s standard SRM settings; <br/>leave them unchanged to adhere to [topcoder]'s tried and true match style.</p>
             <!-- customized phase schedule -->
             <div class="panel phaseSchedule">
                 <a data-ng-click="toggle('openPhaseSchedule')" class="panel-heading" data-ng-class="{open:openPhaseSchedule}"><span>Customize Phase Schedule (HH:MM)</span></a>
@@ -185,7 +185,7 @@
             <hr class="line" data-ng-hide="openPhaseSchedule"/>
             <!-- customized room assignment -->
             <div class="panel roomAssignment">
-                <a data-ng-click="toggle('openRoomAssignment')" class="panel-heading" data-ng-class="{open:openRoomAssignment}"><span>Customized Room Assignment</span></a>
+                <a data-ng-click="toggle('openRoomAssignment')" class="panel-heading" data-ng-class="{open:openRoomAssignment}"><span>Customize Room Assignment</span></a>
                 <div class="panel-body" data-ng-show="openRoomAssignment">
                     <fieldset class="coderPerRoom" data-ng-class="{error: !formValid.coderPerRoom}">
                         <label>Coders per room</label><!--
@@ -240,7 +240,7 @@
                             <label>Start Date</label><span>{{startDateSum}}, {{(startHh + '').length < 2 ? ('0' + startHh) : startHh}}:{{(startMm + '').length < 2 ? ('0' + startMm) : startMm}} {{getMarker()}} {{timeZone}}</span>
                         </p>
                         <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 typePart">
-                            <label>Type: </label><span>{{type}}</span>
+                            <label>Type</label><span>{{type}}</span>
                         </p>
                     </div>
                     <p><label>Allowed Language(s)</label><span>{{getChoice()}}</span></p>
@@ -252,7 +252,7 @@
                     <span class="taglineSum">{{tagline}}</span>
                 </div>
                 <div class="other">
-                    <p><label>Status:</label><span>Active</span><label class="marginLeft">Officially rated Match:</label><span>{{ officialRated === true ? 'Yes' : 'No' }}</span></p>
+                    <p><label>Status</label><span>Active</span><label class="marginLeft">Officially Rated Match</label><span>{{ officialRated === true ? 'Yes' : 'No' }}</span></p>
                     <div><label for="notes">Add Notes</label><div class="inputBorder"><input type="text" id="notes" name="notes" data-ng-model="$parent.notes" maxlength="250"></div></div>
                 </div>
             </div>

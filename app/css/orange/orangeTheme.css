@@ -19,6 +19,16 @@ body{
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     background-image: url(../img/orange/sprite-2.png);
 }
+.CodeMirror-simplescroll-vertical > div {
+    background: #ff8a00;
+}
+.coding-page .btnSplitView {
+    background-image: url(../img/orange/sprite-room-summary.png);
+    background-position: -45px -21px;
+}
+.coding-page .btnSplitView.disabled {
+    background-position: -45px 0;
+}
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
 .codeArea .socialLinks a:before,
@@ -51,7 +61,26 @@ body{
 .panelCodeEditor .panel-body .settingsPanel {
     background-image: url(../img/orange/popup-bg.png);
 }
-
+.panelCodeEditor .statusIcons .compiledStatus {
+    background: url(../img/orange/compiled.png) no-repeat;
+    background-position: left center;
+}
+.panelCodeEditor .statusIcons .submittedStatus {
+    background: url(../img/orange/submitted.png) no-repeat;
+    background-position: left center;
+}
+.panelCodeEditor .statusIcons .savedStatus {
+    background: url(../img/orange/saved.png) no-repeat;
+    background-position: left center;
+}
+.panelCodeEditor .statusIcons .compiledStatus,
+.panelCodeEditor .statusIcons .submittedStatus,
+.panelCodeEditor .statusIcons .savedStatus {
+    color: rgb(255, 138, 0);
+}
+.panelCodeEditor .statusIcons .statusTime {
+    color: black;
+}
 .header .navIcons>li>.icon:before,
 .header .pastNoti,
 .userInfo .notification,
@@ -119,7 +148,6 @@ body{
 .contestManagementPanel .filterToggle:before,
 .contestFilter.qtip-default,
 .contestManagement .table .viewBtn:before,
-.contestManagement .sortableHeading span,
 .contestManagementPanel .panel-heading .close:before,
 .contestManagementPanel .searchIcon:before,
 .contestManagementPanel .searchArea .tags .closeIcon:before,
@@ -466,10 +494,6 @@ footer .left>span {
     color: #707070;
 }
 
-/* ng-scrollbar style */
-.body .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #ff8a00;
-}
 /*********************  widgets */
 /* active contests widget */
 .panel-custom {
@@ -537,6 +561,13 @@ footer .left>span {
 
 /* code editor widget */
 .panelCodeEditor .actionIcons > .link:hover {color: #687376;}
+
+.panelCodeEditor .actionIcons .refreshSystemTestLink:before {
+	background-image: url(../img/orange/sprite-codeArena.png);
+	background-position: -74px -20px;
+	background-repeat: no-repeat;
+}
+
 .panelCodeEditor .toolBar .actionIcons {
     color: #ff8a00;
 }
@@ -769,13 +800,6 @@ footer .left>span {
 .panelOverview .panel-body .contentWrapper {
     background: #fff;
     border: 1px solid #e7e7e7;
-    height: 230px;
-    margin-top: 4px;
-    margin-bottom: 3px;
-}
-.panelOverview>section:last-child .panel-body .contentWrapper {
-    height: 229px;
-    border-bottom-width: 1px;
 }
 .panelOverview .overviewAndMessage .profile p {
     color: #333;
@@ -824,16 +848,14 @@ footer .left>span {
 .listView .eventsContent .table .lastPhase {
     border-color: #ffe6c9;
 }
-.panelContestPlan .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #e7e7e7;
-}
+
 .panelContestPlan .matchScheduleLink {
     color: #656565;
 }
 .panelContestPlan .matchScheduleLink:hover {
     color: #ff8a00;
 }
-.panelContestPlan .calendar .fc-today {
+.panelContestPlan .calendar .fc-view-month .fc-today {
     border-color: #ff8a00 !important;
 }
 .panelContestPlan .btnToday,
@@ -964,9 +986,6 @@ footer .left>span {
 }
 .panelChatArea .chatInput input:-ms-input-placeholder{
     color: #333;
-}
-.panelChatArea .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #e7e7e7;
 }
 
 /** Modal style **/
@@ -1160,9 +1179,6 @@ footer .left>span {
 .filterPanel .contentWrapper .filterInput:focus {
     color: #333;
 }
-.detailPage .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #e7e7e7;
-}
 
 .contestManagement .panel-body .nav {
     border-color: #ff8a00;
@@ -1197,7 +1213,7 @@ footer .left>span {
     border-bottom-width: 1px;
     padding-top: 12px;
     padding-bottom: 9px;
-    border-color: #ffe6c7; 
+    border-color: #ffe6c7;
 }
 .contestManagementPanel .table>thead>tr>th {
     color: #636d70;
@@ -1289,10 +1305,7 @@ footer .left>span {
     background: #343434;
     color: #fff;
 }
-.contestManagementPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb,
-.problemAssignmentPanel .ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
-    background: #ff890c;
-}
+
 .contestTermsConfigPanel textarea {
     border-style: solid;
 }
@@ -1379,13 +1392,13 @@ footer .left>span {
 .registration-modal-body .questionDiv{
     border: 1px solid;
     padding: 5px;
-    margin-left: 36px;
+    margin-left: 18px;
     margin-right: 18px;
     border-color: #ffe6c7;
     min-height: 250px;
 }
 .registration-modal-body .surveyDiv .index{
-    margin:5px 5px 5px 20px !important;
+    margin:5px 5px 5px 0px !important;
 }
 .registration-modal-body .questionTitle{
     padding-top: 20px;
@@ -1394,7 +1407,6 @@ footer .left>span {
     border: 1px solid;
     border-color: #ffe6c7;
     margin-right: 18px;
-    margin-left: 18px;
     min-height: 80px;
 }
 .step-4 .rightPart {
@@ -1446,10 +1458,7 @@ footer .left>span {
     border: 1px solid #C3C3C3;
     background-image: url(../img/orange/select.png);
 }
-.leadarboardList .ngsb-scrollbar,
-.activeUserList .ngsb-scrollbar{
-    background: #fff;
-}
+
 .dashboard .textBlack{
     color: #687376!important;
 }
@@ -1512,6 +1521,18 @@ footer .left>span {
 }
 .socialButtons .challenge {
     color: rgb(49, 111, 153);
+
+/* ballonsWrap 
+-------------------------*/
+.ballonsWrap{
+    background: #000;
+    background: rgba(0,0,0,0.7); 
+}
+.ballonsWrap .ballon:hover{
+    background: #2A6B86;
+}
+.ballonsWrap .ballon .arrow{
+    border-color: #2A6B86;
 }
 /* ballonsWrap 
 -------------------------*/
@@ -1564,13 +1585,13 @@ footer .left>span {
     }
 }
 
-/* 
+/*
 *    Styles for challenges advertisement widget
 */
 
 #challenges-advertiser {
     border: 1px solid #e7e7e7;
-    background: #fff;   
+    background: #fff;
 }
 
 #challenges-advertiser .challenge-technologies-wrapper {
@@ -1588,4 +1609,58 @@ footer .left>span {
 
 #challenges-advertiser .challenge-icon {
     color: #e9f2db;
+}
+
+/****** Loading spinner ******/
+.preloader-window {
+    background-color: #fff;
+    border: 1px solid #ff8a00;
+    color: #333;
+}
+.preloader-indicator>img {
+    background-image: url(../img/orange/preloader.gif);
+}
+
+/*
+*
+* Styles for chat area settings
+*
+*/
+.settings-qtip:after {
+    border-color: transparent transparent #fff transparent;
+}
+.settings-qtip:before {
+    border-color: transparent transparent rgb(231, 231, 231) transparent;
+}
+.settings-panel {
+    color: rgb(51, 51, 51);
+    background: #fff;
+    border: 1px solid rgb(231, 231, 231);
+}
+.settings-panel header, .settings-panel .setting {
+    border-bottom: 1px solid rgb(255, 137, 12);
+}
+.settings-panel, .settings-panel h3 {
+    font-weight: normal;
+}
+.detailPage .headerInDivisionSummary {
+    font-weight: 400 !important;
+    color: #636d70 !important;
+}
+
+.detailPage .summaryTables .innerWrapper .table>thead:first-child>tr:first-child>th {
+    border-top: 0 solid #fff;
+}
+
+/*
+*
+* Styles for perfect scrollbar
+*
+*/
+.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y, .ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x{
+    background-color: #ff8a00;
+}
+
+.ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x{
+    background-color: #ff8a00;
 }

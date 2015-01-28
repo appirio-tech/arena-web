@@ -1,9 +1,9 @@
-<div data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-skip-prevent-event data-rebuild-on="test-panel-loaded" id="testPanelDiv">
+<div data-perfect-scrollbar data-scroll-top data-rebuild-on-resize data-skip-prevent-event data-rebuild-on="test-panel-loaded" id="testPanelDiv">
     <div class="btnRow">
         <input type="checkbox" id="testCase-all" class="caseCheck" data-ng-disabled="isSelectedAllDisable()" data-ng-click="selectAll($event)" data-ng-checked="isSelectedAll()" /><label for="testCase-all" data-ng-if="currentStateName()=='user.coding' || currentStateName()=='user.practiceCode'" class="caseLbl">Check All</label><!--
         --><a data-ng-click="runTests()" data-ng-if="currentStateName()=='user.viewCode'" data-ng-show="!isTesting" class="btn challengeBtn">Challenge</a><!-- avoid whitespace
         --><a data-ng-click="runCheckedTests()" data-ng-if="currentStateName()=='user.coding' || currentStateName()=='user.practiceCode'" data-ng-show="!isTesting" class="btn testBtn">Run Test</a><!-- avoid whitespace
-        --><a data-ng-click="addTestCase();toggleTextCase();" data-ng-if="currentStateName()=='user.coding'" data-ng-show="!isTesting" class="btn addBtn"><b>+</b> Add</a>
+        --><a data-ng-click="addTestCase();toggleTextCase();" data-ng-if="currentStateName()=='user.coding' || currentStateName()=='user.practiceCode'" data-ng-show="!isTesting" class="btn addBtn"><b>+</b> Add</a>
         <i data-ng-show="isTesting" class="loadIcon"></i>
     </div>
     <!-- Custom test case for Challenge Phase -->
@@ -28,12 +28,12 @@
                     <textarea>{{param.value}}</textarea>
                     <a data-ng-click="param.created=true; editting=false" class="btn btnAlt">OK</a>
                     <a data-ng-click="param.created=false; editting=false" class="btn btnAlt">Cancel</a>
-                </div>                                    
+                </div>
             </div>
         </div>
     </div>
     <!-- Custom test cases -->
-    <div class='testCase' data-ng-repeat="testCase in userTests track by $index" data-ng-init="caseNum=$index;">
+    <div class='testCase' data-ng-repeat="testCase in userTests | filter:filterTestCases track by $index" data-ng-init="caseNum=$index;">
         <header data-ng-hide="testCase.example"><!-- avoid unnecessary blank
         --><input type="checkbox" id="customTestCase-{{caseNum}}" name="customTestCase-{{caseNum}}" class="caseCheck" data-ng-disabled="isTesting" data-ng-model="testCase.checked" data-ng-click="testCase.checked=!testCase.checked" /><!-- avoid unnecessary blank
         --><a data-ng-click="testCase.toggle=!testCase.toggle; $parent.toggleTextCase()" data-ng-class="{open:testCase.toggle,collapsed:!testCase.toggle}" class="collapseIcon"></a><!-- avoid unnecessary blank
@@ -58,7 +58,7 @@
                     <textarea>{{param.value}}</textarea>
                     <a data-ng-click="param.created=true; editting=false" class="btn btnAlt">OK</a>
                     <a data-ng-click="param.created=false; editting=false" class="btn btnAlt">Cancel</a>
-                </div>                                    
+                </div>
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@
                     <textarea>{{param.value}}</textarea>
                     <a data-ng-click="param.created=true; editting=false" class="btn btnAlt">OK</a>
                     <a data-ng-click="param.created=false; editting=false" class="btn btnAlt">Cancel</a>
-                </div>                                    
+                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file provide some global services.
@@ -47,8 +47,17 @@
  * Changes in version 1.12 (Module Assembly - Web Arena Max Live Leaderboard Assembly):
  * - Added exceedLeaderBoardLimit() function.
  *
+ * Changes in version 1.12 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Added method to set / get / remove code in local storage.
+ *
+ * Changes in version 1.13 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
+ * - Added set / get setting from local storage.
+ *
+ * Changes in version 1.14 (Web Arena - Recovery From Lost Connection)
+ * - Stop to send sync time request if lost connection.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, TCSASSEMBLER
- * @version 1.12
+ * @version 1.14
  */
 'use strict';
 /*jshint -W097*/
@@ -215,7 +224,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
     return service;
 }];
 
-factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', function ($rootScope, localStorageService, sessionHelper) {
+factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$filter', function ($rootScope, localStorageService, sessionHelper, $filter) {
     var retHelper = {};
 
     // return an empty array of fixed length
@@ -295,6 +304,39 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
         date.setMinutes(minute);
         date.setSeconds(seconds);
         date.setMilliseconds(0);
+        return date;
+    };
+
+    /**
+     * Parse the date string formatted as 2014-12-10T21:41:00.000-0500 (ISO 8601 format)
+     * to Date object with date/time in local zone.
+     *
+     * @param dateString - the date string to parse
+     * @returns {Date} the parsed result
+     */
+    retHelper.parseTDate = function (dateString) {
+        var date = new Date(), tz_regex, tz, hours, minutes;
+        date.setFullYear(+dateString.substring(0, 4));
+        date.setMonth((+dateString.substring(5, 7)) - 1);
+        date.setDate(+dateString.substring(8, 10));
+        date.setHours(+dateString.substring(11, 13));
+        date.setMinutes(+dateString.substring(14, 16));
+        // Timezone
+        tz_regex = /(\+|-)(\d{4})$/;
+        tz = tz_regex.exec(dateString);
+
+        if (tz) {
+            hours = -Number(tz[2].substr(0, 2));
+            minutes = -Number(tz[2].substr(2, 2));
+
+            if (tz[1] === '-') {
+                hours = -hours;
+                minutes = -minutes;
+            }
+            date.setHours(date.getHours() + hours);
+            date.setMinutes(date.getMinutes() + minutes);
+        }
+        date.setMinutes(date.getMinutes() - (new Date()).getTimezoneOffset());
         return date;
     };
 
@@ -422,6 +464,139 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
     };
 
     /**
+     * Generate the code cache key.
+     * @param handle - the user handle
+     * @param roundID - the round id.
+     * @param problemID - the problem id.
+     * @param componentID - the component id.
+     * @returns {string} the generated key
+     */
+    function generateCodeKey(handle, roundID, problemID, componentID) {
+        return 'code-' + handle + '-' + roundID + '-' + problemID + '-' + componentID;
+    }
+
+    /**
+     * Set the code to local storage.
+     * @param handle - the user handle
+     * @param roundID - the round id.
+     * @param problemID - the problem id.
+     * @param componentID - the component id.
+     * @param languageID - the language id.
+     * @param code the code value
+     */
+    retHelper.setCodeToLocalStorage = function (handle, roundID, problemID, componentID, languageID, code) {
+        if (localStorageService.isSupported) {
+            var obj = {languageID : languageID, code: code}, key, i, codeList, found;
+            key = generateCodeKey(handle, roundID, problemID, componentID);
+
+            localStorageService.set(key, obj);
+
+
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            if (codeList) {
+                found = false;
+                for (i = 0; i < codeList.length; i++) {
+                    if (codeList[i] === key) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    codeList.push(key);
+                }
+
+            } else {
+                codeList = [];
+                codeList.push(key);
+            }
+            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(codeList));
+        }
+    };
+
+    /**
+     * Get code from local storage.
+     * @param handle - the user handle
+     * @param roundID - the round id.
+     * @param problemID - the problem id.
+     * @param componentID - the component id.
+     * @returns {*} the cache code object
+     */
+    retHelper.getCodeFromLocalStorage = function (handle, roundID, problemID, componentID) {
+        if (localStorageService.isSupported) {
+            return localStorageService.get(generateCodeKey(handle, roundID, problemID, componentID));
+        }
+        return null;
+    };
+
+    /**
+     * Remove the code from local storage.
+     * @param handle - the user handle
+     * @param roundID - the round id.
+     * @param problemID - the problem id.
+     * @param componentID - the component id.
+     */
+    retHelper.removeCodeFromLocalStorage = function (handle, roundID, problemID, componentID) {
+        if (localStorageService.isSupported) {
+            var key = generateCodeKey(handle, roundID, problemID, componentID), codeList, newCodeList, i;
+            localStorageService.remove(key);
+
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            newCodeList = [];
+            if (codeList) {
+                for (i = 0; i < codeList.length; i++) {
+                    if (codeList[i] !== key) {
+                        newCodeList.push(codeList[i]);
+                    }
+                }
+            }
+            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(newCodeList));
+        }
+    };
+
+    /**
+     * Checks whether there is code in local storage for current user.
+     * @returns {boolean} the checked result
+     */
+    retHelper.isExistingCodeInLocalStorage = function () {
+        if (localStorageService.isSupported) {
+            var userName = $rootScope.username(), codeList, i;
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+
+            if (codeList) {
+                for (i = 0; i < codeList.length; i++) {
+                    if (codeList[i].indexOf(userName) !== -1) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    };
+
+    /**
+     * Remove code in local storage for current user.
+     */
+    retHelper.removeCurrentCodeInLocalStorage = function () {
+        if (localStorageService.isSupported) {
+            var userName = $rootScope.username(), codeList, newCodeList, i;
+            codeList = localStorageService.get(helper.LOCAL_STORAGE.CACHE_CODE_LIST);
+            newCodeList = [];
+
+            if (codeList) {
+                for (i = 0; i < codeList.length; i++) {
+                    if (codeList[i].indexOf(userName) !== -1) {
+                        localStorageService.remove(codeList[i]);
+                    } else {
+                        newCodeList.push(codeList[i]);
+                    }
+                }
+                localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(newCodeList));
+            }
+        }
+    };
+
+    /**
      * Get data from local storage.
      * @param roomId - the room id.
      */
@@ -497,6 +672,142 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', fun
     };
 
     /**
+     * Get chat setting from local storage by key.
+     * @param key the setting key
+     * @returns {*} the value in local storage.
+     */
+    retHelper.getChatSettingFromLocalStorage = function (key) {
+        if (localStorageService.isSupported) {
+            var allSetting = localStorageService.get('chat_setting'), chatSetting;
+            if (allSetting) {
+                chatSetting = allSetting[key];
+                if (chatSetting !== undefined) {
+                    return JSON.parse(chatSetting);
+                }
+            }
+        }
+
+        if (key === helper.LOCAL_STORAGE.CHAT_SETTING_TIMESTAMPS) {
+            return false;
+        }
+        return true;
+    };
+
+    /**
+     * Set the chat setting to local storage.
+     * @param key the setting key.
+     * @param value the setting value.
+     */
+    retHelper.setChatSettingToLocalStorage = function (key, value) {
+        if (localStorageService.isSupported) {
+            var allSetting = localStorageService.get('chat_setting');
+            if (!allSetting) {
+                allSetting = {};
+            }
+            allSetting[key] = value;
+            localStorageService.set('chat_setting', JSON.stringify(allSetting));
+        }
+    };
+
+    /**
+     * Parse match schedule data.
+     * @param data the schedule data
+     * @param pendingPlanMonth the pending plan months
+     * @param eventSources the event sources
+     * @returns {*} the parsed result
+     */
+    retHelper.parseMatchScheduleData = function (data, pendingPlanMonth, eventSources) {
+        var i, name;
+        if (data.data) {
+            data.data.forEach(function (item) {
+                name = item.name;
+                if (name && name.length > 27) {
+                    name = name.substr(0, 24) + '...';
+                }
+                eventSources[0].push({
+                    title: name,
+                    start: retHelper.parseTDate(item.registrationStartTime),
+                    regStart: retHelper.parseTDate(item.registrationStartTime),
+                    codeStart: retHelper.parseTDate(item.codingStartTime),
+                    allDay: false
+                });
+            });
+            for (i = 0; i < pendingPlanMonth.length; i++) {
+                $rootScope.loadedContestPlanList.push(pendingPlanMonth[i]);
+            }
+        }
+
+        return eventSources;
+    };
+
+    /**
+     * Get registration start time range url
+     * @param increaseDays the increase days
+     * @returns {string} the url
+     */
+    retHelper.getRegistrationStartTimeRangeUrl = function (increaseDays) {
+        var currentDate = new Date(),
+            newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+            url;
+        url = '&registrationStartTimeAfter=' + encodeURIComponent($filter('date')(newDate, helper.REQUEST_TIME_FORMAT));
+        newDate = new Date(newDate.getFullYear(), newDate.getMonth() + increaseDays, 1);
+        url = url + '&registrationStartTimeBefore=' + encodeURIComponent($filter('date')(newDate, helper.REQUEST_TIME_FORMAT));
+
+        return url;
+    };
+
+    /**
+     * Checks whether the match schedule exists
+     * @param monthDate the month data
+     * @returns {boolean} the checked result
+     */
+    retHelper.isExistingMatchPlan = function (monthDate) {
+        var tmpDateStr = monthDate.getFullYear() + '-' + monthDate.getMonth(), flag, i;
+        flag = false;
+        for (i = 0; i < $rootScope.loadedContestPlanList.length; i++) {
+            if ($rootScope.loadedContestPlanList[i] === tmpDateStr) {
+                flag = true;
+                break;
+            }
+        }
+
+        return flag;
+    };
+
+    /**
+     * Get coming three months start dates.
+     * @returns {*[]} the months array
+     */
+    retHelper.getComingThreeMonths = function () {
+        var currentDate = new Date(),
+            nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
+            nextNextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 1);
+
+        return [currentDate.getFullYear() + '-' + currentDate.getMonth(),
+            nextMonth.getFullYear() + '-' + nextMonth.getMonth(),
+            nextNextMonth.getFullYear() + '-' + nextNextMonth.getMonth()];
+    };
+
+    /**
+     * Get month view status.
+     * @param monthDate the month date
+     * @returns {*} the url.
+     */
+    retHelper.getMonthViewStatus = function (monthDate) {
+        var currentDate = new Date(),
+            newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+            tmpUrl;
+
+        if (monthDate.getTime() > newDate.getTime()) {
+            tmpUrl = '&statuses=F';
+        } else {
+            tmpUrl = '&statuses=P';
+        }
+
+        return tmpUrl;
+    };
+
+    /**
      * Header to be added to all http requests to api
      * @returns {{headers: {Content-Type: string, Authorization: string}}}
      */
@@ -561,7 +872,8 @@ factories.tcTimeService = ['$rootScope', '$timeout', '$filter', 'socket', functi
         counter = 0; // temporary solution before better handling of sync requests is added
     // makes sync time request to the TC server
     service.syncTimeRequest = function () {
-        if ($rootScope.connectionID !== undefined) {
+        if ($rootScope.connectionID !== undefined
+                && ($rootScope.isClosedDisconnectDialog === undefined || $rootScope.isClosedDisconnectDialog === true)) {
             socket.emit(helper.EVENT_NAME.SynchTimeRequest, {connectionID: $rootScope.connectionID});
         }
     };
@@ -803,6 +1115,9 @@ factories.socket = ['$rootScope', function ($rootScope) {
             });
         },
         emit: function (eventName, data, callback) {
+            if (!$rootScope.connected) {
+                $rootScope.$broadcast(helper.EVENT_NAME.EmitInOfflineMode, {});
+            }
             socket.emit(eventName, data, function () {
                 var args = arguments;
                 $rootScope.$apply(function () {
@@ -856,10 +1171,10 @@ factories.keyboardManager = ['$window', '$timeout', function ($window, $timeout)
             fct = function (e) {
                 e = e || $window.event;
                 var keys = label.split("+"),
-                    // Key Pressed - counts the number of valid keypresses 
+                    // Key Pressed - counts the number of valid keypresses
                     // - if it is same as the number of keys, the shortcut function is invoked
                     kp = 0,
-                    // Work around for stupid Shift key bug created by using lowercase 
+                    // Work around for stupid Shift key bug created by using lowercase
                     // - as a result the shift+num combination was broken
                     shift_nums = {
                         "`": "~",

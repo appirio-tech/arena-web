@@ -27,10 +27,8 @@
         ],
         "status": [
             "Active",
-            "Inactive",
-            "Finished",
-            "Pending",
-            "Ready"
+            "Past",
+            "Draft"
         ]
     },
     "problem": {

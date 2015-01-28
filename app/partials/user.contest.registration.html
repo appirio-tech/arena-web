@@ -2,7 +2,7 @@
     {{ title }}
     <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
 </div>
-<div class="modal-body registration-modal-body" data-ng-custom-scrollbar data-rebuild-on-resize data-skip-prevent-event data-rebuild-on="rebuild:userRegistration">
+<div class="modal-body registration-modal-body" data-perfect-scrollbar  data-rebuild-on-resize data-skip-prevent-event data-rebuild-on="rebuild:userRegistration">
     <p class="title" data-ng-show="surveyMessage && surveyMessage !== ''">Important Notice</p>
     <div class="questionDiv" data-ng-show="surveyMessage && surveyMessage !== ''">
         <p class="questionText" ng-bind-html="surveyMessage"></p>
@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <div class="questionDiv bottomQuestionDiv" data-ng-show="message && message !== ''">
+    <div class="questionDiv bottomQuestionDiv" data-ng-class="{'bottomQuestionLessMargin' : !surveyMessage && eligibilityQuestions.length == 0}" data-ng-show="message && message !== ''">
         <p class="questionText" ng-bind-html="message"></p>
     </div>
 
