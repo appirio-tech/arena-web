@@ -78,7 +78,7 @@
         <div class="infoSection" data-ng-show="showMemberHere">
             <header><a data-ng-click="collapseMemberHere=!collapseMemberHere; rebuildScrollbar('info');" data-ng-class="{collapsed: collapseMemberHere}">Who's here <span>({{whosHereArrayFullList.length}})</span></a></header>
             <ul class="ps-container users {{whosHereScrollHeight}}" data-ng-hide="collapseMemberHere" data-perfect-scrollbar data-up-down-arrow="true" data-rebuild-on="rebuild:whosHere" data-rebuild-on-resize data-scroll-top>
-                <li data-ng-repeat="member in whosHereArrayFullList | orderBy:whosHereOrderPredicate" data-ng-class="{current: member.name == username()}><!-- avoid blank
+                <li data-ng-repeat="member in whosHereArrayFullList | orderBy:whosHereOrderPredicate" data-ng-class="{current: member.name == username()}"><!-- avoid blank
                     --><a sglclick="showCoderInfo(member.name, member.userListItem.userType);" data-ng-dblclick="setReplyToCoder(member.name)" title="{{member.name}}"><!-- avoid blank
                         --><span data-rating-indicator="{{member.rating}}" data-username="{{member.name}}Who" class="ratingIcon"></span><!-- avoid blank
                         --><span class="user {{getRatingClass(member.rating)}}"><span>{{getMemberShortName(member.name)}}</span> <span class="userEnteringIcon" data-ng-show="userEnteringIcons[member.name]"></span><span class="userLeavingIcon" data-ng-show="userLeavingIcons[member.name]"></span></span>
