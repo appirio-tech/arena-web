@@ -254,7 +254,7 @@ body{
     padding: 15px 17px;
 }
 .hero .loginBox footer .sponsorLogo {
-    background: url(../img/dark/company_logo.png) 0 0 no-repeat;
+    background: url(../img/dark/@@SPONSOR_LOGO) 0 0 no-repeat;
 }
 
 /*************** dashboard page */
@@ -275,7 +275,7 @@ footer .line {
     border-color: #14191a;
 }
 footer .right .sponsorLogo {
-    background: url(../img/dark/company_logo_small.png) 100% 100% no-repeat;
+    background: url(../img/dark/@@SPONSOR_LOGO_SMALL) 100% 100% no-repeat;
 }
 
 /********************* modal */
@@ -1266,7 +1266,7 @@ footer .right .sponsorLogo {
 /* boostrap extra small devices */
 @media only screen and (max-width: 767px) {
     .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/dark/company_logo_small.png);
+        background-image: url(../img/dark/@@SPONSOR_LOGO_SMALL);
     }
 }
 /* special sizes which widget will overflow */

@@ -284,7 +284,7 @@ body{
     padding: 16px 17px;
 }
 .hero .loginBox footer .sponsorLogo {
-    background: url(../img/orange/company_logo.png) 0 0 no-repeat;
+    background: url(../img/orange/@@SPONSOR_LOGO) 0 0 no-repeat;
 }
 
 /*************** basic style of page */
@@ -317,7 +317,7 @@ footer .line {
     border-color: #ff8a00;
 }
 footer .right .sponsorLogo {
-    background: url(../img/orange/company_logo_small.png) 100% 100% no-repeat;
+    background: url(../img/orange/@@SPONSOR_LOGO_SMALL) 100% 100% no-repeat;
 }
 footer .left>span {
     color: #ff8a00;
@@ -1562,7 +1562,7 @@ footer .left>span {
         background: #ff8a00;
     }
     .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/orange/company_logo_small.png);
+        background-image: url(../img/orange/@@SPONSOR_LOGO_SMALL);
     }
 }
 /* special sizes which widget will overflow */
