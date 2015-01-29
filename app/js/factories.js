@@ -97,7 +97,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
         formatMessage = function (message) {
             if (message.type === 'general') {
                 return "<div class = 'notificationPopup'>" +
-                    "<div>Broadcast information</div>" +
+                    "<div>Broadcast Information</div>" +
                     "<table>" +
                     "<tr><td><p>Time: <span>" + message.date + "</span></p></td></tr>" +
                     "</table>" +
@@ -107,7 +107,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
             }
             if (message.type === 'round') {
                 return "<div class = 'notificationPopup'>" +
-                    "<div>Broadcast information</div>" +
+                    "<div>Broadcast Information</div>" +
                     "<table>" +
                     "<tr><td><p>Time: <span>" + message.date + "</span></p></td></tr>" +
                     "<tr><td><p>Round: <span>" + message.roundName + "</span></p></td></tr>" +
@@ -118,7 +118,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
             }
             if (message.type === 'problem') {
                 return "<div class = 'notificationPopup'>" +
-                    "<div>Broadcast information</div>" +
+                    "<div>Broadcast Information</div>" +
                     "<table>" +
                     "<tr><td><p>Time: <span>" + message.date + "</span></p></td>" +
                     "<td><p>Class: <span>" + message.className + "</span></p></td></tr>" +

@@ -232,6 +232,7 @@ controllers.memberFeedbackCtrl = require('./controllers/memberFeedbackCtrl');
 controllers.leaderboardCtrl = require('./controllers/leaderboardCtrl');
 controllers.challengesAdvertisingCtrl = require('./controllers/challengesAdvertisingCtrl');
 controllers.liveScoringCtrl = require('./controllers/liveScoringCtrl');
+controllers.balloonCtrl = require('./controllers/balloonCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -272,6 +273,7 @@ directives.ngScrollbarAutoscroll = require('./directives/ngScrollbarAutoscroll')
 directives.chatSettings = require('./directives/chatSettings');
 directives.toggleSetting = require('./directives/toggleSetting');
 directives.liveScoring = require('./directives/liveScoring');
+directives.ngBallons = require('./directives/ngBallons');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -345,6 +347,7 @@ main.controller('memberFeedbackCtrl', controllers.memberFeedbackCtrl);
 main.controller('leaderboardCtrl', controllers.leaderboardCtrl);
 main.controller('challengesAdvertisingCtrl', controllers.challengesAdvertisingCtrl);
 main.controller('liveScoringCtrl', controllers.liveScoringCtrl);
+main.controller('balloonCtrl', controllers.balloonCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -387,6 +390,7 @@ main.directive('ngScrollbarAutoscroll', directives.ngScrollbarAutoscroll);
 main.directive('chatSettings', directives.chatSettings);
 main.directive('toggleSetting', directives.toggleSetting);
 main.directive('liveScoring', directives.liveScoring);
+main.directive('ngBallons', directives.ngBallons);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //

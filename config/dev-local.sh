@@ -10,7 +10,7 @@ export NODE_ENV=development
 # Currently arena-web does not use an API backend. If we do end up 
 # adding in calls from TC api we will need this value any setup where the 
 # API is on different domain than where the client was served...
-export API_DOMAIN=http://tc.cloud.topcoder.com:8081/v2
+export API_DOMAIN=http://tc.cloud.topcoder.com:8080/v2
 
 export AUTH0_CONNECTION=vm-ldap-connection
 export AUTH0_DOMAIN=sma.auth0.com
@@ -69,6 +69,7 @@ export SUMMARY_TOPCODER_COUNT=4
 export PRACTICE_PROBLEM_LIST_PAGE_SIZE=10
 
 export REGISTRATION_URL='http://tcqa1.topcoder.com/?action=callback'
+export PW_RESET_URL='http://tcqa1.topcoder.com/password-recovery/'
 
 # The time (in ms) after which the loading spinner times out if there is no activity.
 export SPINNER_TIMEOUT=90000
