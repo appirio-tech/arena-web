@@ -104,9 +104,3 @@ set AUTO_SAVING_CODE_INTERVAL=30000
 
 :: The number of top coders shown in Active Matches Summary widget
 set ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
-
-:: The url of Upload sponsor image for footer;
-set FOOTER_SPONSOR_IMAGE_URL=http://community.topcoder.com/i/reskin/logo.png
-
-:: The url of Upload sponsor image for login page;
-set LOGIN_SPONSOR_IMAGE_URL=http://community.topcoder.com/i/reskin/logo.png
