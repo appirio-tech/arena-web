@@ -106,6 +106,6 @@ set AUTO_SAVING_CODE_INTERVAL=30000
 set ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
 
 :: The file name of the sponsor logo images. The files must be at app/img/{theme}/
-set SPONSOR_LOGO=company_logo.png
-set SPONSOR_LOGO_SMALL=company_logo_small.png
+set SPONSOR_LOGO=../img/dark/company_logo.png
+set SPONSOR_LOGO_SMALL=../img/dark/company_logo_small.png
 set SPONSOR_URL=http://community.topcoder.com/tco14/sponsor/hp-idol-ondemand/

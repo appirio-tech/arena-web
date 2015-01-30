@@ -153,9 +153,7 @@ module.exports = function (grunt) {
                     ]
                 },
                 files: [
-                    { src: 'build/css/bundle.css', dest: 'build/css/bundle.css' },
-                    { src: 'build/css/bundle-light.css', dest: 'build/css/bundle-light.css' },
-                    { src: 'build/css/bundle-orange.css', dest: 'build/css/bundle-orange.css' }
+                    { src: 'build/css/bundle.css', dest: 'build/css/bundle.css' }
                 ]
             }
         },
