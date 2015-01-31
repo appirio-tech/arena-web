@@ -7628,6 +7628,11 @@ table thead .sort.desc{
     overflow: hidden;
 }
 
+.modeMinimized.panelFeedback,
+.modeDashboard.panelFeedback {
+    width: 120px;
+}
+
 /**
  * This hack targets the Webkit browser engine
  * which includes Safari and Chrome.
@@ -7945,7 +7950,7 @@ table thead .sort.desc{
 .centerBox{
     overflow: auto;
 }
-/* ballonsWrap 
+/* ballonsWrap
 -------------------------*/
 .ballonsWrap {
     position: absolute;
@@ -7955,7 +7960,7 @@ table thead .sort.desc{
     bottom: -60px;
     background: #000;
     background: rgba(0,0,0,0.78);
-    z-index: 100;    
+    z-index: 100;
     display: none;
     overflow: hidden;
 }
@@ -7966,9 +7971,9 @@ table thead .sort.desc{
         width: 120px;
         -webkit-transition-duration: 0.3s;
         transition-duration: 0.3s;
-    }    
+    }
     .ballonsWrap .ballonWrap:hover{
-        z-index: 10; 
+        z-index: 10;
     }
     .ballonsWrap .ballon{
         border: 1px solid #0498d6;
@@ -8036,11 +8041,11 @@ table thead .sort.desc{
         border-color: #054661;
         border-style: solid;
         border-width: 0 0 1px 0;
-   }   
+   }
    .ballonsWrap .rightBelow .ballon .arrow{
         left: auto;
         right: 57px;
-   } 
+   }
    .ballonsWrap .leftAbove .ballon .arrow{
         left: auto;
         right: 57px;
@@ -8048,7 +8053,7 @@ table thead .sort.desc{
         bottom: -14px;
         background: url(../img/baloon-arrow-d.png) 0 -1px no-repeat;
         border-width: 1px 0 0 0;
-   } 
+   }
    .ballonsWrap .rightAbove .ballon .arrow{
         left: auto;
         top: auto;
@@ -8176,7 +8181,7 @@ table thead .sort.desc{
     .panelContestPlan .listView .default .tableDiv {height: 100%; overflow-x: hidden; overflow-y: hidden;}
 
 
-    /* ballonsWrap  
+    /* ballonsWrap
     -------------------*/
     .ballonsWrap .ballonWrap{
         font-size: 12px;
@@ -8245,7 +8250,7 @@ table thead .sort.desc{
 /*bootstrap small devices tablets !!*/
 @media only screen and (max-width: 991px) {
 
-    /* ballonsWrap 
+    /* ballonsWrap
     -------------------------*/
     .ballonsWrap {
         top: -6px;
@@ -9499,7 +9504,6 @@ table thead .sort.desc{
 /*
 * Perfect Scrollbar Custom styles
 */
-<<<<<<< HEAD
 .dropdown-menu.typeFilter.always-visible  {
     top: 0px;!important;
 }
@@ -9512,10 +9516,132 @@ table thead .sort.desc{
     margin-right: 6px !important;
 }
 
-=======
+/* live scoring widget */
+.live-scoring.panel-custom {
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+    right: 130px;
+    width: 229px;
+    height: auto;
+    margin: 0;
+    border-bottom: 0;
+}
+
+.live-scoring .panel-heading {
+    padding: 7px 11px 7px 35px;
+    font-weight: 300;
+    cursor: pointer;
+}
+
+.live-scoring .panel-heading:before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 16px;
+    width: 15px;
+    height: 8px;
+    background: url('../img/liveScoringArrow.png') 0 0 no-repeat;
+}
+
+.live-scoring.panel-custom .panel-body {
+    text-align: center;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 400;
+    padding: 0 16px 5px 13px;
+}
+
+.live-scoring .timer {
+    height: 28px;
+    line-height: 28px;
+}
+
+.live-scoring .elapsed-title {
+    font-size: 16px;
+    font-weight: 300;
+    float: left;
+}
+
+.live-scoring .elapsed-time {
+    color: #f40000;
+    float: right;
+    line-height: 32px;
+}
+
+.live-scoring .score {
+    height: 60px;
+    line-height: 56px;
+    font-size: 60px;
+    font-weight: 600;
+    color: #5fb806;
+}
+
+.live-scoring .score-label {
+    font-weight: 300;
+}
+
+.live-scoring .gauge {
+    width: 100%;
+    height: 14px;
+    background: #5fb806;
+    margin: 6px 0;
+}
+
+.live-scoring .gauge-elapsed {
+    height: 100%;
+    background: #f40000;
+}
+
+.live-scoring .current-score {
+    color: #5fb806;
+    font-weight: 600;
+}
+
+.live-scoring .current-score-label {
+    margin-top: 4px;
+}
+
+.live-scoring .heading-score {
+    display: none;
+    float: right;
+    color: #5fb806;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.live-scoring.live-scoring-minimized .panel-body {
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: 0;
+    padding: 0;
+    height: 3px;
+    overflow: hidden;
+}
+
+.live-scoring-minimized .heading-score {
+    display: inline-block;
+}
+
+.live-scoring-minimized .gauge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 3px;
+    margin: 0;
+    z-index: 5;
+}
+
+.live-scoring-minimized .panel-heading:before {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
 /* to make scrollbars always visible */
 .always-visible.ps-container > .ps-scrollbar-x-rail,
 .always-visible.ps-container > .ps-scrollbar-y-rail {
     opacity: 0.6;
 }
->>>>>>> Ballon guidelines updates

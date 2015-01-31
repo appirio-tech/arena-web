@@ -1332,6 +1332,11 @@ footer .right .sponsorLogo {
     font-weight: 300;
 }
 
+/* live scoring widget */
+.live-scoring.panel-custom .panel-body {
+    color: #ffffff;
+}
+
 /*
 *
 * Styles for perfect scrollbar
@@ -1344,4 +1349,3 @@ footer .right .sponsorLogo {
 .ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {
     background-color: #2a2b2c;
 }
-

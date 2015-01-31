@@ -1530,3 +1530,20 @@ footer .right .sponsorLogo {
 .ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {
     background-color: #0999d1;
 }
+
+/* live scoring widget */
+.live-scoring .heading-score {
+    color: #b1f26f;
+}
+
+.live-scoring-minimized .gauge {
+    background: #b1f26f;
+}
+
+.live-scoring .panel-heading {
+    color: #ffffff;
+}
+
+.live-scoring .panel-heading:before {
+    background-image: url('../../img/light/liveScoringArrow.png');
+}
