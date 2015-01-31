@@ -160,12 +160,6 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             // define initial sorting order for registrants list
             $scope.registrantPredicate = 'userRating';
 
-            if ($scope.title === 'Coder History') {
-                $timeout(function () {
-                    $scope.$broadcast('rebuild:coderHistory');
-                }, 100);
-            }
-
             $timeout(function () {
                 $scope.$broadcast('popup-message-loaded');
             }, 100);
@@ -1064,7 +1058,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     $rootScope.getCoderHistory = function (coder) {
         socket.emit(helper.EVENT_NAME.CoderHistoryRequest, {
             handle: coder.userName,
-            userType: coder.userType,
+            userType: coder.userType || 1,
             historyType: -1,
             roomID: coder.roomID || $rootScope.currentRoomInfo.roomID
         });
