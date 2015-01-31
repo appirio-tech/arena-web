@@ -155,6 +155,7 @@ require('./../../bower_components/codemirror/addon/scroll/simplescrollbars');
 require('./../../bower_components/codemirror/addon/search/match-highlighter');
 require('./../../bower_components/codemirror/addon/search/searchcursor');
 require('./../../bower_components/codemirror/addon/search/search');
+require('./../../bower_components/codemirror/addon/edit/matchbrackets');
 require('./../../bower_components/angular-timer/dist/angular-timer');
 require('./../../bower_components/jquery-ui/ui/jquery-ui.js');
 require('./../../bower_components/angular-ui-calendar/src/calendar.js');
