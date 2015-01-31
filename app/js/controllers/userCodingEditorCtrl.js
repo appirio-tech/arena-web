@@ -1010,7 +1010,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 $scope.languageID = tmp.languageID;
                 $scope.contentDirty = true;
             } else {
-                if ($scope.userData.code) {
+                if ($scope.userData && $scope.userData.code) {
                     $scope.code = $scope.userData.code;
                 } else {
                     $scope.code = '';
