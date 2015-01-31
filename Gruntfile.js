@@ -59,8 +59,11 @@
  * Changes in version 1.15 (Web Arena - Update Match Summary Tab Within Active Matches Widget):
  * - Added ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT setting.
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein
- * @version 1.15
+ * Changes in version 1.16 (Web Arena Keyboard shortcuts):
+ * - Added hot key css files.
+ *
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, TCASSEMBLER
+ * @version 1.16
  */
 'use strict';
 /*global module, process*/
@@ -162,6 +165,7 @@ module.exports = function (grunt) {
                     'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                     'bower_components/fullcalendar/fullcalendar.css',
                     'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                    'bower_components/angular-hotkeys/build/hotkeys.min.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
                     'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                     'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
@@ -184,6 +188,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                        'bower_components/angular-hotkeys/build/hotkeys.min.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
@@ -205,6 +210,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                        'bower_components/angular-hotkeys/build/hotkeys.min.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
