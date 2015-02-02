@@ -407,7 +407,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
      * @since Module Assembly - Web Arena Max Live Leaderboard Assembly
      */
     retHelper.exceedLeaderBoardLimit = function (phaseType, roomID) {
-        if (roomID && phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase && $rootScope.roomData[roomID].coders.length > config.maxLiveLearderBoard) {
+        if (roomID && phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase && ($rootScope.roomData[roomID] && ($rootScope.roomData[roomID].coders.length > config.maxLiveLearderBoard))) {
             return true;
         } else if  (phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase && $rootScope.leaderboard.length > config.maxLiveLearderBoard) {
             return true;
