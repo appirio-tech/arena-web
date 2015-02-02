@@ -627,6 +627,7 @@ body a {cursor: pointer;}
     width: 0;
     overflow: hidden;
     margin-left: 74px;
+    background: url(@@SPONSOR_LOGO) 0 0 no-repeat;
 }
 .hero .loginBox footer>p:last-child {
     margin-top: 16px;
@@ -1191,6 +1192,7 @@ footer .right .sponsorLogo {
     padding-top: 23px;
     padding-right: 188px;
     padding-left: 20px;
+    background: url(@@SPONSOR_LOGO_SMALL) 100% 100% no-repeat;
 }
 footer .right>span:nth-child(2) {
     font-weight: 700;/*bold*/
@@ -7945,7 +7947,7 @@ table thead .sort.desc{
 .centerBox{
     overflow: auto;
 }
-/* ballonsWrap 
+/* ballonsWrap
 -------------------------*/
 .ballonsWrap {
     position: absolute;
@@ -7955,7 +7957,7 @@ table thead .sort.desc{
     bottom: -60px;
     background: #000;
     background: rgba(0,0,0,0.78);
-    z-index: 100;    
+    z-index: 100;
     display: none;
     overflow: hidden;
 }
@@ -7966,9 +7968,9 @@ table thead .sort.desc{
         width: 120px;
         -webkit-transition-duration: 0.3s;
         transition-duration: 0.3s;
-    }    
+    }
     .ballonsWrap .ballonWrap:hover{
-        z-index: 10; 
+        z-index: 10;
     }
     .ballonsWrap .ballon{
         border: 1px solid #0498d6;
@@ -8036,11 +8038,11 @@ table thead .sort.desc{
         border-color: #054661;
         border-style: solid;
         border-width: 0 0 1px 0;
-   }   
+   }
    .ballonsWrap .rightBelow .ballon .arrow{
         left: auto;
         right: 57px;
-   } 
+   }
    .ballonsWrap .leftAbove .ballon .arrow{
         left: auto;
         right: 57px;
@@ -8048,7 +8050,7 @@ table thead .sort.desc{
         bottom: -14px;
         background: url(../img/baloon-arrow-d.png) 0 -1px no-repeat;
         border-width: 1px 0 0 0;
-   } 
+   }
    .ballonsWrap .rightAbove .ballon .arrow{
         left: auto;
         top: auto;
@@ -8176,7 +8178,7 @@ table thead .sort.desc{
     .panelContestPlan .listView .default .tableDiv {height: 100%; overflow-x: hidden; overflow-y: hidden;}
 
 
-    /* ballonsWrap  
+    /* ballonsWrap
     -------------------*/
     .ballonsWrap .ballonWrap{
         font-size: 12px;
@@ -8245,7 +8247,7 @@ table thead .sort.desc{
 /*bootstrap small devices tablets !!*/
 @media only screen and (max-width: 991px) {
 
-    /* ballonsWrap 
+    /* ballonsWrap
     -------------------------*/
     .ballonsWrap {
         top: -6px;
@@ -8540,6 +8542,7 @@ table thead .sort.desc{
     .hero .loginBox footer .sponsorLogo {
         margin: 0 auto;
         padding: 23px 188px 0 0;
+        background-image: url(@@SPONSOR_LOGO_SMALL);
     }
     .hero .text p > span {width: auto; min-width: 250px; }
     .hero .loginBox .errorMessage {left: 50%; margin-left: -139px; }
@@ -9499,7 +9502,6 @@ table thead .sort.desc{
 /*
 * Perfect Scrollbar Custom styles
 */
-<<<<<<< HEAD
 .dropdown-menu.typeFilter.always-visible  {
     top: 0px;!important;
 }
@@ -9512,10 +9514,8 @@ table thead .sort.desc{
     margin-right: 6px !important;
 }
 
-=======
 /* to make scrollbars always visible */
 .always-visible.ps-container > .ps-scrollbar-x-rail,
 .always-visible.ps-container > .ps-scrollbar-y-rail {
     opacity: 0.6;
 }
->>>>>>> Ballon guidelines updates
