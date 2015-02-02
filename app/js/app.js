@@ -117,14 +117,22 @@
  * Changes in version 1.32 (Web Arena - Fix Empty Problem Statement Arena Issue):
  * - Added new library perfect-scrollbar to fix scrolling issues
  *
+ * Changes in version 1.33 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Remove js references for ng-scrollbar
+ *
+ * Changes in version 1.34 (Web Arena - Show Code Image Instead of Text in Challenge Phase):
+ * - Added support to the compile provider.
+ *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
- * @version 1.32
+ *
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, xjtufreeman
+ * @version 1.34
  */
 'use strict';
 /*jshint -W097*/
 /*jshint strict:false*/
 /*global arena:true */
-/*global require*/
+/*global require, console*/
 require('./../../thirdparty/jquery/jquery');
 require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
@@ -147,6 +155,7 @@ require('./../../bower_components/codemirror/addon/scroll/simplescrollbars');
 require('./../../bower_components/codemirror/addon/search/match-highlighter');
 require('./../../bower_components/codemirror/addon/search/searchcursor');
 require('./../../bower_components/codemirror/addon/search/search');
+require('./../../bower_components/codemirror/addon/edit/matchbrackets');
 require('./../../bower_components/angular-timer/dist/angular-timer');
 require('./../../bower_components/jquery-ui/ui/jquery-ui.js');
 require('./../../bower_components/angular-ui-calendar/src/calendar.js');
@@ -156,11 +165,9 @@ require('./../../bower_components/angulartics/dist/angulartics-ga.min');
 require('./../../bower_components/angular-table/dist/ng-table.min.js');
 require('./../../bower_components/angular-facebook/lib/angular-facebook');
 require('./../../thirdparty/jquery.qtip/jquery.qtip.min.js');
-require('./../../thirdparty/ng-scrollbar/dist/ng-scrollbar.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-transition.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-alert.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-notify.js');
-require('./../../thirdparty/ng-scrollbar/dist/ng-customscrollbar.js');
 require('./../../thirdparty/perfect-scrollbar/perfect-scrollbar.js');
 require('./../../thirdparty/perfect-scrollbar/angular-perfect-scrollbar.js');
 require('./../../bower_components/angular-local-storage/dist/angular-local-storage.js');
@@ -225,6 +232,7 @@ controllers.matchScheduleCtrl = require('./controllers/matchScheduleCtrl');
 controllers.memberFeedbackCtrl = require('./controllers/memberFeedbackCtrl');
 controllers.leaderboardCtrl = require('./controllers/leaderboardCtrl');
 controllers.challengesAdvertisingCtrl = require('./controllers/challengesAdvertisingCtrl');
+controllers.balloonCtrl = require('./controllers/balloonCtrl');
 
 // load directives
 directives.leaderboardusers = require('./directives/leaderboardusers');
@@ -264,6 +272,7 @@ directives.challengesAdvertiser = require('./directives/challengesAdvertiser');
 directives.ngScrollbarAutoscroll = require('./directives/ngScrollbarAutoscroll');
 directives.chatSettings = require('./directives/chatSettings');
 directives.toggleSetting = require('./directives/toggleSetting');
+directives.ngBallons = require('./directives/ngBallons');
 
 /*global $ : false, angular : false, twttr : true */
 /*jslint nomen: true, browser: true */
@@ -275,7 +284,7 @@ directives.toggleSetting = require('./directives/toggleSetting');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'ngScrollbar', 'ngCustomScrollbar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook', 'ngClipboard', 'frapontillo.bootstrap-switch', 'perfect_scrollbar']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook', 'ngClipboard', 'frapontillo.bootstrap-switch', 'perfect_scrollbar']);
 
 ///////////////
 // FACTORIES //
@@ -336,6 +345,7 @@ main.controller('matchScheduleCtrl', controllers.matchScheduleCtrl);
 main.controller('memberFeedbackCtrl', controllers.memberFeedbackCtrl);
 main.controller('leaderboardCtrl', controllers.leaderboardCtrl);
 main.controller('challengesAdvertisingCtrl', controllers.challengesAdvertisingCtrl);
+main.controller('balloonCtrl', controllers.balloonCtrl);
 
 /////////////////
 // DIRECTIVES //
@@ -377,11 +387,13 @@ main.directive('challengesAdvertiser', directives.challengesAdvertiser);
 main.directive('ngScrollbarAutoscroll', directives.ngScrollbarAutoscroll);
 main.directive('chatSettings', directives.chatSettings);
 main.directive('toggleSetting', directives.toggleSetting);
+main.directive('ngBallons', directives.ngBallons);
 
 //////////////////////////////////////
 // ROUTING AND ROUTING INTERCEPTORS //
 
-main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpProvider', 'FacebookProvider', 'ngClipProvider', function ($stateProvider, $urlRouterProvider, themerProvider, $httpProvider, FacebookProvider, ngClipProvider) {
+main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpProvider', 'FacebookProvider', 'ngClipProvider', '$compileProvider', function ($stateProvider, $urlRouterProvider, themerProvider, $httpProvider, FacebookProvider, ngClipProvider, $compileProvider) {
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|data):/);
     if (config.staticFileHost === 'undefined') {
         config.staticFileHost = "";
     }

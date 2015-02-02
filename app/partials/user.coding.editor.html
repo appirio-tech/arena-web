@@ -65,7 +65,10 @@
             </div>
         </div>
         <div data-ng-class="{showLineNumberPadding:showLineNumber,hideLineNumberPadding:!showLineNumber}" class="paddingRow"></div>
-        <ui-codemirror id="codeArea" ui-codemirror-opts="cmOption" data-ng-model="code" class="code-editor-area" data-ng-class="{disableCursor:cm.options.readOnly}"></ui-codemirror>
+        <div class="panel-body row always-visible" id="editor-image" data-perfect-scrollbar data-rebuild-on-resize  data-ng-if="codeImage">
+            <img data-ng-src="{{codeImage}}"/>
+        </div>
+        <ui-codemirror id="codeArea" data-ng-if="!codeImage" ui-codemirror-opts="cmOption" data-ng-model="code" class="code-editor-area" data-ng-class="{disableCursor:cm.options.readOnly}"></ui-codemirror>
         <script id="script"></script>
         <div class="errorBar">
             <div data-ng-repeat="i in range(lineNumbers) track by $index" data-ng-class="{error:getErrorMessage($index).length > 0}">

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles chat area related logic.
@@ -44,8 +44,12 @@
  * - Added scope variables for chat settings.
  * - Added disable chat checking in submit chat action.
  *
+ * Changes in version 1.12 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Added timeout of 10ms to rebuild:whosHere, rebuild:members, rebuild:methods, rebuild:registrants, rebuild:ratingKey
+ *   event, so that the perfect-scrollbar work fine in chat area.
+ *
  * @author dexy, amethystlei, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.11
+ * @version 1.12
  */
 'use strict';
 /*global require, module, angular, $, window, document */
@@ -351,7 +355,7 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'appHelper', f
         if (!isOpen) {
             $timeout(function () {
                 angular.element('#usersDropdownList').trigger('click');
-            }, 10);
+            }, helper.COMMON_TIMEGAP);
         }
 
         if ($scope.talkToUser !== '') {
@@ -366,8 +370,10 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'appHelper', f
         } else {
             $scope.whosHereArray = $scope.whosHereArrayFullList;
         }
-        $scope.$broadcast('rebuild:whosHere');
-        $scope.$broadcast('rebuild:members');
+        $timeout(function () {
+            $scope.$broadcast('rebuild:whosHere');
+            $scope.$broadcast('rebuild:members');
+        }, helper.COMMON_TIMEGAP);
     };
 
 
@@ -380,8 +386,10 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'appHelper', f
         } else {
             angular.element('#usersList').css("margin-top", '0px');
         }
-        $scope.$broadcast('rebuild:whosHere');
-        $scope.$broadcast('rebuild:members');
+        $timeout(function () {
+            $scope.$broadcast('rebuild:whosHere');
+            $scope.$broadcast('rebuild:members');
+        }, helper.COMMON_TIMEGAP);
     };
 
     /**
@@ -393,8 +401,9 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'appHelper', f
         } else {
             angular.element('#methodsList').removeClass('dropdown-menu-up');
         }
-
-        $scope.$broadcast('rebuild:methods');
+        $timeout(function () {
+            $scope.$broadcast('rebuild:methods');
+        }, helper.COMMON_TIMEGAP);
     };
 
     /**
@@ -437,13 +446,13 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'appHelper', f
     };
 
     /**
-     * Rebuilds the multi ng-scrollbars in this widget.
+     * Rebuilds the multi perfect-scrollbars in this widget.
      *
      * @param {object} bar the scroll bar(s) to rebuild
      */
     $scope.rebuildScrollbar = function (bar) {
         //the left aside have a fixed height, so we need to customize the height of each
-        // ng-scrollbar which belong to registrants, who's here and rating key section.
+        // perfect-scrollbar which belong to registrants, who's here and rating key section.
         //
         // the height is calculate by the height of left aside, header of each section and
         // height of the rating key ul
@@ -455,15 +464,21 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'appHelper', f
 
             if ($scope.collapseRatingKey === false) {
                 $scope.ratingKeyScrollHeight = "scroll-height-" + String(sectionOpen);
-                $scope.$broadcast('rebuild:ratingKey');
+                $timeout(function () {
+                    $scope.$broadcast('rebuild:ratingKey');
+                }, helper.COMMON_TIMEGAP);
             }
             if ($scope.collapseRegistrant === false) {
                 $scope.registrantsScrollHeight = "scroll-height-" + String(sectionOpen);
-                $scope.$broadcast('rebuild:registrants');
+                $timeout(function () {
+                    $scope.$broadcast('rebuild:registrants');
+                }, helper.COMMON_TIMEGAP);
             }
             if ($scope.collapseMemberHere === false) {
                 $scope.whosHereScrollHeight = "scroll-height-" + String(sectionOpen);
-                $scope.$broadcast('rebuild:whosHere');
+                $timeout(function () {
+                    $scope.$broadcast('rebuild:whosHere');
+                }, helper.COMMON_TIMEGAP);
             }
         } else if (bar === 'methods') {
             $scope.$broadcast('rebuild:methods');

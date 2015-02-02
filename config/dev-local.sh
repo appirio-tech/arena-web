@@ -10,7 +10,7 @@ export NODE_ENV=development
 # Currently arena-web does not use an API backend. If we do end up
 # adding in calls from TC api we will need this value any setup where the
 # API is on different domain than where the client was served...
-export API_DOMAIN=http://tc.cloud.topcoder.com:8081/v2
+export API_DOMAIN=http://tc.cloud.topcoder.com:8080/v2
 
 export AUTH0_CONNECTION=vm-ldap-connection
 export AUTH0_DOMAIN=sma.auth0.com
@@ -69,6 +69,7 @@ export SUMMARY_TOPCODER_COUNT=4
 export PRACTICE_PROBLEM_LIST_PAGE_SIZE=10
 
 export REGISTRATION_URL='http://tcqa1.topcoder.com/?action=callback'
+export PW_RESET_URL='http://tcqa1.topcoder.com/password-recovery/'
 
 # The time (in ms) after which the loading spinner times out if there is no activity.
 export SPINNER_TIMEOUT=90000
@@ -95,6 +96,9 @@ export LEADERBOARD_REFRESH_TIME_GAP=1000
 # The TopCoder host name
 export TC_HOSTNAME=http://www.topcoder.com
 
+# The max live leaderboard number
+export MAX_LIVE_LEADERBOARD=200
+
 #The New Relic Browser KEY
 export NEWRELIC_BROWSER_APPLICATIONID='4447207'
 export NEWRELIC_BROWSER_LICENSCEKEY='28fb2fc79c'
@@ -110,6 +114,6 @@ export AUTO_SAVING_CODE_INTERVAL=30000
 export ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
 
 # The file name of the sponsor logo images. The files must be at app/img/{theme}/
-export SPONSOR_LOGO=https://photos-3.dropbox.com/t/2/AACQDDC_cUOdJT0qnjLit48UFbretSkdfuROSv8TcEHdLw/12/767928/png/1024x768/3/1422882000/0/2/Olympic-logo.png/CLjvLiABIAIgAygBKAI/yaUdXlleEujQ6q3iQfm2fHMXpdO9Vvw1FBtnwaDzMlg
+export SPONSOR_LOGO=../img/dark/company_logo.png
 export SPONSOR_LOGO_SMALL=../img/dark/company_logo_small.png
-export SPONSOR_URL=http://community.topcoder.com/tco14/sponsor/hp-idol-ondemand/
+export SPONSOR_URL=http://www.appirio.com

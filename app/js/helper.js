@@ -118,11 +118,14 @@
  * - Added LOGIN_WAITING_TIME setting.
  * - Updated the message text for lost connection logic.
  *
- * Changes in version 1.31 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
+ * Changes in version 1.32 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
  *  - Added REQUEST_TIME_FORMAT setting.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee
- * @version 1.32
+ * Changes in version 1.33 (Web Arena - Replace ng-scrollbar with prefect-scrollbar):
+ *  - Added COMMON_TIMEGAP constant.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman
+ * @version 1.33
  */
 'use strict';
 /*global module*/
@@ -331,6 +334,8 @@ module.exports = {
     MAX_CHAT_LENGTH: 256,
     // Time gap between two leaderboad table rebuildings
     LEADERBOARD_TABLE_REBUILT_TIMEGAP: 0,
+    // Common time gap before broadcast a message
+    COMMON_TIMEGAP: 10,
     // the login waiting time
     LOGIN_WAITING_TIME: 1000,
 
@@ -347,7 +352,7 @@ module.exports = {
         PhaseChange: 'Phase Change',
         Disconnected: 'Disconnected',
         ForcedLogout: 'Client Connection Error',
-        NotAssigned: 'Not Assigned',
+        NotAssigned: 'Room Assignment',
         RoundAccessError: 'Round Access Error',
         ChangeRoundError: 'Change round Error',
         SaveResults: 'Save Results',
@@ -358,9 +363,9 @@ module.exports = {
     POP_UP_MESSAGES: {
         Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
         ForcedLogout: 'Logging off as you logged in to another session or browser.',
-        LostConnection: 'The communication with the competition server has been interrupted! Please verify your network connection, copy your work, and refresh this page.',
-        NotAssigned: 'You are not assigned to this room',
-        Reconnect: 'The network is available. Would you like to reconnect?'
+        Reconnect: 'The network is available. Would you like to reconnect?',
+        LostConnection: 'The connection to the server has been lost. Please log off and log in again.',
+        NotAssigned: 'Sorry, you cannot perform this operation because you are not assigned to this room. The likely cause is that you did not successfuly register for the match during the registration period.'
     },
 
     // The mapper from time zone code (must be uppercase) to offset from UTC (in minutes).

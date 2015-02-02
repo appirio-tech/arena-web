@@ -29,11 +29,11 @@
             </div><!--/.tabs-->
             <div class="summaryWrapper">
                 <div data-ng-show="viewOn=='room'" class="roomDiv sumDiv">
-                    <div class="scroll visible-lg visible-md" data-ng-custom-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.roomSummary}}</div></div>
+                    <div class="scroll visible-lg visible-md" data-perfect-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.roomSummary}}</div></div>
                     <div class="default visible-sm visible-xs"><div class="innerWrapper">{{contest.roomSummary}}</div></div>
                 </div>
                 <div data-ng-show="viewOn=='rooms' && isShownRooms()" class="roomsDiv sumDiv">
-                    <div class="roomsDivScroll" data-rebuild-on="rebuild:roomslist" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize>
+                    <div class="roomsDivScroll" data-rebuild-on="rebuild:roomslist" data-perfect-scrollbar data-scroll-top data-rebuild-on-resize>
                         <ul data-rebuild-on="rebuild:roomslist">
                             <li data-ng-repeat="room in roomsList | startFrom:(currentPage-1)*pageSize | limitTo:pageSize"><a data-ng-click="moveToRoom(room.roomID)">{{room.roomTitle}}</a></li>
                         </ul>
@@ -41,19 +41,20 @@
                     <div class="pagination" data-ng-hide="numberOfPages() === 1"><a data-ng-hide="currentPage === 1" data-ng-click="prevPage()">Prev</a><span> {{currentPage}} / {{numberOfPages()}} </span><a data-ng-hide="numberOfPages() === currentPage" data-ng-click="nextPage()">Next</a></div>
                 </div>
                 <div data-ng-show="viewOn=='divOne'" class="divOneDiv divOneDiv1 sumDiv">
-                    <div class="scroll visible-lg visible-md" data-ng-custom-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
+                    <div class="scroll visible-lg visible-md" data-perfect-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
                     <div class="default visible-sm visible-xs"><div class="innerWrapper">{{contest.divOneSummary}}</div></div>
                 </div>
                 <div data-ng-show="viewOn=='divTwo'" data-ng-class="{divOneDiv1: !isDivisionActive(contest, 'divOne'), divTwoDiv1: isDivisionActive(contest, 'divOne')}" class="sumDiv">
-                    <div class="scroll visible-lg visible-md" data-ng-custom-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
+                    <div class="scroll visible-lg visible-md" data-perfect-scrollbar data-rebuild-on-resize><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
                     <div class="default visible-sm visible-xs"><div class="innerWrapper">{{contest.divTwoSummary}}</div></div>
                 </div>
             </div>
             <p data-ng-show="!isShownRooms()">The leaderboard is not ready.</p>
+            <p data-ng-if="isShownRooms() && exceedLeaderBoardLimit(contest.phaseData.phaseType, currentRoomInfo.roomID)" data-ng-hide="viewOn=='rooms'">The leaderboard you are trying to view is currently unavailable. Please try again after the match is complete</p>
             <section class="detailPage shortLeaderboard">
                 <section class="leaderboardWrapper" data-rebuild-on="rebuild:leaderboardTable" id="leaderboardPanel" data-ng-hide="viewOn=='rooms'">
                     <p data-ng-show="!isShownRooms()">The leaderboard is not ready.</p>
-                    <div class="tableWrapper" data-ng-show="isShownRooms()" data-rebuild-on="rebuild:leaderboardTable">
+                    <div class="tableWrapper" data-ng-if="isShownRooms() && !exceedLeaderBoardLimit(contest.phaseData.phaseType, currentRoomInfo.roomID)" data-rebuild-on="rebuild:leaderboardTable">
                         <div class="tHeadDiv" data-ng-class="{moreProblemTbl:contest.problems[viewDivisionID].length>3,normal:contest.problems[viewDivisionID].length<=3}">
                             <div class="innerWrapper">
                                 <table class="table table-condensed">
@@ -82,7 +83,7 @@
                                 </table>
                             </div><!--/.innerWrapper-->
                         </div><!--/.tHeadDiv-->
-                        <div class="tableDiv scroll" data-ng-if="!isTouchDevice" data-ng-custom-scrollbar data-scroll-top data-rebuild-on-resize data-ng-class="{moreProblemTbl:contest.problems[viewDivisionID].length>3,normal:contest.problems[viewDivisionID].length<=3}">
+                        <div class="tableDiv scroll" data-ng-if="!isTouchDevice" data-perfect-scrollbar data-scroll-top data-rebuild-on-resize data-ng-class="{moreProblemTbl:contest.problems[viewDivisionID].length>3,normal:contest.problems[viewDivisionID].length<=3}">
                             <div class="innerWrapper">
                                 <table class="table table-condensed">
                                     <tbody>

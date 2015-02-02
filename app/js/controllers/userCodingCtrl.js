@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles user coding page logic.
@@ -68,8 +68,11 @@
  * Changes in version 1.19 (Web Arena - Fix Empty Problem Statement Arena Issue)
  * - Added timeout of 10ms to problem-loaded event, so that perfect-scrollbar works perfect
  *
+ * Changes in version 1.20 (Web Arena - Show Code Image Instead of Text in Challenge Phase):
+ * - Added function to show the generated code image in the challenge phase if the logged user is not writer
+ *
  * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.19
+ * @version 1.20
  */
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -231,7 +234,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                     // broadcast problem-load message to child states.
                     $timeout(function () {
                         $rootScope.$broadcast('problem-loaded');
-                    }, 10);
+                    }, helper.COMMON_TIMEGAP);
                     startTimer();
                 }
             }
@@ -401,6 +404,11 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             $scope.userData = {};
             $scope.userData.code = data.code.replace(/(\r\n|\n|\r)/gm, "\n");
             $scope.languageID = data.languageID;
+            // add code image if it is available
+            // only show the code image if it is available and current user is not the author
+            if (data.codeImage && $rootScope.username() !== data.writerHandle) {
+                $scope.codeImage = data.codeImage;
+            }
             if (data.lastCompiledTime) {
                 $scope.compiledTime = new Date(data.lastCompiledTime);
             }

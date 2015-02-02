@@ -44,6 +44,9 @@
  * Changes in version 1.11 (Web Arena Plugin API Part 2):
  * - Added more trigger plugin logic.
  *
+ * Changes in version 1.12 (Module Assembly - Web Arena Max Live Leaderboard Assembly):
+ * - Added exceedLeaderBoardLimit() function.
+ *
  * Changes in version 1.12 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
  * - Added method to set / get / remove code in local storage.
  *
@@ -94,7 +97,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
         formatMessage = function (message) {
             if (message.type === 'general') {
                 return "<div class = 'notificationPopup'>" +
-                    "<div>Broadcast information</div>" +
+                    "<div>Broadcast Information</div>" +
                     "<table>" +
                     "<tr><td><p>Time: <span>" + message.date + "</span></p></td></tr>" +
                     "</table>" +
@@ -104,7 +107,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
             }
             if (message.type === 'round') {
                 return "<div class = 'notificationPopup'>" +
-                    "<div>Broadcast information</div>" +
+                    "<div>Broadcast Information</div>" +
                     "<table>" +
                     "<tr><td><p>Time: <span>" + message.date + "</span></p></td></tr>" +
                     "<tr><td><p>Round: <span>" + message.roundName + "</span></p></td></tr>" +
@@ -115,7 +118,7 @@ factories.notificationService = ['$rootScope', '$filter', function ($rootScope, 
             }
             if (message.type === 'problem') {
                 return "<div class = 'notificationPopup'>" +
-                    "<div>Broadcast information</div>" +
+                    "<div>Broadcast Information</div>" +
                     "<table>" +
                     "<tr><td><p>Time: <span>" + message.date + "</span></p></td>" +
                     "<td><p>Class: <span>" + message.className + "</span></p></td></tr>" +
@@ -393,6 +396,23 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
             return false;
         }
         return true;
+    };
+
+    /**
+     * Check if the leaderboards number exceeds the configured max limit.
+     *
+     * @param phaseType the phase type
+     * @param roomID the room ID
+     * @returns {boolean} true if exceeded
+     * @since Module Assembly - Web Arena Max Live Leaderboard Assembly
+     */
+    retHelper.exceedLeaderBoardLimit = function (phaseType, roomID) {
+        if (roomID && phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase && $rootScope.roomData[roomID].coders.length > config.maxLiveLearderBoard) {
+            return true;
+        } else if  (phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase && $rootScope.leaderboard.length > config.maxLiveLearderBoard) {
+            return true;
+        }
+        return false;
     };
 
     /**

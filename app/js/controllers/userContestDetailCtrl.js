@@ -65,8 +65,11 @@
  * Changes in version 1.14 (Web Arena - Recovery From Lost Connection)
  * - Fixed undefined data issue.
  *
- * @author amethystlei, dexy, ananthhh, flytoj2ee, savon_cn, TCSASSEMBLER
- * @version 1.14
+ * Changes in version 1.15 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Added timeout of 10ms to rebuild:challengeTable event, so that the perfect-scrollbar work fine in contest detail
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee, savon_cn, xjtufreeman
+ * @version 1.15
  */
 'use strict';
 /*jshint -W097*/
@@ -164,7 +167,6 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
                 if (i === pageNumber && pageNumber - cpage >= 4 + showPageLength && i > 6 + showPageLength) {
                     showi = "..." + i;
                 }
-
                 result.push({i: i - 1, show: showi});
             }
         }
@@ -193,7 +195,6 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
      * This function broadcasts the rebuild scrollbar message.
      */
     $scope.rebuildScrollbars = function () {
-        $('.ngsb-container').css('top', '0');
         $scope.restoreSortKeys();
         $scope.$broadcast('rebuild:summary');
         $scope.$broadcast('rebuild:challengerTable');
@@ -640,6 +641,9 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             } else {
                 $scope.getKeys(viewOn).challengeFilter.challengerHandle = '';
             }
+            $timeout(function () {
+                $scope.$broadcast('rebuild:challengeTable');
+            }, helper.COMMON_TIMEGAP);
         } else if (panel === 'challenger') {
             challengerFilter.qtip('api').toggle(false);
             if ($scope.getKeys(viewOn).challengerFilterKey === 'specific') {
@@ -647,7 +651,11 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             } else {
                 $scope.getKeys(viewOn).challengerFilter.challengerHandle = '';
             }
+            $timeout(function () {
+                $scope.$broadcast('rebuild:challengerTable');
+            }, helper.COMMON_TIMEGAP);
         }
+
     };
     // bind keypress enter to filter
     $scope.pressKeyInFilter = function (ev, viewOn, panel) {
