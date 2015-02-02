@@ -110,6 +110,6 @@ export AUTO_SAVING_CODE_INTERVAL=30000
 export ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
 
 # The file name of the sponsor logo images. The files must be at app/img/{theme}/
-export SPONSOR_LOGO=../img/dark/company_logo.png
+export SPONSOR_LOGO=https://photos-3.dropbox.com/t/2/AACQDDC_cUOdJT0qnjLit48UFbretSkdfuROSv8TcEHdLw/12/767928/png/1024x768/3/1422882000/0/2/Olympic-logo.png/CLjvLiABIAIgAygBKAI/yaUdXlleEujQ6q3iQfm2fHMXpdO9Vvw1FBtnwaDzMlg
 export SPONSOR_LOGO_SMALL=../img/dark/company_logo_small.png
 export SPONSOR_URL=http://community.topcoder.com/tco14/sponsor/hp-idol-ondemand/
