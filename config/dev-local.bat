@@ -86,7 +86,7 @@ set CHALLENGE_ADVERTISING_INTERVAL=5000
 :: The time interval between updates of challenge advertising data from TC-API server (in ms)
 set CHALLENGE_ADVERTISING_UPDATE=300000
 
-:: The time interval between updates of leaderboard summay (in ms) 
+:: The time interval between updates of leaderboard summay (in ms)
 set LEADERBOARD_REFRESH_TIME_GAP=1000
 
 :: The TopCoder host name
@@ -109,3 +109,8 @@ set AUTO_SAVING_CODE_INTERVAL=30000
 
 :: The number of top coders shown in Active Matches Summary widget
 set ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
+
+:: The file name of the sponsor logo images. The files must be at app/img/{theme}/
+set SPONSOR_LOGO=../img/dark/company_logo.png
+set SPONSOR_LOGO_SMALL=../img/dark/company_logo_small.png
+set SPONSOR_URL=http://www.appirio.com

@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Set environment variables that will be used by grunt.
-# The idea here is to still conform to 12factor.net/config even though this is 
+# The idea here is to still conform to 12factor.net/config even though this is
 # a client side app and environment variables are not accessible. These
-# values will be copied by grunt into the config.js 
+# values will be copied by grunt into the config.js
 
 export NODE_ENV=development
 
-# Currently arena-web does not use an API backend. If we do end up 
-# adding in calls from TC api we will need this value any setup where the 
+# Currently arena-web does not use an API backend. If we do end up
+# adding in calls from TC api we will need this value any setup where the
 # API is on different domain than where the client was served...
-export API_DOMAIN=http://tc.cloud.topcoder.com:8080/v2
+export API_DOMAIN=http://tc.cloud.topcoder.com:8081/v2
 
 export AUTH0_CONNECTION=vm-ldap-connection
 export AUTH0_DOMAIN=sma.auth0.com
@@ -112,3 +112,8 @@ export AUTO_SAVING_CODE_INTERVAL=30000
 
 # The number of top coders shown in Active Matches Summary widget
 export ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
+
+# The file name of the sponsor logo images. The files must be at app/img/{theme}/
+export SPONSOR_LOGO=../img/dark/company_logo.png
+export SPONSOR_LOGO_SMALL=../img/dark/company_logo_small.png
+export SPONSOR_URL=http://www.appirio.com

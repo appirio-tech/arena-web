@@ -283,9 +283,6 @@ body{
     height: 166px;
     padding: 16px 17px;
 }
-.hero .loginBox footer .sponsorLogo {
-    background: url(../img/orange/company_logo.png) 0 0 no-repeat;
-}
 
 /*************** basic style of page */
 /* basical stucture, title, breadcrumb and connection */
@@ -315,9 +312,6 @@ footer{
 }
 footer .line {
     border-color: #ff8a00;
-}
-footer .right .sponsorLogo {
-    background: url(../img/orange/company_logo_small.png) 100% 100% no-repeat;
 }
 footer .left>span {
     color: #ff8a00;
@@ -1522,11 +1516,11 @@ footer .left>span {
 .socialButtons .challenge {
     color: rgb(49, 111, 153);
 
-/* ballonsWrap 
+/* ballonsWrap
 -------------------------*/
 .ballonsWrap{
     background: #000;
-    background: rgba(0,0,0,0.7); 
+    background: rgba(0,0,0,0.7);
 }
 .ballonsWrap .ballon:hover{
     background: #2A6B86;
@@ -1555,9 +1549,6 @@ footer .left>span {
     .panel-custom .tabs .altNav .dropdown-toggle:hover,
     .panel-custom .tabs .altNav .open a:hover {
         background: #ff8a00;
-    }
-    .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/orange/company_logo_small.png);
     }
 }
 /* special sizes which widget will overflow */
