@@ -151,7 +151,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
             $scope.enableClose = data.enableClose;
             $scope.coderInfo = data.message;
-            $scope.coderInfoLink = function () { return data.coderInfoLink; };
+            $scope.coderInfoLink = data.coderInfoLink;
             $scope.coderHistoryData = data.coderHistoryData;
             $scope.registrants = data.registrants;
             $scope.numCoderRequest = 0;
@@ -549,7 +549,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         $scope.openModal({
             title: helper.POP_UP_TITLES.CoderInfo,
             message: " ",
-            coderInfoLink: config.staticFileHost + '/#/u/dashboard/' + coderInfoUsername,
+            coderInfoLink: 'http://www.topcoder.com/member-profile/' + coderInfoUsername + '/algorithm/',
             enableClose: true
         }, null, null, 'partials/user.chat.area.coderinfo.html');
         modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
