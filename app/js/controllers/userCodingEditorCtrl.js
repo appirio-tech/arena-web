@@ -698,6 +698,14 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             if (userInputDisabled || !$scope.problemLoaded) {
                 return;
             }
+            if($scope.hasCodingPhaseEnded() && $scope.currentStateName() === helper.STATE_NAME.Coding) {
+                $scope.openModal({
+                    title: 'Error',
+                    message: 'You cannot compile after the coding phase ended.',
+                    enableClose: true
+                });
+                return;
+            }
             /**
              * Get source code from CodeMirror.
              *
