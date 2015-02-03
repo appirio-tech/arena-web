@@ -193,7 +193,21 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             }
             return roundData.phaseData.phaseType === helper.PHASE_TYPE_ID.ChallengePhase;
         };
-
+        /**
+         * Checks whether coding phase ended
+         * @returns {boolean}
+         */
+        $scope.hasCodingPhaseEnded = function () {
+            var phase, seconds = -1;
+            if ($scope.roundData && $scope.roundData[$scope.roundID] && $scope.roundData[$scope.roundID].phaseData) {
+                phase = $scope.roundData[$scope.roundID].phaseData;
+                if (phase.phaseType === helper.PHASE_TYPE_ID.CodingPhase) {
+                    // how many seconds between now and the phase end time
+                    seconds = (phase.endTime - tcTimeService.getTime()) / 1000;
+                }
+            }
+            return seconds < 1;
+        };
 
         /*jslint unparam: true*/
         // handle phase data response
