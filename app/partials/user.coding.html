@@ -29,7 +29,7 @@
             <div class="col-xs-4 text-right code-area-controls">
                 <a data-ng-show="currentStateName()==='user.practiceCode' && editorialLink!==''" class="matchEditorial" href="{{editorialLink}}" target="_blank">Match Editorial</a>
                 <a data-ng-click="goBack()" class="btn btnBack" data-ng-hide="currentStateName()==='user.practiceCode'">Back to Match</a>
-                <a class="btnSplitView" data-ng-click="problemAreaHeightRatio = 0.5" data-ng-class="{disabled:problemAreaHeightRatio == 0.5}"></a>
+                <a class="btnSplitView" data-ng-click="problemAreaHeightRatio = 0.5" data-ng-class="{disabled:problemAreaHeightRatio == 0.5}" data-tooltip-placement="bottom" data-tooltip="Split problem area"></a>
             </div>
         </div>
         <div class="container-fluid row-fluid mainContent">
