@@ -374,7 +374,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * Toggle test panel.
          */
         $scope.toggleTest = function () {
-            if (userInputDisabled || !$scope.problemLoaded) {
+            if (userInputDisabled || !$scope.problemLoaded || !$scope.codeCompiled) {
                 return;
             }
             if ($scope.currentStateName() === helper.STATE_NAME.ViewCode) {
