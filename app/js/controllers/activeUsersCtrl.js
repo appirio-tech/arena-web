@@ -25,7 +25,7 @@ var activeUsersCtrl = [ '$scope', '$rootScope', '$timeout', 'socket', function (
 
         // The sorting flags.
         $scope.sortAu = {
-            column: '',
+            column: 'userRating',
             descending: false
         };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This module defines the grunt tasks used for packaging the application.
@@ -43,8 +43,30 @@
  * - Added TC_HOSTNAME and CHALLENGE_ADVERTISING_UPDATE
  *   to handle showing and updating challenge advertising data.
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus
- * @version 1.10
+ * Changes in version 1.11 (Module Assembly - Web Arena Max Live Leaderboard Assembly):
+ * - Added MAX_LIVE_LEADERBOARD setting.
+ *
+ * Changes in version 1.11 (Web Arena - Scrolling Issues Fixes Assembly):
+ * - Added CSS files for codemirror's scroll plugin
+ *
+ * Changes in version 1.12 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Added AUTO_SAVING_CODE_INTERVAL setting.
+ *
+ * Changes in version 1.13 (Add Settings Panel for Chat Widget):
+ * - Added CSS references for switch widget
+ *
+ * Changes in version 1.14 (Web Arena - Leaderboard Performance Improvement v1.0):
+ * - Added LEADERBOARD_REFRESH_TIME_GAP to improve leaderboard performance.
+ * - Fixed lint issues.
+ *
+ * Changes in version 1.15 (Web Arena - Update Match Summary Tab Within Active Matches Widget):
+ * - Added ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT setting.
+ *
+ * Changes in version 1.16 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Remove CSS references for ng-scrollbar
+ *
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, xjtufreeman
+ * @version 1.16
  */
 'use strict';
 /*global module, process*/
@@ -101,12 +123,17 @@ module.exports = function (grunt) {
                         { match : 'SUMMARY_TOPCODER_COUNT', replacement: process.env.SUMMARY_TOPCODER_COUNT },
                         { match : 'PRACTICE_PROBLEM_LIST_PAGE_SIZE', replacement: process.env.PRACTICE_PROBLEM_LIST_PAGE_SIZE },
                         { match : 'REGISTRATION_URL', replacement: process.env.REGISTRATION_URL },
+                        { match : 'PW_RESET_URL', replacement: process.env.PW_RESET_URL },
                         { match : 'SPINNER_TIMEOUT', replacement: process.env.SPINNER_TIMEOUT },
                         { match : 'FEEDBACK_SPREADSHEET_URL', replacement: process.env.FEEDBACK_SPREADSHEET_URL },
                         { match : 'FEEDBACK_MAXLENGTH', replacement: process.env.FEEDBACK_MAXLENGTH },
                         { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT },
                         { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME },
-                        { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME }
+                        { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
+                        { match : 'MAX_LIVE_LEADERBOARD', replacement: process.env.MAX_LIVE_LEADERBOARD },
+                        { match : 'AUTO_SAVING_CODE_INTERVAL', replacement: process.env.AUTO_SAVING_CODE_INTERVAL },
+                        { match : 'LEADERBOARD_REFRESH_TIME_GAP', replacement: process.env.LEADERBOARD_REFRESH_TIME_GAP },
+                        { match : 'ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT', replacement: process.env.ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT }
                     ]
                 },
                 files : [
@@ -140,10 +167,12 @@ module.exports = function (grunt) {
                     'app/css/bootstrap.min.css',
                     'bower_components/codemirror/lib/codemirror.css',
                     'bower_components/codemirror/addon/fold/foldgutter.css',
+                    'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                     'bower_components/fullcalendar/fullcalendar.css',
+                    'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
-                    'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                     'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
+                    'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
                     'app/css/notifications.css',
                     'app/css/app.css',
                     'app/css/local.css',
@@ -159,10 +188,12 @@ module.exports = function (grunt) {
                         'app/css/bootstrap.min.css',
                         'bower_components/codemirror/lib/codemirror.css',
                         'bower_components/codemirror/addon/fold/foldgutter.css',
+                        'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
+                        'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
-                        'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
+                        'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
                         'app/css/notifications.css',
                         'app/css/app.css',
                         'app/css/local.css',
@@ -177,10 +208,12 @@ module.exports = function (grunt) {
                         'app/css/bootstrap.min.css',
                         'bower_components/codemirror/lib/codemirror.css',
                         'bower_components/codemirror/addon/fold/foldgutter.css',
+                        'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
+                        'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
-                        'thirdparty/ng-scrollbar/dist/ng-scrollbar.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
+                        'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
                         'app/css/notifications.css',
                         'app/css/app.css',
                         'app/css/local.css',
@@ -201,7 +234,7 @@ module.exports = function (grunt) {
                 // This copies all the html and images into the build/ folder. css and js were done already.
                 expand: true,
                 cwd: 'app/',
-                src: ['**/*.html', 'img/**', 'fonts/**', 'data/**', 'robots.txt','js/newrelic.js'],
+                src: ['**/*.html', 'img/**', 'fonts/**', 'data/**', 'robots.txt', 'js/newrelic.js'],
                 dest: 'build/'
             },
             release: {
@@ -251,7 +284,7 @@ module.exports = function (grunt) {
                     APP_NAME: process.env.NEWRELIC_SERVER_APPNAME,
                     LICENSE_KEY: process.env.NEWRELIC_SERVER_LICENSE_KEY,
                     LOGGING_LEVEL : process.env.NEWRELIC_SERVER_LOGGING_LEVEL
-                }                
+                }
             }
         }
     });
@@ -268,11 +301,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadTasks('./new_relic/tasks');
-    grunt.loadTasks('./new_relic/server_tasks')
+    grunt.loadTasks('./new_relic/server_tasks');
 
     // The default tasks to run when you type: grunt
-    grunt.registerTask('default', ['servernewrelic','newrelic','clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
-    grunt.registerTask('build', ['servernewrelic','newrelic','clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('default', ['servernewrelic', 'newrelic', 'clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('build', ['servernewrelic', 'newrelic', 'clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
     //release tasks work out of build directory - build must be run first!
     grunt.registerTask('release', ['clean:release', 'uglify:release', 'copy:release']);
     grunt.registerTask('heroku', ['build']);

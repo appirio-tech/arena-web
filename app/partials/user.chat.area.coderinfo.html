@@ -1,7 +1,8 @@
 <div class="modal-header chatWidget-modal-header">
     <h3 class="modal-title">Coder Info<span class="cancel-x" data-ng-click="ok()" ng-if="enableClose">X</span></h3>
 </div>
-<div class="modal-body chatWidget-modal-body" data-ng-custom-scrollbar data-rebuild-on="rebuild:codeInfo" data-rebuild-on-resize data-scroll-top>
+<div class="modal-body chatWidget-modal-body" data-perfect-scrollbar data-rebuild-on="rebuild:codeInfo" data-rebuild-on-resize data-scroll-top>
+    <span class="copyLink" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Copy Link"><span class="icon" clip-copy="coderInfoLink()" clip-click="notifyCopyLink()"></span></span>
     <pre class="coderInfo">{{coderInfo}}</pre>
 </div>
 <div class="modal-footer chatWidget-modal-footer">

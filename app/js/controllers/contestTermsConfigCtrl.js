@@ -7,8 +7,12 @@
  * Changes in version 1.1 (Module Assembly - Web Arena -Match Management Update):
  * - Added load terms logic.
  *
- * @author TCSASSEMBLER
- * @version 1.1
+ * Changes in version 1.2 (Web Arena - Update Set Terms Dialog):
+ * - Remove the Load Previous Term button and show the terms by default.
+ * - For Add button, after set term, the button text changed to View style.
+ *
+ * @author xjtufreeman, TCSASSEMBLER
+ * @version 1.2
  */
 'use strict';
 /*jshint -W097*/
@@ -38,6 +42,10 @@ var contestTermsConfigCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '
     $scope.$on('setContestTerms', function (event, data) {
         initFields();
         $scope.round = data.round;
+        //display previous terms
+        if ($scope.round.roundTerms && $scope.round.roundTerms.length > 0) {
+            $scope.roundTerms = $scope.round.roundTerms;
+        }
         $scope.showPopup('contestTermsConfig');
     });
     /**
@@ -53,7 +61,7 @@ var contestTermsConfigCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '
             return;
         }
         // set terms
-        $scope.round.terms = $scope.roundTerms;
+        $scope.round.roundTerms = $scope.roundTerms;
         $http.post(config.apiDomain + '/data/srm/rounds/' + $scope.round.id + '/terms', {terms: $scope.roundTerms}, header).
             success(function (data) {
                 if (data.error) {
@@ -75,24 +83,10 @@ var contestTermsConfigCtrl = ['$scope', '$http', 'sessionHelper', 'appHelper', '
      * Closes round terms popup
      */
     $scope.closeContestTermsConfig = function () {
+        $scope.round.hasTerms = ($scope.round.roundTerms && $scope.round.roundTerms.length > 0);
         $scope.hidePopup('contestTermsConfig');
     };
-    /**
-     * Loads existing terms for selected round
-     */
-    $scope.loadPreviousTerm = function () {
-        //get terms
-        if ($scope.round.terms && $scope.round.terms.length > 0) {
-            $scope.roundTerms = $scope.round.terms;
-        } else {
-            $scope.openModal({
-                title: 'Warning',
-                message: 'No terms in this round currently.',
-                enableClose: true
-            });
-        }
-
-    };
+    
 }];
 
 module.exports = contestTermsConfigCtrl;

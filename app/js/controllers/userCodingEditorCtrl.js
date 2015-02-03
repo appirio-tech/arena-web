@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles user coding page logic.
@@ -55,8 +55,23 @@
  * Changes in version 1.15 (Web Arena Plugin API Part 1):
  * - Added plugin logic for coding editor panel.
  *
- * @author tangzx, amethystlei, flytoj2ee
- * @version 1.15
+ * Changes in version 1.16 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Added logic to cache the code to local storage.
+ *
+ * Changes in version 1.17 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added logic to support running practice system test.
+ *
+ * Changes in version 1.18 (Scrolling Issues Fixes Assembly):
+ * - Changed CodeMirror scrollbar style.
+ *
+ * Changes in version 1.19 (Web Arena - Recovery From Lost Connection)
+ * - Fixed the undefined test data issue.
+ *
+ * Changes in version 1.20 (Web Arena - Show Code Image Instead of Text in Challenge Phase)
+ * - Enable code editor if the user is the owner of the code during challenge phase.
+ *
+ * @author tangzx, amethystlei, flytoj2ee, Helstein, onsky
+ * @version 1.20
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -69,6 +84,7 @@
  * @type {exports}
  */
 var helper = require('../helper');
+var config = require('../config');
 
 /**
  * The main controller for coding editor.
@@ -150,17 +166,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 }
 
                 $scope.markedSearched.length = 0;
-                cursor = $scope.cm.getSearchCursor($scope.searchText);
+                cursor = $scope.cm.getSearchCursor($scope.searchText, 0, true);
                 while (cursor.findNext()) {
                     $scope.markedSearched.push($scope.cm.markText(cursor.from(), cursor.to(), {className: "searched"}));
-                }
-
-                if ($scope.searchText.length > 0 && $scope.markedSearched.length === 0) {
-                    $scope.openModal({
-                        title: 'Warning',
-                        message: 'No matched text found!',
-                        enableClose: true
-                    });
                 }
             }
         };
@@ -219,9 +227,8 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * @param enable whether enable
          */
         function enableEditor(enable) {
-
             if ($scope.cm) {
-                $scope.cm.setOption('readOnly', enable === false ? 'nocursor' : false);
+                $scope.cm.setOption('readOnly', enable === false && $scope.defendant !== $rootScope.username() ? 'nocursor' : false);
             }
         }
 
@@ -239,6 +246,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         function enableUserInput() {
             if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
                 userInputDisabled = false;
+                $scope.isSaving = false;
                 enableEditor();
             }
         }
@@ -427,9 +435,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.setThemeIdx = function (themeIdx) {
             $scope.themeIdx = themeIdx;
-            var _elem = angular.element('ul.editorDropDown > li.dropdown');
-            if (_elem) {
-                closeDropdown(_elem);
+            var elem = angular.element('ul.editorDropDown > li.dropdown');
+            if (elem) {
+                closeDropdown(elem);
             }
         };
 
@@ -466,9 +474,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             $scope.langIdx = langIdx;
 
             updateArgTypeAndMethod($scope.lang($scope.langIdx).id);
-            var _elem = angular.element('ul.languageDropDown > li.dropdown');
-            if (_elem) {
-                closeDropdown(_elem);
+            var elem = angular.element('ul.languageDropDown > li.dropdown');
+            if (elem) {
+                closeDropdown(elem);
             }
         };
 
@@ -528,6 +536,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 languageID: $scope.lang($scope.langIdx).id
             });
             sessionHelper.setUserLanguagePreference($scope.lang($scope.langIdx).id);
+            // save the language id to local
+            appHelper.setCodeToLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID,
+                $scope.lang($scope.langIdx).id, $scope.cm.getValue());
         };
 
         // At first load, it loads the code content, it's not changed the code.
@@ -552,6 +563,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             theme: 'topcoder',
             lineNumbers: true,
             lineWrapping : true,
+            scrollbarStyle: "simple",
             mode: $scope.lang($scope.langIdx).langKey,
             foldGutter: $scope.lang($scope.langIdx).langGutter,
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
@@ -573,12 +585,17 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     $scope.settingsOpen = false;
                 };
                 cmInstance.on('change', function () {
-                    if ($scope.firstLoadCode) {
-                        $scope.contentDirty = false;
+                    if ($scope.firstLoadCode || $scope.resizeCodeEditor) {
                         $scope.firstLoadCode = false;
+                        $scope.updatedCodeAfterSubmit = false;
+                        $scope.resizeCodeEditor = false;
                     } else {
                         $scope.contentDirty = true;
-                        $scope.firstLoadCode = false;
+                        $scope.updatedCodeAfterSubmit = true;
+                        if (($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode)) {
+                            appHelper.setCodeToLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID,
+                                $scope.lang($scope.langIdx).id, $scope.cm.getValue());
+                        }
                     }
                 });
                 // comment out error handle related logic for now
@@ -622,6 +639,55 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             return (!$scope.cm) || $scope.cm.getValue().trim() === '';
         };
 
+        /**
+         * Save code.
+         */
+        $scope.saveCode = function () {
+            if ($scope.contentDirty) {
+                $scope.openModal({
+                    title: 'Saving',
+                    message: 'Please wait for saving code.',
+                    enableClose: false
+                });
+
+                $scope.isSaving = true;
+                $scope.contentDirty = false;
+                var code = $scope.cm.getValue();
+                socket.emit(helper.EVENT_NAME.SaveRequest, {
+                    componentID: $scope.componentID,
+                    language: $scope.lang($scope.langIdx).id,
+                    code: code
+                });
+                if (modalTimeoutPromise) {
+                    $timeout.cancel(modalTimeoutPromise);
+                }
+                modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
+            }
+        };
+
+        $scope.isSaving = false;
+        /**
+         * Auto save the code.
+         */
+        $scope.autoSaveCode = function () {
+            if ($scope.contentDirty && !$scope.isSaving) {
+                $scope.isSaving = true;
+                $scope.contentDirty = false;
+                var code = $scope.cm.getValue();
+                socket.emit(helper.EVENT_NAME.SaveRequest, {
+                    componentID: $scope.componentID,
+                    language: $scope.lang($scope.langIdx).id,
+                    code: code
+                });
+            }
+
+            $rootScope.autoSavingCodePromise = $timeout($scope.autoSaveCode, config.autoSavingCodeInterval);
+        };
+        // Only trigger auto save code logic in coding and practice code mode
+        if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
+            $scope.autoSaveCode();
+        }
+
         // init code compiled false
         $scope.codeCompiled = false;
         /**
@@ -657,6 +723,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 enableClose: false
             });
 
+            $scope.contentDirty = false;
             socket.emit(helper.EVENT_NAME.CompileRequest, {
                 componentID: $scope.componentID,
                 language: $scope.lang($scope.langIdx).id,
@@ -686,6 +753,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     buttons: ['Yes', 'No'],
                     enableClose: true
                 }, function () {
+                    $scope.contentDirty = false;
                     socket.emit(helper.EVENT_NAME.SubmitRequest, {componentID: $scope.componentID});
                     $scope.testOpen = false;
                 });
@@ -723,6 +791,12 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 message: data.message,
                 enableClose: true
             });
+
+            if (data.message.indexOf('was successful for') !== -1) {
+                $scope.submittedCode = true;
+                $scope.updatedCodeAfterSubmit = false;
+                $scope.submittedTime = Date.now();
+            }
         });
 
         /**
@@ -740,6 +814,16 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             var i;
             enableUserInput();
 
+            if (data.title === helper.POP_UP_TITLES.SaveResults
+                    || data.title === helper.POP_UP_TITLES.CompileResult
+                    || data.title === helper.POP_UP_TITLES.MultipleSubmission) {
+                //success to save code in server, remove local cache code.
+                appHelper.removeCodeFromLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID);
+                $scope.isSaving = false;
+            }
+            if (data.title === helper.POP_UP_TITLES.SaveResults) {
+                $scope.savedTime = Date.now();
+            }
             if (data.title !== helper.POP_UP_TITLES.Error &&
                     data.title !== helper.POP_UP_TITLES.CompileResult &&
                     data.title !== helper.POP_UP_TITLES.TestResults &&
@@ -801,6 +885,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 // set content dirty to false when compile successfully.
                 $scope.contentDirty = false;
                 $scope.codeCompiled = true;
+                $scope.compiledTime = Date.now();
             }
         });
 
@@ -825,16 +910,18 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
         // when the problem is loaded in the parent controller userCodingCtrl
         $scope.$on('problem-loaded', function () {
-            // init test case checkboxes
-            $scope.userData.tests.forEach(function (testCase) {
-                testCase.checked = false;
-                testCase.toggle = false;
-                testCase.params.forEach(function (param) {
-                    if (param.complexType) {
-                        param.created = false;
-                    }
+            if ($scope.userData && $scope.userData.tests) {
+                // init test case checkboxes
+                $scope.userData.tests.forEach(function (testCase) {
+                    testCase.checked = false;
+                    testCase.toggle = false;
+                    testCase.params.forEach(function (param) {
+                        if (param.complexType) {
+                            param.created = false;
+                        }
+                    });
                 });
-            });
+            }
             if (angular.isUndefined($rootScope.userTests)) {
                 $rootScope.userTests = [{}];
             }
@@ -881,9 +968,11 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
              */
             $scope.isSelectedAll = function () {
                 var i;
-                for (i = 0; i < $scope.userData.tests.length; i += 1) {
-                    if (!$scope.userData.tests[i].checked) {
-                        return false;
+                if ($scope.userData && $scope.userData.tests) {
+                    for (i = 0; i < $scope.userData.tests.length; i += 1) {
+                        if (!$scope.userData.tests[i].checked) {
+                            return false;
+                        }
                     }
                 }
                 for (i = 0; i < $rootScope.userTests.length; i += 1) {
@@ -906,7 +995,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
              */
             $scope.isSelectedAllDisable = function () {
                 if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
-                    if ($scope.userData.tests.length === 0 && $rootScope.userTests.length === 0) {
+                    if ((!$scope.userData || $scope.userData.tests.length === 0) && $rootScope.userTests.length === 0) {
                         return true;
                     }
                 }
@@ -914,8 +1003,19 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             };
 
             // set the code written by the user
-            $scope.code = $scope.userData.code;
-            $scope.contentDirty = false;
+            var tmp = appHelper.getCodeFromLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID);
+            if (tmp !== null && ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode)) {
+                $scope.code = tmp.code;
+                $scope.languageID = tmp.languageID;
+                $scope.contentDirty = true;
+            } else {
+                if ($scope.userData.code) {
+                    $scope.code = $scope.userData.code;
+                } else {
+                    $scope.code = '';
+                }
+                $scope.contentDirty = false;
+            }
 
             // load supported languages from config.
             // $scope.problem.supportedLanguages was set in the parent controller
@@ -942,6 +1042,89 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
             // set preferred theme, there is no theme data
             $scope.themeIdx = 0;
+
+            $scope.submittedCode = false;
+            $scope.updatedCodeAfterSubmit = false;
+
+            /**
+             * Check whether to show running practice system test link.
+             * @returns {boolean} the checked result
+             */
+            $scope.isShowRunPracticeSystemTest = function () {
+                if ($scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
+                    return true;
+                }
+
+                return false;
+            };
+
+            $scope.numContestRequests = 0;
+
+            /**
+             * Run practice system test.
+             */
+            $scope.runPracticeSystemTest = function () {
+                if (!$scope.submittedCode) {
+                    return;
+                }
+
+                /**
+                 * Run system test handler.
+                 */
+                var runSystemTestHandler = function () {
+                    $scope.numContestRequests = 1;
+                    disableUserInput();
+                    socket.emit(helper.EVENT_NAME.PracticeSystemTestRequest, {
+                        componentIds: [$scope.componentID],
+                        roomID: $scope.practiceRoomId
+                    });
+                };
+                if ($scope.updatedCodeAfterSubmit) {
+                    $scope.openModal({
+                        title: 'Warning',
+                        message: 'You have made a change to your code since the last time you submitted.' +
+                            ' System test result will be based on last submitted code. Do you want to continue with Running System Tests?',
+                        buttons: ['Yes', 'No'],
+                        enableClose: true
+                    }, runSystemTestHandler);
+                } else {
+                    runSystemTestHandler();
+                }
+            };
+
+            // The response which returned total system test case count
+            socket.on(helper.EVENT_NAME.PracticeSystemTestResponse, function (data) {
+                $scope.numContestRequests = data.testCaseCountByComponentId[$scope.componentID];
+            });
+
+            // The response which returned system test results
+            socket.on(helper.EVENT_NAME.PracticeSystemTestResultResponse, function (data) {
+                if (data.resultData.succeeded === false) {
+                    $scope.numContestRequests = 0;
+                    //popup error dialog
+                    $scope.openModal({
+                        title: 'Result',
+                        message: '',
+                        showError: true,
+                        buttons: ['Try Again'],
+                        enableClose: true
+                    }, null, null, 'popupSystemTestResultBase.html');
+                    enableUserInput();
+                } else {
+                    $scope.numContestRequests = $scope.numContestRequests - 1;
+                    if ($scope.numContestRequests === 0) {
+                        // popup success dialog
+                        $scope.openModal({
+                            title: 'Result',
+                            message: '',
+                            showError: false,
+                            buttons: ['OK'],
+                            enableClose: true
+                        }, null, null, 'popupSystemTestResultBase.html');
+                        enableUserInput();
+                    }
+                }
+            });
 
             // set line number visibility
             // comment out for now, there is no line number data

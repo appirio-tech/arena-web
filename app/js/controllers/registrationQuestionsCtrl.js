@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * The controller for the registration questions table.
@@ -70,6 +70,7 @@ var registrationQuestionsCtrl = ['$scope', '$timeout', '$http', 'sessionHelper',
      * Close registration questions popup
      */
     $scope.closeRegistrationQuestions = function () {
+        $scope.round.hasQuestions = $scope.round.questions.length > 0;
         $scope.hidePopup('registrationQuestions');
     };
     /**

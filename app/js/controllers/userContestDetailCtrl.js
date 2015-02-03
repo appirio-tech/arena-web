@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This controller handles coding editor related logic.
@@ -46,18 +46,30 @@
  * Changes in version 1.9 (Module Assembly - Web Arena UI - Challenges and Challengers):
  * - Added logic to support challenges and challengers table.
  *
- * Changes in version 2.0 (Web Arena - Division Leaderboard Pagination):
+ * Changes in version 1.10 (Web Arena - Division Leaderboard Pagination):
  * - Added division leaderboard pagination
  *
- * Changes in version 2.1 (Module Assembly - Web Arena UI - Match Summary Widget):
+ * Changes in version 1.11 (Module Assembly - Web Arena UI - Match Summary Widget):
  * - Moved closeDivSummary, closeLastDivSummary, openDivSummary, getDivSummary, updateDivSummary
  *   updateRoomSummary, formatScore, getStatusColor, showResult, isViewable, ldrbrdTimeoutPromise,
  *   getCoderHistory to baseCtrl.js to have global support for leaderboard tables.
  *
- * Changes in version 2.2 (Sort is not retained in room summary):
+ * Changes in version 1.12 (Sort is not retained in room summary):
  * - Fix issue of Sort is not retained in room summary
- * @author amethystlei, dexy, ananthhh, flytoj2ee, savon_cn
- * @version 2.2
+ *
+ * Changes in version 1.13 (Web Arena - Leaderboard Performance Improvement):
+ * - Updated to use the variable leaderboard instead of calling the function
+ *   getCurrentLeaderboard() in the template app/partials/user.contest.detail.html
+ *   to improve the performance of the leaderboard.
+ *
+ * Changes in version 1.14 (Web Arena - Recovery From Lost Connection)
+ * - Fixed undefined data issue.
+ *
+ * Changes in version 1.15 (Replace ng-scrollbar with prefect-scrollbar):
+ * - Added timeout of 10ms to rebuild:challengeTable event, so that the perfect-scrollbar work fine in contest detail
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee, savon_cn, xjtufreeman
+ * @version 1.15
  */
 'use strict';
 /*jshint -W097*/
@@ -115,7 +127,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             cpage = 1;
         }
 
-        for (i = 1; i <= pageNumber; i++) {
+        for (i = 1; i <= pageNumber; i += 1) {
             skipPage = false;
             if (cpage <= 6 + showPageLength) {
                 if (pageNumber > 7 + showPageLength) {
@@ -149,15 +161,14 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             }
             if (!skipPage) {
                 showi = i;
-            if (i === 1 && cpage >= 5 + showPageLength && pageNumber > 7 + showPageLength) {
-                showi = "1...";
+                if (i === 1 && cpage >= 5 + showPageLength && pageNumber > 7 + showPageLength) {
+                    showi = "1...";
+                }
+                if (i === pageNumber && pageNumber - cpage >= 4 + showPageLength && i > 6 + showPageLength) {
+                    showi = "..." + i;
+                }
+                result.push({i: i - 1, show: showi});
             }
-            if (i === pageNumber && pageNumber - cpage >= 4 + showPageLength && i > 6 + showPageLength) {
-                showi = "..." + i;
-            }
-
-            result.push({i: i - 1, show: showi});
-        }
         }
         return result;
     }
@@ -169,7 +180,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             return lastPageNums;
         }
 
-        if (num === 0) {
+        if (num === 0 || !data) {
             return [];
         }
         lastInvokeTime = new Date().getTime();
@@ -178,44 +189,27 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         lastPageNums = filterPageItem(lastPageNums);
         return lastPageNums;
     };
-     /**
-     * Check if the client suppports touch screen.
-     *
-     * @returns {boolean} true if the client supports touch screen.
-     */
-    function isTouchSupported() {
-        var msTouchEnabled = window.navigator.msMaxTouchPoints,
-            generalTouchEnabled = document.createElement('div').hasOwnProperty('ontouchstart');
-        if (msTouchEnabled || generalTouchEnabled) {
-            return true;
-        }
-        return false;
-    }
-    if (isTouchSupported()) {
-        $('.sumDiv .scroll, .tableDiv.scroll').hide();
-        $('.sumDiv .default, .tableDiv.default').show();
-    }
+    $scope.leaderboardPageRange = [1];
 
     /**
      * This function broadcasts the rebuild scrollbar message.
      */
-    function rebuildScrollbars() {
-        $('.ngsb-container').css('top', '0');
+    $scope.rebuildScrollbars = function () {
         $scope.restoreSortKeys();
         $scope.$broadcast('rebuild:summary');
         $scope.$broadcast('rebuild:challengerTable');
         $scope.$broadcast('rebuild:challengeTable');
         $scope.$broadcast('rebuild:leaderboardTable');
-    }
+    };
 
     /**
      * This function is to restore the sort keys.
      */
-    $scope.restoreSortKeys = function() {
+    $scope.restoreSortKeys = function () {
         if (!$rootScope.isKeepSort) {
             $rootScope.contestSortKeys = {};
         } else {
-            angular.forEach($rootScope.contestSortKeys, function(status, panel) {
+            angular.forEach($rootScope.contestSortKeys, function (status, panel) {
                 if (panel === 'challenger') {
                     $scope.getKeys(status.viewOn).challengerKey = status.key;
                 } else if (panel === 'challenge') {
@@ -226,7 +220,7 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
                 }
             });
         }
-    }
+    };
     // toggle key
     function toggleKey(target, key) {
         var val;
@@ -300,6 +294,9 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     $scope.boards = [[], []];
     $scope.showBy = 'points';
     $scope.isDivisionActive = appHelper.isDivisionActive;
+    $scope.leaderboardToShow = [];
+    $scope.leaderboardFiltered = [];
+
     /**
      * Get the selected leader board.
      *
@@ -378,19 +375,21 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         if (viewOn === 'divOne') {return $scope.divOneKeys; }
         return $scope.divTwoKeys;
     };
+    $scope.currentKeys = {};
+
     $scope.toggleSortKey = function (viewOn, panel, key) {
-        var currentKey = "";
+        var currentKey = "", currentKeys = $scope.getKeys(viewOn);
         if (panel === 'challenger') {
-            $scope.getKeys(viewOn).challengerKey = toggleKey($scope.getKeys(viewOn).challengerKey, key);
-            currentKey = $scope.getKeys(viewOn).challengerKey;
+            currentKeys.challengerKey = toggleKey(currentKeys.challengerKey, key);
+            currentKey = currentKeys.challengerKey;
             $scope.$broadcast('rebuild:challengerTable');
         } else if (panel === 'challenge') {
-            $scope.getKeys(viewOn).challengeKey = toggleKey($scope.getKeys(viewOn).challengeKey, key);
-            currentKey = $scope.getKeys(viewOn).challengeKey;
+            currentKeys.challengeKey = toggleKey(currentKeys.challengeKey, key);
+            currentKey = currentKeys.challengeKey;
             $scope.$broadcast('rebuild:challengeTable');
         } else {
-            $scope.getKeys(viewOn).leaderboardKey = toggleKey($scope.getKeys(viewOn).leaderboardKey, key);
-            currentKey = $scope.getKeys(viewOn).leaderboardKey;
+            currentKeys.leaderboardKey = toggleKey(currentKeys.leaderboardKey, key);
+            currentKey = currentKeys.leaderboardKey;
             $scope.$broadcast('rebuild:leaderboardTable');
             $scope.setCurrentPage(0);
         }
@@ -413,6 +412,8 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
     $scope.setViewOn = function (view) {
         $rootScope.currentViewOn = view;
         var divID = helper.VIEW_ID[view];
+        $scope.viewOn = view;
+        $scope.currentKeys = $scope.getKeys($scope.viewOn);
         if (view !== 'room') {
             $scope.divisionID = divID;
             $rootScope.getDivSummary($scope.contest.roundID, divID);
@@ -421,17 +422,18 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             $scope.divisionID = $stateParams.divisionId;
             $scope.numOfPage = 999999;
             $rootScope.closeLastDivSummary();
-            $rootScope.leaderboard = [];
+            $rootScope.leaderboard = $scope.getCurrentLeaderboard();
 
             $rootScope.isDivLoading = false;
         }
-        $scope.viewOn = view;
-
-        rebuildScrollbars();
+        $rootScope.$broadcast(helper.EVENT_NAME.LeaderboardRefreshed, {
+            moveToFirstPage: true,
+            updateNow: true
+        });
     };
 
     setTimeout(function () {
-        rebuildScrollbars();
+        $scope.rebuildScrollbars();
     }, 100);
 
     $scope.getViewOnTitle = function () {
@@ -445,12 +447,6 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             return 'Division II';
         }
     };
-
-    if ($stateParams.viewOn) {
-        $scope.setViewOn($stateParams.viewOn);
-    } else {
-        $scope.setViewOn('room');
-    }
 
     $scope.percentage = function (success, total) {
         if (total <= 0) {
@@ -645,6 +641,9 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             } else {
                 $scope.getKeys(viewOn).challengeFilter.challengerHandle = '';
             }
+            $timeout(function () {
+                $scope.$broadcast('rebuild:challengeTable');
+            }, helper.COMMON_TIMEGAP);
         } else if (panel === 'challenger') {
             challengerFilter.qtip('api').toggle(false);
             if ($scope.getKeys(viewOn).challengerFilterKey === 'specific') {
@@ -652,13 +651,28 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
             } else {
                 $scope.getKeys(viewOn).challengerFilter.challengerHandle = '';
             }
+            $timeout(function () {
+                $scope.$broadcast('rebuild:challengerTable');
+            }, helper.COMMON_TIMEGAP);
         }
+
     };
     // bind keypress enter to filter
     $scope.pressKeyInFilter = function (ev, viewOn, panel) {
         if (ev.which === 13) {
             $scope.filterBegin(viewOn, panel);
         }
+    };
+
+    // Removes coder handle filter
+    $scope.stopHandleFilter = function (viewOn) {
+        $scope.getKeys(viewOn).lbFilter.userName = '';
+
+        $timeout.cancel($rootScope.ldrbrdTimeoutPromise);
+
+        $rootScope.ldrbrdTimeoutPromise = $timeout(function () {
+            $scope.$broadcast('rebuild:leaderboardTable');
+        }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
     };
 
     $scope.previousChallengeHandle = '';
@@ -710,6 +724,36 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         $rootScope.viewCode($scope.contest.phaseData.phaseType, $stateParams.contestId, $scope.divisionID,
                             componentId, roomID, coder.userName, 'details');
     };
+
+    // Watch leaderboard display options changes.
+    $scope.$watch(
+        function (scope) {
+            return {
+                viewOn: scope.viewOn,
+                currentKeys: scope.currentKeys,
+                numOfPage: scope.numOfPage,
+                currentPage: scope.currentPage
+            };
+        },
+        function (newValues, oldValues) {
+            $rootScope.leaderboardViewChangeHandler($scope, newValues, oldValues);
+        },
+        true
+    );
+
+    /*jslint unparam:true*/
+    $scope.$on(helper.EVENT_NAME.LeaderboardRefreshed, function (event, options) {
+        $rootScope.leaderboardRefreshHandler($scope, options);
+    });
+    /*jslint unparam:false*/
+
+    $rootScope.injectLeaderboardRefresher($scope);
+
+    if ($stateParams.viewOn) {
+        $scope.setViewOn($stateParams.viewOn);
+    } else {
+        $scope.setViewOn('room');
+    }
 }];
 
 module.exports = userContestDetailCtrl;

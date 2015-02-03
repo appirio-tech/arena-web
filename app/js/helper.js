@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This module contains constants.
@@ -102,8 +102,30 @@
  * Changes in version 1.26 (Web Arena Plugin API Part 2):
  * - Added more plugin event names.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, TCASSEMBLER
- * @version 1.26
+ * Changes in version 1.27 (Module Assembly - Web Arena - Add Save Feature to Code Editor):
+ * - Added save request and save results title.
+ *
+ * Changes in version 1.28 (Module Assembly - Web Arena - Setting Panel for Chat Widget):
+ * - Added chat setting names.
+ *
+ * Changes in version 1.29 (Web Arena - Leaderboard Performance Improvement v1.0):
+ * - Added event name LeaderboardRefreshed to refresh the leaderboard.
+ *
+ * Changes in version 1.30 (Web Arena - Run System Testing Support For Practice Problems):
+ * - Added event names for practice system test.
+ *
+ * Changes in version 1.31 (Web Arena - Recovery From Lost Connection)
+ * - Added LOGIN_WAITING_TIME setting.
+ * - Updated the message text for lost connection logic.
+ *
+ * Changes in version 1.32 (Module Assembly - Web Arena - Match Plan Widget and Match Schedule Page Improvement):
+ *  - Added REQUEST_TIME_FORMAT setting.
+ *
+ * Changes in version 1.33 (Web Arena - Replace ng-scrollbar with prefect-scrollbar):
+ *  - Added COMMON_TIMEGAP constant.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman
+ * @version 1.33
  */
 'use strict';
 /*global module*/
@@ -160,6 +182,8 @@ module.exports = {
         SynchTimeRequest: 'SynchTimeRequest',
         TestInfoRequest: 'TestInfoRequest',
         TestRequest: 'TestRequest',
+        SaveRequest: 'SaveRequest',
+        PracticeSystemTestRequest: 'PracticeSystemTestRequest',
         // backend responses
         BatchTestResponse: 'BatchTestResponse',
         ChallengeResponse: 'ChallengeResponse',
@@ -200,6 +224,8 @@ module.exports = {
         UpdateRoundListResponse: 'UpdateRoundListResponse',
         UpdateUserListResponse: 'UpdateUserListResponse',
         UserInfoResponse: 'UserInfoResponse',
+        PracticeSystemTestResponse: 'PracticeSystemTestResponse',
+        PracticeSystemTestResultResponse: 'PracticeSystemTestResultResponse',
         // admin backend requests
         ChangeRoundRequest: 'ChangeRoundRequest',
         LoadRoundRequest: 'LoadRoundRequest',
@@ -212,12 +238,14 @@ module.exports = {
         // internal events
         Connected: 'Connected',
         Disconnected: 'Disconnected',
+        LeaderboardRefreshed: 'LeaderboardRefreshed',
         // socket events
         SocketConnected: 'connect',
         SocketConnectionFailed: 'connect_failed',
         SocketDisconnected: 'disconnect',
         SocketReconnect: 'reconnect',
-        SocketError: 'error'
+        SocketError: 'error',
+        EmitInOfflineMode: 'EmitInOfflineMode'
     },
 
     // Represents the phase names.
@@ -306,10 +334,14 @@ module.exports = {
     MAX_CHAT_LENGTH: 256,
     // Time gap between two leaderboad table rebuildings
     LEADERBOARD_TABLE_REBUILT_TIMEGAP: 0,
+    // Common time gap before broadcast a message
+    COMMON_TIMEGAP: 10,
+    // the login waiting time
+    LOGIN_WAITING_TIME: 1000,
 
     // pop up titles
     POP_UP_TITLES: {
-        Error: 'Error.',
+        Error: 'Error',
         CompileResult: 'Compile Result',
         TestResults: 'Test Results',
         CoderInfo: 'Coder Info',
@@ -320,17 +352,20 @@ module.exports = {
         PhaseChange: 'Phase Change',
         Disconnected: 'Disconnected',
         ForcedLogout: 'Client Connection Error',
-        NotAssigned: 'Not Assigned',
+        NotAssigned: 'Room Assignment',
         RoundAccessError: 'Round Access Error',
-        ChangeRoundError: 'Change round Error'
+        ChangeRoundError: 'Change round Error',
+        SaveResults: 'Save Results',
+        Reconnect: 'Reconnect'
     },
 
     // custom pop up messages
     POP_UP_MESSAGES: {
         Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
         ForcedLogout: 'Logging off as you logged in to another session or browser.',
+        Reconnect: 'The network is available. Would you like to reconnect?',
         LostConnection: 'The connection to the server has been lost. Please log off and log in again.',
-        NotAssigned: 'You are not assigned to this room'
+        NotAssigned: 'Sorry, you cannot perform this operation because you are not assigned to this room. The likely cause is that you did not successfuly register for the match during the registration period.'
     },
 
     // The mapper from time zone code (must be uppercase) to offset from UTC (in minutes).
@@ -407,17 +442,14 @@ module.exports = {
     // Date format used in notifications
     DATE_NOTIFICATION_FORMAT: 'MM/dd/yy h:mm a',
 
+    // The time format in http request parameter
+    REQUEST_TIME_FORMAT: 'yyyy-MM-ddTHH:mm:ss.sssZ',
+
     // Pop-up titles used for notification details
     NOTIFICATION_TITLES: {
         'general': 'Admin Broadcast',
         'round': 'Round Broadcast',
         'problem': 'Problem Broadcast'
-    },
-
-    // Content of the phase date change messages to determine the cut and extract the round name
-    PHASE_DATA: {
-        START_MESSAGE: 'is starting for ',
-        END_MESSAGE: 'is ending for '
     },
 
     // The survey question types.
@@ -437,7 +469,13 @@ module.exports = {
     // The local storage prefix and room list key
     LOCAL_STORAGE: {
         PREFIX: 'chat_history_',
-        ROOM_LIST: 'chat_history_room_list'
+        ROOM_LIST: 'chat_history_room_list',
+        CACHE_CODE_LIST: 'cache_code_list',
+        CHAT_SETTING_CHAT: 'chat_setting_chat',
+        CHAT_SETTING_HISTORY: 'chat_setting_history',
+        CHAT_SETTING_AUTOSCROLL: 'chat_setting_autoscroll',
+        CHAT_SETTING_TIMESTAMPS: 'chat_setting_timestamps',
+        CHAT_SETTING_SOUNDS: 'chat_setting_sounds'
     },
 
     // Titles for Facebook pop-ups

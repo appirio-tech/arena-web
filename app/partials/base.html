@@ -59,14 +59,14 @@
                             <a class="btn" data-ng-click="applyTheme()">APPLY</a>
                           </div>
                         </li>
-                        <li data-ng-class="{ active: $state.includes('user.contestManagement') }" data-ng-show="userInfo() && (userInfo().admin === true)">
+                        <li data-ng-class="{ active: $state.includes('user.contestManagement') }" data-ng-show="userInfo() && (userInfo().admin === true || userInfo().admin4Web === true)">
                           <a data-ui-sref="user.contestManagement" class="icon iconCM">MATCH MANAGEMENT</a><a data-ui-sref="user.contestManagement" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Match Management"></a>
                         </li>
                         <li data-ng-class="{ active: $state.includes('user.practiceProblemList') }">
                             <a data-ui-sref="user.practiceProblemList" class="icon iconPP">PRACTICE PROBLEMS</a><a data-ui-sref="user.practiceProblemList" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Practice Problems"></a>
                         </li>
                         <li data-ng-class="{lastLi: !(userInfo() && (userInfo().admin === true))}">
-                          <a class="icon iconBug">REPORT ISSUE</a><a href="https://github.com/cloudspokes/arena-web/issues" target="_blank" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Report Issue"></a>
+                          <a class="icon iconBug">REPORT ISSUE</a><a href="https://github.com/appirio-tech/arena-web/issues" target="_blank" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Report Issue"></a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right navOther">
@@ -74,9 +74,9 @@
                         <li class="codingTimeItem"><div data-coding-time></div></li>
                         <li class="userItem">
                             <ul class="nav navbar-nav userInfo">
-                                <li class="userName">Welcome&nbsp;<span class="{{getRatingClass(userInfo().rating)}}">{{ username() }}</span></li>
+                                <li class="userName">Welcome&nbsp;<span class="{{getRatingClass(userInfo().rating)}}"><a ng-href="http://www.topcoder.com/member-profile/{{username()}}/" target="_blank" class="{{getRatingClass(userInfo().rating)}}">{{ username() }}</a></span></li>
                                 <li><a class="notification" data-message-arena="" id="qtipNoti" data-ng-click="onClickMessageArena()" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="{{isReading ? null : 'Messages'}}"><span id="notiIndicator" data-ng-show="notificationService.getUnRead() > 0">{{ notificationService.getUnRead() }}</span></a></li>
-                                <li><a data-ui-sref="user.logout" class="arrow" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Logout"></a></li>
+                                <li><a data-ng-click="logout()" class="arrow" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Logout"></a></li>
                             </ul>
                         </li>
                     </ul>
@@ -84,6 +84,7 @@
             </div><!-- /.container-fluid -->
         </div>
     </div>
+    <div class="preloader-window re-login" data-preloader data-num-requests='{{loginPendingCount}}' text='Login...' callback="popupReconnectDialog"></div>
     <div class='notifications top-right'></div>
     <div class='notifications bottom-right'></div>
     <div data-ui-view class="mainContainer"></div>
@@ -95,20 +96,21 @@
                     <span>OUR SPONSOR</span>
                 </div>
                 <div class="right col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <a href="http://community.topcoder.com/tco14/sponsor/hp-idol-ondemand/" target="_blank" class="sponsorLogo"></a>
+                    <a href="http://www.appirio.com" target="_blank" class="sponsorLogo"></a>
                 </div>
             </div>
         </div>
     </footer>
     <div data-member-feedback class="memberFeedback" data-ng-show="loggedIn() && !$state.includes('user.coding') && !$state.includes('user.viewCode')"></div>
+    <div class="preloader-window coderinfo" data-preloader data-num-requests='{{numCoderRequest}}' text='Loading Coder...'></div>
 
 <script type="text/ng-template" id="popupModalBase.html">
     <div class="modal-header">
         {{ title }}
         <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
-        <p ng-bind-html="message"></p>
+    <div class="modal-body" data-perfect-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
+        <p class="word-wrap" ng-bind-html="message"></p>
         <br/>
     </div>
     <div class="modal-footer" ng-if="enableClose">
@@ -123,7 +125,7 @@
         {{ title }}
         <span class="cancel-x" data-ng-click="ok()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body textAlign textColor" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:popupModalDetail">
+    <div class="modal-body textAlign textColor" data-perfect-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:popupModalDetail">
         <p ng-bind-html="message" class="coder-history-textMargin"></p>
     </div>
     <div class="modal-footer textAlign">
@@ -136,7 +138,7 @@
         {{ title }}
         <span class="cancel-x" data-ng-click="ok()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body validation-modal-body" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:inputValidation">
+    <div class="modal-body validation-modal-body" data-perfect-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:inputValidation">
         <p ng-bind-html="message"></p>
     </div>
     <div class="modal-footer textAlign" ng-if="enableClose">
@@ -149,7 +151,7 @@
         {{ title }}
         <span class="cancel-x" data-ng-click="cancel()" ng-if="enableClose">X</span>
     </div>
-    <div class="modal-body overflowX" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
+    <div class="modal-body overflowX" data-perfect-scrollbar data-rebuild-on-resize data-rebuild-on="popup-message-loaded">
         <p ng-bind-html="message"></p>
         <input type="text" class="fbMsg-input" data-ng-model="$root.facebookMessage" name="facebookMessage"/>
     </div>
@@ -157,5 +159,19 @@
         <button class="btn right-btn" data-ng-click="ok()" data-ng-show="buttons.length == 2">{{ buttons[0] }}</button>
         <button class="btn left-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 2">{{ buttons[1] }}</button>
         <button class="btn right-btn" data-ng-click="cancel()" data-ng-show="buttons.length == 1">{{ buttons[0] }}</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="popupSystemTestResultBase.html">
+    <div class="modal-header coder-history-modal-header">
+        {{ title }}
+        <span class="system-test-cancel-x cancel-x" data-ng-click="ok()" ng-if="enableClose">X</span>
+    </div>
+    <div class="textAlign textColor systemTestModalBody" data-ng-custom-scrollbar data-rebuild-on-resize data-rebuild-on="rebuild:popupSystemTestResult">
+        <p data-ng-show="!showError" class="coder-history-textMargin">Your solution <span class="passSystemTest">Passed</span> system test.</p>
+        <p data-ng-show="showError" class="coder-history-textMargin">Your solution <span class="failSystemTest">Failed</span> system test.<br/>Please Try Again.</p>
+    </div>
+    <div class="modal-footer textAlign">
+        <button class="btn" data-ng-click="ok()">{{ buttons[0] }}</button>
     </div>
 </script>

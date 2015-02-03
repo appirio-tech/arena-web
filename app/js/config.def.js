@@ -30,6 +30,7 @@ module.exports = {
     tweetUrl: '@@TWEET_URL',
     facebookLink: '@@FACEBOOK_LINK',
     registrationUrl: '@@REGISTRATION_URL',
+    pwResetURL: '@@PW_RESET_URL',
     spinnerTimeout: '@@SPINNER_TIMEOUT',
     divsionLearderBoardLimit: '@@DIVISION_LEADERBOARD_LIMIT',
     summaryTopCoderCount: '@@SUMMARY_TOPCODER_COUNT',
@@ -38,6 +39,10 @@ module.exports = {
     feedbackMaxlength: '@@FEEDBACK_MAXLENGTH',
     keyboardShortcut: '@@KEYBOARD_SHORTCUT',
     chatIconDisappearTime: '@@CHAT_ICON_DISAPPEAR_TIME',
-    tcHostName: '@@TC_HOSTNAME'
+    tcHostName: '@@TC_HOSTNAME',
+    maxLiveLearderBoard: '@@MAX_LIVE_LEADERBOARD',
+    autoSavingCodeInterval: '@@AUTO_SAVING_CODE_INTERVAL',
+    leaderboardRefreshTimeGap: '@@LEADERBOARD_REFRESH_TIME_GAP',
+    activeMatchesSummaryTopcoderCount: '@@ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT'
 };
 
