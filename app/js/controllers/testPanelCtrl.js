@@ -231,6 +231,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
         $scope.allTestCases.push(testCase.params);
         $scope.allTestCaseNames.push(testCase.name);
         $scope.argsList = [];
+        $rootScope.currentModal = undefined;
 
         populateTestCases();
     };
@@ -243,6 +244,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
      * run checked test cases
      */
     $scope.runCheckedTests = function () {
+        $rootScope.currentModal = undefined;
         $scope.report = [];
         $scope.allTestCases = [];
         $scope.allTestCaseNames = [];

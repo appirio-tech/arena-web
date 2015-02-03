@@ -1644,3 +1644,34 @@ footer .left>span {
 .detailPage .summaryTables .innerWrapper .table>thead:first-child>tr:first-child>th {
     border-top: 0 solid #fff;
 }
+.shortcut-keys-list-color {
+    background-color: #636d70;
+    border: none;
+    color: grey;
+}
+.shortcut-keys-list .main-div {
+    position: absolute;
+    padding: 10px 15px;
+    border: 1px solid #EBF2F3;
+    background: white;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    height: 426px;
+}
+.shortcut-keys-list .main-div .table .item {
+    border-bottom: 1px solid #E0E0E0 !important;
+}
+.shortcut-keys-list .main-div .table .item-color {
+    color: #CF520C;
+    font-weight: 700;
+}
+.shortcut-keys-list .main-div .table .item .notes {
+    color: grey;
+    font-weight: 400;
+    width: 350px;
+}
+.panelCodeEditor .panel-heading .actionIcons .helpLink:before {
+    background-image: url(../../img/orange/help-orange.png)
+}
