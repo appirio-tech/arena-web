@@ -378,10 +378,9 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'appHelper', f
 
 
     $scope.rebuildMembersScrollbar = function () {
-        if ($(window).scrollTop() + $(window).height() !== $(document).height()) {
+        if ($(window).scrollTop() + $(window).height() !== $(document).height() || ($('#usersList').parents('.chatArea').length)) {
             var height = angular.element('#usersList').css('height'),
                 newMargin = -36 - (+height.replace('px', ''));
-
             angular.element('#usersList').css("margin-top", newMargin + 'px');
         } else {
             angular.element('#usersList').css("margin-top", '0px');
