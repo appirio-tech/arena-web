@@ -2040,11 +2040,11 @@ footer .right>span:nth-child(2) {
     width: 121px;
 }
 .wizardBody .step-4 .leftPart .roomAssignMethod {
-    float: right;
+    order: 2;
     border: none;
     height: 21px;
-    padding-top: 5px;
     width: 111px;
+    padding-top: 5px;
     line-height: 15px;
 }
 .wizardBody .step-4 .leftPart .schedule span {
@@ -2052,6 +2052,7 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     width: 65px;
     vertical-align: top;
+    padding-left: 1px;
 }
 .wizardBody .step-4 .leftPart .roomAssign {
     margin-top: 19px;
@@ -7412,9 +7413,11 @@ table thead .sort.desc{
 .calendarBottom {
     padding-bottom: 2px;
 }
+.roomAssign .roomAssignDiv {
+    display: flex;
+}
 .roomAssign .roomAssignDiv .method {
     padding-left: 10px;
-    width: 138px!important;
 }
 .rightPart .other .marginLeft {
     margin-left: 90px;
