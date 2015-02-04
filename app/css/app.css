@@ -1185,12 +1185,12 @@ footer .right {
 footer .right .sponsorLogo {
     display: block;
     position: absolute;
-    left: 0;
+    left: 25%;
     height: 0;
     width: 0;
     overflow: hidden;
     padding-top: 23px;
-    padding-right: 188px;
+    padding-right: 90px;
     padding-left: 20px;
     background: url(@@SPONSOR_LOGO_SMALL) 100% 100% no-repeat;
 }
