@@ -71,14 +71,18 @@
  * Changes in version 1.20 (Web Arena - Show Code Image Instead of Text in Challenge Phase):
  * - Added function to show the generated code image in the challenge phase if the logged user is not writer
  *
+ * Changes in version 1.21 (Web Arena Keyboard shortcuts)
+ * - Added shortcut key support in coding editor.
+ *
  * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.20
+ * @version 1.21
  */
 /*jshint -W097*/
 /*jshint strict:false*/
 'use strict';
 /*global module, angular, document, $, require, console, startTimer*/
 /*jslint browser:true */
+/*jslint unparam: true*/
 
 /**
  * The helper.
@@ -93,8 +97,8 @@ var config = require('../config');
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'tcTimeService', 'keyboardManager', 'appHelper', '$http',
-    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, tcTimeService, keyboardManager, appHelper, $http) {
+var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'tcTimeService', 'keyboardManager', 'appHelper', '$http', 'hotkeys',
+    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, tcTimeService, keyboardManager, appHelper, $http, hotkeys) {
         $rootScope.$broadcast('hideFeedback');
         // shared between children scopes
         $scope.sharedObj = {};
@@ -109,6 +113,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $scope.divisionID = Number($stateParams.divisionId);
         $scope.problemLoaded = false;
         $scope.hasExampleTest = false;
+        $scope.showShortcutKeysList = false;
 
         $scope.editorialLink = '';
         if ($scope.currentStateName() === 'user.practiceCode') {
@@ -194,15 +199,12 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             return roundData.phaseData.phaseType === helper.PHASE_TYPE_ID.ChallengePhase;
         };
 
-
-        /*jslint unparam: true*/
         // handle phase data response
         $scope.$on(helper.EVENT_NAME.PhaseDataResponse, function (event, data) {
             if (String(data.phaseData.roundID) === String($scope.roundID)) {
                 startTimer();
             }
         });
-        /*jslint unparam: false*/
 
         /**
          * Send notification when problem data is ready.
@@ -702,6 +704,122 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 }
                 $scope.$broadcast('rebuild:chatboard');
             }, 100);
+        };
+
+
+        $scope.isMac = function () {
+            return $window.navigator.appVersion.indexOf("Mac") !== -1;
+        };
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+y' : 'ctrl+alt+y'],
+            description: 'Maximize code area',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.maximizeCodeArea, {});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+t' : 'ctrl+alt+t'],
+            description: 'Maximize problem statement area',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.maximizeProblemArea, {});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+a' : 'ctrl+alt+a'],
+            description: 'Toggle chat minimized / expanded',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.toggleChat, {});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+l' : 'ctrl+alt+l'],
+            description: 'Toggle leaderboard minimized / expanded',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.toggleLeaderboard, {});
+            }
+        });
+
+        // the maximizeCodeArea shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.maximizeCodeArea, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+            $scope.problemAreaHeightRatio = 0;
+        });
+
+        // the maximizeProblemArea shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.maximizeProblemArea, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+            $scope.problemAreaHeightRatio = 1;
+        });
+
+        // the toggleChat shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.toggleChat, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+            if ($scope.currentStateName() !== helper.STATE_NAME.PracticeCode) {
+                $scope.closePanel('leaderboard');
+                if ($scope.windowStatus.chatArea === 'min') {
+                    $scope.openPanel('chatArea');
+                } else if ($scope.windowStatus.chatArea === 'normal') {
+                    $scope.expandPanel('chatArea');
+                } else {
+                    $scope.closePanel('chatArea');
+                }
+            }
+        });
+
+        $scope.isPracticeCodeRoom = function () {
+            return $scope.currentStateName() === helper.STATE_NAME.PracticeCode;
+        };
+
+        // the toggleLeaderboard shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.toggleLeaderboard, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+            if ($scope.currentStateName() !== helper.STATE_NAME.PracticeCode) {
+                $scope.closePanel('chatArea');
+                if ($scope.windowStatus.leaderboard === 'min') {
+                    $scope.openPanel('leaderboard');
+                } else if ($scope.windowStatus.leaderboard === 'normal') {
+                    $scope.expandPanel('leaderboard');
+                } else {
+                    $scope.closePanel('leaderboard');
+                }
+            }
+        });
+
+        hotkeys.del('?');
+
+        hotkeys.add({
+            combo: '?',
+            description: 'Show / Hide the shortcut keys list',
+            callback: function () {
+                $scope.showShortcutKeysList = !$scope.showShortcutKeysList;
+            }
+        });
+
+        hotkeys.add({
+            combo: 'esc',
+            description: 'Hide the shortcut keys list',
+            callback: function () {
+                $scope.showShortcutKeysList = false;
+            }
+        });
+
+        /**
+         * Close the shortcut key list.
+         */
+        $scope.closeShortcutList = function () {
+            $scope.showShortcutKeysList = !$scope.showShortcutKeysList;
         };
     }];
 

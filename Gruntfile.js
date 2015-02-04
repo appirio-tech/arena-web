@@ -65,8 +65,11 @@
  * Changes in version 1.16 (Replace ng-scrollbar with prefect-scrollbar):
  * - Remove CSS references for ng-scrollbar
  *
+ * Changes in version 1.17 (Web Arena Keyboard shortcuts):
+ * - Added hot key css files.
+ *
  * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, xjtufreeman
- * @version 1.16
+ * @version 1.17
  */
 'use strict';
 /*global module, process*/
@@ -182,6 +185,7 @@ module.exports = function (grunt) {
                     'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                     'bower_components/fullcalendar/fullcalendar.css',
                     'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                    'bower_components/angular-hotkeys/build/hotkeys.min.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
                     'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                     'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
@@ -203,6 +207,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                        'bower_components/angular-hotkeys/build/hotkeys.min.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                         'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
@@ -223,6 +228,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                        'bower_components/angular-hotkeys/build/hotkeys.min.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                         'thirdparty/perfect-scrollbar/perfect-scrollbar.css',

@@ -33,7 +33,21 @@
             </div>
         </div>
         <div class="container-fluid row-fluid mainContent">
-
+            <div class="shortcut-keys-list shortcut-keys-list-color" data-ng-show="showShortcutKeysList"><div class="main-div">
+                <span class="title">Keyboard Shortcuts</span>
+                <span class="cancel" data-ng-click="closeShortcutList()">X</span>
+                <table class="table">
+                    <tr data-ng-show="isEditablePhase()"><td class="item left">Compile</td><td class="item item-color right"><span data-ng-show="isMac()">Cmd</span><span data-ng-hide="isMac()">Ctrl</span> + Alt + O</td></tr>
+                    <tr data-ng-show="isEditablePhase()"><td class="item left">Run all test cases</td><td class="item item-color right"><span data-ng-show="isMac()">Cmd</span><span data-ng-hide="isMac()">Ctrl</span> + Alt + R</td></tr>
+                    <tr data-ng-show="isEditablePhase()"><td class="item left">Run test case number x</td><td class="item item-color right"><div><span data-ng-show="isMac()">Cmd</span><span data-ng-hide="isMac()">Ctrl</span> + Alt + X</div><span class="notes">(X is a number between 1 and 9 of the number of the test case)</span></td></tr>
+                    <tr><td class="item left">Jump to search box</td><td class="item item-color right"><span data-ng-show="isMac()">Cmd</span><span data-ng-hide="isMac()">Ctrl</span> + Alt + E</td></tr>
+                    <tr><td class="item left">Jump to goto box</td><td class="item item-color right"><span data-ng-show="isMac()">Cmd</span><span data-ng-hide="isMac()">Ctrl</span> + Alt + G</td></tr>
+                    <tr><td class="item left">Maximize code area</td><td class="item item-color right"><span data-ng-show="isMac()">Cmd</span><span data-ng-hide="isMac()">Ctrl</span> + Alt + Y</td></tr>
+                    <tr><td class="item left">Maximize problem statement area</td><td class="item item-color right"><span data-ng-show="isMac()">Cmd</span><span data-ng-hide="isMac()">Ctrl</span> + Alt + T</td></tr>
+                    <tr data-ng-hide="isPracticeCodeRoom()"><td class="item left">Toggle chat minimized / expanded</td><td class="item item-color right"><span data-ng-show="isMac()">Cmd</span><span data-ng-hide="isMac()">Ctrl</span> + Alt + A</td></tr>
+                    <tr data-ng-hide="isPracticeCodeRoom()"><td class="item left bottom-item">Toggle leaderboard minimized / expanded</td><td class="item item-color bottom-item right"><span data-ng-show="isMac()">Cmd</span><span data-ng-hide="isMac()">Ctrl</span> + Alt + L</td></tr>
+                </table>
+            </div></div>
             <div id="problem-statement" data-codingproblem data-ng-style="getFlexProperties(problemAreaHeightRatio)"></div>
             <div id="resizer" data-resizer="problemAreaHeightRatio"><span></span></div>
             <div id="code-editor" data-codingeditor data-ng-style="getFlexProperties(1-problemAreaHeightRatio)"></div>

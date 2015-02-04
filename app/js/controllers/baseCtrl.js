@@ -514,6 +514,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 }
             }
         });
+
+        $rootScope.currentModal.result.then(null, function () {
+            $rootScope.currentModal = undefined;
+        });
     };
 
 
