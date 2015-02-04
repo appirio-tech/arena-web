@@ -59,7 +59,7 @@ var balloonCtrl = ['$scope', '$timeout', '$http', '$cookies', '$window',
                 url: 'data/balloons.json'
             }).success(function (data) {
                 balloonsData = data;
-                $scope.balloons = balloonsData[$scope.key].balloonGuides;
+                $scope.balloons = balloonsData[$scope.key] ? balloonsData[$scope.key].balloonGuides : [];
                 for (i = 0; i < $scope.balloons.length; i = i + 1) {
                     bln = $scope.balloons[i];
                     bln.posT = "auto";
@@ -67,7 +67,7 @@ var balloonCtrl = ['$scope', '$timeout', '$http', '$cookies', '$window',
                     bln.posB = "-300px";
                     bln.posL = "auto";
                 }
-                cookieName = $scope.key + balloonsData[$scope.key].id + $scope.$parent.username();
+                cookieName = $scope.key + (balloonsData[$scope.key] ? balloonsData[$scope.key].id : '') + $scope.$parent.username();
                 if (!$cookies[cookieName] || $cookies[cookieName] !== 'expired') {
                     isFirstTime = true;
                     /* gets to position of attached element and then updates the position of ballons */
