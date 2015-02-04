@@ -1081,9 +1081,6 @@ footer .line {
 .contestManagement .panel-heading {
     color: #fff;
 }
-.contestManagement .panel-body {
-    border: 1px solid #e9e6e6;
-}
 .contestManagement .panel-body .nav {
     border-color: #75a5c8;
     color: #636d70;
