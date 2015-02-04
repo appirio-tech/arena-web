@@ -315,7 +315,7 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
     }
 
     /**
-     * Try to add a tooltip indicate the number of events in that day, it's not used in current implementation.
+     * Adds a tooltip to indicate the number of events in that day
      *
      * @param view - the view flag.
      */
@@ -332,7 +332,7 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
             element.attr({
                 'tooltip-html-unsafe': htmlTip,
                 'tooltip-popup-delay': 100,
-                'tooltip-placement': 'top',
+                'tooltip-placement': 'bottom',
                 'tooltip-append-to-body': true
             });
             $compile(element)($scope);
