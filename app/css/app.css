@@ -4882,12 +4882,18 @@ footer .right>span:nth-child(2) {
 .challengerWrapper .table .col2 {
     width: 25%;
 }
+.leaderboardWrapper .table .colRHeader,
+.modal-body .table .colRHeader {
+    width: 30px;
+    font-weight: bold;
+}
 .leaderboardWrapper .table .colR,
 .modal-body .table .colR {
     width: 30px;
     font-weight: 100;
 }
-.panelSummary .shortLeaderboard .leaderboardWrapper .table .colR {
+.panelSummary .shortLeaderboard .leaderboardWrapper .table .colR,
+.panelSummary .shortLeaderboard .leaderboardWrapper .table .colRHeader {
     width: 21px;
 }
 .leaderboardWrapper .table .col2 {
@@ -6903,6 +6909,7 @@ contestManagementPanel .panel-footer .btn {
     width: 30px;
     padding-left: 0;
     padding-right: 0;
+    font-weight: bold;
 }
 .challengeWrapper .table .col4
 {
