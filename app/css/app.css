@@ -3073,6 +3073,7 @@ footer .right>span:nth-child(2) {
 }
 .testReportPanel .caseName .open {
     background-position: -50px 0;
+    height:20px;
 }
 .testReportPanel .infoBar .correctInfo {
     padding-left: 9px;
