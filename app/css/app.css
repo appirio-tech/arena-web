@@ -2676,6 +2676,10 @@ footer .right>span:nth-child(2) {
     top: 0;
     letter-spacing: -0.028em;
 }
+.panelCodeEditor .toolBar .testToggle.disableLink {
+    color: grey;
+}
+
 .panelCodeEditor .toolBar .testToggle:before {
     content: '';
     display: block;

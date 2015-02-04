@@ -59,7 +59,8 @@
             !--></ul>
             </div>
             <div class="rightPart">
-                <div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged. &nbsp;</div><div data-ng-show="(currentStateName()=='user.coding' || currentStateName()==='user.practiceCode' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isInSameRoom()) && !isChallenged()" data-ng-class="{active:testOpen,inactive:!testOpen}"><a class="testToggle" data-ng-click="toggleTest()">{{panelName}}</a>
+                <div class="challenged" data-ng-if="currentStateName()=='user.viewCode' && isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isChallenged()">This problem has been successfully challenged. &nbsp;</div><div data-ng-show="(currentStateName()=='user.coding' || currentStateName()==='user.practiceCode' || isChallengePhase() && isCoderAssigned(username(), defendantRoomID) && isInSameRoom()) && !isChallenged()" data-ng-class="{active:testOpen,inactive:!testOpen}">
+                <a class="testToggle" data-ng-class="{disableLink : !codeCompiled}" data-ng-click="toggleTest()">{{panelName}}</a>
                     <div class="testPanel" data-ng-show="testOpen" data-test-panel>
                     </div>
                 </div>
