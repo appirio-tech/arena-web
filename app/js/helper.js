@@ -124,8 +124,11 @@
  * Changes in version 1.33 (Web Arena - Replace ng-scrollbar with prefect-scrollbar):
  *  - Added COMMON_TIMEGAP constant.
  *
+ * Changes in version 1.34 (Web Arena Keyboard shortcuts)
+ * - Added shortcut key events
+ *
  * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman
- * @version 1.33
+ * @version 1.34
  */
 'use strict';
 /*global module*/
@@ -587,5 +590,16 @@ module.exports = {
         runTestCaseFromPlugin: 'runTestCaseFromPlugin',
         setTestCasesFromPlugin: 'setTestCasesFromPlugin',
         registerFromPlugin: 'registerFromPlugin'
+    },
+    SHORTCUT_KEY_EVENT: {
+        goto: 'goto',
+        search: 'search',
+        compile: 'compile',
+        runAllTestCases: 'runAllTestCases',
+        runSingleTestCase: 'runSingleTestCase',
+        maximizeCodeArea: 'maximizeCodeArea',
+        maximizeProblemArea: 'maximizeProblemArea',
+        toggleChat: 'toggleChat',
+        toggleLeaderboard: 'toggleLeaderboard'
     }
 };
