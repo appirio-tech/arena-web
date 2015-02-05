@@ -4143,6 +4143,12 @@ footer .right>span:nth-child(2) {
     height: 297px;
     width:100%;
 }
+/** #429 chrome only bottom margin reset **/
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .panelChatArea .content .chatBoard {
+        margin-bottom: 3px;
+    }
+}
 .panelChatArea .content .chatBoard .ng-scope{
     margin-bottom: 0;
     padding-bottom: 0;
