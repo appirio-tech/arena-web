@@ -1222,7 +1222,7 @@ footer .right>span:nth-child(2) {
 /* ** /.Fix to page move right ** */
 
 .modal .modal-dialog {
-    /*padding-top: 10%;*/
+    padding-top: 2%;
 }
 @media only screen and (min-height: 509px) and (min-width: 768px) {
     .systemTestResult .modal-dialog {
