@@ -16,7 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.2.5",
+    "angular": "~1.3.0",
     "angular-resource": "~1.2.5",
     "angular-sanitize": "~1.2.5",
     "angular-ui-router": "https://github.com/angular-ui/ui-router.git#master",
@@ -31,7 +31,8 @@
     "angular-facebook": "https://github.com/Ciul/angular-facebook.git",
     "angular-bootstrap-switch": "~0.3.0",
     "angular-ui-codemirror": "~0.2.1",
-    "codemirror": "~4.10.0"
+    "codemirror": "~4.10.0",
+    "angular-hotkeys": "https://github.com/chieffancypants/angular-hotkeys.git"
   },
   "resolutions": {
     "jquery": "~2.x",
