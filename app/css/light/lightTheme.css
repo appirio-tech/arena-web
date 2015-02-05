@@ -1478,6 +1478,9 @@ footer .line {
 .preloader-indicator>img {
     background-image: url(../img/light/preloader.gif);
 }
+.practiceProblemList .preloader-indicator {
+    color: #000000;
+}
 /*
 *
 * Styles for chat area settings
