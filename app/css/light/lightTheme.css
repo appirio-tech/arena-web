@@ -1376,7 +1376,7 @@ footer .line {
 }
 .socialButtons .challenge {
     color: rgb(48, 110, 157);
-
+}
 /* ballonsWrap 
 -------------------------*/
 .ballonsWrap{
@@ -1477,6 +1477,9 @@ footer .line {
 }
 .preloader-indicator>img {
     background-image: url(../img/light/preloader.gif);
+}
+.practiceProblemList .preloader-indicator {
+    color: #000000;
 }
 /*
 *
