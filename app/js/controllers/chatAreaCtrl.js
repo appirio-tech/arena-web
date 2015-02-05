@@ -609,7 +609,10 @@ var chatAreaCtrl = ['$scope', '$rootScope', 'socket', '$timeout', 'appHelper', f
                     time: new Date()
                 }
             );
-
+            $scope.$broadcast('rebuild:chatboard');
+            if ($scope.chatSettings.autoscroll) {
+                $scope.$broadcast('chatboardScrollToBottom');
+            }
             return;
         }
         if ($scope.chatText === '') {
