@@ -2190,6 +2190,8 @@ footer .right>span:nth-child(2) {
     line-height: 27px;
     float: right;
     border: 0;
+}
+.panel-custom.panelSummary .mainContent .btn {
     margin-top: 4px;
 }
 .panel-custom .mainContent .btnWidth {
