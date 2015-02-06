@@ -149,7 +149,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
 
         $scope.$watch('problemAreaHeightRatio', function () {
             $timeout(function () {
-                $rootScope.$broadcast('problem-loaded');
+                $rootScope.$broadcast('problem-loaded', {problemAreaResized: true});
                 if ($scope.cmElem) {
                     $scope.cmElem.CodeMirror.refresh();
                 }

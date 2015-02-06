@@ -1077,7 +1077,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         });
 
         // when the problem is loaded in the parent controller userCodingCtrl
-        $scope.$on('problem-loaded', function () {
+        $scope.$on('problem-loaded', function (oEvent, oEventParams) {
+            oEventParams = oEventParams || {problemAreaResized: false};// don't disable the 'Run System Tests' when resizing the problem area
+            
             if ($scope.userData && $scope.userData.tests) {
                 // init test case checkboxes
                 $scope.userData.tests.forEach(function (testCase) {
@@ -1210,9 +1212,12 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
             // set preferred theme, there is no theme data
             $scope.themeIdx = 0;
-
-            $scope.submittedCode = false;
-            $scope.updatedCodeAfterSubmit = false;
+            
+            // #494 - Don't disable the 'Run System Tests' button when resizing the 'Code Area' panel
+            if (!oEventParams.problemAreaResized) {
+                $scope.submittedCode = false;
+                $scope.updatedCodeAfterSubmit = false;
+            }
 
             /**
              * Check whether to show running practice system test link.
