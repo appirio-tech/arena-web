@@ -69,9 +69,12 @@
  *
  * Changes in version 1.20 (Web Arena - Show Code Image Instead of Text in Challenge Phase)
  * - Enable code editor if the user is the owner of the code during challenge phase.
+ * 
+ * Changes in version 1.21 (Web Arena - Unused Code Processor Re-implementation)
+ * - Added logic to check the unused code (30%). A popup will be displayed after submitting the code.
  *
- * @author tangzx, amethystlei, flytoj2ee, Helstein, onsky
- * @version 1.20
+ * @author tangzx, amethystlei, flytoj2ee, Helstein, onsky, Sky_
+ * @version 1.21
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -85,6 +88,7 @@
  */
 var helper = require('../helper');
 var config = require('../config');
+var UCRProcessorFactory = require("../ucr-processors/UCRProcessorFactory");
 
 /**
  * The main controller for coding editor.
@@ -744,19 +748,48 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             if (userInputDisabled || !$scope.problemLoaded || $scope.disableSubmit()) {
                 return;
             }
+            var submitHandlerNoConfirm, submitHandler;
+            /**
+             * The submit handler without any confirmation dialogs
+             */
+            submitHandlerNoConfirm = function () {
+                $scope.contentDirty = false;
+                socket.emit(helper.EVENT_NAME.SubmitRequest, {componentID: $scope.componentID});
+                $scope.testOpen = false;
+            };
+
             /**
              * The submit handler.
              */
-            var submitHandler = function () {
+            submitHandler = function () {
                 $scope.openModal({
                     title: 'Warning',
                     message: 'Would you like to submit your code?',
                     buttons: ['Yes', 'No'],
                     enableClose: true
                 }, function () {
-                    $scope.contentDirty = false;
-                    socket.emit(helper.EVENT_NAME.SubmitRequest, {componentID: $scope.componentID});
-                    $scope.testOpen = false;
+                    var langId = $scope.lang($scope.langIdx).id,
+                        Processor = UCRProcessorFactory.getProcessor(langId),
+                        processor,
+                        errMessage;
+                    if (Processor) {
+                        processor = new Processor($scope.problem.className, $scope.problem.methodName, $scope.cm.getValue());
+                        errMessage = processor.checkCode();
+                        if (errMessage) {
+                            $scope.openModal({
+                                title: 'Warning',
+                                message: errMessage,
+                                buttons: ['Yes', 'No'],
+                                enableClose: true
+                            }, function () {
+                                submitHandlerNoConfirm();
+                            });
+                        } else {
+                            submitHandlerNoConfirm();
+                        }
+                    } else {
+                        submitHandlerNoConfirm();
+                    }
                 });
             };
             if ($scope.contentDirty) {
