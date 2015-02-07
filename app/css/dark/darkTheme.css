@@ -514,7 +514,7 @@ footer .line {
     border-color: rgba(255,255,255,0.16);
 }
 .panelCodeEditor .toolBar .testToggle:hover {color: #fff;}
-.panelCodeEditor .toolBar .testPanel {
+.panelCodeEditor  .testPanel {
     background: #151718;
     background: rgba(21,23,24,0.98);
     border-color: rgba(255,255,255,0.16);
@@ -562,7 +562,7 @@ footer .line {
 .panelCodeEditor .testPanel .btnRow .btn:hover {
     background: #27A4C4;
 }
-.panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
+.panelCodeEditor .testPanel {z-index: 20;}
 .panelCodeEditor .paddingRow {background: #151718;}
 .panelCodeEditor .paddingRow:before {
     background: #232628;
