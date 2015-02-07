@@ -7886,6 +7886,13 @@ table thead .sort.desc{
 .codeArea .docker-max .chatWidget .control-bar .findCheckLbl {
     margin-left: 5px;
 }
+.codeArea .docker-max .chatWidget .control-bar .findCheckLbl {
+    float: right;
+    margin-right: 5px;
+}
+.codeArea .docker-max .chatWidget .panelChatArea .findIcon {
+    margin: 10px 0px 0px 4px;
+}
 .codeArea .docker-max .chatWidget .chatInput {
     width: 474px;
     margin-left: 4px;
