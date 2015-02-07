@@ -1002,7 +1002,7 @@ body a {cursor: pointer;}
 }
 .tcTime {
     display: block;
-    padding-right: 33px;
+    padding-right: 20px;
     font-size: 14px;
     text-align: right;
     color: #687376;
@@ -8223,7 +8223,7 @@ table thead .sort.desc{
         width: auto;
     }
 }
-@media only screen and (max-width: 1141px) {
+@media only screen and (max-width: 1200px) {
     .header .navbar-brand {
         padding-left: 0;
     }
