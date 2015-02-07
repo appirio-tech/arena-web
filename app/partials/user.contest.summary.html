@@ -72,7 +72,7 @@
                                             <th class="col2 sortableHeading">
                                                 Handle
                                             </th>
-                                            <th data-ng-repeat="problem in contest.problems[viewDivisionID] | orderBy:'primaryComponent.pointValue' track by $index" class="colProblem sortableHeading">
+                                            <th data-ng-repeat="problem in contest.problems[divisionID] | orderBy:'primaryComponent.pointValue' track by $index" class="colProblem sortableHeading">
                                                 {{ problem.primaryComponent.pointValue }}
                                             </th>
                                             <th class="col6 sortableHeading">
