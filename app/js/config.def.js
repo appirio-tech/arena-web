@@ -26,6 +26,12 @@ module.exports = {
             title: '@@SOCIAL_ARENA_TITLE'
         }
     },
+    srmResultsSharing: {
+        template: '@@SOCIAL_SRM_RESULTS_STATUS_TEMPLATE',
+        title: '@@SOCIAL_SRM_RESULTS_STATUS_TITLE',
+        caption: '@@SOCIAL_SRM_RESULTS_STATUS_CAPTION',
+        picture: '@@SOCIAL_SRM_RESULTS_STATUS_PICTURE_URL'
+    },
     tweetText: '@@TWEET_TEXT',
     tweetUrl: '@@TWEET_URL',
     facebookLink: '@@FACEBOOK_LINK',

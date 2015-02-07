@@ -9600,3 +9600,40 @@ table thead .sort.desc{
 .shortcut-keys-list .main-div .table .item.bottom-item {
     border-bottom: none!important;
 }
+
+/* social buttons in panel header */
+.panel-social-buttons{
+    float: right;
+    margin-top: 3px;
+    position: relative;
+    width: 45px;
+}
+.panel-social-buttons .fb-btn-overview{
+    left: 0;
+}
+.panel-heading-title{
+    float: left;
+}
+.panel-heading .share-text{
+    float: right;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #a5b4b8;
+}
+.panel-social-buttons .twitter-overview .tweet-share {
+    position: absolute;
+    left: 29px;
+}
+.detailPage .panel-custom .panel-heading, .summaryPage .panel-heading {
+    padding-right: 19px;
+}
+.panel-social-buttons .twitter-overview .twitter-share-button {
+    left: 0;
+    position: static;
+}
+.panel-social-buttons .tooltip {
+    width: 100px;
+}
+.detailPage .centerBox{
+    overflow: visible;
+}

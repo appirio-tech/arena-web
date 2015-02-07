@@ -1348,3 +1348,10 @@ footer .line {
 .panelCodeEditor .panel-heading .actionIcons .helpLink:before {
     background-image: url(../../img/dark/help-dark.png)
 }
+/* social buttons in panel header */
+.panel-social-buttons .twitter-overview .twitter-share-button {
+    background-image: url(../img/twitter.png);
+}
+.panel-heading .share-text{
+    color: #c8dbe9;
+}

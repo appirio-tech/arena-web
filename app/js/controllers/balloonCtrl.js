@@ -1,9 +1,23 @@
-/* controller for balloon guide */
+/*
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
+ */
+/**
+ * Controller for balloon guide
+ *
+ * Changes in version 1.1 (Module Assembly - Web Arena - Share SRM Results Socially):
+ * - Added check for $scope.key in balloons data
+ *
+ * @author TCSASSEMBLER, MonicaMuranyi
+ * @version 1.1
+ */
+/*global $: true*/
 'use strict';
 var balloonCtrl = ['$scope', '$timeout', '$http', '$cookies', '$window',
     function ($scope, $timeout, $http, $cookies, $window) {
 
-        /* updateBalloons */
+        /**
+         * Updates the baloons.
+         */
         function updateBalloons() {
             var i, bln, offset, offTop, wtAtt, wt, ht;
             $('.ballonsWrap').hide();
@@ -59,23 +73,25 @@ var balloonCtrl = ['$scope', '$timeout', '$http', '$cookies', '$window',
                 url: 'data/balloons.json'
             }).success(function (data) {
                 balloonsData = data;
-                $scope.balloons = balloonsData[$scope.key] ? balloonsData[$scope.key].balloonGuides : [];
-                for (i = 0; i < $scope.balloons.length; i = i + 1) {
-                    bln = $scope.balloons[i];
-                    bln.posT = "auto";
-                    bln.posR = "auto";
-                    bln.posB = "-300px";
-                    bln.posL = "auto";
+                if (balloonsData.hasOwnProperty($scope.key)) {
+                    $scope.balloons = balloonsData[$scope.key].balloonGuides;
+                    for (i = 0; i < $scope.balloons.length; i = i + 1) {
+                        bln = $scope.balloons[i];
+                        bln.posT = "auto";
+                        bln.posR = "auto";
+                        bln.posB = "-300px";
+                        bln.posL = "auto";
+                    }
+                    cookieName = $scope.key + balloonsData[$scope.key].id + $scope.$parent.username();
+                    if (!$cookies[cookieName] || $cookies[cookieName] !== 'expired') {
+                        isFirstTime = true;
+                        /* gets to position of attached element and then updates the position of ballons */
+                        $timeout(updateBalloons, 50);
+                        /* it also updates the position of ballons but after a long delay as ajax data takes some time to load*/
+                        $timeout(updateBalloons, 4000);
+                    }
+                    $cookies[cookieName] = 'expired';
                 }
-                cookieName = $scope.key + (balloonsData[$scope.key] ? balloonsData[$scope.key].id : '') + $scope.$parent.username();
-                if (!$cookies[cookieName] || $cookies[cookieName] !== 'expired') {
-                    isFirstTime = true;
-                    /* gets to position of attached element and then updates the position of ballons */
-                    $timeout(updateBalloons, 50);
-                    /* it also updates the position of ballons but after a long delay as ajax data takes some time to load*/
-                    $timeout(updateBalloons, 4000);
-                }
-                $cookies[cookieName] = 'expired';
             });
         }
 
@@ -95,7 +111,10 @@ var balloonCtrl = ['$scope', '$timeout', '$http', '$cookies', '$window',
             }, 350);
         });
 
-        //removeBalloon
+        /**
+         * Removes a baloon.
+         * @param {number} idx The baloon index.
+         */
         $scope.removeBalloon = function (idx) {
             $scope.balloons.splice(idx, 1);
             $timeout(function () {
