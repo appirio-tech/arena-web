@@ -127,8 +127,12 @@
  * Changes in version 1.34 (Web Arena Keyboard shortcuts)
  * - Added shortcut key events
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman
- * @version 1.34
+ * Changes in version 1.35 (Module Assembly - Web Arena - Share SRM Results Socially):
+ * - Added SRMResultsStatusMessage settings to be used when formatting the SRM results message for social networks.
+ * - Added SRMResultsStatusMessageOK setting.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman, MonicaMuranyi
+ * @version 1.35
  */
 'use strict';
 /*global module*/
@@ -496,7 +500,8 @@ module.exports = {
         LoginError: 'There was a log in error. Please try again.',
         StatusMessageConfirm: 'Are you sure you want to post this message:',
         StatusMessageError: 'There was an error sending status message. Please try again.',
-        StatusMessageOK: 'The status message was sent successfully.'
+        StatusMessageOK: 'The status message was sent successfully.',
+        SRMResultsStatusMessageOK: 'Your result is shared.'
     },
 
     // Constants to handle social network messages
@@ -504,6 +509,12 @@ module.exports = {
         StatusMessage: {
             NumberEventsTag: '__MATCHES__',
             RatingTag: '__RATING__'
+        },
+        SRMResultsStatusMessage: {
+            SRMNameTag: '__SRM__NAME__',
+            PositionTag: '__POSITION__',
+            PointsTag: '__POINTS__',
+            HandleTag: '__HANDLE__'
         }
     },
 

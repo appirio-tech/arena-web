@@ -1550,3 +1550,16 @@ footer .line {
 .panelCodeEditor .panel-heading .actionIcons .helpLink:before {
     background-image: url(../../img/light/help-light.png)
 }
+/* social buttons in panel header */
+.panel-social-buttons .twitter-overview .twitter-share-button {
+    background-image: url(../img/light/twitter.png);
+}
+.panel-heading .share-text{
+    color: #c8dbe9;
+}
+.body .panel-social-buttons .tooltip.bottom .tooltip-arrow{
+    border-bottom-color: #75a9ff;
+}
+.body .panel-social-buttons .tooltip-inner{
+    background-color: #75a9ff;
+}

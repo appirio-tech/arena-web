@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This file provides the overview controller.
@@ -21,8 +21,11 @@
  * - Added getMemberStatusMessage and postFacebookStatus to the scope to handle posting messages to
  *   Facebook and Twitter.
  *
- * @author dexy, amethystlei
- * @version 1.4
+ * Changes in version 1.5 (Module Assembly - Web Arena - Share SRM Results Socially):
+ * - Moved loginFacebookAndPost function to base controller to be reused.
+ *
+ * @author dexy, amethystlei, MonicaMuranyi
+ * @version 1.5
  */
 /*global twttr : true */
 'use strict';
@@ -31,7 +34,7 @@ var helper = require('../helper'),
     config = require('../config');
 
 var overviewCtrl = ['$scope', '$rootScope', 'Facebook', function ($scope, $rootScope, Facebook) {
-    var formatStatusMessage, loginFacebookAndPost, postFacebookStatusMessage;
+    var formatStatusMessage, postFacebookStatusMessage;
 
     /**
      * Formats the message to be posted on Twitter and Facebook
@@ -55,26 +58,6 @@ var overviewCtrl = ['$scope', '$rootScope', 'Facebook', function ($scope, $rootS
         return message;
     };
     /**
-     * Log in facebook and send the message to the wall if there are no errors.
-     *
-     * @since 1.4
-     */
-    loginFacebookAndPost = function () {
-        Facebook.login(function (response) {
-            if (response.status === 'connected') {
-                postFacebookStatusMessage();
-            } else {
-                if (response.status !== 'unknown') {
-                    $scope.openModal({
-                        title: helper.FACEBOOK_TITLES.LoginError,
-                        message: helper.FACEBOOK_MESSAGES.LoginError,
-                        enableClose: true
-                    });
-                }
-            }
-        }, {scope: 'publish_actions'});
-    };
-    /**
      * Posts the message to the facebook wall.
      *
      * @since 1.4
@@ -95,7 +78,7 @@ var overviewCtrl = ['$scope', '$rootScope', 'Facebook', function ($scope, $rootS
             }, function (response) {
                 if (!response || response.error) {
                     if (response.error && response.error.type && response.error.type === 'OAuthException') {
-                        loginFacebookAndPost();
+                        $rootScope.loginToFacebook(postFacebookStatusMessage);
                     } else {
                         $scope.openModal({
                             title: helper.FACEBOOK_TITLES.StatusMessageError,
@@ -164,7 +147,7 @@ var overviewCtrl = ['$scope', '$rootScope', 'Facebook', function ($scope, $rootS
                 if (response.status === 'connected') {
                     postFacebookStatusMessage();
                 } else {
-                    loginFacebookAndPost();
+                    $rootScope.loginToFacebook(postFacebookStatusMessage);
                 }
             });
         }

@@ -1,6 +1,12 @@
-<div class="panel panel-custom panelSummary">
+<div class="panel panel-custom panelSummary summaryPage">
     <div class="panel-heading">
-        Match Summary
+        <div class="panel-heading-title">Match Summary</div>
+        <div class="panel-social-buttons" data-ng-show="showSRMResultsSocialIcons(contest, divisionID)">
+            <span class="fb-btn-overview" data-ng-click="postFacebookSRMResultsMessage(contest)" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Share my results to facebook"></span> 
+            <span class='twitter-overview'><span class="tweet-share" twitter data-url="{{getTwitterShareUrl()}}" data-message="{{getTwitterSRMResultsMessage(contest)}}" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Share my results to twitter"></span>
+        </div>
+        <div class="share-text" data-ng-show="showSRMResultsSocialIcons(contest, divisionID)">Share my results:</div>
+        <div class="clear"></div>
     </div>
     <div class="panel-body">
         <div class="mainContent">

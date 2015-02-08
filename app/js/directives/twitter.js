@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
  * This directive renders twitter button which can be customized.
@@ -18,8 +18,11 @@
  *    <span class="tweet-share" twitter data-url="www.topcoder.com" data-message="My message to twitter"
  *        data-type="share" data-size="medium" data-count="horizontal"></span>
  *
- * @author dexy
- * @version 1.0
+ * Changes in version 1.1 (Module Assembly - Web Arena - Share SRM Results Socially):
+ * - Added logic to only create the button when a message is available.
+ *
+ * @author dexy, MonicaMuranyi
+ * @version 1.1
  */
 /*global $: true, twttr: true*/
 'use strict';
@@ -43,7 +46,9 @@ var twitter = ['$rootScope', '$timeout', '$window', function ($rootScope, $timeo
                     if ($rootScope.twitterLoaded) {
                         if (!scope.message) {
                             scope.$watch('message', function () {
-                                createButton();
+                                if (scope.message) {
+                                    createButton();
+                                }
                             });
                         } else {
                             if (twitterType === 'share') {
