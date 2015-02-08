@@ -982,7 +982,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
             }
-            if ($rootScope.currentModal) {
+            if ($rootScope.currentModal && data.title !== helper.POP_UP_TITLES.CoderInfo) {
                 $rootScope.currentModal.dismiss('cancel');
                 $rootScope.currentModal = undefined;
             }
@@ -1087,7 +1087,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         // when the problem is loaded in the parent controller userCodingCtrl
         $scope.$on('problem-loaded', function (oEvent, oEventParams) {
             oEventParams = oEventParams || {problemAreaResized: false};// don't disable the 'Run System Tests' when resizing the problem area
-            
+
             if ($scope.userData && $scope.userData.tests) {
                 // init test case checkboxes
                 $scope.userData.tests.forEach(function (testCase) {
@@ -1220,7 +1220,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
             // set preferred theme, there is no theme data
             $scope.themeIdx = 0;
-            
+
             // #494 - Don't disable the 'Run System Tests' button when resizing the 'Code Area' panel
             if (!oEventParams.problemAreaResized) {
                 $scope.submittedCode = false;
