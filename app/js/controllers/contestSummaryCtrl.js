@@ -37,8 +37,11 @@
  * Changes in version 1.9 (Replace ng-scrollbar with prefect-scrollbar):
  * - Added timeout of 10ms to rebuild:leaderboardTable event, so that the perfect-scrollbar work fine in contest summary
  *
- * @author amethystlei, flytoj2ee, dexy, xjtufreeman
- * @version 1.9
+ * Changes in version 1.10 (Module Assembly - Web Arena - Share SRM Results Socially):
+ * - Added logic to retrieve division summary needed for sharing SRM results.
+ *
+ * @author amethystlei, flytoj2ee, dexy, xjtufreeman, MonicaMuranyi
+ * @version 1.10
  */
 /*global module, angular*/
 /*jslint plusplus: true*/
@@ -234,6 +237,11 @@ var contestSummaryCtrl = ['$scope', '$state', '$rootScope', 'appHelper', '$windo
         $scope.setViewOn($stateParams.viewOn);
     } else {
         $scope.setViewOn('room');
+    }
+
+    // Retrieve the division summary (needed to get division places to be used in social sharing).
+    if (!$rootScope.lastDivSummary) {
+        $rootScope.getDivSummary($scope.contest.roundID, $scope.divisionID);
     }
 }];
 
