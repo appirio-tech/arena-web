@@ -58,7 +58,7 @@ export SOCIAL_ARENA_DESCRIPTION='Algorithm matches for big brains. Solve these a
 export SOCIAL_ARENA_TITLE='TopCoder Arena'
 
 # Message template to post contestant SRM results to Facebook and Twitter
-export SOCIAL_SRM_RESULTS_STATUS_TEMPLATE='I have participated in the __SRM__NAME__ match in the #topcoder Arena. I finished in __POSITION__ place, and scored __POINTS__ points.'
+export SOCIAL_SRM_RESULTS_STATUS_TEMPLATE='I was #__POSITION__ with __POINTS__ in the __SRM__NAME__ at the #topcoder Arena'
 # The SRM results title used in posting to Facebook wall
 export SOCIAL_SRM_RESULTS_STATUS_TITLE='__HANDLE__ shared his SRM results!'
 # The SRM results caption used in posting to Facebook wall
