@@ -128,7 +128,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="paginator"  data-ng-show='isShowPage()' >
+                            <div class="paginator"  data-ng-show='isShowPage() && (leaderboardPageRange.length > 1)' >
                                 <span data-ng-repeat="n in leaderboardPageRange" data-ng-class="{'textActive': n.i == currentPage}" data-ng-click="setCurrentPage(n.i)">{{n.show}}</span>
                             </div>
                         </div><!-- /.tableDiv .scroll -->
@@ -152,7 +152,7 @@
                                     </tbody>
                                 </table>
                              </div>
-                            <div class="paginator"  data-ng-show='isShowPage()' >
+                            <div class="paginator"  data-ng-show='isShowPage()  && (leaderboardPageRange.length > 1)' >
                                 <span data-ng-repeat="n in leaderboardPageRange" data-ng-class="{'textActive': n.i == currentPage}" data-ng-click="setCurrentPage(n.i)">{{n.show}}</span>
                             </div>                             
                         </div><!-- /.tableDiv .default -->

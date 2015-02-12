@@ -65,8 +65,18 @@
  * Changes in version 1.16 (Replace ng-scrollbar with prefect-scrollbar):
  * - Remove CSS references for ng-scrollbar
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, xjtufreeman
- * @version 1.16
+ * Changes in version 1.17 (Web Arena Keyboard shortcuts):
+ * - Added hot key css files.
+ *
+ * Changes in version 1.18 (Module Assembly - Web Arena - Share SRM Results Socially):
+ * - Added SOCIAL_SRM_RESULTS_STATUS_TEMPLATE settings.
+ * - Added SOCIAL_SRM_RESULTS_STATUS_TITLE settings.
+ * - Added SOCIAL_SRM_RESULTS_STATUS_CAPTION settings.
+ * - Added SOCIAL_SRM_RESULTS_STATUS_PICTURE_URL settings.
+ *
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, xjtufreeman, MonicaMuranyi
+
+ * @version 1.18
  */
 'use strict';
 /*global module, process*/
@@ -113,6 +123,10 @@ module.exports = function (grunt) {
                         { match : 'LOCAL_STORAGE_EXPIRE_TIME', replacement: process.env.LOCAL_STORAGE_EXPIRE_TIME },
                         { match : 'FACEBOOK_API_ID', replacement: process.env.FACEBOOK_API_ID },
                         { match : 'SOCIAL_STATUS_TEMPLATE', replacement: process.env.SOCIAL_STATUS_TEMPLATE },
+                        { match : 'SOCIAL_SRM_RESULTS_STATUS_TEMPLATE', replacement: process.env.SOCIAL_SRM_RESULTS_STATUS_TEMPLATE },
+                        { match : 'SOCIAL_SRM_RESULTS_STATUS_TITLE', replacement: process.env.SOCIAL_SRM_RESULTS_STATUS_TITLE },
+                        { match : 'SOCIAL_SRM_RESULTS_STATUS_CAPTION', replacement: process.env.SOCIAL_SRM_RESULTS_STATUS_CAPTION },
+                        { match : 'SOCIAL_SRM_RESULTS_STATUS_PICTURE_URL', replacement: process.env.SOCIAL_SRM_RESULTS_STATUS_PICTURE_URL },
                         { match : 'SOCIAL_ARENA_URL', replacement: process.env.SOCIAL_ARENA_URL },
                         { match : 'SOCIAL_ARENA_DESCRIPTION', replacement: process.env.SOCIAL_ARENA_DESCRIPTION },
                         { match : 'SOCIAL_ARENA_TITLE', replacement: process.env.SOCIAL_ARENA_TITLE },
@@ -182,6 +196,7 @@ module.exports = function (grunt) {
                     'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                     'bower_components/fullcalendar/fullcalendar.css',
                     'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                    'bower_components/angular-hotkeys/build/hotkeys.min.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
                     'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                     'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
@@ -203,6 +218,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                        'bower_components/angular-hotkeys/build/hotkeys.min.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                         'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
@@ -223,6 +239,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                        'bower_components/angular-hotkeys/build/hotkeys.min.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                         'thirdparty/perfect-scrollbar/perfect-scrollbar.css',

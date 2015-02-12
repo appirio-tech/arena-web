@@ -112,8 +112,14 @@
  * Changes in version 1.26 (Replace ng-scrollbar with prefect-scrollbar):
  * - Fix to support the perfect-scrollbar in notification message pop window
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee, xjtufreeman
- * @version 1.26
+ * Changes in version 1.27 (Module Assembly - Web Arena - Share SRM Results Socially):
+ * - Added logic to post SRM results to Facebook and Twitter.
+ * - Added isContestComplete function.
+ * - Added getLeaderboardCoder function.
+ * - Added showSRMResultsSocialIcons function.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, xjtufreeman, MonicaMuranyi
+ * @version 1.27
  */
 'use strict';
 /*jshint -W097*/
@@ -139,7 +145,7 @@ var helper = require('../helper'),
  *
  * @type {*[]}
  */
-var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', '$filter', 'sessionHelper', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window, $filter, sessionHelper) {
+var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationService', '$modal', '$state', 'themer', '$cookies', 'socket', '$timeout', '$window', '$filter', 'sessionHelper', 'Facebook', function ($rootScope, $scope, $http, appHelper, notificationService, $modal, $state, themer, $cookies, socket, $timeout, $window, $filter, sessionHelper, Facebook) {
     var /**
          * The modal controller.
          *
@@ -151,7 +157,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
             $scope.enableClose = data.enableClose;
             $scope.coderInfo = data.message;
-            $scope.coderInfoLink = function () { return data.coderInfoLink; };
+            $scope.coderInfoLink = data.coderInfoLink;
             $scope.coderHistoryData = data.coderHistoryData;
             $scope.registrants = data.registrants;
             $scope.numCoderRequest = 0;
@@ -453,6 +459,76 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     scope.rebuildScrollbars();
                 }, helper.LEADERBOARD_TABLE_REBUILT_TIMEGAP);
             }
+        },
+        /**
+         * Formats the SRM Results message to be posted on Twitter and Facebook
+         *
+         * @param {integer} matchName the match name
+         * @param {integer} position the position
+         * @param {integer} points the points
+         * @param {string} the formatted message
+         */
+        formatSRMResultsStatusMessage = function (matchName, position, points) {
+            var message = config.srmResultsSharing.template, positionOrdinal;
+            message = message.replace(helper.SOCIAL.SRMResultsStatusMessage.SRMNameTag, matchName);
+            positionOrdinal = position;
+            if (position === 1) {
+                positionOrdinal = positionOrdinal + "st";
+            } else if (position === 2) {
+                positionOrdinal = positionOrdinal + "nd";
+            } else if (position === 3) {
+                positionOrdinal = positionOrdinal + "rd";
+            } else {
+                positionOrdinal = positionOrdinal + "th";
+            }
+            message = message.replace(helper.SOCIAL.SRMResultsStatusMessage.PositionTag, positionOrdinal);
+            message = message.replace(helper.SOCIAL.SRMResultsStatusMessage.PointsTag, $filter('number')($rootScope.formatScore(points), 2));
+            return message;
+        },
+        /**
+         * Formats the SRM Results title to be posted on Twitter and Facebook
+         *
+         * @param {integer} username the coder's handle
+         * @param {string} the formatted title
+         */
+        formatSRMResultsStatusTitle = function (username) {
+            return config.srmResultsSharing.title.replace(helper.SOCIAL.SRMResultsStatusMessage.HandleTag, username);
+        },
+        /**
+         * Retrieves the leaderboard data of the coder
+         *
+         * @param {string} username the coder's handle
+         * @return {{
+         *           userName: string,
+         *           userRating: number,
+         *           teamName: string,
+         *           userID: number,
+         *           userType: number,
+         *           countryName: string,
+         *           components: {
+         *              componentID: number,
+         *              points: number,
+         *              status: number,
+         *              language: number
+         *           }
+         *        }} the coder object
+         */
+        getLeaderboardCoder = function (username) {
+            var i, coder;
+            for (i = 0; i < $rootScope.leaderboard.length; i += 1) {
+                coder = $rootScope.leaderboard[i];
+                if (username === coder.userName) {
+                    return coder;
+                }
+            }
+        },
+        /**
+         * Checks whether the contest is completed.
+         *
+         * @returns {boolean} the checked result
+         */
+        isContestComplete = function (contest) {
+            return contest.phaseData.phaseType >= helper.PHASE_TYPE_ID.ContestCompletePhase;
         };
 
     // modal defined in the root scope can be used by other scopes.
@@ -514,6 +590,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                 }
             }
         });
+
+        $rootScope.currentModal.result.then(null, function () {
+            $rootScope.currentModal = undefined;
+        });
     };
 
 
@@ -549,7 +629,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         $scope.openModal({
             title: helper.POP_UP_TITLES.CoderInfo,
             message: " ",
-            coderInfoLink: config.staticFileHost + '/#/u/dashboard/' + coderInfoUsername,
+            coderInfoLink: 'http://www.topcoder.com/member-profile/' + coderInfoUsername + '/algorithm/',
             enableClose: true
         }, null, null, 'partials/user.chat.area.coderinfo.html');
         modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
@@ -1179,6 +1259,114 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         };
         scope.refresher.refreshPeriodically();
     };
+
+     /**
+     * Log in to facebook and execute the callback function.
+     * @param callback the callback function to be executed after login.
+     */
+    $rootScope.loginToFacebook = function (callback) {
+        Facebook.login(function (response) {
+            if (response.status === 'connected' && callback) {
+                callback();
+            } else {
+                if (response.status !== 'unknown') {
+                    $scope.openModal({
+                        title: helper.FACEBOOK_TITLES.LoginError,
+                        message: helper.FACEBOOK_MESSAGES.LoginError,
+                        enableClose: true
+                    });
+                }
+            }
+        }, {scope: 'publish_actions'});
+    };
+
+    /**
+     * Posts the message to the facebook wall.
+     */
+    $rootScope.postFacebookSRMResultsMessage = function (contest) {
+        var coder;
+        if (!Facebook.isReady()) {
+            $scope.openModal({
+                title: helper.FACEBOOK_TITLES.NotReady,
+                message: helper.FACEBOOK_MESSAGES.NotReady,
+                enableClose: true
+            });
+        } else {
+            Facebook.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    coder = getLeaderboardCoder($rootScope.username());
+                    $rootScope.facebookMessage = formatSRMResultsStatusMessage(contest.roundName, coder.divPlace, coder.totalPoints);
+                    $scope.openModal({
+                        title: helper.FACEBOOK_TITLES.StatusMessageConfirm,
+                        message: helper.FACEBOOK_MESSAGES.StatusMessageConfirm,
+                        buttons: ['Yes', 'No'],
+                        enableClose: true
+                    }, function () {
+                        Facebook.api('/me/feed', 'post', {
+                            link: config.social.arena.URL,
+                            description: $rootScope.facebookMessage,
+                            caption: config.srmResultsSharing.caption,
+                            name: formatSRMResultsStatusTitle($rootScope.username()),
+                            picture: config.srmResultsSharing.picture
+                        }, function (response) {
+                            if (!response || response.error) {
+                                if (response.error && response.error.type && response.error.type === 'OAuthException') {
+                                    $rootScope.loginToFacebook($rootScope.postFacebookSRMResultsMessage);
+                                } else {
+                                    $scope.openModal({
+                                        title: helper.FACEBOOK_TITLES.StatusMessageError,
+                                        message: helper.FACEBOOK_MESSAGES.StatusMessageError,
+                                        enableClose: true
+                                    });
+                                }
+                            } else {
+                                $scope.openModal({
+                                    title: helper.FACEBOOK_TITLES.StatusMessageOK,
+                                    message: helper.FACEBOOK_MESSAGES.SRMResultsStatusMessageOK,
+                                    enableClose: true
+                                });
+                            }
+                        });
+                    }, function () { return; }, 'popupFacebookMessage.html');
+                } else {
+                    $rootScope.loginToFacebook($rootScope.postFacebookSRMResultsMessage);
+                }
+            });
+        }
+    };
+
+    /**
+     * Returns the formatted message with the SRM results to be published to Twitter.
+     * @return {string} The message to be published.
+     */
+    $rootScope.getTwitterSRMResultsMessage = function (contest) {
+        var coder = getLeaderboardCoder($rootScope.username());
+        if (coder && coder.divPlace) {
+            return formatSRMResultsStatusMessage(contest.roundName, coder.divPlace, coder.totalPoints).replace('#', '%23');
+        }
+    };
+
+    /**
+     * Returns the URL of Arena.
+     * @return {string} The url of arena.
+     */
+    $rootScope.getTwitterShareUrl = function () {
+        return config.social.arena.URL;
+    };
+
+    /**
+     * Decides whether to show the SRM results social icons for this user.
+     *
+     * @returns {boolean} the checked result
+     */
+    $rootScope.showSRMResultsSocialIcons = function (contest, divisionID) {
+        // Show social icons only if the contest is complete and the current user has scored more than 0 points.
+        if (isContestComplete(contest)) {
+            var coder = getLeaderboardCoder($rootScope.username());
+            return coder !== undefined && coder.totalPoints && coder.totalPoints > 0;
+        }
+        return false;
+    }
 
     // Show the coder history.
     socket.on(helper.EVENT_NAME.CoderHistoryResponse, function (data) {

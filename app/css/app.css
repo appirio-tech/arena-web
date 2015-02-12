@@ -1002,7 +1002,7 @@ body a {cursor: pointer;}
 }
 .tcTime {
     display: block;
-    padding-right: 33px;
+    padding-right: 20px;
     font-size: 14px;
     text-align: right;
     color: #687376;
@@ -1185,12 +1185,12 @@ footer .right {
 footer .right .sponsorLogo {
     display: block;
     position: absolute;
-    left: 0;
+    left: 25%;
     height: 0;
     width: 0;
     overflow: hidden;
     padding-top: 23px;
-    padding-right: 188px;
+    padding-right: 90px;
     padding-left: 20px;
     background: url(@@SPONSOR_LOGO_SMALL) 100% 100% no-repeat;
 }
@@ -1222,7 +1222,7 @@ footer .right>span:nth-child(2) {
 /* ** /.Fix to page move right ** */
 
 .modal .modal-dialog {
-    /*padding-top: 10%;*/
+    padding-top: 2%;
 }
 @media only screen and (min-height: 509px) and (min-width: 768px) {
     .systemTestResult .modal-dialog {
@@ -2040,11 +2040,11 @@ footer .right>span:nth-child(2) {
     width: 121px;
 }
 .wizardBody .step-4 .leftPart .roomAssignMethod {
-    float: right;
+    order: 2;
     border: none;
     height: 21px;
-    padding-top: 5px;
     width: 111px;
+    padding-top: 5px;
     line-height: 15px;
 }
 .wizardBody .step-4 .leftPart .schedule span {
@@ -2052,6 +2052,7 @@ footer .right>span:nth-child(2) {
     display: inline-block;
     width: 65px;
     vertical-align: top;
+    padding-left: 1px;
 }
 .wizardBody .step-4 .leftPart .roomAssign {
     margin-top: 19px;
@@ -2190,6 +2191,9 @@ footer .right>span:nth-child(2) {
     line-height: 27px;
     float: right;
     border: 0;
+}
+.panel-custom.panelSummary .mainContent .btn {
+    margin-top: 4px;
 }
 .panel-custom .mainContent .btnWidth {
     width: 130px!important;
@@ -3073,6 +3077,7 @@ footer .right>span:nth-child(2) {
 }
 .testReportPanel .caseName .open {
     background-position: -50px 0;
+    height:20px;
 }
 .testReportPanel .infoBar .correctInfo {
     padding-left: 9px;
@@ -4881,12 +4886,18 @@ footer .right>span:nth-child(2) {
 .challengerWrapper .table .col2 {
     width: 25%;
 }
+.leaderboardWrapper .table .colRHeader,
+.modal-body .table .colRHeader {
+    width: 30px;
+    font-weight: bold;
+}
 .leaderboardWrapper .table .colR,
 .modal-body .table .colR {
     width: 30px;
     font-weight: 100;
 }
-.panelSummary .shortLeaderboard .leaderboardWrapper .table .colR {
+.panelSummary .shortLeaderboard .leaderboardWrapper .table .colR,
+.panelSummary .shortLeaderboard .leaderboardWrapper .table .colRHeader {
     width: 21px;
 }
 .leaderboardWrapper .table .col2 {
@@ -6902,6 +6913,7 @@ contestManagementPanel .panel-footer .btn {
     width: 30px;
     padding-left: 0;
     padding-right: 0;
+    font-weight: bold;
 }
 .challengeWrapper .table .col4
 {
@@ -7412,9 +7424,11 @@ table thead .sort.desc{
 .calendarBottom {
     padding-bottom: 2px;
 }
+.roomAssign .roomAssignDiv {
+    display: flex;
+}
 .roomAssign .roomAssignDiv .method {
     padding-left: 10px;
-    width: 138px!important;
 }
 .rightPart .other .marginLeft {
     margin-left: 90px;
@@ -7872,6 +7886,13 @@ table thead .sort.desc{
 .codeArea .docker-max .chatWidget .control-bar .findCheckLbl {
     margin-left: 5px;
 }
+.codeArea .docker-max .chatWidget .control-bar .findCheckLbl {
+    float: right;
+    margin-right: 5px;
+}
+.codeArea .docker-max .chatWidget .panelChatArea .findIcon {
+    margin: 10px 0px 0px 4px;
+}
 .codeArea .docker-max .chatWidget .chatInput {
     width: 474px;
     margin-left: 4px;
@@ -8211,7 +8232,7 @@ table thead .sort.desc{
         width: auto;
     }
 }
-@media only screen and (max-width: 1141px) {
+@media only screen and (max-width: 1200px) {
     .header .navbar-brand {
         padding-left: 0;
     }
@@ -9364,7 +9385,7 @@ table thead .sort.desc{
     position: absolute;
     right: 48px;
     width: 0;
-    height: 0;
+    height: 16px;
     border-style: solid;
     border-width: 0 10px 12px 10px;
 }
@@ -9372,7 +9393,7 @@ table thead .sort.desc{
     top: -12px;
 }
 .settings-qtip:after {
-    top: -10px;
+    top: -12px;
 }
 .qtip .settings-panel {
     display: block;
@@ -9518,4 +9539,101 @@ table thead .sort.desc{
 .always-visible.ps-container > .ps-scrollbar-x-rail,
 .always-visible.ps-container > .ps-scrollbar-y-rail {
     opacity: 0.6;
+}
+
+.shortcut-keys-list {
+    top: 20%!important;
+    width: 880px!important;
+    height: 426px!important;
+    position: absolute;
+    left: 15%;
+    z-index: 1060;
+    opacity: 1;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.shortcut-keys-list:before {
+    display: block;
+    content: "";
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.shortcut-keys-list .main-div {
+    position: absolute;
+    padding: 10px 15px;
+    height: 426px;
+}
+
+.shortcut-keys-list .main-div .title {
+    font-size: larger;
+    font-weight: 400;
+}
+
+.shortcut-keys-list .main-div .cancel {
+    float: right;
+    cursor: pointer;
+}
+
+.shortcut-keys-list .main-div .table {
+    margin-top: 30px;
+}
+
+.shortcut-keys-list .main-div .table .left {
+    width: 440px;
+}
+.shortcut-keys-list .main-div .table .right {
+    width: 440px;
+}
+.shortcut-keys-list .main-div .table .item {
+    border-bottom: 1px solid #575757;
+    border-top: none;
+}
+
+.shortcut-keys-list .main-div .table .item.bottom-item {
+    border-bottom: none!important;
+}
+
+/* social buttons in panel header */
+.panel-social-buttons{
+    float: right;
+    margin-top: 3px;
+    position: relative;
+    width: 45px;
+}
+.panel-social-buttons .fb-btn-overview{
+    left: 0;
+}
+.panel-heading-title{
+    float: left;
+}
+.panel-heading .share-text{
+    float: right;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #a5b4b8;
+}
+.panel-social-buttons .twitter-overview .tweet-share {
+    position: absolute;
+    left: 29px;
+}
+.detailPage .panel-custom .panel-heading, .summaryPage .panel-heading {
+    padding-right: 19px;
+}
+.panel-social-buttons .twitter-overview .twitter-share-button {
+    left: 0;
+    position: static;
+}
+.panel-social-buttons .tooltip {
+    width: 100px;
+}
+.detailPage .centerBox{
+    overflow: visible;
 }

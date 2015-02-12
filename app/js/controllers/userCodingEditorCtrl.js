@@ -73,8 +73,11 @@
  * Changes in version 1.21 (Web Arena - Unused Code Processor Re-implementation)
  * - Added logic to check the unused code (30%). A popup will be displayed after submitting the code.
  *
+ * Changes in version 1.22 (Web Arena Keyboard shortcuts)
+ * - Added shortcut keys support in coding editor.
+ *
  * @author tangzx, amethystlei, flytoj2ee, Helstein, onsky, Sky_
- * @version 1.21
+ * @version 1.22
  */
 'use strict';
 /*global module, CodeMirror, angular, document, $, window */
@@ -95,8 +98,8 @@ var UCRProcessorFactory = require("../ucr-processors/UCRProcessorFactory");
  *
  * @type {*[]}
  */
-var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'socket', '$timeout', 'sessionHelper',
-    function ($rootScope, $scope, $window, appHelper, socket, $timeout, sessionHelper) {
+var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'socket', '$timeout', 'sessionHelper', 'hotkeys',
+    function ($rootScope, $scope, $window, appHelper, socket, $timeout, sessionHelper, hotkeys) {
         var indentRangeFinder = {
                 rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.indent, CodeMirror.fold.comment)
             },
@@ -192,9 +195,11 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 if ($scope.cm) {
                     t = $scope.cm.charCoords({line: tmp, ch: 0}, "local").top;
                     middleHeight = $scope.cm.getScrollerElement().offsetHeight / 2;
-                    $scope.cm.scrollTo(null, t - middleHeight - 5);
-                    $scope.cm.setCursor(tmp - 1, 0);
-                    $scope.cm.focus();
+                    setTimeout(function () {
+                        $scope.cm.scrollTo(null, t - middleHeight - 5);
+                        $scope.cm.setCursor(tmp - 1, 0);
+                        $scope.cm.focus();
+                    }, 10);
                 }
             }
         };
@@ -203,11 +208,61 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             $(window).scrollTop(0);
         }, 0);
 
+        $scope.isMac = function () {
+            return $window.navigator.appVersion.indexOf("Mac") !== -1;
+        };
+
+        /**
+         * Handle the shortcut keys.
+         * @param keyEvent the key event
+         */
+        $scope.handleShortcut = function (keyEvent) {
+            var key = keyEvent.which, altKey = keyEvent.altKey, ctrlKey = keyEvent.ctrlKey, metaKey = keyEvent.metaKey;
+            if (((!$scope.isMac()) && ctrlKey && altKey) || ($scope.isMac() && metaKey && altKey)) {
+                if (key === 79) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.compile, {});
+                } else if (key === 82) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runAllTestCases, {});
+                } else if (key === 49) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 1});
+                } else if (key === 50) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 2});
+                } else if (key === 51) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 3});
+                } else if (key === 52) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 4});
+                } else if (key === 53) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 5});
+                } else if (key === 54) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 6});
+                } else if (key === 55) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 7});
+                } else if (key === 56) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 8});
+                } else if (key === 57) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 9});
+                } else if (key === 69) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.search, {});
+                } else if (key === 71) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.goto, {});
+                } else if (key === 89) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.maximizeCodeArea, {});
+                } else if (key === 84) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.maximizeProblemArea, {});
+                } else if (key === 65) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.toggleChat, {});
+                } else if (key === 76) {
+                    $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.toggleLeaderboard, {});
+                }
+            }
+        };
+
         /**
          * Handle the input search text event.
          * @param keyEvent - the key event.
          */
-        $scope.inputSearchText = function (keyEvent) {
+        $scope.inputSearchTextField = function (keyEvent) {
+            $scope.handleShortcut(keyEvent);
             if (keyEvent.which === 13) {
                 $timeout(function () {
                     angular.element('#searchByText').trigger('click');
@@ -220,6 +275,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * @param keyEvent - the key event.
          */
         $scope.inputGotoText = function (keyEvent) {
+            $scope.handleShortcut(keyEvent);
             if (keyEvent.which === 13) {
                 $scope.jumpToLine();
             }
@@ -603,6 +659,117 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                         }
                     }
                 });
+
+
+                if ($scope.isMac()) {
+                    cmInstance.setOption("extraKeys", {
+                        'Cmd-Alt-O': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.compile, {});
+                        },
+                        'Cmd-Alt-R': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runAllTestCases, {});
+                        },
+                        'Cmd-Alt-1': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 1});
+                        },
+                        'Cmd-Alt-2': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 2});
+                        },
+                        'Cmd-Alt-3': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 3});
+                        },
+                        'Cmd-Alt-4': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 4});
+                        },
+                        'Cmd-Alt-5': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 5});
+                        },
+                        'Cmd-Alt-6': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 6});
+                        },
+                        'Cmd-Alt-7': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 7});
+                        },
+                        'Cmd-Alt-8': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 8});
+                        },
+                        'Cmd-Alt-9': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 9});
+                        },
+                        'Cmd-Alt-E': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.search, {});
+                        },
+                        'Cmd-Alt-G': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.goto, {});
+                        },
+                        'Cmd-Alt-Y': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.maximizeCodeArea, {});
+                        },
+                        'Cmd-Alt-T': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.maximizeProblemArea, {});
+                        },
+                        'Cmd-Alt-A': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.toggleChat, {});
+                        },
+                        'Cmd-Alt-L': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.toggleLeaderboard, {});
+                        }
+                    });
+                } else {
+                    cmInstance.setOption("extraKeys", {
+                        'Ctrl-Alt-O': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.compile, {});
+                        },
+                        'Ctrl-Alt-R': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runAllTestCases, {});
+                        },
+                        'Ctrl-Alt-1': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 1});
+                        },
+                        'Ctrl-Alt-2': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 2});
+                        },
+                        'Ctrl-Alt-3': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 3});
+                        },
+                        'Ctrl-Alt-4': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 4});
+                        },
+                        'Ctrl-Alt-5': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 5});
+                        },
+                        'Ctrl-Alt-6': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 6});
+                        },
+                        'Ctrl-Alt-7': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 7});
+                        },
+                        'Ctrl-Alt-8': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 8});
+                        },
+                        'Ctrl-Alt-9': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 9});
+                        },
+                        'Ctrl-Alt-E': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.search, {});
+                        },
+                        'Ctrl-Alt-G': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.goto, {});
+                        },
+                        'Ctrl-Alt-Y': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.maximizeCodeArea, {});
+                        },
+                        'Ctrl-Alt-T': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.maximizeProblemArea, {});
+                        },
+                        'Ctrl-Alt-A': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.toggleChat, {});
+                        },
+                        'Ctrl-Alt-L': function (cm) {
+                            $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.toggleLeaderboard, {});
+                        }
+                    });
+                }
                 // comment out error handle related logic for now
                 /*
                 cmInstance.on('scroll', function () {
@@ -700,6 +867,14 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.compileSolution = function () {
             if (userInputDisabled || !$scope.problemLoaded) {
+                return;
+            }
+            if($scope.hasCodingPhaseEnded() && $scope.currentStateName() === helper.STATE_NAME.Coding) {
+                $scope.openModal({
+                    title: 'Error',
+                    message: 'You cannot compile after the coding phase ended.',
+                    enableClose: true
+                });
                 return;
             }
             /**
@@ -943,7 +1118,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         });
 
         // when the problem is loaded in the parent controller userCodingCtrl
-        $scope.$on('problem-loaded', function () {
+        $scope.$on('problem-loaded', function (oEvent, oEventParams) {
+            oEventParams = oEventParams || {problemAreaResized: false};// don't disable the 'Run System Tests' when resizing the problem area
+            
             if ($scope.userData && $scope.userData.tests) {
                 // init test case checkboxes
                 $scope.userData.tests.forEach(function (testCase) {
@@ -1076,9 +1253,12 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
             // set preferred theme, there is no theme data
             $scope.themeIdx = 0;
-
-            $scope.submittedCode = false;
-            $scope.updatedCodeAfterSubmit = false;
+            
+            // #494 - Don't disable the 'Run System Tests' button when resizing the 'Code Area' panel
+            if (!oEventParams.problemAreaResized) {
+                $scope.submittedCode = false;
+                $scope.updatedCodeAfterSubmit = false;
+            }
 
             /**
              * Check whether to show running practice system test link.
@@ -1216,6 +1396,190 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     (appHelper.getRenderedHeight($scope.cmElem) - 1) + 'px');
         };
 
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+o' : 'ctrl+alt+o'],
+            description: 'Compile',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.compile, {});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+r' : 'ctrl+alt+r'],
+            description: 'Run all test cases',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runAllTestCases, {});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+1' : 'ctrl+alt+1'],
+            description: 'Run test case number 1',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 1});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+2' : 'ctrl+alt+2'],
+            description: 'Run test case number 2',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 2});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+3' : 'ctrl+alt+3'],
+            description: 'Run test case number 3',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 3});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+4' : 'ctrl+alt+4'],
+            description: 'Run test case number 4',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 4});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+5' : 'ctrl+alt+5'],
+            description: 'Run test case number 5',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 5});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+6' : 'ctrl+alt+6'],
+            description: 'Run test case number 6',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 6});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+7' : 'ctrl+alt+7'],
+            description: 'Run test case number 7',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 7});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+8' : 'ctrl+alt+8'],
+            description: 'Run test case number 8',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 8});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+9' : 'ctrl+alt+9'],
+            description: 'Run test case number 9',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, {'index': 9});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+e' : 'ctrl+alt+e'],
+            description: 'Jump to search box',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.search, {});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+g' : 'ctrl+alt+g'],
+            description: 'Jump to goto box',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.goto, {});
+            }
+        });
+
+        /**
+         * Check whether it's in editable phase.
+         * @returns {boolean} the checked result.
+         */
+        $scope.isEditablePhase = function () {
+            return $scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode;
+        };
+
+        // the compile shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.compile, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+            $rootScope.currentModal = undefined;
+            if ($scope.isEditablePhase()) {
+                $scope.compileSolution();
+            }
+        });
+
+        // the runAllTestCases shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.runAllTestCases, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+
+            if ($scope.isEditablePhase()) {
+                $scope.userData.tests.forEach(function (testCase) {
+                    testCase.checked = true;
+                });
+                $rootScope.userTests.forEach(function (testCase) {
+                    testCase.checked = true;
+                });
+
+                $scope.runCheckedTests();
+            }
+        });
+
+        // the runSingleTestCase shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.runSingleTestCase, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+            $rootScope.currentModal = undefined;
+            if ($scope.isEditablePhase()) {
+                var test = null;
+                if ($rootScope.userTests.length >= data.index) {
+                    test = $rootScope.userTests[data.index - 1];
+                }
+
+                if (test === null && ($scope.userData.tests.length >= (data.index - $rootScope.userTests.length))) {
+                    test = $scope.userData.tests[data.index - $rootScope.userTests.length - 1];
+                }
+
+                if (test !== null) {
+                    $scope.runSingleTest(test);
+                } else {
+                    $scope.openModal({
+                        title: 'Warning',
+                        message: "The test case " + data.index + " doesn't exist.",
+                        enableClose: true
+                    });
+                }
+            }
+        });
+
+        // the search shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.search, function (event, data) {
+            $rootScope.currentModal = undefined;
+            $timeout(function () {
+                angular.element('#findText').focus();
+            }, 10);
+        });
+
+        // the goto shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.goto, function (event, data) {
+            $rootScope.currentModal = undefined;
+            $timeout(function () {
+                angular.element('#goto').focus();
+            }, 10);
+        });
 
         /**
          * Cache the code for plugin api.

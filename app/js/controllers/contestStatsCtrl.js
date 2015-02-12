@@ -171,7 +171,7 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', '
     $scope.getOpenTitle = function (problem) {
         var componentId = problem.primaryComponent.componentID,
             coder,
-            result = 'Open',
+            result = 'Unopened',
             problemStatus,
             i,
             j;

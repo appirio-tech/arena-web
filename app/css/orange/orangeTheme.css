@@ -1515,7 +1515,7 @@ footer .left>span {
 }
 .socialButtons .challenge {
     color: rgb(49, 111, 153);
-
+}
 /* ballonsWrap
 -------------------------*/
 .ballonsWrap{
@@ -1642,4 +1642,42 @@ footer .left>span {
 
 .ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x{
     background-color: #ff8a00;
+}
+.shortcut-keys-list-color {
+    background-color: #636d70;
+    border: none;
+    color: grey;
+}
+.shortcut-keys-list .main-div {
+    position: absolute;
+    padding: 10px 15px;
+    border: 1px solid #EBF2F3;
+    background: white;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    height: 426px;
+}
+.shortcut-keys-list .main-div .table .item {
+    border-bottom: 1px solid #E0E0E0 !important;
+}
+.shortcut-keys-list .main-div .table .item-color {
+    color: #CF520C;
+    font-weight: 700;
+}
+.shortcut-keys-list .main-div .table .item .notes {
+    color: grey;
+    font-weight: 400;
+    width: 350px;
+}
+.panelCodeEditor .panel-heading .actionIcons .helpLink:before {
+    background-image: url(../../img/orange/help-orange.png)
+}
+/* social buttons in panel header */
+.panel-social-buttons .twitter-overview .twitter-share-button {
+    background-image: url(../img/twitter.png);
+}
+.panel-heading .share-text{
+    color: #9d9d9d;
 }
