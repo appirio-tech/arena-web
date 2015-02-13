@@ -2699,17 +2699,18 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeEditor .toolBar .testToggle:hover {text-decoration: none; color: #fff;}
 .panelCodeEditor .toolBar .active .testToggle:before {background-position: -50px 0;}
-.panelCodeEditor .toolBar .testPanel {
+.panelCodeEditor .testPanel {
     position: absolute;
     top: 34px;
     right: 0;
     width: 368px;
+	bottom: 0px;
     overflow: hidden;
-    z-index: -1;
+    z-index: 20;
     border: 1px solid #fff;
 }
-.panelCodeEditor .toolBar .testPanel>div {
-    height: 480px;
+.panelCodeEditor  .testPanel>div {
+    height: 100%;
     margin-bottom: -7px;
 }
 .panelCodeEditor .testPanel header {
@@ -2922,7 +2923,6 @@ footer .right>span:nth-child(2) {
     background-position: 0 0;
 }
 .panelCodeEditor .testPanel .btnRow .caseCheck:checked ~ .caseLbl:before {background-position: -75px -150px;}
-.panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
 .panelCodeEditor .paddingRow {height: 7px;background: #151718;position: relative;}
 .panelCodeEditor .paddingRow:before {
     content: '';
