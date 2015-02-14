@@ -19,9 +19,6 @@ body{
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     background-image: url(../img/dark/sprite-2.png);
 }
-.CodeMirror-simplescroll-vertical > div {
-    background-color:  #2a2b2c;
-}
 .codeArea .vote:before,
 .codeArea .titleBar .shareLink > ul > li > a:after,
 .codeArea .socialLinks a:before,
@@ -563,13 +560,6 @@ footer .line {
     background: #27A4C4;
 }
 .panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
-.panelCodeEditor .paddingRow {background: #151718;}
-.panelCodeEditor .paddingRow:before {
-    background: #232628;
-}
-.panelCodeEditor .paddingRow:after {
-    background: #232628;
-}
 .panelCodeEditor .panel-body .errorBar {
     background: #232628;
 }

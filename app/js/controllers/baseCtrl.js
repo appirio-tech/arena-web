@@ -112,8 +112,11 @@
  * Changes in version 1.26 (Replace ng-scrollbar with prefect-scrollbar):
  * - Fix to support the perfect-scrollbar in notification message pop window
  *
- * @author dexy, amethystlei, ananthhh, flytoj2ee, xjtufreeman
- * @version 1.26
+ * Changes in version 1.27 (Web Arena - Replace Code Mirror With Ace Editor):
+ * - Reused theme constants from helper.
+ *
+ * @author dexy, amethystlei, ananthhh, flytoj2ee, xjtufreeman, MonicaMuranyi
+ * @version 1.27
  */
 'use strict';
 /*jshint -W097*/
@@ -688,7 +691,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     /*jslint unparam: false*/
     // theme selector
     $scope.themesInfo = [];
-    $cookies.themeInUse = ($cookies.themeInUse === null || $cookies.themeInUse === undefined) ? 'DARK' : $cookies.themeInUse;
+    $cookies.themeInUse = ($cookies.themeInUse === null || $cookies.themeInUse === undefined) ? helper.ARENA_THEME.DARK.key : $cookies.themeInUse;
     $scope.themeInUse = $scope.themeBackup = $cookies.themeInUse;
     themer.setSelected($scope.themeInUse);
     $scope.themePanelOpen = false;

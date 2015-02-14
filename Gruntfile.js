@@ -65,8 +65,11 @@
  * Changes in version 1.16 (Replace ng-scrollbar with prefect-scrollbar):
  * - Remove CSS references for ng-scrollbar
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, xjtufreeman
- * @version 1.16
+ * Changes in version 1.17 (Web Arena - Replace Code Mirror With Ace Editor):
+ * - Remove CSS references for codemirror
+ *
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, xjtufreeman, MonicaMuranyi
+ * @version 1.17
  */
 'use strict';
 /*global module, process*/
@@ -156,8 +159,8 @@ module.exports = function (grunt) {
             sponsor: {
                 options: {
                     patterns: [
-                    { match : 'SPONSOR_LOGO_SMALL', replacement: process.env.SPONSOR_LOGO_SMALL },
-                    { match : 'SPONSOR_LOGO', replacement: process.env.SPONSOR_LOGO }
+                        { match : 'SPONSOR_LOGO_SMALL', replacement: process.env.SPONSOR_LOGO_SMALL },
+                        { match : 'SPONSOR_LOGO', replacement: process.env.SPONSOR_LOGO }
                     ]
                 },
                 files: [
@@ -177,9 +180,6 @@ module.exports = function (grunt) {
             dark: {
                 src: [
                     'app/css/bootstrap.min.css',
-                    'bower_components/codemirror/lib/codemirror.css',
-                    'bower_components/codemirror/addon/fold/foldgutter.css',
-                    'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                     'bower_components/fullcalendar/fullcalendar.css',
                     'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
@@ -188,7 +188,6 @@ module.exports = function (grunt) {
                     'app/css/notifications.css',
                     'app/css/app.css',
                     'app/css/local.css',
-                    'app/css/dark/topcoder.css',
                     'app/css/dark/darkTheme.css'
                 ],
                 // Compile to a single file to add a script tag for in your HTML
@@ -198,9 +197,6 @@ module.exports = function (grunt) {
                 files: {
                     'build/css/bundle-light.css': [
                         'app/css/bootstrap.min.css',
-                        'bower_components/codemirror/lib/codemirror.css',
-                        'bower_components/codemirror/addon/fold/foldgutter.css',
-                        'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
@@ -209,7 +205,6 @@ module.exports = function (grunt) {
                         'app/css/notifications.css',
                         'app/css/app.css',
                         'app/css/local.css',
-                        'app/css/light/topcoder.css',
                         'app/css/light/lightTheme.css'
                     ]
                 }
@@ -218,9 +213,6 @@ module.exports = function (grunt) {
                 files: {
                     'build/css/bundle-orange.css': [
                         'app/css/bootstrap.min.css',
-                        'bower_components/codemirror/lib/codemirror.css',
-                        'bower_components/codemirror/addon/fold/foldgutter.css',
-                        'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
@@ -229,7 +221,6 @@ module.exports = function (grunt) {
                         'app/css/notifications.css',
                         'app/css/app.css',
                         'app/css/local.css',
-                        'app/css/orange/topcoder.css',
                         'app/css/orange/orangeTheme.css'
                     ]
                 }

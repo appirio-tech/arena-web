@@ -71,8 +71,12 @@
  * Changes in version 1.20 (Web Arena - Show Code Image Instead of Text in Challenge Phase):
  * - Added function to show the generated code image in the challenge phase if the logged user is not writer
  *
- * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.20
+ * Changes in version 1.21 (Web Arena - Replace Code Mirror With Ace Editor):
+ * - Removed codemirror related logic.
+ * - Removed editor-loaded event handler.
+ *
+ * @author dexy, amethystlei, savon_cn, MonicaMuranyi
+ * @version 1.21
  */
 /*jshint -W097*/
 /*jshint strict:false*/
@@ -142,15 +146,14 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             };
         };
 
+        // Rebuild the error bar when problem area height ratio changes
         $scope.$watch('problemAreaHeightRatio', function () {
             $timeout(function () {
                 $rootScope.$broadcast('problem-loaded');
-                if ($scope.cmElem) {
-                    $scope.cmElem.CodeMirror.refresh();
-                }
-                if ($scope.sharedObj.rebuildErrorBar) {
+                // comment out error part for now
+                /*if ($scope.sharedObj.rebuildErrorBar) {
                     $scope.sharedObj.rebuildErrorBar();
-                }
+                }*/
             });
         });
 
@@ -509,10 +512,6 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
 
         $window.onbeforeunload = onLeavingCodingPage;
         $scope.$on("$destroy", onLeavingCodingPage);
-
-        $scope.$on('editor-loaded', function () {
-            $scope.cmElem = document.getElementsByClassName('CodeMirror')[0];
-        });
 
         // load problem depended on states
         if ($scope.currentStateName() === helper.STATE_NAME.Coding) {

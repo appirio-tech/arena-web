@@ -123,10 +123,13 @@
  * Changes in version 1.34 (Web Arena - Show Code Image Instead of Text in Challenge Phase):
  * - Added support to the compile provider.
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
+ * Changes in version 1.35 (Web Arena - Replace Code Mirror With Ace Editor):
+ * - Added ace editor references.
+ * - Removed codemirror editor references.
+ * - Extracted some theme constants.
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, xjtufreeman
- * @version 1.34
+ * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, xjtufreeman, MonicaMuranyi
+ * @version 1.35
  */
 'use strict';
 /*jshint -W097*/
@@ -141,21 +144,16 @@ require('./../../bower_components/angular-themer');
 require('./../../bower_components/angular-ui-angular/angular-cookies.min.js');
 require('./../../bower_components/angular-ui-router/release/angular-ui-router');
 require('./../../bower_components/angular-bootstrap/ui-bootstrap-tpls');
-global.CodeMirror = require('./../../bower_components/codemirror/lib/codemirror');
-require('./../../bower_components/angular-ui-codemirror/ui-codemirror');
-require('./../../bower_components/codemirror/mode/clike/clike');
-require('./../../bower_components/codemirror/mode/vb/vb');
-require('./../../bower_components/codemirror/mode/python/python');
-require('./../../bower_components/codemirror/addon/fold/foldcode');
-require('./../../bower_components/codemirror/addon/fold/foldgutter');
-require('./../../bower_components/codemirror/addon/fold/brace-fold');
-require('./../../bower_components/codemirror/addon/fold/comment-fold');
-require('./../../bower_components/codemirror/addon/fold/indent-fold');
-require('./../../bower_components/codemirror/addon/scroll/simplescrollbars');
-require('./../../bower_components/codemirror/addon/search/match-highlighter');
-require('./../../bower_components/codemirror/addon/search/searchcursor');
-require('./../../bower_components/codemirror/addon/search/search');
-require('./../../bower_components/codemirror/addon/edit/matchbrackets');
+require('./../../bower_components/ace-builds/src-min-noconflict/ace');
+require('./../../bower_components/ace-builds/src-min-noconflict/theme-tomorrow_night');
+require('./../../bower_components/ace-builds/src-min-noconflict/theme-textmate');
+require('./../../bower_components/ace-builds/src-min-noconflict/theme-chrome');
+require('./../../bower_components/ace-builds/src-min-noconflict/mode-java');
+require('./../../bower_components/ace-builds/src-min-noconflict/mode-c_cpp');
+require('./../../bower_components/ace-builds/src-min-noconflict/mode-csharp');
+require('./../../bower_components/ace-builds/src-min-noconflict/mode-vbscript');
+require('./../../bower_components/ace-builds/src-min-noconflict/mode-python');
+require('./../../bower_components/angular-ui-ace/ui-ace');
 require('./../../bower_components/angular-timer/dist/angular-timer');
 require('./../../bower_components/jquery-ui/ui/jquery-ui.js');
 require('./../../bower_components/angular-ui-calendar/src/calendar.js');
@@ -284,7 +282,7 @@ directives.ngBallons = require('./directives/ngBallons');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook', 'ngClipboard', 'frapontillo.bootstrap-switch', 'perfect_scrollbar']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.calendar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook', 'ngClipboard', 'frapontillo.bootstrap-switch', 'perfect_scrollbar', 'ui.ace']);
 
 ///////////////
 // FACTORIES //
@@ -399,8 +397,8 @@ main.config([ '$stateProvider', '$urlRouterProvider', 'themerProvider', '$httpPr
     }
 // theme selector starts
     var styles = [{
-            key : 'DARK',
-            label : 'Dark Theme',
+            key : helper.ARENA_THEME.DARK.key,
+            label : helper.ARENA_THEME.DARK.label,
             href : config.staticFileHost + '/css/bundle.css'
         }];
     FacebookProvider.init(config.facebookApiId);

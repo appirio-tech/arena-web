@@ -19,9 +19,6 @@ body{
 .panelContestStat .breadcrumbHead .breadcrumb li:before {
     background-image: url(../img/orange/sprite-2.png);
 }
-.CodeMirror-simplescroll-vertical > div {
-    background: #ff8a00;
-}
 .coding-page .btnSplitView {
     background-image: url(../img/orange/sprite-room-summary.png);
     background-position: -45px -21px;
@@ -663,13 +660,6 @@ footer .left>span {
     background: #ffa133;
 }
 .panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
-.panelCodeEditor .paddingRow {background: #fff;}
-.panelCodeEditor .paddingRow:before {
-    background: #e7e7e7;
-}
-.panelCodeEditor .paddingRow:after {
-    background: #e7e7e7;
-}
 .panelCodeEditor .panel-body .errorBar {
     background: #e7e7e7;
 }

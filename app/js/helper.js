@@ -124,8 +124,11 @@
  * Changes in version 1.33 (Web Arena - Replace ng-scrollbar with prefect-scrollbar):
  *  - Added COMMON_TIMEGAP constant.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman
- * @version 1.33
+ * Changes in version 1.34 (Web Arena - Replace Code Mirror With Ace Editor):
+ * - Added ARENA_THEME and CODE_EDITOR_THEME constants.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman, MonicaMuranyi
+ * @version 1.34
  */
 'use strict';
 /*global module*/
@@ -587,5 +590,26 @@ module.exports = {
         runTestCaseFromPlugin: 'runTestCaseFromPlugin',
         setTestCasesFromPlugin: 'setTestCasesFromPlugin',
         registerFromPlugin: 'registerFromPlugin'
+    },
+    // arena themes
+    ARENA_THEME: {
+        DARK: {
+            key: 'DARK',
+            label: 'Dark Theme'
+        },
+        LIGHT: {
+            key: 'LIGHT',
+            label: 'Light Theme'
+        },
+        ORANGE: {
+            key: 'ORANGE',
+            label: 'Orange Theme'
+        }
+    },
+    // code editor themes
+    CODE_EDITOR_THEME: {
+        DARK: 'tomorrow_night',
+        LIGHT: 'textmate',
+        ORANGE: 'chrome'
     }
 };

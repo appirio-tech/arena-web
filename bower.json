@@ -30,12 +30,9 @@
     "angular-local-storage": "https://github.com/grevory/angular-local-storage.git",
     "angular-facebook": "https://github.com/Ciul/angular-facebook.git",
     "angular-bootstrap-switch": "~0.3.0",
-    "angular-ui-codemirror": "~0.2.1",
-    "codemirror": "~4.10.0"
+    "angular-ui-ace": "~0.2.3"
   },
   "resolutions": {
-    "jquery": "~2.x",
-    "angular": "~1.2.5",
-    "codemirror": "~4.10.0"
+    "jquery": "~2.x"
   }
 }

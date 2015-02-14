@@ -70,12 +70,17 @@
  * Changes in version 1.20 (Web Arena - Show Code Image Instead of Text in Challenge Phase)
  * - Enable code editor if the user is the owner of the code during challenge phase.
  *
- * @author tangzx, amethystlei, flytoj2ee, Helstein, onsky
- * @version 1.20
+ * Changes in version 1.21 (Web Arena - Replace Code Mirror With Ace Editor):
+ * - Replaced codemirror editor logic with ace editor logic.
+ * - Added getEditorTheme function.
+ *
+ * @author tangzx, amethystlei, flytoj2ee, Helstein, onsky, MonicaMuranyi
+ * @version 1.21
  */
 'use strict';
-/*global module, CodeMirror, angular, document, $, window */
+/*global require, module, angular, document, $, window */
 /*jshint -W097*/
+/*jshint strict:false*/
 /*jslint plusplus: true*/
 /*jslint unparam: true*/
 /**
@@ -93,51 +98,41 @@ var config = require('../config');
  */
 var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'socket', '$timeout', 'sessionHelper',
     function ($rootScope, $scope, $window, appHelper, socket, $timeout, sessionHelper) {
-        var indentRangeFinder = {
-                rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.indent, CodeMirror.fold.comment)
+        /**
+         * The language configs.
+         *
+         * @type {{name: string, id: number, langKey: string}[]}
+         */
+        var aceEditorLangConfigs = [
+            {
+                name: 'Java',
+                id: 1,
+                langKey: 'java'
             },
-            braceRangeFinder = {
-                rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.brace, CodeMirror.fold.comment)
+            {
+                name: 'C++',
+                id: 3,
+                langKey: 'c_cpp'
             },
-            /**
-             * The language configs.
-             *
-             * @type {{name: string, id: number, langKey: string, langGutter: {rangeFinder: exports.combine}}[]}
-             */
-            cmLangConfigs = [
-                {
-                    name: 'Java',
-                    id: 1,
-                    langKey: 'text/x-java',
-                    langGutter: braceRangeFinder
-                },
-                {
-                    name: 'C++',
-                    id: 3,
-                    langKey: 'text/x-c++src',
-                    langGutter: braceRangeFinder
-                },
-                {
-                    name: 'C#',
-                    id: 4,
-                    langKey: 'text/x-csharp',
-                    langGutter: braceRangeFinder
-                },
-                {
-                    name: 'VB.NET',
-                    id: 5,
-                    langKey: 'text/x-vb',
-                    langGutter: indentRangeFinder
-                },
-                {
-                    name: 'Python',
-                    id : 6,
-                    langKey: 'text/x-python',
-                    langGutter: indentRangeFinder
-                }
-            ],
+            {
+                name: 'C#',
+                id: 4,
+                langKey: 'csharp'
+            },
+            {
+                name: 'VB.NET',
+                id: 5,
+                langKey: 'vbscript'
+            },
+            {
+                name: 'Python',
+                id : 6,
+                langKey: 'python'
+            }
+        ],
             userInputDisabled = false,
             modalTimeoutPromise = null,
+            aceVerticalScrollbar,
             /**
              * Close the dropdown.
              * @param elem - the drop down element.
@@ -149,27 +144,51 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                         elem.removeClass('open');
                     }
                 }, 1);
+            },
+            /**
+             * Retrieves the editor theme to be used.
+             * @return the path of the editor theme.
+             */
+            getEditorTheme = function () {
+                return 'ace/theme/' + helper.CODE_EDITOR_THEME[$scope.themeInUse];
             };
 
         $scope.gotoLine = "";
-        $scope.markedSearched = [];
         $scope.searchText = "";
+
+        /**
+         * Handle the "Enter" key press for search input.
+         * Find the next occurence and highlight it.
+         *
+         * @param keyEvent - the key event.
+         */
+        $('.findInput').keypress(function (keyEvent) {
+            if (keyEvent.charCode === 13) {
+                $timeout(function () {
+                    $scope.findNextOccurence();
+                }, 10);
+            }
+        });
+
         /**
          * Search by text.
          */
         $scope.searchByText = function () {
-            var i, cursor;
-            if ($scope.cm) {
-                // clear the mark
-                for (i = 0; i < $scope.markedSearched.length; ++i) {
-                    $scope.markedSearched[i].clear();
+            if ($scope.aceEditorInstance) {
+                var occurences = $scope.aceEditorInstance.findAll($scope.searchText);
+                if (!$scope.searchText || occurences < 1) {
+                    $scope.aceEditorInstance.find($scope.searchText);
+                    $scope.aceEditorInstance.clearSelection();
                 }
+            }
+        };
 
-                $scope.markedSearched.length = 0;
-                cursor = $scope.cm.getSearchCursor($scope.searchText, 0, true);
-                while (cursor.findNext()) {
-                    $scope.markedSearched.push($scope.cm.markText(cursor.from(), cursor.to(), {className: "searched"}));
-                }
+        /**
+         * Find the next occurence of the current search term
+         */
+        $scope.findNextOccurence = function () {
+            if ($scope.aceEditorInstance) {
+                $scope.aceEditorInstance.find($scope.searchText);
             }
         };
 
@@ -177,7 +196,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * Go to line.
          */
         $scope.jumpToLine = function () {
-            var tmp = parseInt($scope.gotoLine, 10), t, middleHeight;
+            var tmp = parseInt($scope.gotoLine, 10);
             if ((tmp < 1) || isNaN(tmp)) {
                 $scope.openModal({
                     title: 'Warning',
@@ -185,12 +204,11 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     enableClose: true
                 });
             } else {
-                if ($scope.cm) {
-                    t = $scope.cm.charCoords({line: tmp, ch: 0}, "local").top;
-                    middleHeight = $scope.cm.getScrollerElement().offsetHeight / 2;
-                    $scope.cm.scrollTo(null, t - middleHeight - 5);
-                    $scope.cm.setCursor(tmp - 1, 0);
-                    $scope.cm.focus();
+                if ($scope.aceEditorInstance) {
+                    $scope.aceEditorInstance.clearSelection();
+                    $scope.aceEditorInstance.gotoLine(tmp);
+                    $scope.aceEditorInstance.scrollToLine(tmp, true);
+                    $scope.aceEditorInstance.focus();
                 }
             }
         };
@@ -198,18 +216,6 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         setTimeout(function () {
             $(window).scrollTop(0);
         }, 0);
-
-        /**
-         * Handle the input search text event.
-         * @param keyEvent - the key event.
-         */
-        $scope.inputSearchText = function (keyEvent) {
-            if (keyEvent.which === 13) {
-                $timeout(function () {
-                    angular.element('#searchByText').trigger('click');
-                }, 10);
-            }
-        };
 
         /**
          * Handle the input goto line event.
@@ -227,8 +233,8 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * @param enable whether enable
          */
         function enableEditor(enable) {
-            if ($scope.cm) {
-                $scope.cm.setOption('readOnly', enable === false && $scope.defendant !== $rootScope.username() ? 'nocursor' : false);
+            if ($scope.aceEditorInstance) {
+                $scope.aceEditorInstance.setReadOnly(enable === false && $scope.defendant === $rootScope.username() ? true : false);
             }
         }
 
@@ -442,7 +448,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         };
 
         // init language settings
-        $scope.languages = angular.copy(cmLangConfigs);
+        $scope.languages = angular.copy(aceEditorLangConfigs);
         $scope.langIdx = 0;
 
         /**
@@ -538,75 +544,102 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             sessionHelper.setUserLanguagePreference($scope.lang($scope.langIdx).id);
             // save the language id to local
             appHelper.setCodeToLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID,
-                $scope.lang($scope.langIdx).id, $scope.cm.getValue());
+                $scope.lang($scope.langIdx).id, $scope.aceEditorInstance.getValue());
         };
 
         // At first load, it loads the code content, it's not changed the code.
         $scope.firstLoadCode = true;
 
         /**
-         * The code mirror config.
+         * The ace editor config.
          *
          * @type {{
-         *          theme: string,
-         *          lineNumbers: boolean,
-         *          lineWrapping: boolean,
-         *          mode: (string|cmLangConfigs.langKey),
-         *          foldGutter: (braceRangeFinder|*|indentRangeFinder|cmLangConfigs.langGutter),
-         *          gutters: string[],
-         *          indentUnit: number,
-         *          readOnly: boolean,
-         *          onLoad: onLoad
+         *          useWrapMode: boolean,
+         *          showGutter: boolean,
+         *          useSoftTabs: boolean,
+         *          mode: string,
+         *          advanced: Object,
+         *          rendererOptions: Object,
+         *          onLoad: function
+         *          onChange: function
          *          }}
          */
-        $scope.cmOption = {
-            theme: 'topcoder',
-            lineNumbers: true,
-            lineWrapping : true,
-            matchBrackets : true,
-            scrollbarStyle: "simple",
+        $scope.aceEditorOptions = {
+            useWrapMode : true,
+            showGutter: true,
+            useSoftTabs: true,
             mode: $scope.lang($scope.langIdx).langKey,
-            foldGutter: $scope.lang($scope.langIdx).langGutter,
-            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-            indentUnit: 4,
-            readOnly: 'nocursor',
-            onLoad : function (cmInstance) {
-                $scope.cm = cmInstance;
-                $scope.settingChanged = function () {
-                    cmInstance.setOption('mode', $scope.lang($scope.langIdx).langKey);
-                    cmInstance.setOption('theme', $scope.theme($scope.themeIdx).themeKey);
-                    cmInstance.setOption('lineNumbers', $scope.showLineNumber);
-                    cmInstance.setOption('foldGutter', $scope.lang($scope.langIdx).langGutter);
-                    // HACK: reset the gutters to keep line numbers at the left of foldgutter.
-                    if ($scope.showLineNumber) {
-                        cmInstance.setOption('gutters', ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-                    } else {
-                        cmInstance.setOption('gutters', ["CodeMirror-foldgutter"]);
+            rendererOptions: {
+                fontSize: 14,
+                showPrintMargin: false,
+                displayIndentGuides: false
+            },
+            /**
+             * Triggered after the editor is loaded.
+             *
+             * @param aceEditorInstance the editor instance.
+             */
+            onLoad : function (aceEditorInstance) {
+                var aceEditorSession, aceEditorRenderer, theme, scrollTimeout;
+                // Integrate perfect scrollbar in editor
+                aceVerticalScrollbar = $(".ace_scrollbar-v");
+                aceVerticalScrollbar.perfectScrollbar();
+                aceVerticalScrollbar.on("scroll", function () {
+                    aceVerticalScrollbar.css({"z-index": "6"});
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(function () {
+                        aceVerticalScrollbar.css({"z-index": "1"});
+                    }, 200);
+                });
+
+                $scope.aceEditorInstance = aceEditorInstance;
+                aceEditorSession = aceEditorInstance.getSession();
+                aceEditorRenderer = aceEditorInstance.renderer;
+                aceEditorRenderer.setScrollMargin(0, 1, 0, 0);
+
+                theme = getEditorTheme();
+
+                // When the arena theme changes, change the editor theme
+                $scope.$watch('themePanelOpen', function () {
+                    if (theme !== $scope.themeInUse) {
+                        aceEditorInstance.setTheme(getEditorTheme());
                     }
+                });
+
+                $scope.settingChanged = function () {
+                    aceEditorSession.setMode('ace/mode/' + $scope.lang($scope.langIdx).langKey);
+                    aceEditorRenderer.$gutterLayer.setShowLineNumbers($scope.showLineNumber);
+                    aceEditorRenderer.$loop.schedule(aceEditorRenderer.CHANGE_GUTTER);
                     $scope.settingsOpen = false;
                 };
-                cmInstance.on('change', function () {
-                    if ($scope.firstLoadCode || $scope.resizeCodeEditor) {
-                        $scope.firstLoadCode = false;
-                        $scope.updatedCodeAfterSubmit = false;
-                        $scope.resizeCodeEditor = false;
-                    } else {
-                        $scope.contentDirty = true;
-                        $scope.updatedCodeAfterSubmit = true;
-                        if (($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode)) {
-                            appHelper.setCodeToLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID,
-                                $scope.lang($scope.langIdx).id, $scope.cm.getValue());
-                        }
+            },
+            /**
+             * Triggered when the editor changes.
+             */
+            onChange : function () {
+
+                if (!aceVerticalScrollbar.hasClass("ps-active-y")) {
+                    // Show scrollbar initially (only executed once, when the editor is loaded)
+                    aceVerticalScrollbar.perfectScrollbar('update');
+                }
+                var cursorPos;
+                if ($scope.firstLoadCode || $scope.resizeCodeEditor) {
+                    $scope.firstLoadCode = false;
+                    $scope.updatedCodeAfterSubmit = false;
+                    $scope.resizeCodeEditor = false;
+                } else {
+                    $scope.contentDirty = true;
+                    $scope.updatedCodeAfterSubmit = true;
+                    if (($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode)) {
+                        appHelper.setCodeToLocalStorage($rootScope.username(), $scope.roundID, $scope.problemID, $scope.componentID,
+                            $scope.lang($scope.langIdx).id, $scope.aceEditorInstance.getValue());
                     }
-                });
-                // comment out error handle related logic for now
-                /*
-                cmInstance.on('scroll', function () {
-                    $scope.updateErrorMessages(true);
-                });
-                */
-                // tell the parent controller that the editor is loaded
-                $scope.$emit('editor-loaded');
+                }
+                // Fix the visibility of the last editor line
+                cursorPos = $scope.aceEditorInstance.getCursorPosition().row;
+                if (cursorPos !== 0 && cursorPos === $scope.aceEditorInstance.getLastVisibleRow()) {
+                    $scope.aceEditorInstance.scrollPageDown();
+                }
             }
         };
 
@@ -626,7 +659,8 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 disableUserInput();
 
                 $scope.code = '';
-                $scope.cm.setValue('');
+                $scope.aceEditorInstance.setValue('');
+                $scope.aceEditorInstance.focus();
 
                 enableUserInput();
             });
@@ -637,7 +671,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          * @returns {boolean} - the disable flag.
          */
         $scope.disableSubmit = function () {
-            return (!$scope.cm) || $scope.cm.getValue().trim() === '';
+            return (!$scope.aceEditorInstance) || $scope.aceEditorInstance.getValue().trim() === '';
         };
 
         /**
@@ -653,7 +687,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
 
                 $scope.isSaving = true;
                 $scope.contentDirty = false;
-                var code = $scope.cm.getValue();
+                var code = $scope.aceEditorInstance.getValue();
                 socket.emit(helper.EVENT_NAME.SaveRequest, {
                     componentID: $scope.componentID,
                     language: $scope.lang($scope.langIdx).id,
@@ -674,7 +708,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             if ($scope.contentDirty && !$scope.isSaving) {
                 $scope.isSaving = true;
                 $scope.contentDirty = false;
-                var code = $scope.cm.getValue();
+                var code = $scope.aceEditorInstance.getValue();
                 socket.emit(helper.EVENT_NAME.SaveRequest, {
                     componentID: $scope.componentID,
                     language: $scope.lang($scope.langIdx).id,
@@ -699,11 +733,11 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 return;
             }
             /**
-             * Get source code from CodeMirror.
+             * Get source code from ace editor.
              *
              * @type {string}
              */
-            var code = $scope.cm.getValue();
+            var code = $scope.aceEditorInstance.getValue();
 
             // This is according to the comment in https://apps.topcoder.com/bugs/browse/BUGHUNTS4WEBBASEDARENA-87
             // Actually we can safely send blank code to the server and will get the same response.
@@ -825,6 +859,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             if (data.title === helper.POP_UP_TITLES.SaveResults) {
                 $scope.savedTime = Date.now();
             }
+
             if (data.title !== helper.POP_UP_TITLES.Error &&
                     data.title !== helper.POP_UP_TITLES.CompileResult &&
                     data.title !== helper.POP_UP_TITLES.TestResults &&
@@ -862,6 +897,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                         surveyData: [data.moveData] // the first item should be the component ID to be resubmitted
                     });
                 }
+                $scope.aceEditorInstance.focus();
+            }, function () {
+                $scope.aceEditorInstance.focus();
             });
 
             if (angular.isDefined($scope.userData) && angular.isDefined($scope.userData.tests)) {
@@ -1022,7 +1060,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             // $scope.problem.supportedLanguages was set in the parent controller
             if ($scope.problem.supportedLanguages && $scope.problem.supportedLanguages.length > 0) {
                 $scope.languages.length = 0;
-                cmLangConfigs.forEach(function (config) {
+                aceEditorLangConfigs.forEach(function (config) {
                     var i;
                     for (i = 0; i < $scope.problem.supportedLanguages.length; i += 1) {
                         if (config.id === $scope.problem.supportedLanguages[i].id) {
@@ -1134,7 +1172,6 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             $scope.settingChanged();
             // enable the editior only when it is at the state helper.STATE_NAME.Coding or PracticeCode.
             enableEditor($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode);
-
             // comment out auto-compile & auto-save related code for now
             /*
             // set auto-compile option
@@ -1163,14 +1200,12 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         });
 
         // comment out error messages related code for now
-        // set the ui-codemirror option
         $scope.errorBar = document.getElementsByClassName('errorBar')[0];
         /**
          * Rebuild the error bar.
          */
-        $scope.sharedObj.rebuildErrorBar = function () {
+        /*$scope.sharedObj.rebuildErrorBar = function () {
             // comment out error part for now
-            /*
             var errorBarHeight = appHelper.getRenderedHeight($scope.errorBar),
                 messageHeight = 22;
             if (Math.floor(errorBarHeight / messageHeight) !== $scope.lineNumbers) {
@@ -1178,11 +1213,9 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 $scope.errorMessages = $scope.range($scope.lineNumbers);
                 $scope.updateErrorMessages(true);
             }
-            */
             angular.element($scope.errorBar).css('height',
                     (appHelper.getRenderedHeight($scope.cmElem) - 1) + 'px');
-        };
-
+        };*/
 
         /**
          * Cache the code for plugin api.
@@ -1201,7 +1234,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
          */
         $scope.$on(helper.BROADCAST_PLUGIN_EVENT.setCodeFromPlugin, function (event, data) {
             $scope.code = data;
-            $scope.cm.setValue(data);
+            $scope.aceEditorInstance.setValue(data);
         });
         /**
          * Search the text from plugin.
@@ -1209,7 +1242,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         $scope.$on(helper.BROADCAST_PLUGIN_EVENT.searchFromPlugin, function (event, data) {
             $scope.searchText = data;
             $timeout(function () {
-                angular.element('#searchByText').trigger('click');
+                $scope.findNextOccurence();
             }, 10);
         });
 

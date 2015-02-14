@@ -825,13 +825,6 @@ body a {cursor: pointer;}
 .coding-page .code-editor-area {
     position: relative;
 }
-.coding-page .CodeMirror {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    height: auto;
-}
 .coding-page .btnSplitView {
     background-image: url(../img/dark/sprite-room-summary.png);
     display: inline-block;
@@ -864,10 +857,11 @@ body a {cursor: pointer;}
 }
 .coding-page #code-editor,
 .coding-page #problem-statement{
-    overflow: hidden;
-    min-height: 41px; /*Mak sure header is not collapsed*/
+    min-height: 41px; /*Make sure header is not collapsed*/
 }
-.coding-page .codeArea .mainContent,
+.coding-page #problem-statement{
+    overflow: hidden;
+}
 .coding-page .panelCodeProblem {
     overflow: hidden;
 }
@@ -900,25 +894,8 @@ body a {cursor: pointer;}
     -ms-flex: 1 1 50%;
     flex: 1 1 50%;
 }
-.coding-page .codeArea .panelCodeEditor .showLineNumberPadding:after,
 .coding-page .codeArea .panelCodeEditor .errorBar {
     display: none;
-}
-.CodeMirror-simplescroll-vertical {
-    width: 15px;
-    background: transparent;
-}
-.CodeMirror-simplescroll-vertical > div {
-    border: none;
-    border-radius: 10px;
-    width: 7px;
-    right: 4px;
-    opacity: .75;
-    transition: opacity .5s;
-    cursor: pointer;
-}
-.coding-page .code-editor-area:hover .CodeMirror-simplescroll-vertical > div {
-    opacity: 1;
 }
 .code-area-controls {
     padding: 15px;
@@ -2705,7 +2682,6 @@ footer .right>span:nth-child(2) {
     border: 1px solid #fff;
 }
 .panelCodeEditor .toolBar .testPanel>div {
-    height: 480px;
     margin-bottom: -7px;
 }
 .panelCodeEditor .testPanel header {
@@ -2919,43 +2895,6 @@ footer .right>span:nth-child(2) {
 }
 .panelCodeEditor .testPanel .btnRow .caseCheck:checked ~ .caseLbl:before {background-position: -75px -150px;}
 .panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
-.panelCodeEditor .paddingRow {height: 7px;background: #151718;position: relative;}
-.panelCodeEditor .paddingRow:before {
-    content: '';
-    display: block;
-    height: 7px;
-    width: 34px;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-.panelCodeEditor .hideLineNumberPadding:before {width: 9px; }
-.panelCodeEditor .paddingRow:after {
-    content: '';
-    display: block;
-    height: 6px;
-    width: 14px;
-    position: absolute;
-    right: 1px;
-    top: 1px;
-    bottom: 0;
-}
-.panelCodeEditor .CodeMirror {
-    margin-right: 15px;
-    font-size: 13px;
-    line-height: 22px;
-    font-family:Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-    letter-spacing: 0.05em;
-}
-.panelCodeEditor .CodeMirror-linenumbers {width: 25px;}
-.panelCodeEditor .CodeMirror-linenumber {
-    text-align: left;
-    padding-left: 7px;
-    min-width: 15px;
-}
-.disableCursor .CodeMirror-lines{
-    cursor: not-allowed;
-}
 .panelCodeEditor .panel-body .errorBar {
     position: absolute;
     right: 1px;
@@ -9518,4 +9457,18 @@ table thead .sort.desc{
 .always-visible.ps-container > .ps-scrollbar-x-rail,
 .always-visible.ps-container > .ps-scrollbar-y-rail {
     opacity: 0.6;
+}
+.code-editor-area .ace_gutter-cell {
+    padding-left: 6px;
+}
+.code-editor-area .ace_scrollbar-v {
+    position: absolute!important;
+    width: 100%!important;
+    z-index: 1;
+}
+.coding-page .codeArea .mainContent, .codeArea #code-editor, .panelCodeEditor #bottom-content{
+    overflow: visible;
+}
+.coding-page .codeArea .ace_scroller{
+    z-index: 4;
 }

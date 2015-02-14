@@ -11,7 +11,7 @@
                    <li class="link refreshSystemTestLink" data-ng-class="{disableLink : !submittedCode}" data-ng-click="runPracticeSystemTest()" data-ng-hide="!isShowRunPracticeSystemTest() || !isConnected()">Run System Tests</li>
                 </ul><!--  avoid unnecessary blank
                 --><div data-ng-show="currentStateName()==='user.viewCode'">{{languages[langIdx].name}}</div><!--
-                --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" data-ng-model="searchText" data-ng-keypress="inputSearchText($event)" data-ng-change="searchByText()"/><a id="searchByText" data-ng-click="searchByText()" class="searchIcon"></a></div><!--  avoid unnecessary blank
+                --><div class="findInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><input type="text" name="find" data-ng-model="searchText" data-ng-change="searchByText()"/><a id="searchByText" data-ng-click="findNextOccurence()" class="searchIcon"></a></div><!--  avoid unnecessary blank
                 --><div class="gotoInput" data-ng-hide="currentStateName()==='user.viewCode' && !isChallengePhase()"><label for="goto">Go To</label><input type="text" name="goto" id="goto" data-ng-model="gotoLine" data-ng-keypress="inputGotoText($event)"/></div>
             </div><a data-ng-click="problemAreaHeightRatio = (problemAreaHeightRatio == 0 ? 1 : 0)" class="collapseIcon" data-ng-class="{expand:problemAreaHeightRatio == 0,normal:problemAreaHeightRatio > 0}"></a>
     </div>
@@ -64,11 +64,10 @@
                 </div>
             </div>
         </div>
-        <div data-ng-class="{showLineNumberPadding:showLineNumber,hideLineNumberPadding:!showLineNumber}" class="paddingRow"></div>
         <div class="panel-body row always-visible" id="editor-image" data-perfect-scrollbar data-rebuild-on-resize  data-ng-if="codeImage">
             <img data-ng-src="{{codeImage}}"/>
         </div>
-        <ui-codemirror id="codeArea" data-ng-if="!codeImage" ui-codemirror-opts="cmOption" data-ng-model="code" class="code-editor-area" data-ng-class="{disableCursor:cm.options.readOnly}"></ui-codemirror>
+        <div ui-ace="aceEditorOptions" data-ng-if="!codeImage" data-ng-model="code" class="code-editor-area" data-ng-class="{disableCursor:cm.options.readOnly}" ></div>
         <script id="script"></script>
         <div class="errorBar">
             <div data-ng-repeat="i in range(lineNumbers) track by $index" data-ng-class="{error:getErrorMessage($index).length > 0}">
