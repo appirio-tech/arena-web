@@ -33,6 +33,7 @@
     "angular-ui-ace": "~0.2.3"
   },
   "resolutions": {
-    "jquery": "~2.x"
+    "jquery": "~2.x",
+    "angular": "~1.2.5"
   }
 }
