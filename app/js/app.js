@@ -1284,7 +1284,8 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
                 }
                 sessionHelper.setDeepLink(deepLink);
             }
-            $state.go(helper.STATE_NAME.AnonymousHome);
+            var tchost = config.tcHostName || 'https://www.topcoder.com';
+            window.location.href = tchost + "/login?next=" + encodeURIComponent(window.location.href);
         }
         // Move user to deep link, if stored
         if (sessionHelper.getDeepLink() && $rootScope.isLoggedIn) {

@@ -144,7 +144,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
             // defer the logout promise
             deferred = $q.defer();
             deferred.promise.then(function () {
-                $state.go(helper.STATE_NAME.AnonymousHome);
+                var tchost = config.tcHostName || 'https://www.topcoder.com';
+                window.location.href = tchost + "/login?next=" + encodeURIComponent(window.location.href);
             });
             deferred.resolve();
             return deferred.promise;
@@ -1211,7 +1212,8 @@ resolvers.logout = ['$rootScope', '$q', '$state', 'sessionHelper', 'socket', 'ap
     // defer the logout promise
     var deferred = $q.defer();
     deferred.promise.then(function () {
-        $state.go(helper.STATE_NAME.AnonymousHome);
+            var tchost = config.tcHostName || 'https://www.topcoder.com';
+            window.location.href = tchost + "/login?next=" + encodeURIComponent(window.location.href);
     });
     deferred.resolve();
     return deferred.promise;
