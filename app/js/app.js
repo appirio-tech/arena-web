@@ -139,7 +139,7 @@ require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
 require('./../../bower_components/angular-sanitize/angular-sanitize');
 require('./../../bower_components/angular-themer');
-require('./../../bower_components/angular-ui-angular/angular-cookies.min.js');
+require('./../../bower_components/angular-cookies/angular-cookies.min.js');
 require('./../../bower_components/angular-ui-router/release/angular-ui-router');
 require('./../../bower_components/angular-bootstrap/ui-bootstrap-tpls');
 global.CodeMirror = require('./../../bower_components/codemirror/lib/codemirror');
