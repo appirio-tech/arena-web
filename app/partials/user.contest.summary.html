@@ -31,7 +31,7 @@
                         </ul>
                     </li>
                 </ul>
-                <span data-ng-hide="isInMyRoom()"><a data-ng-click="moveToRoom(-1)" class="btn btnBack btnWidth">Back To My Room</a></span>
+                <span data-ng-hide="isInMyRoom() || !contest.isRegistered"><a data-ng-click="moveToRoom(-1)" class="btn btnBack btnWidth">Back To My Room</a></span>
             </div><!--/.tabs-->
             <div class="summaryWrapper">
                 <div data-ng-show="viewOn=='room'" class="roomDiv sumDiv">
