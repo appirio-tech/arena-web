@@ -25,7 +25,7 @@
     "angular-ui-calendar": "~0.8.1",
     "angular-themer": "~0.2.2",
     "angulartics": "~0.15.20",
-    "angular-table": "https://github.com/esvit/ng-table.git",
+    "angular-table": "https://github.com/esvit/ng-table.git#8a903268807546d924ed0982786cab031c5f5249",
     "angular-local-storage": "https://github.com/grevory/angular-local-storage.git",
     "angular-facebook": "https://github.com/Ciul/angular-facebook.git",
     "angular-bootstrap-switch": "~0.3.0",
