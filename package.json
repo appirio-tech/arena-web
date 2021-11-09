@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "auth0-js": "~2.0.10",
-    "socket.io-client": "~0.9.16",
+    "socket.io-client": "~1.0.1",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-aws": "~0.3.0",
     "newrelic": ">=0.9"
