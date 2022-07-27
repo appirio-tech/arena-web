@@ -5,6 +5,9 @@ Arena Web
 
 [topcoder] Arena for Single Round Match contests. Lightweight html/css/js interface built on angular and bootstrap. Single-page, responsive design approach.
 
+### Prerequisites
+
+  - Node 10
 ## Getting Setup ##
 
 To develop arena-web you'll need npm (installed as part of [node](http://nodejs.org)). Then globally install [bower](http://bower.io) and the [grunt-cli](http://gruntjs.com/getting-started):
@@ -72,4 +75,11 @@ This will validate all js files by grunt-contrib-jshint .
 npm start
 ```
 
+## Verify ##
+
+  1. add `127.0.0.1 tc.cloud.topcoder-dev.com` to your hosts.
+  2. open `https://topcoder-dev.com/login` and use `dok/appirio123` to login.
+  3. open `http://tc.cloud.topcoder-dev.com:3000/` and open the `developer Tools` tap `Network` tab and search `websocket` click the request, you will see the websocket message.
+  
+  Note: you need arena-app running on your local machine and you can check server.log and webSocketServer.log for debugging.
 
