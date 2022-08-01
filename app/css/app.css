@@ -5086,6 +5086,21 @@ footer .right>span:nth-child(2) {
     color: rgb(255, 0, 51);
     font-style: italic!important;
 }
+/**** Python3 language ****/
+.detailPage .leaderboardWrapper .colorSubmittedPython3 {
+    color: rgb(255,150,50);
+}
+.detailPage .leaderboardWrapper .colorChallengedPython3 {
+    color: rgb(255,150,50);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedPython3 {
+    color: rgb(255,150,50);
+}
+.detailPage .leaderboardWrapper .colorFailedPython3 {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
 
 .detailPage .leaderboardWrapper .colorCompiled {
     color: #f99800;

@@ -779,7 +779,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         themer.styles.pop();
         var i = 0;
         for (i = 0; i < data.themes.length; i += 1) {
-            themer.styles.push(data.themes[i]);
+            themer.styles.push({key: data.themes[i].key, label: data.themes[i].label, href: [data.themes[i].href]});
         }
         themer.setSelected($cookies.themeInUse);
     });

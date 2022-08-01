@@ -634,7 +634,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     if ($cookies.themeInUse !== null && $cookies.themeInUse !== undefined) {
         themer.styles[0].key = $cookies.themeInUse;
         themer.styles[0].label = $cookies.themeLabel;
-        themer.styles[0].href = $cookies.themeHref;
+        themer.styles[0].href = [$cookies.themeHref];
     }
 
 
@@ -794,7 +794,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
             setLanguage : function (languageName) {
                 languageName = languageName ? languageName.toLowerCase() : '';
                 if (languageName === 'java' || languageName === 'c++' || languageName === 'c#' ||
-                        languageName === 'vb.net' || languageName === 'python') {
+                        languageName === 'vb.net' || languageName === 'python' || languageName === 'python3') {
                     $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.setLanguageFromPlugin, languageName);
                 } else {
                     console.log('The language name is invalid.');
@@ -1284,8 +1284,12 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
                 }
                 sessionHelper.setDeepLink(deepLink);
             }
-            var tchost = config.tcHostName || 'https://www.topcoder.com';
-            window.location.href = tchost + "/login?next=" + encodeURIComponent(window.location.href);
+            if (sessionHelper.getTcsso()) {
+                $state.go(helper.STATE_NAME.LoggingIn);
+            } else {
+                var tchost = config.tcHostName || 'https://www.topcoder.com';
+                window.location.href = tchost + "/login?next=" + encodeURIComponent(window.location.href);
+            }
         }
         // Move user to deep link, if stored
         if (sessionHelper.getDeepLink() && $rootScope.isLoggedIn) {

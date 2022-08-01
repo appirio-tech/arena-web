@@ -75,11 +75,32 @@ This will validate all js files by grunt-contrib-jshint .
 npm start
 ```
 
-## Verify ##
+## Verify Locally ##
 
-  1. add `127.0.0.1 tc.cloud.topcoder-dev.com` to your hosts.
-  2. open `https://topcoder-dev.com/login` and use `dok/appirio123` to login.
-  3. open `http://tc.cloud.topcoder-dev.com:3000/` and open the `developer Tools` tap `Network` tab and search `websocket` click the request, you will see the websocket message.
-  
-  Note: you need arena-app running on your local machine and you can check server.log and webSocketServer.log for debugging.
+  1. Start arena services:
+
+     - Clone https://github.com/appirio-tech/arena-vm
+     - Checkout **`dev-local`** branch
+     - Follow its **`docs/Docker.md`** to start arena services
+
+  2. Start arena web:
+
+     ```bash
+     source config/dev-local.sh \
+       && grunt \
+       && cp app/index.html.local build/index.html \
+       && npm start
+     ```
+
+     Notice the step **`cp app/index.html.local build/index.html`**. The **`app/index.html.local`** file will setup SSO login for user locally and thus able to login to arena docker services. It can setup for any user exists in **`user`** table in the informix docker.
+
+     To switch to a different user, just need to change the **`userId`** at line 23:
+
+     ```javascript
+     var userId = "132456"; 
+     ```
+
+  3. Open http://localhost:3000 in browser. Refer to https://youtu.be/pu9-2xV2egI for details.
+
+
 

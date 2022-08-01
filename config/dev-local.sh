@@ -10,15 +10,15 @@ export NODE_ENV=development
 # Currently arena-web does not use an API backend. If we do end up
 # adding in calls from TC api we will need this value any setup where the
 # API is on different domain than where the client was served...
-export API_DOMAIN=http://tc.cloud.topcoder-dev.com:8081/v2
+export API_DOMAIN=http://localhost:8081/v2
 
 export AUTH0_CONNECTION=vm-ldap-connection
 export AUTH0_DOMAIN=sma.auth0.com
 export AUTH0_CLIENT_ID=CMaBuwSnY0Vu68PLrWatvvu3iIiGPh7t
-export CALLBACK_URL=https://tc.cloud.topcoder-dev.com/reg2/callback.action
+export CALLBACK_URL=http://localhost:3000/reg2/callback.action
 
 # web socket server url
-export WEB_SOCKET_URL=http://tc.cloud.topcoder-dev.com:5016
+export WEB_SOCKET_URL=http://localhost:5016
 
 # the cookie key of sso token
 export SSO_KEY=tcsso
@@ -26,7 +26,7 @@ export SSO_KEY=tcsso
 # the HTTP server port
 export PORT=3000
 
-export STATIC_FILE_HOST="http://tc.cloud.topcoder-dev.com:$PORT"
+export STATIC_FILE_HOST="http://localhost:$PORT"
 
 export AWS_ACCESS_KEY_ID=
 export AWS_ACCESS_KEY=
