@@ -20,7 +20,7 @@
         // global arena object
         var arena = {};
 
-        var userId = "132456";
+        var userId = "124766";
         var hash = "Yb2oMAtUoJyl6LvHEnRYF1Q5u5ags7DN6PXgDPZAU9Ku68k7wTJHIDaIT0DjXYubam" + userId + "4EjPjy6o+/C+dqNPnxIy9A==" + "A";
 
         window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(hash)).then(digest => {

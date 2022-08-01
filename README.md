@@ -97,10 +97,13 @@ npm start
      To switch to a different user, just need to change the **`userId`** at line 23:
 
      ```javascript
-     var userId = "132456"; 
+     // Change the userId as wanted.
+     // For example, if want to test admin functionality, change it to 132456 (heffan)
+     // If want to test competitor fuctionality, change it to 124766 (twight)
+     var userId = "124766"; 
      ```
 
-  3. Open http://localhost:3000 in browser. Refer to https://youtu.be/pu9-2xV2egI for details.
+  3. Open http://localhost:3000 in browser. Refer to https://youtu.be/85yy3Qohijs for details.
 
 
 
