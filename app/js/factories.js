@@ -441,7 +441,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                 roomList = [];
                 roomList.push(roomIdStr);
             }
-            localStorageService.set(helper.LOCAL_STORAGE.ROOM_LIST, JSON.stringify(roomList));
+            localStorageService.set(helper.LOCAL_STORAGE.ROOM_LIST, roomList);
 
             // get data by key
             key = helper.LOCAL_STORAGE.PREFIX + roomId;
@@ -459,7 +459,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
             itemsJson.push(value);
 
             // save to local storage
-            localStorageService.set(key, JSON.stringify(itemsJson));
+            localStorageService.set(key, itemsJson);
         }
     };
 
@@ -509,7 +509,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                 codeList = [];
                 codeList.push(key);
             }
-            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(codeList));
+            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, codeList);
         }
     };
 
@@ -549,7 +549,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                     }
                 }
             }
-            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(newCodeList));
+            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, newCodeList);
         }
     };
 
@@ -591,7 +591,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                         newCodeList.push(codeList[i]);
                     }
                 }
-                localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(newCodeList));
+                localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, newCodeList);
             }
         }
     };
@@ -626,12 +626,12 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                                     newRoomItems.push(roomItems[m]);
                                 }
                             }
-                            localStorageService.set(helper.LOCAL_STORAGE.PREFIX + roomList[k], JSON.stringify(newRoomItems));
+                            localStorageService.set(helper.LOCAL_STORAGE.PREFIX + roomList[k], newRoomItems);
                         }
                     }
                 }
 
-                localStorageService.set(helper.LOCAL_STORAGE.ROOM_LIST, JSON.stringify(newRoomList));
+                localStorageService.set(helper.LOCAL_STORAGE.ROOM_LIST, newRoomList);
             }
 
             // get data from local storage
@@ -682,7 +682,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
             if (allSetting) {
                 chatSetting = allSetting[key];
                 if (chatSetting !== undefined) {
-                    return JSON.parse(chatSetting);
+                    return chatSetting;
                 }
             }
         }
@@ -705,7 +705,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                 allSetting = {};
             }
             allSetting[key] = value;
-            localStorageService.set('chat_setting', JSON.stringify(allSetting));
+            localStorageService.set('chat_setting', allSetting);
         }
     };
 

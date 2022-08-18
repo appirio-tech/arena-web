@@ -324,7 +324,8 @@ module.exports = {
         '3': 'Cpp',
         '4': 'Csharp',
         '5': 'VB',
-        '6': 'Python'
+        '6': 'Python',
+        '8': 'Python3'
     },
 
     // the timeout of request

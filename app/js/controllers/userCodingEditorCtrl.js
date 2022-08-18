@@ -141,6 +141,12 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     id : 6,
                     langKey: 'text/x-python',
                     langGutter: indentRangeFinder
+                },
+                {
+                    name: 'Python3',
+                    id : 8,
+                    langKey: 'text/x-python',
+                    langGutter: indentRangeFinder
                 }
             ],
             userInputDisabled = false,
@@ -1192,7 +1198,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     }
                 }
                 if ($scope.currentStateName() === helper.STATE_NAME.Coding || $scope.currentStateName() === helper.STATE_NAME.PracticeCode) {
-                    if ($scope.userData.tests.length === 0 && $rootScope.userTests.length === 0) {
+                    if ($scope.userData && $scope.userData.tests && $scope.userData.tests.length === 0 && $rootScope.userTests.length === 0) {
                         return false;
                     }
                 }

@@ -5,6 +5,9 @@ Arena Web
 
 [topcoder] Arena for Single Round Match contests. Lightweight html/css/js interface built on angular and bootstrap. Single-page, responsive design approach.
 
+### Prerequisites
+
+  - Node 10
 ## Getting Setup ##
 
 To develop arena-web you'll need npm (installed as part of [node](http://nodejs.org)). Then globally install [bower](http://bower.io) and the [grunt-cli](http://gruntjs.com/getting-started):
@@ -71,5 +74,36 @@ This will validate all js files by grunt-contrib-jshint .
 ```
 npm start
 ```
+
+## Verify Locally ##
+
+  1. Start arena services:
+
+     - Clone https://github.com/appirio-tech/arena-vm
+     - Checkout **`dev-local`** branch
+     - Follow its **`docs/Docker.md`** to start arena services
+
+  2. Start arena web:
+
+     ```bash
+     source config/dev-local.sh \
+       && grunt \
+       && cp app/index.html.local build/index.html \
+       && npm start
+     ```
+
+     Notice the step **`cp app/index.html.local build/index.html`**. The **`app/index.html.local`** file will setup SSO login for user locally and thus able to login to arena docker services. It can setup for any user exists in **`user`** table in the informix docker.
+
+     To switch to a different user, just need to change the **`userId`** at line 23:
+
+     ```javascript
+     // Change the userId as wanted.
+     // For example, if want to test admin functionality, change it to 132456 (heffan)
+     // If want to test competitor fuctionality, change it to 124766 (twight)
+     var userId = "124766"; 
+     ```
+
+  3. Open http://localhost:3000 in browser. Refer to https://youtu.be/85yy3Qohijs for details.
+
 
 
