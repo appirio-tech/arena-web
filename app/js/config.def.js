@@ -46,6 +46,7 @@ module.exports = {
     keyboardShortcut: '@@KEYBOARD_SHORTCUT',
     chatIconDisappearTime: '@@CHAT_ICON_DISAPPEAR_TIME',
     tcHostName: '@@TC_HOSTNAME',
+    tcAuthUrl: '@@TC_AUTH_URL',
     maxLiveLearderBoard: '@@MAX_LIVE_LEADERBOARD',
     autoSavingCodeInterval: '@@AUTO_SAVING_CODE_INTERVAL',
     leaderboardRefreshTimeGap: '@@LEADERBOARD_REFRESH_TIME_GAP',

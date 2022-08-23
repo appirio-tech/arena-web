@@ -144,6 +144,7 @@ module.exports = function (grunt) {
                         { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT },
                         { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME },
                         { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
+                        { match : 'TC_AUTH_URL', replacement: process.env.TC_AUTH_URL },
                         { match : 'MAX_LIVE_LEADERBOARD', replacement: process.env.MAX_LIVE_LEADERBOARD },
                         { match : 'AUTO_SAVING_CODE_INTERVAL', replacement: process.env.AUTO_SAVING_CODE_INTERVAL },
                         { match : 'LEADERBOARD_REFRESH_TIME_GAP', replacement: process.env.LEADERBOARD_REFRESH_TIME_GAP },
@@ -158,6 +159,7 @@ module.exports = function (grunt) {
                 options: {
                     patterns: [
                         { match : 'STATIC_FILE_HOST', replacement: process.env.STATIC_FILE_HOST },
+                        { match : 'TC_AUTH_URL', replacement: process.env.TC_AUTH_URL },
                         { match : 'GOOGLE_ANALYTICS_TRACKING_ID', replacement: process.env.GOOGLE_ANALYTICS_TRACKING_ID },
                         { match : 'SPONSOR_URL', replacement: process.env.SPONSOR_URL }
                     ]

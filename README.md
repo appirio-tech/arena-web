@@ -80,8 +80,8 @@ npm start
   1. Start arena services:
 
      - Clone https://github.com/appirio-tech/arena-vm
-     - Checkout **`dev-local`** branch
-     - Follow its **`docs/Docker.md`** to start arena services
+     - Checkout **`dev-master`** branch
+     - Follow its **`docs/local-deploy.md`** to start arena services
 
   2. Start arena web:
 

@@ -18,7 +18,7 @@
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700|Source+Code+Pro:400,600,700' rel='stylesheet' type='text/css' />
     <script language="javascript">
         if(document.cookie.indexOf("tcsso") == -1) {
-          document.location = "https://www.topcoder.com/login/?next=https:%2F%2Farena.topcoder.com%2Findex.html";
+          document.location = "@@TC_AUTH_URL/?retUrl=" + encodeURIComponent("@@STATIC_FILE_HOST/index.html");
         }
 
         // global arena object
@@ -51,7 +51,7 @@
 <script>
   function prepareFrame() {
     var ifrm = document.createElement("iframe");
-    ifrm.setAttribute("src", "https://accounts-auth0.topcoder-dev.com");
+    ifrm.setAttribute("src", "@@TC_AUTH_URL");
     ifrm.style.width = "0px";
     ifrm.style.height = "0px";
     document.body.appendChild(ifrm);

@@ -1287,8 +1287,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
             if (sessionHelper.getTcsso()) {
                 $state.go(helper.STATE_NAME.LoggingIn);
             } else {
-                var tchost = config.tcHostName || 'https://www.topcoder.com';
-                window.location.href = tchost + "/login?next=" + encodeURIComponent(window.location.href);
+                window.location.href = config.tcAuthUrl + "/?retUrl=" +  + encodeURIComponent(config.staticFileHost + "/index.html");
             }
         }
         // Move user to deep link, if stored
