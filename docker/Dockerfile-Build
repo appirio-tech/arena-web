@@ -15,10 +15,11 @@ RUN npm install -g grunt-cli
 RUN npm install
 
 # Build
-RUN source config/tc-dev.sh
-RUN grunt
+SHELL ["/bin/bash", "-c", "source config/tc-$APPENV.sh"] 
+RUN echo $NODE_ENV && grunt"
 RUN ls -lath
 
 # Generate build.zip
 RUN grunt deploy-compress
+RUN ls -lath
 
