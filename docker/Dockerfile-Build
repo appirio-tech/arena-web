@@ -16,11 +16,7 @@ RUN npm install
 RUN bower install
 
 # Build
-SHELL ["/bin/bash", "-c", "source config/tc-$APPENV.sh"] 
-RUN echo $NODE_ENV && grunt"
-RUN ls -lath
 
-# Generate build.zip
-RUN grunt deploy-compress
-RUN ls -lath
+RUN . config/tc-$APPENV.sh && grunt && grunt deploy-compress
+
 
