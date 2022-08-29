@@ -13,6 +13,7 @@ WORKDIR /$APPNAME
 RUN npm install -g bower
 RUN npm install -g grunt-cli
 RUN npm install
+RUN bower install
 
 # Build
 SHELL ["/bin/bash", "-c", "source config/tc-$APPENV.sh"] 

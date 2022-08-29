@@ -7,5 +7,5 @@ docker build -f docker/Dockerfile-Build -t $APPNAME:latest \
 --build-arg APPENV=$APPENV .
 
 docker create --name app $APPNAME:latest
-docker cp app:/$APPNAME/build .
+docker cp app:/$APPNAME/build.zip .
 
