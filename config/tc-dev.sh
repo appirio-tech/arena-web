@@ -19,7 +19,7 @@ export TC_AUTH_URL="https://accounts-auth0.topcoder-dev.com"
 
 # Web socket server url
 # This url should map to 5016 port of arena-app service, e.g by using load balancer.
-export WEB_SOCKET_URL="https://www.topcoder-dev.com"
+export WEB_SOCKET_URL="https://arenaws.topcoder-dev.com"
 
 # TC-api url
 export API_DOMAIN="https://api.topcoder-dev.com/v2"
