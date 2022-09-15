@@ -116,20 +116,21 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $scope.showShortcutKeysList = false;
 
         $scope.editorialLink = '';
-        if ($scope.currentStateName() === 'user.practiceCode') {
-            $http.get(config.apiDomain + '/data/srm/problems/' + $scope.problemID + '/rounds').success(function (data) {
-                if (data && data.rounds) {
-                    angular.forEach(data.rounds, function (round) {
-                        if (round && round.editorialLink && round.editorialLink.trim() !== ''
-                                && $scope.editorialLink.trim() === '') {
-                            $scope.editorialLink = round.editorialLink.trim();
-                        }
-                    });
-                }
-            }).error(function () {
-                $scope.editorialLink = '';
-            });
-        }
+        // v2 tc-api always return empty editorialLink, no need this call
+        // if ($scope.currentStateName() === 'user.practiceCode') {
+        //     $http.get(config.apiDomain + '/data/srm/problems/' + $scope.problemID + '/rounds').success(function (data) {
+        //         if (data && data.rounds) {
+        //             angular.forEach(data.rounds, function (round) {
+        //                 if (round && round.editorialLink && round.editorialLink.trim() !== ''
+        //                         && $scope.editorialLink.trim() === '') {
+        //                     $scope.editorialLink = round.editorialLink.trim();
+        //                 }
+        //             });
+        //         }
+        //     }).error(function () {
+        //         $scope.editorialLink = '';
+        //     });
+        // }
 
         $rootScope.previousStateName = $scope.currentStateName();
 

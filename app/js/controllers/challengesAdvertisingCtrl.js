@@ -71,10 +71,16 @@ var challengesAdvertisingCtrl = ['$scope', '$http', 'appHelper', '$timeout', '$w
         $scope.challenges = [];
 
         angular.forEach(data, function (challenge) {
-            var endDate = appHelper.parseTDate(challenge.registrationEndDate);
+            var regPhase = challenge.phases ? challenge.phases.find(phase => phase.name === 'Registration') : null;
+            var endDate = regPhase ? appHelper.parseTDate(regPhase.scheduledEndDate) : null;
 
+            if (!endDate) {
+                console.error('Cant determine registration end date of challenge ' + challenge.id);
+                return;
+            }
             // Don't add this challenge if registration is closed
             if (endDate <= new Date()) {
+                console.info('Challenge registration end date is closed: ' + challenge.id);
                 return;
             }
             var link, iconText;

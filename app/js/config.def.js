@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    apiDomain : '@@API_DOMAIN/v2',
+    // apiDomain : '@@API_DOMAIN/v2', // apiDomain is for v2 api and used only by admin page which is hidden
     v4ApiDomain : '@@API_DOMAIN/v4',
     v5ApiDomain : '@@API_DOMAIN/v5',
     auth0domain: '@@AUTH0_DOMAIN',
