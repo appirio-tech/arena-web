@@ -174,6 +174,9 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
         if (data !== undefined && data.error !== undefined) {
             return data.error.details !== undefined ? data.error.details : data.error;
         }
+        if (data && data.result && data.result.content) {
+            return data.result.content;
+        }
         if (status + str === '0') {
             return ' cannot connect to server';
         }
@@ -194,7 +197,7 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
      * Get practice problem list.
      */
     function getPracticeProblems() {
-        var url = '/data/srm/practice/problems?',
+        var url = '/srms/practice/problems?',
             sortColumn = $scope.problemKeys[0],
             sortOrder = 'asc',
             keys = ['type', 'difficulty', 'status'],
@@ -204,52 +207,54 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
             sortColumn = sortColumn.substring(1);
             sortOrder = 'desc';
         }
-        url = url + 'sortColumn=' + sortColumn + '&sortOrder=' + sortOrder + '&pageSize=' + $scope.numOfPage + '&pageIndex=' + $scope.currentPage;
+        url = url + 'orderBy=' + sortColumn + ' ' + sortOrder + '&limit=' + $scope.numOfPage + '&offset=' + ($scope.currentPage - 1) * $scope.numOfPage;
 
+        var filters = [];
         for (i = 0; i < keys.length; i += 1) {
             if ($scope.filterUsed[keys[i]] !== 'All') {
                 key = keys[i];
                 if (key === 'type') {
                     key = 'problemTypes';
                 }
-                if (key === 'status') {
-                    key = 'statuses';
-                }
-                url = url + '&' + key + '=' + $scope.filterUsed[keys[i]].toLowerCase();
+                filters.push(key + '=' + $scope.filterUsed[keys[i]].toLowerCase());
             }
         }
         if ($scope.filterUsed.minPoints > $scope.filterOptions.points[0] ||
                 $scope.filterUsed.maxPoints < $scope.filterOptions.points[$scope.filterOptions.points.length - 1]) {
-            url = url + '&pointsLowerBound=' + $scope.filterUsed.minPoints;
-            url = url + '&pointsUpperBound=' + $scope.filterUsed.maxPoints;
+            filters.push('pointsLowerBound=' + $scope.filterUsed.minPoints);
+            filters.push('pointsUpperBound=' + $scope.filterUsed.maxPoints);
         }
         if ($scope.searchText !== '') {
-            url = url + '&problemName=' + encodeURIComponent($scope.searchText.replace(new RegExp("'", "gm"), "''").replace(new RegExp("%", "gm"), "\\%"));
+            filters.push('problemName=' + $scope.searchText.replace(new RegExp("'", "gm"), "").replace(new RegExp("\"", "gm"), "").replace(new RegExp("%", "gm"), ""));
+        }
+        if (filters.length) {
+            url = url + '&filter=' + encodeURIComponent(filters.join('&'));
         }
 
         $scope.numPracticeProblemsRequests = 1;
-        $http.get(config.apiDomain + url, header).success(function (data, status) {
+        $http.get(config.v4ApiDomain + url, header).success(function (data, status) {
             $scope.numPracticeProblemsRequests -= 1;
-            if (data.error && data.error !== '') {
+            if (data && data.result && !data.result.success) {
                 showDetailModal(data, status);
             } else {
-                for (i = 0; i < data.data.length; i++) {
-                    if (!data.data[i].status) {
-                        data.data[i].status = 'New';
+                for (i = 0; i < data.result.content.data.length; i++) {
+                    var item = data.result.content.data[i];
+                    if (!item.status) {
+                        item.status = 'New';
                     }
 
-                    if (data.data[i].difficulty) {
-                        if (data.data[i].difficulty.toLowerCase() === 'easy') {
-                            data.data[i].pointsColor = 'blue';
-                        } else if (data.data[i].difficulty.toLowerCase() === 'medium') {
-                            data.data[i].pointsColor = 'yellow';
-                        } else if (data.data[i].difficulty.toLowerCase() === 'hard') {
-                            data.data[i].pointsColor = 'red';
+                    if (item.difficulty) {
+                        if (item.difficulty.toLowerCase() === 'easy') {
+                            item.pointsColor = 'blue';
+                        } else if (item.difficulty.toLowerCase() === 'medium') {
+                            item.pointsColor = 'yellow';
+                        } else if (item.difficulty.toLowerCase() === 'hard') {
+                            item.pointsColor = 'red';
                         }
                     }
                 }
-                $scope.problems = data.data;
-                $scope.totalRecords = data.total;
+                $scope.problems = data.result.content.data;
+                $scope.totalRecords = data.result.content.rowCount;
             }
         }).error(function (data, status) {
             $scope.numPracticeProblemsRequests -= 1;

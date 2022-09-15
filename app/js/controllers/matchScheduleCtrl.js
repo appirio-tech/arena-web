@@ -73,13 +73,13 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', 'appHelper
 
     /**
      * Load contest plan data.
-     * @param url - the url parameters in string format
+     * @param filter - the filter parameters in string format
      * @param pendingPlanMonth - the pending month which is getting data
      */
-    $scope.loadMatchSchedule = function (url, pendingPlanMonth) {
+    $scope.loadMatchSchedule = function (filter, pendingPlanMonth) {
         $scope.numScheduleRequests = 1;
         // Call tc-api server to get srm schedule
-        $http.get(config.apiDomain + '/data/srm/schedule?pageIndex=-1&sortColumn=registrationstarttime&sortOrder=asc' + url).success(function (data, status, headers) {
+        $http.get(config.v4ApiDomain + '/srms/schedule?orderBy=registrationStartTime desc&filter=' + encodeURIComponent(filter)).success(function (data, status, headers) {
             $scope.numScheduleRequests -= 1;
             $scope.eventSources = appHelper.parseMatchScheduleData(data, pendingPlanMonth, $scope.eventSources);
             $rootScope.contestPlanList = $scope.eventSources[0];
@@ -97,7 +97,7 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', 'appHelper
      */
     $scope.loadMonthViewData = function (monthDate) {
         if (!appHelper.isExistingMatchPlan(monthDate)) {
-            $scope.loadMatchSchedule(appHelper.getMonthViewStatus(monthDate) + appHelper.getRegistrationStartTimeRangeUrl(1),
+            $scope.loadMatchSchedule(appHelper.getRegistrationStartTimeRangeUrl(monthDate, 1) + appHelper.getMonthViewStatus(monthDate),
                 [monthDate.getFullYear() + '-' + monthDate.getMonth()]);
         }
     };
@@ -159,7 +159,7 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', 'appHelper
         $scope.eventSources[0] = $rootScope.contestPlanList;
         initCalendar();
     } else {
-        $scope.loadMatchSchedule(appHelper.getRegistrationStartTimeRangeUrl(3) + '&statuses=F,A,P',
+        $scope.loadMatchSchedule(appHelper.getRegistrationStartTimeRangeUrl(new Date(), 3) + '&statuses=F,A,P',
             appHelper.getComingThreeMonths());
     }
 

@@ -532,7 +532,10 @@ module.exports = {
     CHALLENGE_ADVERTISING: {
         COLOR: {
             'design': '#0bbbe7',
-            'develop': '#7db905'
+            'develop': '#7db905',
+            'development': '#7db905',
+            'data science': '#7db905',
+            'quality assurance': '#7db905'
         },
         // Used to display challenge icon text. Maps challenge type (in smallcase)
         // to the short name (smallcase, too).
@@ -551,13 +554,16 @@ module.exports = {
             "print\/presentation": "pr",
             "banners\/icons": "bi",
             "code": "c",
+            "develop_marathon_match": "mm",
             "architecture": "a",
             "bug hunt": "bh",
+            "bug_hunt": "bh",
             "specification": "spc",
             "test suites": "ts",
             "copilot posting": "cp",
             "conceptualization": "c",
             "first2finish": "ff",
+            "first_2_finish": "ff",
             "design first2finish": "df2f",
             "application front-end design": "a",
             "default": "o",

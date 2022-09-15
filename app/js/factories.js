@@ -718,13 +718,18 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
      */
     retHelper.parseMatchScheduleData = function (data, pendingPlanMonth, eventSources) {
         var i, name;
-        if (data.data) {
-            data.data.forEach(function (item) {
+        if (data.result && data.result.content) {
+            data.result.content.forEach(function (item) {
+                var existing = eventSources[0].find(e => e.roundId === item.roundId);
+                if (existing) {
+                    return;
+                }
                 name = item.name;
                 if (name && name.length > 27) {
                     name = name.substr(0, 24) + '...';
                 }
                 eventSources[0].push({
+                    roundId: item.roundId,
                     title: name,
                     start: retHelper.parseTDate(item.registrationStartTime),
                     regStart: retHelper.parseTDate(item.registrationStartTime),
@@ -742,16 +747,15 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
 
     /**
      * Get registration start time range url
-     * @param increaseDays the increase days
+     * @param increaseMonths the increase months
      * @returns {string} the url
      */
-    retHelper.getRegistrationStartTimeRangeUrl = function (increaseDays) {
-        var currentDate = new Date(),
-            newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+    retHelper.getRegistrationStartTimeRangeUrl = function (monthDate, increaseMonths) {
+        var newDate = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1),
             url;
-        url = '&registrationStartTimeAfter=' + encodeURIComponent($filter('date')(newDate, helper.REQUEST_TIME_FORMAT));
-        newDate = new Date(newDate.getFullYear(), newDate.getMonth() + increaseDays, 1);
-        url = url + '&registrationStartTimeBefore=' + encodeURIComponent($filter('date')(newDate, helper.REQUEST_TIME_FORMAT));
+        url = 'registrationStartTimeAfter=' + $filter('date')(newDate, helper.REQUEST_TIME_FORMAT);
+        newDate = new Date(newDate.getFullYear(), newDate.getMonth() + increaseMonths, 1);
+        url = url + '&registrationStartTimeBefore=' + $filter('date')(newDate, helper.REQUEST_TIME_FORMAT);
 
         return url;
     };

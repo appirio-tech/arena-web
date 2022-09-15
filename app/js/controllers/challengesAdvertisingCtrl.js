@@ -67,39 +67,41 @@ var challengesAdvertisingCtrl = ['$scope', '$http', 'appHelper', '$timeout', '$w
      * @since 1.1
      */
     function successHandler(data) {
-        var link, iconText;
 
         $scope.challenges = [];
 
-        angular.forEach(data.data, function (challenge) {
+        angular.forEach(data, function (challenge) {
             var endDate = appHelper.parseTDate(challenge.registrationEndDate);
 
             // Don't add this challenge if registration is closed
             if (endDate <= new Date()) {
                 return;
             }
+            var link, iconText;
 
             link = config.tcHostName || 'https://www.topcoder.com';
-            link += '/challenge-details/' + challenge.challengeId;
-            link += '/?type=' + challenge.challengeCommunity.toLowerCase();
+            link += '/challenges/' + challenge.id;
+            // link += '/?type=' + challenge.challengeCommunity.toLowerCase();
 
-            iconText = helper.CHALLENGE_ADVERTISING.TRACK_SHORTNAMES[(challenge.challengeType || "default").toLowerCase()];
+            if (challenge.legacy && challenge.legacy.subTrack) {
+                iconText = helper.CHALLENGE_ADVERTISING.TRACK_SHORTNAMES[challenge.legacy.subTrack.toLowerCase()];
+            }
 
             // Fallback challenge icon text based on challenge community
             if (!iconText) {
-                iconText = (challenge.challengeCommunity === 'design' ? 'w' : 'c');
+                iconText = (challenge.track.toLowerCase() === 'design' ? 'w' : 'c');
             }
 
             iconText = iconText.toUpperCase();
 
             $scope.challenges.push({
-                type: challenge.challengeCommunity.toLowerCase(),
+                type: challenge.type.toLowerCase(),
                 iconText: iconText,
-                color: helper.CHALLENGE_ADVERTISING.COLOR[challenge.challengeCommunity.toLowerCase()],
-                prize: challenge.totalPrize,
-                title: challenge.challengeName,
+                color: helper.CHALLENGE_ADVERTISING.COLOR[challenge.track.toLowerCase()],
+                prize: challenge.overview.totalPrizes,
+                title: challenge.name,
                 end: endDate,
-                technologies: challenge.technologies,
+                technologies: challenge.tags,
                 link: link
             });
         });
@@ -121,7 +123,7 @@ var challengesAdvertisingCtrl = ['$scope', '$http', 'appHelper', '$timeout', '$w
      * @since 1.1
      */
     function updateChallenges() {
-        $http.get(config.apiDomain + '/challenges/open?pageIndex=-1&sortColumn=registrationEndDate&sortOrder=asc', header).
+        $http.get(config.v5ApiDomain + '/challenges?status=Active&currentPhaseName=Registration&perPage=100&page=1&sortBy=startDate&sortOrder=desc&isLightweight=true', header).
             success(successHandler).error(errorHandler);
 
         $timeout.cancel(updaterHndl);

@@ -22,7 +22,7 @@ export TC_AUTH_URL="https://accounts-auth0.topcoder-dev.com"
 export WEB_SOCKET_URL="https://arenaws.topcoder-dev.com"
 
 # TC-api url
-export API_DOMAIN="https://api.topcoder-dev.com/v2"
+export API_DOMAIN="https://api.topcoder-dev.com"
 
 # The TopCoder host name
 export TC_HOSTNAME="https://www.topcoder-dev.com"

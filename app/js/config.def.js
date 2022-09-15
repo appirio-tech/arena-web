@@ -1,7 +1,9 @@
 'use strict';
 
 module.exports = {
-    apiDomain : '@@API_DOMAIN',
+    apiDomain : '@@API_DOMAIN/v2',
+    v4ApiDomain : '@@API_DOMAIN/v4',
+    v5ApiDomain : '@@API_DOMAIN/v5',
     auth0domain: '@@AUTH0_DOMAIN',
     auth0clientID: '@@AUTH0_CLIENT_ID',
     auth0connection: '@@AUTH0_CONNECTION',
