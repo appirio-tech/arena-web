@@ -833,7 +833,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 var code = $scope.cm.getValue();
                 socket.emit(helper.EVENT_NAME.SaveRequest, {
                     componentID: $scope.componentID,
-                    language: $scope.lang($scope.langIdx).id,
+                    languageID: $scope.lang($scope.langIdx).id,
                     code: code
                 });
                 if (modalTimeoutPromise) {
@@ -854,7 +854,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 var code = $scope.cm.getValue();
                 socket.emit(helper.EVENT_NAME.SaveRequest, {
                     componentID: $scope.componentID,
-                    language: $scope.lang($scope.langIdx).id,
+                    languageID: $scope.lang($scope.langIdx).id,
                     code: code
                 });
             }
