@@ -70,7 +70,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
     };
 
     // Handle the BatchTestResponse event.
-    socket.on(helper.EVENT_NAME.BatchTestResponse, function (data) {
+    $scope.$on(helper.EVENT_NAME.BatchTestResponse, function (event, data) {
         var i, j, reportItem, params;
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);

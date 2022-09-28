@@ -1369,7 +1369,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
     }
 
     // Show the coder history.
-    socket.on(helper.EVENT_NAME.CoderHistoryResponse, function (data) {
+    $scope.$on(helper.EVENT_NAME.CoderHistoryResponse, function (event, data) {
         var i, tmpDate, coderHistoryData = [];
 
         for (i = 0; i < data.historyData.length; i++) {

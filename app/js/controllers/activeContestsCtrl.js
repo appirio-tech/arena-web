@@ -176,18 +176,10 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
     });
 
     // handle update round list response
-    socket.on(helper.EVENT_NAME.UpdateRoundListResponse, function (data) {
+    $scope.$on(helper.EVENT_NAME.UpdateRoundListResponse, function (event, data) {
         if (data.action === 1) {
-            $rootScope.roundData[data.roundData.roundID] = data.roundData;
             updateContest($rootScope.roundData[data.roundData.roundID]);
-        } else if (data.action === 2) {
-            delete $rootScope.roundData[data.roundData.roundID];
         }
-    });
-
-    // handle round enable response
-    socket.on(helper.EVENT_NAME.EnableRoundResponse, function (data) {
-        $rootScope.roundData[data.roundID].action = 'Enter';
     });
 
     $scope.getContests = function () {
@@ -257,7 +249,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
         return contest.action;
     };
 
-    socket.on(helper.EVENT_NAME.EnableRoundResponse, function (data) {
+    $scope.$on(helper.EVENT_NAME.EnableRoundResponse, function (event, data) {
         angular.forEach($scope.contests, function (contest) {
             if (data.roundID === contest.id) {
                 contest.action = 'Enter';

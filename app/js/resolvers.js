@@ -513,6 +513,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
      */
     socket.on(helper.EVENT_NAME.RegisteredUsersResponse, function (data) {
         $rootScope.roundData[data.roundID].registrants = data.userListItems;
+        $rootScope.$broadcast(helper.EVENT_NAME.RegisteredUsersResponse, data);
     });
 
     /**
@@ -727,7 +728,6 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         }
     });
 
-    socket.remove(helper.EVENT_NAME.UpdateChatResponse);
     // update chat content
     socket.on(helper.EVENT_NAME.UpdateChatResponse, function (data) {
         /**
@@ -1041,13 +1041,7 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         }
     });
 
-    // handle registrated user response
-    socket.on(helper.EVENT_NAME.RegisteredUsersResponse, function (data) {
-        $rootScope.$broadcast(helper.EVENT_NAME.RegisteredUsersResponse, data);
-    });
-
     // handle popup generic response
-    socket.remove(helper.EVENT_NAME.PopUpGenericResponse);
     socket.on(helper.EVENT_NAME.PopUpGenericResponse, function (data) {
         $rootScope.$broadcast(helper.EVENT_NAME.PopUpGenericResponse, data);
     });
@@ -1106,6 +1100,62 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
     // handle round access response
     socket.on(helper.EVENT_NAME.RoundAccessResponse, function (data) {
         $rootScope.$broadcast(helper.EVENT_NAME.RoundAccessResponse, data);
+    });
+
+    // handle update round list response
+    socket.on(helper.EVENT_NAME.UpdateRoundListResponse, function (data) {
+        if (data.action === 1) {
+            $rootScope.roundData[data.roundData.roundID] = data.roundData;
+        } else if (data.action === 2) {
+            delete $rootScope.roundData[data.roundData.roundID];
+        }
+        $rootScope.$broadcast(helper.EVENT_NAME.UpdateRoundListResponse, data);
+    });
+
+    // handle round enable response
+    socket.on(helper.EVENT_NAME.EnableRoundResponse, function (data) {
+        $rootScope.roundData[data.roundID].action = 'Enter';
+        $rootScope.$broadcast(helper.EVENT_NAME.EnableRoundResponse, data);
+    });
+
+    // handle coder history response
+    socket.on(helper.EVENT_NAME.CoderHistoryResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.CoderHistoryResponse, data);
+    });
+
+    // handle BatchTestResponse event.
+    socket.on(helper.EVENT_NAME.BatchTestResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.BatchTestResponse, data);
+    });
+
+    // handle get problem response
+    socket.on(helper.EVENT_NAME.GetProblemResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.GetProblemResponse, data);
+    });
+
+    // handle open component response
+    socket.on(helper.EVENT_NAME.OpenComponentResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.OpenComponentResponse, data);
+    });
+
+    // handle submit result response
+    socket.on(helper.EVENT_NAME.SubmitResultsResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.SubmitResultsResponse, data);
+    });
+
+    // handle test info response
+    socket.on(helper.EVENT_NAME.TestInfoResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.TestInfoResponse, data);
+    });
+
+    // handle response which returned total system test case count
+    socket.on(helper.EVENT_NAME.PracticeSystemTestResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.PracticeSystemTestResponse, data);
+    });
+
+    // handle response which returned system test results
+    socket.on(helper.EVENT_NAME.PracticeSystemTestResultResponse, function (data) {
+        $rootScope.$broadcast(helper.EVENT_NAME.PracticeSystemTestResultResponse, data);
     });
 }];
 

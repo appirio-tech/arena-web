@@ -88,17 +88,13 @@ var userContestCtrl = ['$scope', '$rootScope', '$stateParams', '$state', 'socket
         };
 
         // handle update round list response
-        socket.on(helper.EVENT_NAME.UpdateRoundListResponse, function (data) {
+        $scope.$on(helper.EVENT_NAME.UpdateRoundListResponse, function (event, data) {
             if (data.action === 1) {
-                $rootScope.roundData[data.roundData.roundID] = data.roundData;
-
                 if (String($scope.roundID) === String(data.roundData.roundID)) {
                     setContest($rootScope.roundData[$scope.roundID]);
                     initWithContest($scope.contest);
                 }
             } else if (data.action === 2) {
-                delete $rootScope.roundData[data.roundData.roundID];
-
                 if (String($scope.roundID) === String(data.roundData.roundID)) {
                     setContest(null);
                 }

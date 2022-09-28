@@ -1110,6 +1110,7 @@ factories.auth0 = function () {
 factories.socket = ['$rootScope', function ($rootScope) {
     return {
         on: function (eventName, callback) {
+            socket.removeAllListeners(eventName);
             socket.on(eventName, function () {
                 var args = arguments;
                 $rootScope.lastServerActivityTime = new Date().getTime();

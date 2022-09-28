@@ -993,7 +993,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         };
 
         // Handle the submit result response
-        socket.on(helper.EVENT_NAME.SubmitResultsResponse, function (data) {
+        $scope.$on(helper.EVENT_NAME.SubmitResultsResponse, function (event, data) {
 
             appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.solutionSubmitted, data);
 
@@ -1107,7 +1107,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
         /**
          * Handle test info response.
          */
-        socket.on(helper.EVENT_NAME.TestInfoResponse, function (data) {
+        $scope.$on(helper.EVENT_NAME.TestInfoResponse, function (event, data) {
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
             }
@@ -1313,12 +1313,12 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
             };
 
             // The response which returned total system test case count
-            socket.on(helper.EVENT_NAME.PracticeSystemTestResponse, function (data) {
+            $scope.$on(helper.EVENT_NAME.PracticeSystemTestResponse, function (event, data) {
                 $scope.numContestRequests = data.testCaseCountByComponentId[$scope.componentID];
             });
 
             // The response which returned system test results
-            socket.on(helper.EVENT_NAME.PracticeSystemTestResultResponse, function (data) {
+            $scope.$on(helper.EVENT_NAME.PracticeSystemTestResultResponse, function (event, data) {
                 if (data.resultData.succeeded === false) {
                     $scope.numContestRequests = 0;
                     //popup error dialog

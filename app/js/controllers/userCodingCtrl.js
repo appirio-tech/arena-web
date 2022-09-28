@@ -358,7 +358,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         }
 
         // get problem response
-        socket.on(helper.EVENT_NAME.GetProblemResponse, function (data) {
+        $scope.$on(helper.EVENT_NAME.GetProblemResponse, function (event, data) {
             appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemOpened, data);
             var component = data.problem.problemComponents[0];
             if (component.componentId !== $scope.componentID) {
@@ -414,7 +414,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         });
 
         // handle open component response
-        socket.on(helper.EVENT_NAME.OpenComponentResponse, function (data) {
+        $scope.$on(helper.EVENT_NAME.OpenComponentResponse, function (event, data) {
             // make sure the response is for the request problem
             if (data.componentID !== $scope.componentID) {
                 return;
