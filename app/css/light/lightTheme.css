@@ -1406,6 +1406,20 @@ footer .line {
     border-color: #286985;
 }
 
+/* ballonsWrap 
+-------------------------*/
+.ballonsWrap{
+    background: #000;
+    background: rgba(0,0,0,0.7);     
+    top: -1px;  
+}
+.ballonsWrap .ballon:hover{
+    background: #286985;
+}
+.ballonsWrap .ballon .arrow{
+    border-color: #286985;
+}
+
 /*Media blocks should be placed after the normal code!!!*/
 @media only screen and (max-width: 1121px) {
     .panelCodeEditor .panel-body .toolBar {

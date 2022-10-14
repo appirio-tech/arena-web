@@ -166,7 +166,7 @@ body{
     background-image: url(../img/orange/sprite-contestManagement.png);
     background-repeat: no-repeat;
 }
-.practiceProblemFilter.qtip-default,
+
 .problemListPanel .statusIcon:before{
     background-image: url(../img/orange/sprite-practiceRoom.png);
     background-repeat: no-repeat;
@@ -1536,6 +1536,18 @@ footer .left>span {
 .ballonsWrap{
     background: #000;
     background: rgba(0,0,0,0.7);
+}
+.ballonsWrap .ballon:hover{
+    background: #2A6B86;
+}
+.ballonsWrap .ballon .arrow{
+    border-color: #2A6B86;
+}
+/* ballonsWrap 
+-------------------------*/
+.ballonsWrap{
+    background: #000;
+    background: rgba(0,0,0,0.7); 
 }
 .ballonsWrap .ballon:hover{
     background: #2A6B86;

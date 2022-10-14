@@ -44,6 +44,11 @@ var anonHomeCtrl = ['$scope', '$state', '$window', 'sessionHelper', 'auth0', '$r
         window.location = config.pwResetURL;
     }
 
+    $scope.resetPw = function($event) {
+        $event.preventDefault();
+        window.location = config.pwResetURL;
+    }
+
     $scope.accountLogin = function () {
         $scope.hasError = false;
         $scope.hasErrorForm = false;

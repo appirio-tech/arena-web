@@ -6571,9 +6571,9 @@ contestManagementPanel .panel-footer .btn {
     right: 68px;
 }
 .practiceProblemFilter.qtip-default {
-    background-position: -30px 0;
-    height: 290px;
     width: 252px;
+    background-position: -30px 8px;
+    height: 256px;
 }
 .practiceProblemFilter .linkRow {
     text-align: right;
@@ -6590,7 +6590,7 @@ contestManagementPanel .panel-footer .btn {
     top: 1px;
 }
 .practiceProblemFilter.qtip-default .qtip-content {
-    height: 280px;
+    height: 234px;
 }
 .practiceProblemFilter .qtip-content {
     padding-left: 12px;
@@ -7478,12 +7478,266 @@ table thead .sort.desc{
     right: 5px;
     z-index: 20;
 }
+.mainContainer{
+    position: relative;
+}
+.centerBox{
+    overflow: auto;
+}
+/* ballonsWrap 
+-------------------------*/
+.ballonsWrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -60px;
+    background: #000;
+    background: rgba(0,0,0,0.78);
+    z-index: 100;    
+    display: none;
+    overflow: hidden;
+}
+    .ballonsWrap .ballonWrap{
+        position: absolute;
+        bottom: auto;
+        right: -500px;
+        width: 120px;
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+    }    
+    .ballonsWrap .ballonWrap:hover{
+        z-index: 10; 
+    }
+    .ballonsWrap .ballon{
+        border: 1px solid #0498d6;
+        background: #0498d6;
+        background: rgba(4,152,214,0.44);
+        padding: 24px 30px 7px;
+    }
+    .ballonsWrap .ballon:hover{
+        background: #054661;
+    }
+   .ballonsWrap .ballon .con{
+        color: #fff;
+        font-size: 18px;
+        line-height: 20px;
+        overflow: auto;
+        max-height: 100%;
+        padding-right: 20px;
+        margin-right: -20px;
+   }
+    .ballonsWrap .ballon .con p{
+        margin-bottom: 24px;
+        line-height: 20px;
+    }
+   .ballonsWrap .ballon .actns{
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 21px;
+   }
+   .ballonsWrap .ballon .actns .btnBlnDefault{
+        border-radius: 2px;
+        background: #f79423;
+        padding: 0 10px;
+        display: inline-block;
+        color: #fff;
+        font-size: 18px;
+        text-decoration: none;
+   }
+   .ballonsWrap .ballon .actns .btnBlnDefault:hover{
+        opacity: 0.8;
+   }
+   .ballonsWrap .ballon .actns .btnMore{
+        height: 36px;
+        line-height: 36px;
+        width: 180px;
+   }
+   .ballonsWrap .ballon .lnkClose{
+        position: absolute;
+        background: url(../img/ico-close.png) 50% 50% no-repeat;
+        height: 16px;
+        width: 16px;
+        z-index: 1;
+        right: 10px;
+        top: 9px;
+   }
+   .ballonsWrap .ballon .lnkClose:hover{
+        opacity: 0.7;
+   }
+   .ballonsWrap .ballon .arrow{
+        position: absolute;
+        width: 19px;
+        height: 15px;
+        background: url(../img/baloon-arrow.png) 0 0 no-repeat;
+        left: 122px;
+        top: -14px;
+        border-color: #054661;
+        border-style: solid;
+        border-width: 0 0 1px 0;
+   }   
+   .ballonsWrap .rightBelow .ballon .arrow{
+        left: auto;
+        right: 57px;
+   } 
+   .ballonsWrap .leftAbove .ballon .arrow{
+        left: auto;
+        right: 57px;
+        top: auto;
+        bottom: -14px;
+        background: url(../img/baloon-arrow-d.png) 0 -1px no-repeat;
+        border-width: 1px 0 0 0;
+   } 
+   .ballonsWrap .rightAbove .ballon .arrow{
+        left: auto;
+        top: auto;
+        bottom: -14px;
+        right: 57px;
+        background: url(../img/baloon-arrow-d.png) 0 -1px no-repeat;
+        border-width: 1px 0 0 0;
+   }
+   .ballonsWrap .ballon .arrow.rt{
+        left: auto;
+        right: 10px;
+   }
+   .ballonsWrap .ballon .arrow.dn{
+        background: url(../img/baloon-arrow-d.png) 0 -1px no-repeat;
+        top: auto;
+        bottom: 0;
+   }
+   .ballonsWrap .ballon .arrow.dn.rt{
+        left: auto;
+        right: 10px;
+   }
+
+
+/*Media blocks should be placed after the normal code!!!*/
+@media only screen and (max-width: 1245px) {
+    .inner { padding: 0;}
+    .dashboard .titleBar .brand,
+    .contest .titleBar .shareLink {right: 15px; }
+    .dashboard .titleBar{padding-left: 15px; }
+    .codeArea .titleBar {padding-left: 0;}
+}
+@media only screen and (min-width: 1200px) {
+    .ballonsWrap{
+        bottom: -140px;
+    }
+    /* fix dashboard content size */
+    .dashboard .mainContent {
+        width: 1186px;
+        margin: 0 auto;
+        padding: 0;
+    }
+    .dashboard .mainContent .rightBox {margin-left: 20px; }
+    .contest .mainContent .rightBox {margin-left: 0; left: 778px; }
+    .contest .mainContent .leftBox {right: 407px; }
+    .codeArea .mainContent,
+    .detailPage .mainContent {
+        width: auto;
+        padding: 0 15px;
+    }
+    /* add scrollbar for contest schedule in contest overview */
+    .panelContestStat .panel-body .scheduleContent {
+        width: 380px;
+        max-height: 325px;
+    }
+}
 .panelFeedback {
     width: 407px;
     float: right;
 }
 .feedbackHead {
     text-align: right;
+}
+
+/* when device or screen is middle size, force hide navbar-collapse*/
+@media only screen and (max-width: 1199px) {
+    .dashboard .mainContent {width: 789px; margin: 0 auto; }
+    .dashboard .mainContent .rightBox {width: 759px; }
+    .dashboard .mainContent .rightBox img {display: block; margin: 0 auto; }
+    .panelContestStat {width: auto; }
+    .panelContestStat, .panelContestStat .panel-body {height: auto; }
+    .panelContestStat .phaseDetails {padding-bottom: 28px; }
+    .panelContestStat .compStatus > .column:first-child,
+    .panelContestStat .panel-body .overview > div > .column:first-child,
+    .panelContestStat .panel-body .schedule .details .column:first-child {
+        width: 41%;
+        min-width: 132px;
+    }
+    .panelContestStat .compStatus > .column:nth-child(2),
+    .panelContestStat .panel-body .overview > div > .column:nth-child(2),
+    .panelContestStat .panel-body .schedule .details .column:nth-child(2) {
+        width: 59%;
+        min-width: 200px;
+    }
+    .codeArea .mainContent,
+    .detailPage .mainContent,
+    .panelContestPlan {width: auto;}
+    .codeArea .connection {
+        text-align: left;
+        padding-left: 15px;
+        padding-top: 15px;
+        float: left;
+        width: auto;
+    }
+    .codeArea .connection>div:first-child {width: 151px;}
+    .codeArea .titleBar {height: 85px;}
+    .panelOverview {width: 759px;}
+    .detailPage .panelSummary .panel-body .leftSec,
+    .detailPage .panelSummary .panel-body .rightSec {
+        padding-left: 10px;
+        padding-right: 0;
+    }
+    .detailPage .leaderboardWrapper .heading .expandIcon {
+        right: 11px;
+    }
+    .detailPage .table>thead>tr>th,
+    .detailPage .table>tbody>tr>td {
+        padding: 4px;
+    }
+    .panelContestStat .panel-body .scheduleContent {
+        height: auto;
+    }
+    .calendar .fc-event-inner .fc-event-title {
+        float: none;
+        width: 100%;
+    }
+    .panelContestPlan .listView .default .tableDiv {height: 100%; overflow-x: hidden; overflow-y: hidden;}
+
+
+    /* ballonsWrap  
+    -------------------*/
+    .ballonsWrap .ballonWrap{
+        font-size: 12px;
+        max-width: 300px;
+    }
+    .ballonsWrap .ballon{
+        padding: 18px 15px 7px 10px;
+    }
+    .ballonsWrap .ballon .con{
+        line-height: 18px;
+        font-size: 14px;
+        margin-right: -10px;
+        padding-right: 10px;
+    }
+    .ballonsWrap .ballon .con p{
+        margin-bottom: 12px;
+        line-height: 18px;
+    }
+    .ballonsWrap .ballon .lnkClose{
+        right: 4px;
+        top: 4px;
+    }
+    .ballonsWrap .ballon .actns{
+        margin: 15px 0;
+    }
+    .ballonsWrap .ballon .actns .btnBlnDefault{
+        font-size: 14px;
+    }
+    .ballonsWrap .ballon .actns .btnMore{
+        width: auto;
+    }
 }
 /*btns*/
 .panelFeedback .btn {
