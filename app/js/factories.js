@@ -407,7 +407,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
      * @since Module Assembly - Web Arena Max Live Leaderboard Assembly
      */
     retHelper.exceedLeaderBoardLimit = function (phaseType, roomID) {
-        if (roomID && phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase && $rootScope.roomData[roomID].coders.length > config.maxLiveLearderBoard) {
+        if (roomID && phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase && ($rootScope.roomData[roomID] && ($rootScope.roomData[roomID].coders.length > config.maxLiveLearderBoard))) {
             return true;
         } else if  (phaseType < helper.PHASE_TYPE_ID.ContestCompletePhase && $rootScope.leaderboard.length > config.maxLiveLearderBoard) {
             return true;
@@ -441,7 +441,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                 roomList = [];
                 roomList.push(roomIdStr);
             }
-            localStorageService.set(helper.LOCAL_STORAGE.ROOM_LIST, JSON.stringify(roomList));
+            localStorageService.set(helper.LOCAL_STORAGE.ROOM_LIST, roomList);
 
             // get data by key
             key = helper.LOCAL_STORAGE.PREFIX + roomId;
@@ -459,7 +459,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
             itemsJson.push(value);
 
             // save to local storage
-            localStorageService.set(key, JSON.stringify(itemsJson));
+            localStorageService.set(key, itemsJson);
         }
     };
 
@@ -509,7 +509,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                 codeList = [];
                 codeList.push(key);
             }
-            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(codeList));
+            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, codeList);
         }
     };
 
@@ -549,7 +549,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                     }
                 }
             }
-            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(newCodeList));
+            localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, newCodeList);
         }
     };
 
@@ -591,7 +591,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                         newCodeList.push(codeList[i]);
                     }
                 }
-                localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, JSON.stringify(newCodeList));
+                localStorageService.set(helper.LOCAL_STORAGE.CACHE_CODE_LIST, newCodeList);
             }
         }
     };
@@ -626,12 +626,12 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                                     newRoomItems.push(roomItems[m]);
                                 }
                             }
-                            localStorageService.set(helper.LOCAL_STORAGE.PREFIX + roomList[k], JSON.stringify(newRoomItems));
+                            localStorageService.set(helper.LOCAL_STORAGE.PREFIX + roomList[k], newRoomItems);
                         }
                     }
                 }
 
-                localStorageService.set(helper.LOCAL_STORAGE.ROOM_LIST, JSON.stringify(newRoomList));
+                localStorageService.set(helper.LOCAL_STORAGE.ROOM_LIST, newRoomList);
             }
 
             // get data from local storage
@@ -682,7 +682,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
             if (allSetting) {
                 chatSetting = allSetting[key];
                 if (chatSetting !== undefined) {
-                    return JSON.parse(chatSetting);
+                    return chatSetting;
                 }
             }
         }
@@ -705,7 +705,7 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
                 allSetting = {};
             }
             allSetting[key] = value;
-            localStorageService.set('chat_setting', JSON.stringify(allSetting));
+            localStorageService.set('chat_setting', allSetting);
         }
     };
 
@@ -718,13 +718,18 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
      */
     retHelper.parseMatchScheduleData = function (data, pendingPlanMonth, eventSources) {
         var i, name;
-        if (data.data) {
-            data.data.forEach(function (item) {
+        if (data.result && data.result.content) {
+            data.result.content.forEach(function (item) {
+                var existing = eventSources[0].find(e => e.roundId === item.roundId);
+                if (existing) {
+                    return;
+                }
                 name = item.name;
                 if (name && name.length > 27) {
                     name = name.substr(0, 24) + '...';
                 }
                 eventSources[0].push({
+                    roundId: item.roundId,
                     title: name,
                     start: retHelper.parseTDate(item.registrationStartTime),
                     regStart: retHelper.parseTDate(item.registrationStartTime),
@@ -742,16 +747,15 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
 
     /**
      * Get registration start time range url
-     * @param increaseDays the increase days
+     * @param increaseMonths the increase months
      * @returns {string} the url
      */
-    retHelper.getRegistrationStartTimeRangeUrl = function (increaseDays) {
-        var currentDate = new Date(),
-            newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+    retHelper.getRegistrationStartTimeRangeUrl = function (monthDate, increaseMonths) {
+        var newDate = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1),
             url;
-        url = '&registrationStartTimeAfter=' + encodeURIComponent($filter('date')(newDate, helper.REQUEST_TIME_FORMAT));
-        newDate = new Date(newDate.getFullYear(), newDate.getMonth() + increaseDays, 1);
-        url = url + '&registrationStartTimeBefore=' + encodeURIComponent($filter('date')(newDate, helper.REQUEST_TIME_FORMAT));
+        url = 'registrationStartTimeAfter=' + $filter('date')(newDate, helper.REQUEST_TIME_FORMAT);
+        newDate = new Date(newDate.getFullYear(), newDate.getMonth() + increaseMonths, 1);
+        url = url + '&registrationStartTimeBefore=' + $filter('date')(newDate, helper.REQUEST_TIME_FORMAT);
 
         return url;
     };
@@ -1106,6 +1110,7 @@ factories.auth0 = function () {
 factories.socket = ['$rootScope', function ($rootScope) {
     return {
         on: function (eventName, callback) {
+            socket.removeAllListeners(eventName);
             socket.on(eventName, function () {
                 var args = arguments;
                 $rootScope.lastServerActivityTime = new Date().getTime();

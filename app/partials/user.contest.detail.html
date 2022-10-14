@@ -13,7 +13,13 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 centerBox">
                 <div class="panel panel-custom panelSummary">
                     <div class="panel-heading">
-                        Summary
+                        <div class="panel-heading-title">Summary</div>
+                        <div class="panel-social-buttons" data-ng-show="showSRMResultsSocialIcons(contest, divisionID)">
+                            <span class="fb-btn-overview" data-ng-click="postFacebookSRMResultsMessage(contest)" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Share my results to facebook"></span> 
+                            <span class='twitter-overview'><span class="tweet-share" twitter data-url="{{getTwitterShareUrl()}}" data-message="{{getTwitterSRMResultsMessage(contest)}}" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Share my results to twitter"></span>
+                        </div>
+                        <div class="share-text" data-ng-show="showSRMResultsSocialIcons(contest, divisionID)">Share my results:</div>
+                        <div class="clear"></div>
                     </div>
                     <div class="panel-body row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 leftSec" id="lSec">
@@ -318,7 +324,7 @@
                                                         <th class="col1 sortableHeading" data-ng-show="viewOn=='room'" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'roomPlace')">
                                                             Place<span><span data-ng-show="currentKeys.leaderboardKey=='roomPlace' || currentKeys.leaderboardKey=='-roomPlace'" data-ng-class="{descArrow:currentKeys.leaderboardKey=='-roomPlace',ascArrow:currentKeys.leaderboardKey=='roomPlace'}" class="arrow"></span></span>
                                                         </th>
-                                                        <th class="colR sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'userRating')">
+                                                        <th class="colRHeader sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'userRating')">
                                                             <span>R<span data-ng-show="currentKeys.leaderboardKey=='userRating' || currentKeys.leaderboardKey=='-userRating'" data-ng-class="{descArrow:currentKeys.leaderboardKey=='-userRating',ascArrow:currentKeys.leaderboardKey=='userRating'}" class="arrow"></span></span>
                                                         </th>
                                                         <th class="col2 sortableHeading" data-ng-click="toggleSortKey(viewOn, 'leaderboard', 'userName')">

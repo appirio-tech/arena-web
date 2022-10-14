@@ -1,7 +1,9 @@
 'use strict';
 
 module.exports = {
-    apiDomain : '@@API_DOMAIN',
+    // apiDomain : '@@API_DOMAIN/v2', // apiDomain is for v2 api and used only by admin page which is hidden
+    v4ApiDomain : '@@API_DOMAIN/v4',
+    v5ApiDomain : '@@API_DOMAIN/v5',
     auth0domain: '@@AUTH0_DOMAIN',
     auth0clientID: '@@AUTH0_CLIENT_ID',
     auth0connection: '@@AUTH0_CONNECTION',
@@ -26,6 +28,12 @@ module.exports = {
             title: '@@SOCIAL_ARENA_TITLE'
         }
     },
+    srmResultsSharing: {
+        template: '@@SOCIAL_SRM_RESULTS_STATUS_TEMPLATE',
+        title: '@@SOCIAL_SRM_RESULTS_STATUS_TITLE',
+        caption: '@@SOCIAL_SRM_RESULTS_STATUS_CAPTION',
+        picture: '@@SOCIAL_SRM_RESULTS_STATUS_PICTURE_URL'
+    },
     tweetText: '@@TWEET_TEXT',
     tweetUrl: '@@TWEET_URL',
     facebookLink: '@@FACEBOOK_LINK',
@@ -40,6 +48,7 @@ module.exports = {
     keyboardShortcut: '@@KEYBOARD_SHORTCUT',
     chatIconDisappearTime: '@@CHAT_ICON_DISAPPEAR_TIME',
     tcHostName: '@@TC_HOSTNAME',
+    tcAuthUrl: '@@TC_AUTH_URL',
     maxLiveLearderBoard: '@@MAX_LIVE_LEADERBOARD',
     autoSavingCodeInterval: '@@AUTO_SAVING_CODE_INTERVAL',
     leaderboardRefreshTimeGap: '@@LEADERBOARD_REFRESH_TIME_GAP',

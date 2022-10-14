@@ -16,22 +16,23 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.2.5",
+    "angular": "~1.3.0",
     "angular-resource": "~1.2.5",
     "angular-sanitize": "~1.2.5",
-    "angular-ui-router": "https://github.com/angular-ui/ui-router.git#master",
+    "angular-ui-router": "~0.2.15",
     "angular-bootstrap": "0.11.0",
     "angular-timer": "~1.1.5",
     "angular-ui-calendar": "~0.8.1",
     "angular-themer": "~0.2.2",
-    "angular-ui-angular": "https://github.com/angular-ui/angular.git",
     "angulartics": "~0.15.20",
-    "angular-table": "https://github.com/esvit/ng-table.git",
+    "angular-table": "https://github.com/esvit/ng-table.git#8a903268807546d924ed0982786cab031c5f5249",
     "angular-local-storage": "https://github.com/grevory/angular-local-storage.git",
     "angular-facebook": "https://github.com/Ciul/angular-facebook.git",
     "angular-bootstrap-switch": "~0.3.0",
     "angular-ui-codemirror": "~0.2.1",
-    "codemirror": "~4.10.0"
+    "codemirror": "~4.10.0",
+    "angular-cookies": "~1.3.0",
+    "angular-hotkeys": "https://github.com/chieffancypants/angular-hotkeys.git"
   },
   "resolutions": {
     "jquery": "~2.x",

@@ -124,8 +124,15 @@
  * Changes in version 1.33 (Web Arena - Replace ng-scrollbar with prefect-scrollbar):
  *  - Added COMMON_TIMEGAP constant.
  *
- * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman
- * @version 1.33
+ * Changes in version 1.34 (Web Arena Keyboard shortcuts)
+ * - Added shortcut key events
+ *
+ * Changes in version 1.35 (Module Assembly - Web Arena - Share SRM Results Socially):
+ * - Added SRMResultsStatusMessage settings to be used when formatting the SRM results message for social networks.
+ * - Added SRMResultsStatusMessageOK setting.
+ *
+ * @author tangzx, amethystlei, dexy, ananthhh, flytoj2ee, xjtufreeman, MonicaMuranyi
+ * @version 1.35
  */
 'use strict';
 /*global module*/
@@ -317,7 +324,8 @@ module.exports = {
         '3': 'Cpp',
         '4': 'Csharp',
         '5': 'VB',
-        '6': 'Python'
+        '6': 'Python',
+        '8': 'Python3'
     },
 
     // the timeout of request
@@ -364,7 +372,7 @@ module.exports = {
         Reconnecting: "Waiting to reconnect...\nPress Close to logout and go to the login screen.",
         ForcedLogout: 'Logging off as you logged in to another session or browser.',
         Reconnect: 'The network is available. Would you like to reconnect?',
-        LostConnection: 'The connection to the server has been lost. Please log off and log in again.',
+        LostConnection: 'The communication with the competition server has been interrupted! Please verify your network connection, copy your work, and refresh this page.',
         NotAssigned: 'Sorry, you cannot perform this operation because you are not assigned to this room. The likely cause is that you did not successfuly register for the match during the registration period.'
     },
 
@@ -493,7 +501,8 @@ module.exports = {
         LoginError: 'There was a log in error. Please try again.',
         StatusMessageConfirm: 'Are you sure you want to post this message:',
         StatusMessageError: 'There was an error sending status message. Please try again.',
-        StatusMessageOK: 'The status message was sent successfully.'
+        StatusMessageOK: 'The status message was sent successfully.',
+        SRMResultsStatusMessageOK: 'Your result is shared.'
     },
 
     // Constants to handle social network messages
@@ -501,6 +510,12 @@ module.exports = {
         StatusMessage: {
             NumberEventsTag: '__MATCHES__',
             RatingTag: '__RATING__'
+        },
+        SRMResultsStatusMessage: {
+            SRMNameTag: '__SRM__NAME__',
+            PositionTag: '__POSITION__',
+            PointsTag: '__POINTS__',
+            HandleTag: '__HANDLE__'
         }
     },
 
@@ -517,7 +532,10 @@ module.exports = {
     CHALLENGE_ADVERTISING: {
         COLOR: {
             'design': '#0bbbe7',
-            'develop': '#7db905'
+            'develop': '#7db905',
+            'development': '#7db905',
+            'data science': '#7db905',
+            'quality assurance': '#7db905'
         },
         // Used to display challenge icon text. Maps challenge type (in smallcase)
         // to the short name (smallcase, too).
@@ -536,13 +554,16 @@ module.exports = {
             "print\/presentation": "pr",
             "banners\/icons": "bi",
             "code": "c",
+            "develop_marathon_match": "mm",
             "architecture": "a",
             "bug hunt": "bh",
+            "bug_hunt": "bh",
             "specification": "spc",
             "test suites": "ts",
             "copilot posting": "cp",
             "conceptualization": "c",
             "first2finish": "ff",
+            "first_2_finish": "ff",
             "design first2finish": "df2f",
             "application front-end design": "a",
             "default": "o",
@@ -587,5 +608,16 @@ module.exports = {
         runTestCaseFromPlugin: 'runTestCaseFromPlugin',
         setTestCasesFromPlugin: 'setTestCasesFromPlugin',
         registerFromPlugin: 'registerFromPlugin'
+    },
+    SHORTCUT_KEY_EVENT: {
+        goto: 'goto',
+        search: 'search',
+        compile: 'compile',
+        runAllTestCases: 'runAllTestCases',
+        runSingleTestCase: 'runSingleTestCase',
+        maximizeCodeArea: 'maximizeCodeArea',
+        maximizeProblemArea: 'maximizeProblemArea',
+        toggleChat: 'toggleChat',
+        toggleLeaderboard: 'toggleLeaderboard'
     }
 };

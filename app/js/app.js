@@ -123,10 +123,11 @@
  * Changes in version 1.34 (Web Arena - Show Code Image Instead of Text in Challenge Phase):
  * - Added support to the compile provider.
  *
- * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, TCSASSEMBLER
+ * Changes in version 1.35 (Web Arena Keyboard shortcuts):
+ * - Added hot keys module and related configuration.
  *
  * @author tangzx, dexy, amethystlei, ananthhh, flytoj2ee, Helstein, xjtufreeman
- * @version 1.34
+ * @version 1.35
  */
 'use strict';
 /*jshint -W097*/
@@ -138,7 +139,7 @@ require('./../../bower_components/angular/angular');
 require('./../../bower_components/angular-resource/angular-resource');
 require('./../../bower_components/angular-sanitize/angular-sanitize');
 require('./../../bower_components/angular-themer');
-require('./../../bower_components/angular-ui-angular/angular-cookies.min.js');
+require('./../../bower_components/angular-cookies/angular-cookies.min.js');
 require('./../../bower_components/angular-ui-router/release/angular-ui-router');
 require('./../../bower_components/angular-bootstrap/ui-bootstrap-tpls');
 global.CodeMirror = require('./../../bower_components/codemirror/lib/codemirror');
@@ -155,6 +156,7 @@ require('./../../bower_components/codemirror/addon/scroll/simplescrollbars');
 require('./../../bower_components/codemirror/addon/search/match-highlighter');
 require('./../../bower_components/codemirror/addon/search/searchcursor');
 require('./../../bower_components/codemirror/addon/search/search');
+require('./../../bower_components/codemirror/addon/edit/matchbrackets');
 require('./../../bower_components/angular-timer/dist/angular-timer');
 require('./../../bower_components/jquery-ui/ui/jquery-ui.js');
 require('./../../bower_components/angular-ui-calendar/src/calendar.js');
@@ -163,6 +165,7 @@ require('./../../bower_components/angulartics/dist/angulartics.min');
 require('./../../bower_components/angulartics/dist/angulartics-ga.min');
 require('./../../bower_components/angular-table/dist/ng-table.min.js');
 require('./../../bower_components/angular-facebook/lib/angular-facebook');
+require('./../../bower_components/angular-hotkeys/build/hotkeys.min.js');
 require('./../../thirdparty/jquery.qtip/jquery.qtip.min.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-transition.js');
 require('./../../thirdparty/bootstrap-notify/js/bootstrap-alert.js');
@@ -283,7 +286,7 @@ directives.ngBallons = require('./directives/ngBallons');
 // WARNING: ALL dependency injections must be explicitly declared for release js minification to work!!!!!
 // SEE: http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/ for explanation.
 
-var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook', 'ngClipboard', 'frapontillo.bootstrap-switch', 'perfect_scrollbar']);
+var main = angular.module('angularApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngSanitize', 'timer', 'ui.codemirror', 'ui.calendar', 'angular-themer', 'ngCookies', 'angulartics', 'angulartics.google.analytics', 'ngTable', 'LocalStorageModule', 'facebook', 'ngClipboard', 'frapontillo.bootstrap-switch', 'perfect_scrollbar', 'cfp.hotkeys']);
 
 ///////////////
 // FACTORIES //
@@ -383,12 +386,9 @@ main.directive('preloader', directives.preloader);
 main.directive('memberFeedback', directives.memberFeedback);
 main.directive('leaderboard', directives.leaderboard);
 main.directive('challengesAdvertiser', directives.challengesAdvertiser);
-<<<<<<< HEAD
-=======
 main.directive('ngScrollbarAutoscroll', directives.ngScrollbarAutoscroll);
 main.directive('chatSettings', directives.chatSettings);
 main.directive('toggleSetting', directives.toggleSetting);
->>>>>>> release
 main.directive('ngBallons', directives.ngBallons);
 
 //////////////////////////////////////
@@ -634,7 +634,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
     if ($cookies.themeInUse !== null && $cookies.themeInUse !== undefined) {
         themer.styles[0].key = $cookies.themeInUse;
         themer.styles[0].label = $cookies.themeLabel;
-        themer.styles[0].href = $cookies.themeHref;
+        themer.styles[0].href = [$cookies.themeHref];
     }
 
 
@@ -794,7 +794,7 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
             setLanguage : function (languageName) {
                 languageName = languageName ? languageName.toLowerCase() : '';
                 if (languageName === 'java' || languageName === 'c++' || languageName === 'c#' ||
-                        languageName === 'vb.net' || languageName === 'python') {
+                        languageName === 'vb.net' || languageName === 'python' || languageName === 'python3') {
                     $rootScope.$broadcast(helper.BROADCAST_PLUGIN_EVENT.setLanguageFromPlugin, languageName);
                 } else {
                     console.log('The language name is invalid.');
@@ -1284,7 +1284,11 @@ main.run(['$rootScope', '$state', 'sessionHelper', 'socket', '$window', 'tcTimeS
                 }
                 sessionHelper.setDeepLink(deepLink);
             }
-            $state.go(helper.STATE_NAME.AnonymousHome);
+            if (sessionHelper.getTcsso()) {
+                $state.go(helper.STATE_NAME.LoggingIn);
+            } else {
+                window.location.href = config.tcAuthUrl + "/?retUrl=" +  + encodeURIComponent(config.staticFileHost + "/index.html");
+            }
         }
         // Move user to deep link, if stored
         if (sessionHelper.getDeepLink() && $rootScope.isLoggedIn) {

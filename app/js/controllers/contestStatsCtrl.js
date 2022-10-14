@@ -171,7 +171,7 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', '
     $scope.getOpenTitle = function (problem) {
         var componentId = problem.primaryComponent.componentID,
             coder,
-            result = 'Open',
+            result = 'Unopened',
             problemStatus,
             i,
             j;
@@ -203,7 +203,7 @@ var contestStatsCtrl = ['$scope', 'appHelper', '$state', 'socket', '$timeout', '
     };
 
     // handle register response
-    socket.on(helper.EVENT_NAME.RegisteredUsersResponse, function (data) {
+    $scope.$on(helper.EVENT_NAME.RegisteredUsersResponse, function (event, data) {
         if (String(data.roundID) === String($scope.roundID)) {
             $scope.registrants = data.userListItems.length;
             $scope.registrantsList = data.userListItems;

@@ -166,7 +166,7 @@ body{
     background-image: url(../img/orange/sprite-contestManagement.png);
     background-repeat: no-repeat;
 }
-
+.practiceProblemFilter.qtip-default,
 .problemListPanel .statusIcon:before{
     background-image: url(../img/orange/sprite-practiceRoom.png);
     background-repeat: no-repeat;
@@ -283,9 +283,6 @@ body{
     height: 166px;
     padding: 16px 17px;
 }
-.hero .loginBox footer .sponsorLogo {
-    background: url(../img/orange/company_logo.png) 0 0 no-repeat;
-}
 
 /*************** basic style of page */
 /* basical stucture, title, breadcrumb and connection */
@@ -315,9 +312,6 @@ footer{
 }
 footer .line {
     border-color: #ff8a00;
-}
-footer .right .sponsorLogo {
-    background: url(../img/orange/company_logo_small.png) 100% 100% no-repeat;
 }
 footer .left>span {
     color: #ff8a00;
@@ -624,7 +618,7 @@ footer .left>span {
     border-color: #e7e7e7;
 }
 .panelCodeEditor .toolBar .testToggle:hover {color: #333;}
-.panelCodeEditor .toolBar .testPanel {
+.panelCodeEditor .testPanel {
     background: #fff;
     border-color: #e7e7e7;
 }
@@ -668,7 +662,7 @@ footer .left>span {
 .panelCodeEditor .testPanel .btnRow .btn:hover {
     background: #ffa133;
 }
-.panelCodeEditor .toolBar .active .testPanel {z-index: 20;}
+.panelCodeEditor .testPanel {z-index: 20;}
 .panelCodeEditor .paddingRow {background: #fff;}
 .panelCodeEditor .paddingRow:before {
     background: #e7e7e7;
@@ -1162,6 +1156,21 @@ footer .left>span {
     color: rgb(255, 0, 51);
     font-style: italic!important;
 }
+/**** Python3 language ****/
+.detailPage .leaderboardWrapper .colorSubmittedPython3 {
+    color: rgb(255,150,50);
+}
+.detailPage .leaderboardWrapper .colorChallengedPython3 {
+    color: rgb(255,150,50);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedPython3 {
+    color: rgb(255,150,50);
+}
+.detailPage .leaderboardWrapper .colorFailedPython3 {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
 
 .detailPage .leaderboardWrapper .colorPending {
     color: #00a900;
@@ -1521,24 +1530,12 @@ footer .left>span {
 }
 .socialButtons .challenge {
     color: rgb(49, 111, 153);
-
-/* ballonsWrap 
+}
+/* ballonsWrap
 -------------------------*/
 .ballonsWrap{
     background: #000;
-    background: rgba(0,0,0,0.7); 
-}
-.ballonsWrap .ballon:hover{
-    background: #2A6B86;
-}
-.ballonsWrap .ballon .arrow{
-    border-color: #2A6B86;
-}
-/* ballonsWrap 
--------------------------*/
-.ballonsWrap{
-    background: #000;
-    background: rgba(0,0,0,0.7); 
+    background: rgba(0,0,0,0.7);
 }
 .ballonsWrap .ballon:hover{
     background: #2A6B86;
@@ -1567,9 +1564,6 @@ footer .left>span {
     .panel-custom .tabs .altNav .dropdown-toggle:hover,
     .panel-custom .tabs .altNav .open a:hover {
         background: #ff8a00;
-    }
-    .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/orange/company_logo_small.png);
     }
 }
 /* special sizes which widget will overflow */
@@ -1663,4 +1657,42 @@ footer .left>span {
 
 .ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x{
     background-color: #ff8a00;
+}
+.shortcut-keys-list-color {
+    background-color: #636d70;
+    border: none;
+    color: grey;
+}
+.shortcut-keys-list .main-div {
+    position: absolute;
+    padding: 10px 15px;
+    border: 1px solid #EBF2F3;
+    background: white;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    height: 426px;
+}
+.shortcut-keys-list .main-div .table .item {
+    border-bottom: 1px solid #E0E0E0 !important;
+}
+.shortcut-keys-list .main-div .table .item-color {
+    color: #CF520C;
+    font-weight: 700;
+}
+.shortcut-keys-list .main-div .table .item .notes {
+    color: grey;
+    font-weight: 400;
+    width: 350px;
+}
+.panelCodeEditor .panel-heading .actionIcons .helpLink:before {
+    background-image: url(../../img/orange/help-orange.png)
+}
+/* social buttons in panel header */
+.panel-social-buttons .twitter-overview .twitter-share-button {
+    background-image: url(../img/twitter.png);
+}
+.panel-heading .share-text{
+    color: #9d9d9d;
 }

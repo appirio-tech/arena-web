@@ -28,6 +28,8 @@ set AWS_ACCESS_KEY=
 set AWS_BUCKET=
 set AWS_FOLDER=arena\md\web-v0.0.2\
 
+set GOOGLE_ANALYTICS_TRACKING_ID=
+
 :: the connection timeout to web socket
 set CONNECTION_TIMEOUT=30000
 
@@ -43,7 +45,7 @@ set LOCAL_STORAGE_EXPIRE_TIME=1800
 :: Facebook API client ID
 set FACEBOOK_API_ID=652496988181876
 
-:: Message template to post conestant status to Facebook and Twitter
+:: Message template to post contestant status to Facebook and Twitter
 set SOCIAL_STATUS_TEMPLATE=I have participated in __MATCHES__ in #topcoder arena. My current rating is __RATING__.
 :: The url of the Web Arena used in posting to Facebook and Twitter
 set SOCIAL_ARENA_URL=https://arena.topcoder.com
@@ -51,6 +53,15 @@ set SOCIAL_ARENA_URL=https://arena.topcoder.com
 set SOCIAL_ARENA_DESCRIPTION=Algorithm matches for big brains. Solve these and bragging rights are yours.
 :: The Web Arena Title used in posting to Facebook wall
 set SOCIAL_ARENA_TITLE=TopCoder Arena
+
+:: Message template to post contestant SRM results to Facebook and Twitter
+set SOCIAL_SRM_RESULTS_STATUS_TEMPLATE=I have participated in the __SRM__NAME__ match in the #topcoder Arena. I finished in __POSITION__ place, and scored __POINTS__ points.
+:: The SRM results title used in posting to Facebook wall
+set SOCIAL_SRM_RESULTS_STATUS_TITLE=__HANDLE__ shared his SRM results!
+:: The SRM results caption used in posting to Facebook wall
+set SOCIAL_SRM_RESULTS_STATUS_CAPTION=Join topcoder now!
+:: The SRM results picture url used in posting to Facebook wall
+set SOCIAL_SRM_RESULTS_STATUS_PICTURE_URL=https://dl.dropboxusercontent.com/u/14772132/arena-picture.png
 
 set TWEET_TEXT=I am about to participate in a #topcoder arena match, and I am challenging you! To register for the match click arena.topcoder.com.
 set TWEET_URL=arena.topcoder.com
@@ -84,7 +95,7 @@ set CHALLENGE_ADVERTISING_INTERVAL=5000
 :: The time interval between updates of challenge advertising data from TC-API server (in ms)
 set CHALLENGE_ADVERTISING_UPDATE=300000
 
-:: The time interval between updates of leaderboard summay (in ms) 
+:: The time interval between updates of leaderboard summay (in ms)
 set LEADERBOARD_REFRESH_TIME_GAP=1000
 
 :: The TopCoder host name
@@ -107,3 +118,8 @@ set AUTO_SAVING_CODE_INTERVAL=30000
 
 :: The number of top coders shown in Active Matches Summary widget
 set ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
+
+:: The file name of the sponsor logo images. The files must be at app/img/{theme}/
+set SPONSOR_LOGO=../img/dark/company_logo.png
+set SPONSOR_LOGO_SMALL=../img/dark/company_logo_small.png
+set SPONSOR_URL=http://www.appirio.com

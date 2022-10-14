@@ -1,32 +1,32 @@
 #!/bin/bash
 
 # Set environment variables that will be used by grunt.
-# The idea here is to still conform to 12factor.net/config even though this is 
+# The idea here is to still conform to 12factor.net/config even though this is
 # a client side app and environment variables are not accessible. These
-# values will be copied by grunt into the config.js 
+# values will be copied by grunt into the config.js
 
 export NODE_ENV=development
 
-# Currently arena-web does not use an API backend. If we do end up 
-# adding in calls from TC api we will need this value any setup where the 
+# Currently arena-web does not use an API backend. If we do end up
+# adding in calls from TC api we will need this value any setup where the
 # API is on different domain than where the client was served...
-export API_DOMAIN=http://tc.cloud.topcoder.com:8080/v2
+export API_DOMAIN=http://localhost:8081
 
 export AUTH0_CONNECTION=vm-ldap-connection
 export AUTH0_DOMAIN=sma.auth0.com
 export AUTH0_CLIENT_ID=CMaBuwSnY0Vu68PLrWatvvu3iIiGPh7t
-export CALLBACK_URL=https://tc.cloud.topcoder.com/reg2/callback.action
+export CALLBACK_URL=http://localhost:3000/reg2/callback.action
 
 # web socket server url
-export WEB_SOCKET_URL=http://tc.cloud.topcoder.com:5016
+export WEB_SOCKET_URL=http://localhost:7443
 
 # the cookie key of sso token
-export SSO_KEY=tcsso_vm
+export SSO_KEY=tcsso
 
 # the HTTP server port
 export PORT=3000
 
-export STATIC_FILE_HOST="http://arena.cloud.topcoder.com:$PORT"
+export STATIC_FILE_HOST="http://localhost:$PORT"
 
 export AWS_ACCESS_KEY_ID=
 export AWS_ACCESS_KEY=
@@ -41,14 +41,14 @@ export CONNECTION_TIMEOUT=30000
 # the member photo host
 export MEMBER_PHOTO_HOST=http://apps.topcoder.com
 
-export JWT_TOKEN=tcjwt_vm
+export JWT_TOKEN=tcjwt
 export CHAT_LENGTH=400
 export LOCAL_STORAGE_EXPIRE_TIME=1800
 
 # Facebook API client ID
 export FACEBOOK_API_ID=652496988181876
 
-# Message template to post conestant status to Facebook and Twitter
+# Message template to post contestant status to Facebook and Twitter
 export SOCIAL_STATUS_TEMPLATE='I have participated in __MATCHES__ in #topcoder arena. My current rating is __RATING__.'
 # The url of the Web Arena used in posting to Facebook and Twitter
 export SOCIAL_ARENA_URL=https://arena.topcoder.com
@@ -56,6 +56,15 @@ export SOCIAL_ARENA_URL=https://arena.topcoder.com
 export SOCIAL_ARENA_DESCRIPTION='Algorithm matches for big brains. Solve these and bragging rights are yours.'
 # The Web Arena Title used in posting to Facebook wall
 export SOCIAL_ARENA_TITLE='TopCoder Arena'
+
+# Message template to post contestant SRM results to Facebook and Twitter
+export SOCIAL_SRM_RESULTS_STATUS_TEMPLATE='I was #__POSITION__ with __POINTS__ in the __SRM__NAME__ at the #topcoder Arena'
+# The SRM results title used in posting to Facebook wall
+export SOCIAL_SRM_RESULTS_STATUS_TITLE='__HANDLE__ shared his SRM results!'
+# The SRM results caption used in posting to Facebook wall
+export SOCIAL_SRM_RESULTS_STATUS_CAPTION='Join topcoder now!'
+# The SRM results picture url used in posting to Facebook wall
+export SOCIAL_SRM_RESULTS_STATUS_PICTURE_URL='https://dl.dropboxusercontent.com/u/14772132/arena-picture.png'
 
 export TWEET_TEXT='I am about to participate in a #topcoder arena match, and I am challenging you! To register for the match click arena.topcoder.com.'
 export TWEET_URL=arena.topcoder.com
@@ -94,7 +103,7 @@ export CHALLENGE_ADVERTISING_UPDATE=300000
 export LEADERBOARD_REFRESH_TIME_GAP=1000
 
 # The TopCoder host name
-export TC_HOSTNAME=http://www.topcoder.com
+export TC_HOSTNAME=http://www.topcoder-dev.com
 
 # The max live leaderboard number
 export MAX_LIVE_LEADERBOARD=200
@@ -112,3 +121,8 @@ export AUTO_SAVING_CODE_INTERVAL=30000
 
 # The number of top coders shown in Active Matches Summary widget
 export ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
+
+# The file name of the sponsor logo images. The files must be at app/img/{theme}/
+export SPONSOR_LOGO=../img/dark/company_logo.png
+export SPONSOR_LOGO_SMALL=../img/dark/company_logo_small.png
+export SPONSOR_URL=http://www.appirio.com

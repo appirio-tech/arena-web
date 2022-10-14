@@ -65,8 +65,18 @@
  * Changes in version 1.16 (Replace ng-scrollbar with prefect-scrollbar):
  * - Remove CSS references for ng-scrollbar
  *
- * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, xjtufreeman
- * @version 1.16
+ * Changes in version 1.17 (Web Arena Keyboard shortcuts):
+ * - Added hot key css files.
+ *
+ * Changes in version 1.18 (Module Assembly - Web Arena - Share SRM Results Socially):
+ * - Added SOCIAL_SRM_RESULTS_STATUS_TEMPLATE settings.
+ * - Added SOCIAL_SRM_RESULTS_STATUS_TITLE settings.
+ * - Added SOCIAL_SRM_RESULTS_STATUS_CAPTION settings.
+ * - Added SOCIAL_SRM_RESULTS_STATUS_PICTURE_URL settings.
+ *
+ * @author amethystlei, flytoj2ee, dexy, shubhendus, Helstein, xjtufreeman, MonicaMuranyi
+
+ * @version 1.18
  */
 'use strict';
 /*global module, process*/
@@ -113,6 +123,10 @@ module.exports = function (grunt) {
                         { match : 'LOCAL_STORAGE_EXPIRE_TIME', replacement: process.env.LOCAL_STORAGE_EXPIRE_TIME },
                         { match : 'FACEBOOK_API_ID', replacement: process.env.FACEBOOK_API_ID },
                         { match : 'SOCIAL_STATUS_TEMPLATE', replacement: process.env.SOCIAL_STATUS_TEMPLATE },
+                        { match : 'SOCIAL_SRM_RESULTS_STATUS_TEMPLATE', replacement: process.env.SOCIAL_SRM_RESULTS_STATUS_TEMPLATE },
+                        { match : 'SOCIAL_SRM_RESULTS_STATUS_TITLE', replacement: process.env.SOCIAL_SRM_RESULTS_STATUS_TITLE },
+                        { match : 'SOCIAL_SRM_RESULTS_STATUS_CAPTION', replacement: process.env.SOCIAL_SRM_RESULTS_STATUS_CAPTION },
+                        { match : 'SOCIAL_SRM_RESULTS_STATUS_PICTURE_URL', replacement: process.env.SOCIAL_SRM_RESULTS_STATUS_PICTURE_URL },
                         { match : 'SOCIAL_ARENA_URL', replacement: process.env.SOCIAL_ARENA_URL },
                         { match : 'SOCIAL_ARENA_DESCRIPTION', replacement: process.env.SOCIAL_ARENA_DESCRIPTION },
                         { match : 'SOCIAL_ARENA_TITLE', replacement: process.env.SOCIAL_ARENA_TITLE },
@@ -130,6 +144,7 @@ module.exports = function (grunt) {
                         { match : 'KEYBOARD_SHORTCUT', replacement: process.env.KEYBOARD_SHORTCUT },
                         { match : 'CHAT_ICON_DISAPPEAR_TIME', replacement: process.env.CHAT_ICON_DISAPPEAR_TIME },
                         { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
+                        { match : 'TC_AUTH_URL', replacement: process.env.TC_AUTH_URL },
                         { match : 'MAX_LIVE_LEADERBOARD', replacement: process.env.MAX_LIVE_LEADERBOARD },
                         { match : 'AUTO_SAVING_CODE_INTERVAL', replacement: process.env.AUTO_SAVING_CODE_INTERVAL },
                         { match : 'LEADERBOARD_REFRESH_TIME_GAP', replacement: process.env.LEADERBOARD_REFRESH_TIME_GAP },
@@ -144,12 +159,25 @@ module.exports = function (grunt) {
                 options: {
                     patterns: [
                         { match : 'STATIC_FILE_HOST', replacement: process.env.STATIC_FILE_HOST },
-                        { match : 'GOOGLE_ANALYTICS_TRACKING_ID', replacement: process.env.GOOGLE_ANALYTICS_TRACKING_ID }
+                        { match : 'TC_AUTH_URL', replacement: process.env.TC_AUTH_URL },
+                        { match : 'GOOGLE_ANALYTICS_TRACKING_ID', replacement: process.env.GOOGLE_ANALYTICS_TRACKING_ID },
+                        { match : 'SPONSOR_URL', replacement: process.env.SPONSOR_URL }
                     ]
                 },
                 files: [
                     { expand: true, cwd: 'app/', src: '**/*.html', dest: 'build/' },
                     { expand: true, cwd: 'app/data', src: '**/*.json', dest: 'build/data' }
+                ]
+            },
+            sponsor: {
+                options: {
+                    patterns: [
+                    { match : 'SPONSOR_LOGO_SMALL', replacement: process.env.SPONSOR_LOGO_SMALL },
+                    { match : 'SPONSOR_LOGO', replacement: process.env.SPONSOR_LOGO }
+                    ]
+                },
+                files: [
+                    { src: 'build/css/bundle.css', dest: 'build/css/bundle.css' }
                 ]
             }
         },
@@ -170,6 +198,7 @@ module.exports = function (grunt) {
                     'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                     'bower_components/fullcalendar/fullcalendar.css',
                     'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                    'bower_components/angular-hotkeys/build/hotkeys.min.css',
                     'thirdparty/jquery.qtip/jquery.qtip.min.css',
                     'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                     'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
@@ -191,6 +220,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                        'bower_components/angular-hotkeys/build/hotkeys.min.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                         'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
@@ -211,6 +241,7 @@ module.exports = function (grunt) {
                         'bower_components/codemirror/addon/scroll/simplescrollbars.css',
                         'bower_components/fullcalendar/fullcalendar.css',
                         'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+                        'bower_components/angular-hotkeys/build/hotkeys.min.css',
                         'thirdparty/jquery.qtip/jquery.qtip.min.css',
                         'thirdparty/bootstrap-notify/css/bootstrap-notify.css',
                         'thirdparty/perfect-scrollbar/perfect-scrollbar.css',
@@ -304,8 +335,8 @@ module.exports = function (grunt) {
     grunt.loadTasks('./new_relic/server_tasks');
 
     // The default tasks to run when you type: grunt
-    grunt.registerTask('default', ['servernewrelic', 'newrelic', 'clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
-    grunt.registerTask('build', ['servernewrelic', 'newrelic', 'clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn']);
+    grunt.registerTask('default', ['servernewrelic', 'newrelic', 'clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn', 'replace:sponsor']);
+    grunt.registerTask('build', ['servernewrelic', 'newrelic', 'clean:build', 'replace:build', 'browserify:build', 'cssmin:dark', 'cssmin:light', 'cssmin:orange', 'copy:build', 'replace:cdn', 'replace:sponsor']);
     //release tasks work out of build directory - build must be run first!
     grunt.registerTask('release', ['clean:release', 'uglify:release', 'copy:release']);
     grunt.registerTask('heroku', ['build']);

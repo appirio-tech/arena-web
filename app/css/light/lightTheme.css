@@ -263,9 +263,6 @@ body{
     height: 166px;
     padding: 16px 17px;
 }
-.hero .loginBox footer .sponsorLogo {
-    background: url(../img/light/company_logo.png) 0 0 no-repeat;
-}
 
 /*************** dashboard page */
 /* basical stucture, title, breadcrumb and connection */
@@ -288,9 +285,6 @@ footer{
 }
 footer .line {
     border-color: #c5d9e8;
-}
-footer .right .sponsorLogo {
-    background: url(../img/light/company_logo_small.png) 100% 100% no-repeat;
 }
 
 /********************* modal */
@@ -585,7 +579,7 @@ footer .right .sponsorLogo {
     border-color: #b7c9d7;
 }
 .panelCodeEditor .toolBar .testToggle:hover {color: #0bbbe7;}
-.panelCodeEditor .toolBar .testPanel {
+.panelCodeEditor .testPanel {
     background: #fff;
     background: rgba(255, 255, 255, 0.98);
     border-color: #b7c9d7;
@@ -629,7 +623,7 @@ footer .right .sponsorLogo {
 .panelCodeEditor .testPanel .btnRow .btn:hover {
     background: #3aadda;
 }
-.panelCodeEditor .toolBar .active .testPanel {z-index: 22;}
+.panelCodeEditor .testPanel {z-index: 22;}
 .panelCodeEditor .paddingRow {background: #eef2f5; border-top: 1px solid #b7c9d7;}
 .panelCodeEditor .paddingRow:before {
     background: #eef2f5;
@@ -1065,6 +1059,21 @@ footer .right .sponsorLogo {
     color: rgb(255, 0, 51);
     font-style: italic!important;
 }
+/**** Python3 language ****/
+.detailPage .leaderboardWrapper .colorSubmittedPython3 {
+    color: rgb(255,150,50);
+}
+.detailPage .leaderboardWrapper .colorChallengedPython3 {
+    color: rgb(255,150,50);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedPython3 {
+    color: rgb(255,150,50);
+}
+.detailPage .leaderboardWrapper .colorFailedPython3 {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
 
 .detailPage .leaderboardWrapper .colorPending {
     color: #00a900;
@@ -1086,9 +1095,6 @@ footer .right .sponsorLogo {
 }
 .contestManagement .panel-heading {
     color: #fff;
-}
-.contestManagement .panel-body {
-    border: 1px solid #e9e6e6;
 }
 .contestManagement .panel-body .nav {
     border-color: #75a5c8;
@@ -1385,21 +1391,7 @@ footer .right .sponsorLogo {
 }
 .socialButtons .challenge {
     color: rgb(48, 110, 157);
-
-/* ballonsWrap 
--------------------------*/
-.ballonsWrap{
-    background: #000;
-    background: rgba(0,0,0,0.7);     
-    top: -1px;  
 }
-.ballonsWrap .ballon:hover{
-    background: #286985;
-}
-.ballonsWrap .ballon .arrow{
-    border-color: #286985;
-}
-
 /* ballonsWrap 
 -------------------------*/
 .ballonsWrap{
@@ -1441,12 +1433,6 @@ footer .right .sponsorLogo {
     .header .timeItem,
     .header .navbar-right .userInfo {
         background-image: url(../img/black-header.png);
-    }
-}
-/* boostrap extra small devices */
-@media only screen and (max-width: 767px) {
-    .hero .loginBox footer .sponsorLogo {
-        background-image: url(../img/light/company_logo_small.png);
     }
 }
 /* special sizes which widget will overflow */
@@ -1507,6 +1493,9 @@ footer .right .sponsorLogo {
 .preloader-indicator>img {
     background-image: url(../img/light/preloader.gif);
 }
+.practiceProblemList .preloader-indicator {
+    color: #000000;
+}
 /*
 *
 * Styles for chat area settings
@@ -1543,4 +1532,49 @@ footer .right .sponsorLogo {
 }
 .ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {
     background-color: #0999d1;
+}
+
+.shortcut-keys-list-color {
+    background-color: #636d70;
+    border: none;
+    color: grey;
+}
+.shortcut-keys-list .main-div {
+    position: absolute;
+    padding: 10px 15px;
+    border: 1px solid #EBF2F3;
+    background: white;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    height: 426px;
+}
+.shortcut-keys-list .main-div .table .item {
+    border-bottom: 1px solid #E0E0E0 !important;
+}
+.shortcut-keys-list .main-div .table .item-color {
+    color: #1F8FE0;
+    font-weight: 700;
+}
+.shortcut-keys-list .main-div .table .item .notes {
+    color: grey;
+    font-weight: 400;
+    width: 350px;
+}
+.panelCodeEditor .panel-heading .actionIcons .helpLink:before {
+    background-image: url(../../img/light/help-light.png)
+}
+/* social buttons in panel header */
+.panel-social-buttons .twitter-overview .twitter-share-button {
+    background-image: url(../img/light/twitter.png);
+}
+.panel-heading .share-text{
+    color: #c8dbe9;
+}
+.body .panel-social-buttons .tooltip.bottom .tooltip-arrow{
+    border-bottom-color: #75a9ff;
+}
+.body .panel-social-buttons .tooltip-inner{
+    background-color: #75a9ff;
 }

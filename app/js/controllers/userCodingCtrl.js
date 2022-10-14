@@ -71,14 +71,18 @@
  * Changes in version 1.20 (Web Arena - Show Code Image Instead of Text in Challenge Phase):
  * - Added function to show the generated code image in the challenge phase if the logged user is not writer
  *
+ * Changes in version 1.21 (Web Arena Keyboard shortcuts)
+ * - Added shortcut key support in coding editor.
+ *
  * @author dexy, amethystlei, savon_cn, TCSASSEMBLER
- * @version 1.20
+ * @version 1.21
  */
 /*jshint -W097*/
 /*jshint strict:false*/
 'use strict';
 /*global module, angular, document, $, require, console, startTimer*/
 /*jslint browser:true */
+/*jslint unparam: true*/
 
 /**
  * The helper.
@@ -93,8 +97,8 @@ var config = require('../config');
  *
  * @type {*[]}
  */
-var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'tcTimeService', 'keyboardManager', 'appHelper', '$http',
-    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, tcTimeService, keyboardManager, appHelper, $http) {
+var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window', '$timeout', '$state', 'tcTimeService', 'keyboardManager', 'appHelper', '$http', 'hotkeys',
+    function ($scope, $stateParams, $rootScope, socket, $window, $timeout, $state, tcTimeService, keyboardManager, appHelper, $http, hotkeys) {
         $rootScope.$broadcast('hideFeedback');
         // shared between children scopes
         $scope.sharedObj = {};
@@ -109,22 +113,24 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         $scope.divisionID = Number($stateParams.divisionId);
         $scope.problemLoaded = false;
         $scope.hasExampleTest = false;
+        $scope.showShortcutKeysList = false;
 
         $scope.editorialLink = '';
-        if ($scope.currentStateName() === 'user.practiceCode') {
-            $http.get(config.apiDomain + '/data/srm/problems/' + $scope.problemID + '/rounds').success(function (data) {
-                if (data && data.rounds) {
-                    angular.forEach(data.rounds, function (round) {
-                        if (round && round.editorialLink && round.editorialLink.trim() !== ''
-                                && $scope.editorialLink.trim() === '') {
-                            $scope.editorialLink = round.editorialLink.trim();
-                        }
-                    });
-                }
-            }).error(function () {
-                $scope.editorialLink = '';
-            });
-        }
+        // v2 tc-api always return empty editorialLink, no need this call
+        // if ($scope.currentStateName() === 'user.practiceCode') {
+        //     $http.get(config.apiDomain + '/data/srm/problems/' + $scope.problemID + '/rounds').success(function (data) {
+        //         if (data && data.rounds) {
+        //             angular.forEach(data.rounds, function (round) {
+        //                 if (round && round.editorialLink && round.editorialLink.trim() !== ''
+        //                         && $scope.editorialLink.trim() === '') {
+        //                     $scope.editorialLink = round.editorialLink.trim();
+        //                 }
+        //             });
+        //         }
+        //     }).error(function () {
+        //         $scope.editorialLink = '';
+        //     });
+        // }
 
         $rootScope.previousStateName = $scope.currentStateName();
 
@@ -144,7 +150,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
 
         $scope.$watch('problemAreaHeightRatio', function () {
             $timeout(function () {
-                $rootScope.$broadcast('problem-loaded');
+                $rootScope.$broadcast('problem-loaded', {problemAreaResized: true});
                 if ($scope.cmElem) {
                     $scope.cmElem.CodeMirror.refresh();
                 }
@@ -193,7 +199,21 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
             }
             return roundData.phaseData.phaseType === helper.PHASE_TYPE_ID.ChallengePhase;
         };
-
+        /**
+         * Checks whether coding phase ended
+         * @returns {boolean}
+         */
+        $scope.hasCodingPhaseEnded = function () {
+            var phase, seconds = -1;
+            if ($scope.roundData && $scope.roundData[$scope.roundID] && $scope.roundData[$scope.roundID].phaseData) {
+                phase = $scope.roundData[$scope.roundID].phaseData;
+                if (phase.phaseType === helper.PHASE_TYPE_ID.CodingPhase) {
+                    // how many seconds between now and the phase end time
+                    seconds = (phase.endTime - tcTimeService.getTime()) / 1000;
+                }
+            }
+            return seconds < 1;
+        };
 
         /*jslint unparam: true*/
         // handle phase data response
@@ -202,7 +222,6 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 startTimer();
             }
         });
-        /*jslint unparam: false*/
 
         /**
          * Send notification when problem data is ready.
@@ -301,7 +320,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 ret += ')';
                 ret += ' As ';
                 ret += $scope.problem.allReturnType.typeMapping[langID];
-            } else if (langID === 6) {
+            } else if (langID === 6 || langID === 8) {
                 // python style
                 ret += 'def ';
                 ret += $scope.problem.methodName;
@@ -339,7 +358,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         }
 
         // get problem response
-        socket.on(helper.EVENT_NAME.GetProblemResponse, function (data) {
+        $scope.$on(helper.EVENT_NAME.GetProblemResponse, function (event, data) {
             appHelper.triggerPluginEditorEvent(helper.PLUGIN_EVENT.problemOpened, data);
             var component = data.problem.problemComponents[0];
             if (component.componentId !== $scope.componentID) {
@@ -395,7 +414,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
         });
 
         // handle open component response
-        socket.on(helper.EVENT_NAME.OpenComponentResponse, function (data) {
+        $scope.$on(helper.EVENT_NAME.OpenComponentResponse, function (event, data) {
             // make sure the response is for the request problem
             if (data.componentID !== $scope.componentID) {
                 return;
@@ -702,6 +721,122 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 }
                 $scope.$broadcast('rebuild:chatboard');
             }, 100);
+        };
+
+
+        $scope.isMac = function () {
+            return $window.navigator.appVersion.indexOf("Mac") !== -1;
+        };
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+y' : 'ctrl+alt+y'],
+            description: 'Maximize code area',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.maximizeCodeArea, {});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+t' : 'ctrl+alt+t'],
+            description: 'Maximize problem statement area',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.maximizeProblemArea, {});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+a' : 'ctrl+alt+a'],
+            description: 'Toggle chat minimized / expanded',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.toggleChat, {});
+            }
+        });
+
+        hotkeys.add({
+            combo: [$scope.isMac() ? 'command+alt+l' : 'ctrl+alt+l'],
+            description: 'Toggle leaderboard minimized / expanded',
+            callback: function () {
+                $rootScope.$broadcast(helper.SHORTCUT_KEY_EVENT.toggleLeaderboard, {});
+            }
+        });
+
+        // the maximizeCodeArea shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.maximizeCodeArea, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+            $scope.problemAreaHeightRatio = 0;
+        });
+
+        // the maximizeProblemArea shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.maximizeProblemArea, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+            $scope.problemAreaHeightRatio = 1;
+        });
+
+        // the toggleChat shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.toggleChat, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+            if ($scope.currentStateName() !== helper.STATE_NAME.PracticeCode) {
+                $scope.closePanel('leaderboard');
+                if ($scope.windowStatus.chatArea === 'min') {
+                    $scope.openPanel('chatArea');
+                } else if ($scope.windowStatus.chatArea === 'normal') {
+                    $scope.expandPanel('chatArea');
+                } else {
+                    $scope.closePanel('chatArea');
+                }
+            }
+        });
+
+        $scope.isPracticeCodeRoom = function () {
+            return $scope.currentStateName() === helper.STATE_NAME.PracticeCode;
+        };
+
+        // the toggleLeaderboard shortcut key event
+        $scope.$on(helper.SHORTCUT_KEY_EVENT.toggleLeaderboard, function (event, data) {
+            if ($scope.showShortcutKeysList) {
+                return;
+            }
+            if ($scope.currentStateName() !== helper.STATE_NAME.PracticeCode) {
+                $scope.closePanel('chatArea');
+                if ($scope.windowStatus.leaderboard === 'min') {
+                    $scope.openPanel('leaderboard');
+                } else if ($scope.windowStatus.leaderboard === 'normal') {
+                    $scope.expandPanel('leaderboard');
+                } else {
+                    $scope.closePanel('leaderboard');
+                }
+            }
+        });
+
+        hotkeys.del('?');
+
+        hotkeys.add({
+            combo: '?',
+            description: 'Show / Hide the shortcut keys list',
+            callback: function () {
+                $scope.showShortcutKeysList = !$scope.showShortcutKeysList;
+            }
+        });
+
+        hotkeys.add({
+            combo: 'esc',
+            description: 'Hide the shortcut keys list',
+            callback: function () {
+                $scope.showShortcutKeysList = false;
+            }
+        });
+
+        /**
+         * Close the shortcut key list.
+         */
+        $scope.closeShortcutList = function () {
+            $scope.showShortcutKeysList = !$scope.showShortcutKeysList;
         };
     }];
 

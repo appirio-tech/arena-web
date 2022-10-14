@@ -4,7 +4,7 @@
 			<div class="challenge-left-part">
 				<span class="challenge-icon" data-ng-style="{'background': challenge.color}">{{challenge.iconText}}</span>
 				<span class="challenge-prize">{{challenge.prize}}</span>
-				<a class="challenge-title" href="" data-ng-href="{{challenge.link}}" data-ng-style="{'color': challenge.color}">{{challenge.title}}</a>
+				<a class="challenge-title" href="" target="_blank" data-ng-href="{{challenge.link}}" data-ng-style="{'color': challenge.color}">{{challenge.title}}</a>
 			</div>
 			<div class="challenge-right-part">
 				<timer data-end-time="challenge.end.getTime()" class="challenge-timer" data-finish-callback="removeAdvertisement($index)">

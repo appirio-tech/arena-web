@@ -68,8 +68,11 @@
  * Changes in version 1.15 (Replace ng-scrollbar with prefect-scrollbar):
  * - Added timeout of 10ms to rebuild:challengeTable event, so that the perfect-scrollbar work fine in contest detail
  *
- * @author amethystlei, dexy, ananthhh, flytoj2ee, savon_cn, xjtufreeman
- * @version 1.15
+ * Changes in version 1.16 (Module Assembly - Web Arena - Share SRM Results Socially):
+ * - Added logic to retrieve division summary needed for sharing SRM results.
+ *
+ * @author amethystlei, dexy, ananthhh, flytoj2ee, savon_cn, xjtufreeman, MonicaMuranyi
+ * @version 1.16
  */
 'use strict';
 /*jshint -W097*/
@@ -724,6 +727,11 @@ var userContestDetailCtrl = ['$scope', '$stateParams', '$rootScope', '$location'
         $rootScope.viewCode($scope.contest.phaseData.phaseType, $stateParams.contestId, $scope.divisionID,
                             componentId, roomID, coder.userName, 'details');
     };
+
+    // Retrieve the division summary (needed to get division places to be used in social sharing).
+    if (!$rootScope.lastDivSummary) {
+        $rootScope.getDivSummary($scope.contest.roundID, $scope.divisionID);
+    }
 
     // Watch leaderboard display options changes.
     $scope.$watch(

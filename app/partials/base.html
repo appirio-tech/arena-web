@@ -59,9 +59,10 @@
                             <a class="btn" data-ng-click="applyTheme()">APPLY</a>
                           </div>
                         </li>
-                        <li data-ng-class="{ active: $state.includes('user.contestManagement') }" data-ng-show="userInfo() && (userInfo().admin === true || userInfo().admin4Web === true)">
+                        <!-- Hide admin page -->
+                        <!-- <li data-ng-class="{ active: $state.includes('user.contestManagement') }" data-ng-show="userInfo() && (userInfo().admin === true || userInfo().admin4Web === true)">
                           <a data-ui-sref="user.contestManagement" class="icon iconCM">MATCH MANAGEMENT</a><a data-ui-sref="user.contestManagement" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Match Management"></a>
-                        </li>
+                        </li> -->
                         <li data-ng-class="{ active: $state.includes('user.practiceProblemList') }">
                             <a data-ui-sref="user.practiceProblemList" class="icon iconPP">PRACTICE PROBLEMS</a><a data-ui-sref="user.practiceProblemList" class="visible-lg visible-md tip" data-tooltip-popup-delay='100' data-tooltip-placement="bottom" data-tooltip="Practice Problems"></a>
                         </li>
@@ -96,7 +97,7 @@
                     <span>OUR SPONSOR</span>
                 </div>
                 <div class="right col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <a href="http://www.appirio.com" target="_blank" class="sponsorLogo"></a>
+                    <a href="@@SPONSOR_URL" target="_blank" class="sponsorLogo"></a>
                 </div>
             </div>
         </div>

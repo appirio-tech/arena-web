@@ -70,7 +70,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
     };
 
     // Handle the BatchTestResponse event.
-    socket.on(helper.EVENT_NAME.BatchTestResponse, function (data) {
+    $scope.$on(helper.EVENT_NAME.BatchTestResponse, function (event, data) {
         var i, j, reportItem, params;
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
@@ -234,6 +234,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
         $scope.allTestCases.push(testCase.params);
         $scope.allTestCaseNames.push(testCase.name);
         $scope.argsList = [];
+        $rootScope.currentModal = undefined;
 
         populateTestCases();
     };
@@ -246,6 +247,7 @@ var testPanelCtrl = ['$rootScope', '$scope', 'socket', '$timeout', 'appHelper', 
      * run checked test cases
      */
     $scope.runCheckedTests = function () {
+        $rootScope.currentModal = undefined;
         $scope.report = [];
         $scope.allTestCases = [];
         $scope.allTestCaseNames = [];
