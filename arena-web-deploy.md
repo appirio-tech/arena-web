@@ -13,7 +13,7 @@ Config env are definied in `config/tc-dev`, pay attention to following values:
 | STATIC_FILE_HOST | This is url where the arena-web exposed to external.         | https://arena.topcoder-dev.com          | https://arena.topcoder.com          |
 | TC_AUTH_URL      | TC auth url                                                  | https://accounts-auth0.topcoder-dev.com | https://accounts-auth0.topcoder.com |
 | WEB_SOCKET_URL   | Arena WebSocket url. This should map to 5016 port of arena-app docker, e.g by using load balancer. | https://arenaws.topcoder-dev.com        | https://arenaws.topcoder.com        |
-| API_DOMAIN       | Endpoint to TC api service.                                  | https://api.topcoder-dev.com/v2         | https://api.topcoder.com/v2         |
+| API_DOMAIN       | Endpoint to TC api service.                                  | https://api.topcoder-dev.com            | https://api.topcoder.com            |
 | TC_HOSTNAME      | TC host                                                      | https://www.topcoder-dev.com            | https://www.topcoder.com            |
 
 ### Build
