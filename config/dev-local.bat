@@ -99,7 +99,7 @@ set CHALLENGE_ADVERTISING_UPDATE=300000
 set LEADERBOARD_REFRESH_TIME_GAP=1000
 
 :: The TopCoder host name
-set TC_HOSTNAME=http://www.topcoder.com
+set TC_HOSTNAME=https://www.topcoder.com
 
 :: The max live leaderboard number
 set MAX_LIVE_LEADERBOARD=200
@@ -122,4 +122,8 @@ set ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
 :: The file name of the sponsor logo images. The files must be at app/img/{theme}/
 set SPONSOR_LOGO=../img/dark/company_logo.png
 set SPONSOR_LOGO_SMALL=../img/dark/company_logo_small.png
-set SPONSOR_URL=http://www.appirio.com
+set SPONSOR_LOGO_LIGHT=../img/light/company_logo.png
+set SPONSOR_LOGO_SMALL_LIGHT=../img/light/company_logo_small.png
+set SPONSOR_LOGO_ORANGE=../img/orange/company_logo.png
+set SPONSOR_LOGO_SMALL_ORANGE=../img/orange/company_logo_small.png
+set SPONSOR_URL=https://www.appirio.com

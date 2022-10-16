@@ -627,7 +627,6 @@ body a {cursor: pointer;}
     width: 0;
     overflow: hidden;
     margin-left: 74px;
-    background: url(@@SPONSOR_LOGO) 0 0 no-repeat;
 }
 .hero .loginBox footer>p:last-child {
     margin-top: 16px;
@@ -1192,7 +1191,6 @@ footer .right .sponsorLogo {
     padding-top: 23px;
     padding-right: 90px;
     padding-left: 20px;
-    background: url(@@SPONSOR_LOGO_SMALL) 100% 100% no-repeat;
 }
 footer .right>span:nth-child(2) {
     font-weight: 700;/*bold*/
@@ -8578,7 +8576,6 @@ table thead .sort.desc{
     .hero .loginBox footer .sponsorLogo {
         margin: 0 auto;
         padding: 23px 188px 0 0;
-        background-image: url(@@SPONSOR_LOGO_SMALL);
     }
     .hero .text p > span {width: auto; min-width: 250px; }
     .hero .loginBox .errorMessage {left: 50%; margin-left: -139px; }

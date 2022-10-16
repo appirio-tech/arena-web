@@ -130,4 +130,8 @@ export ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
 # The file name of the sponsor logo images. The files must be at app/img/{theme}/
 export SPONSOR_LOGO=../img/dark/company_logo.png
 export SPONSOR_LOGO_SMALL=../img/dark/company_logo_small.png
-export SPONSOR_URL=http://www.appirio.com
+export SPONSOR_LOGO_LIGHT=../img/light/company_logo.png
+export SPONSOR_LOGO_SMALL_LIGHT=../img/light/company_logo_small.png
+export SPONSOR_LOGO_ORANGE=../img/orange/company_logo.png
+export SPONSOR_LOGO_SMALL_ORANGE=../img/orange/company_logo_small.png
+export SPONSOR_URL=https://www.appirio.com

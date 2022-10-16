@@ -283,6 +283,9 @@ body{
     height: 166px;
     padding: 16px 17px;
 }
+.hero .loginBox footer .sponsorLogo {
+    background: url(@@SPONSOR_LOGO_ORANGE) 0 0 no-repeat;
+}
 
 /*************** basic style of page */
 /* basical stucture, title, breadcrumb and connection */
@@ -315,6 +318,9 @@ footer .line {
 }
 footer .left>span {
     color: #ff8a00;
+}
+footer .right .sponsorLogo {
+    background: url(@@SPONSOR_LOGO_SMALL_ORANGE) 100% 100% no-repeat;
 }
 
 /********************* modal */
@@ -1554,6 +1560,12 @@ footer .left>span {
     .header .timeItem,
     .header .navbar-right .userInfo {
         background-image: url(../img/black-header.png);
+    }
+}
+/* boostrap extra small devices */
+@media only screen and (max-width: 767px) {
+    .hero .loginBox footer .sponsorLogo {
+        background-image: url(@@SPONSOR_LOGO_SMALL_ORANGE);
     }
 }
 /* boostrap extra small devices */

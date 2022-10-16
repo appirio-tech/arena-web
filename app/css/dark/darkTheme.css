@@ -253,6 +253,9 @@ body{
     height: 164px;
     padding: 15px 17px;
 }
+.hero .loginBox footer .sponsorLogo {
+    background: url(@@SPONSOR_LOGO) 0 0 no-repeat;
+}
 
 /*************** dashboard page */
 /* basical stucture, title, breadcrumb and connection */
@@ -270,6 +273,9 @@ footer{
 }
 footer .line {
     border-color: #14191a;
+}
+footer .right .sponsorLogo {
+    background: url(@@SPONSOR_LOGO_SMALL) 100% 100% no-repeat;
 }
 
 /********************* modal */
@@ -1262,6 +1268,12 @@ footer .line {
     .header .timeItem,
     .header .navbar-right .userInfo {
         background-image: url(../img/black-header.png);
+    }
+}
+/* boostrap extra small devices */
+@media only screen and (max-width: 767px) {
+    .hero .loginBox footer .sponsorLogo {
+        background-image: url(@@SPONSOR_LOGO_SMALL);
     }
 }
 /* special sizes which widget will overflow */

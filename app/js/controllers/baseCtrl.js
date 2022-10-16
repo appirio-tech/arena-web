@@ -629,7 +629,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         $scope.openModal({
             title: helper.POP_UP_TITLES.CoderInfo,
             message: " ",
-            coderInfoLink: 'http://www.topcoder.com/member-profile/' + coderInfoUsername + '/algorithm/',
+            coderInfoLink: config.tcHostName + '/members/' + coderInfoUsername,
             enableClose: true
         }, null, null, 'partials/user.chat.area.coderinfo.html');
         modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
@@ -779,7 +779,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         themer.styles.pop();
         var i = 0;
         for (i = 0; i < data.themes.length; i += 1) {
-            themer.styles.push({key: data.themes[i].key, label: data.themes[i].label, href: [data.themes[i].href]});
+            themer.styles.push(data.themes[i]);
         }
         themer.setSelected($cookies.themeInUse);
     });
