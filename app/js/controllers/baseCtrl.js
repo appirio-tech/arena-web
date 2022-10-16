@@ -151,7 +151,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
          *
          * @type {*[]}
          */
-        popupModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', 'cancel', '$timeout', function ($scope, $modalInstance, data, ok, cancel, $timeout) {
+        popupModalCtrl = ['$scope', '$modalInstance', 'data', 'ok', 'cancel', 'open', '$timeout', function ($scope, $modalInstance, data, ok, cancel, open, $timeout) {
             $scope.title = data.title;
             $scope.message = data.message.replace(/(\r\n|\n|\r)/gm, "<br/>");
             $scope.buttons = data.buttons && data.buttons.length > 0 ? data.buttons : ['Close'];
@@ -213,6 +213,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                     $scope.$broadcast('rebuild:codeInfo');
                     $scope.$broadcast('rebuild:registrantsList');
                 });
+                if (angular.isFunction(open)) {
+                    open();
+                }
             });
 
             /**
@@ -321,7 +324,6 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         },
         selTheme,
         waitingCoderInfo = false,
-        coderInfoUsername = '',
         modalTimeoutPromise = null,
         phaseChangeRoundId,
         /**
@@ -544,8 +546,10 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
      * @param data the data
      * @param handle the handler
      * @param finish the finish function
+     * @param templateUrl the template url
+     * @param open the open function
      */
-    $scope.openModal = function (data, handle, finish, templateUrl) {
+    $scope.openModal = function (data, handle, finish, templateUrl, open) {
         var cssName = '';
         if ($rootScope.currentModal) {
             $rootScope.currentModal.dismiss('cancel');
@@ -587,6 +591,9 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
                         }
                         $rootScope.currentModal = undefined;
                     };
+                },
+                open: function() {
+                    return open;
                 }
             }
         });
@@ -608,6 +615,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         });
         modalTimeoutPromise = null;
         waitingCoderInfo = false;
+        $scope.numCoderRequest = 0;
     }
 
     /**
@@ -621,7 +629,6 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
             return;
         }
         waitingCoderInfo = true;
-        coderInfoUsername = name;
         $scope.numCoderRequest = 1;
         if (modalTimeoutPromise) {
             $timeout.cancel(modalTimeoutPromise);
@@ -629,11 +636,12 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         $scope.openModal({
             title: helper.POP_UP_TITLES.CoderInfo,
             message: " ",
-            coderInfoLink: 'http://www.topcoder.com/member-profile/' + coderInfoUsername + '/algorithm/',
+            coderInfoLink: config.tcHostName + '/members/' + name,
             enableClose: true
-        }, null, null, 'partials/user.chat.area.coderinfo.html');
+        }, null, null, 'partials/user.chat.area.coderinfo.html', function() {
+            socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType});
+        });
         modalTimeoutPromise = $timeout(setTimeoutModal, helper.REQUEST_TIME_OUT);
-        socket.emit(helper.EVENT_NAME.CoderInfoRequest, {coder: name, userType: userType});
     };
     /*jslint unparam: true*/
     $scope.$on(helper.EVENT_NAME.ForcedLogoutResponse, function (event, data) {
@@ -742,6 +750,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         } else if (data.title === helper.POP_UP_TITLES.CoderInfo) {
             if (modalTimeoutPromise) {
                 $timeout.cancel(modalTimeoutPromise);
+                modalTimeoutPromise = null;
             }
             waitingCoderInfo = false;
             $scope.numCoderRequest = 0;
@@ -779,7 +788,7 @@ var baseCtrl = ['$rootScope', '$scope', '$http', 'appHelper', 'notificationServi
         themer.styles.pop();
         var i = 0;
         for (i = 0; i < data.themes.length; i += 1) {
-            themer.styles.push({key: data.themes[i].key, label: data.themes[i].label, href: [data.themes[i].href]});
+            themer.styles.push(data.themes[i]);
         }
         themer.setSelected($cookies.themeInUse);
     });

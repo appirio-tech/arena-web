@@ -103,7 +103,7 @@ export CHALLENGE_ADVERTISING_UPDATE=300000
 export LEADERBOARD_REFRESH_TIME_GAP=1000
 
 # The TopCoder host name
-export TC_HOSTNAME=http://www.topcoder-dev.com
+export TC_HOSTNAME=https://www.topcoder-dev.com
 
 # The max live leaderboard number
 export MAX_LIVE_LEADERBOARD=200
@@ -125,4 +125,8 @@ export ACTIVE_MATCHES_SUMMARY_TOPCODER_COUNT=3
 # The file name of the sponsor logo images. The files must be at app/img/{theme}/
 export SPONSOR_LOGO=../img/dark/company_logo.png
 export SPONSOR_LOGO_SMALL=../img/dark/company_logo_small.png
-export SPONSOR_URL=http://www.appirio.com
+export SPONSOR_LOGO_LIGHT=../img/light/company_logo.png
+export SPONSOR_LOGO_SMALL_LIGHT=../img/light/company_logo_small.png
+export SPONSOR_LOGO_ORANGE=../img/orange/company_logo.png
+export SPONSOR_LOGO_SMALL_ORANGE=../img/orange/company_logo_small.png
+export SPONSOR_URL=https://www.appirio.com

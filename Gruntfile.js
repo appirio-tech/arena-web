@@ -160,6 +160,7 @@ module.exports = function (grunt) {
                     patterns: [
                         { match : 'STATIC_FILE_HOST', replacement: process.env.STATIC_FILE_HOST },
                         { match : 'TC_AUTH_URL', replacement: process.env.TC_AUTH_URL },
+                        { match : 'TC_HOSTNAME', replacement: process.env.TC_HOSTNAME },
                         { match : 'GOOGLE_ANALYTICS_TRACKING_ID', replacement: process.env.GOOGLE_ANALYTICS_TRACKING_ID },
                         { match : 'SPONSOR_URL', replacement: process.env.SPONSOR_URL }
                     ]
@@ -172,12 +173,21 @@ module.exports = function (grunt) {
             sponsor: {
                 options: {
                     patterns: [
-                    { match : 'SPONSOR_LOGO_SMALL', replacement: process.env.SPONSOR_LOGO_SMALL },
-                    { match : 'SPONSOR_LOGO', replacement: process.env.SPONSOR_LOGO }
+                        // for light theme
+                        { match : 'SPONSOR_LOGO_SMALL_LIGHT', replacement: process.env.SPONSOR_LOGO_SMALL_LIGHT },
+                        { match : 'SPONSOR_LOGO_LIGHT', replacement: process.env.SPONSOR_LOGO_LIGHT },
+                        // for orange theme
+                        { match : 'SPONSOR_LOGO_SMALL_ORANGE', replacement: process.env.SPONSOR_LOGO_SMALL_ORANGE },
+                        { match : 'SPONSOR_LOGO_ORANGE', replacement: process.env.SPONSOR_LOGO_ORANGE },
+                        // for dark theme
+                        { match : 'SPONSOR_LOGO_SMALL', replacement: process.env.SPONSOR_LOGO_SMALL },
+                        { match : 'SPONSOR_LOGO', replacement: process.env.SPONSOR_LOGO }
                     ]
                 },
                 files: [
-                    { src: 'build/css/bundle.css', dest: 'build/css/bundle.css' }
+                    { src: 'build/css/bundle.css', dest: 'build/css/bundle.css' },
+                    { src: 'build/css/bundle-light.css', dest: 'build/css/bundle-light.css' },
+                    { src: 'build/css/bundle-orange.css', dest: 'build/css/bundle-orange.css' }
                 ]
             }
         },
