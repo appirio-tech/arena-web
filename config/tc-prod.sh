@@ -28,9 +28,9 @@ export API_DOMAIN="https://api.topcoder.com"
 export TC_HOSTNAME="https://www.topcoder.com"
 
 
-export AUTH0_CONNECTION=vm-ldap-connection
-export AUTH0_DOMAIN=sma.auth0.com
-export AUTH0_CLIENT_ID=CMaBuwSnY0Vu68PLrWatvvu3iIiGPh7t
+export AUTH0_CONNECTION=LDAP
+export AUTH0_DOMAIN=topcoder.auth0.com
+export AUTH0_CLIENT_ID=6ZwZEUo2ZK4c50aLPpgupeg5v2Ffxp9P
 export CALLBACK_URL=https://www.topcoder.com/reg2/callback.action
 
 export REGISTRATION_URL='https://www.topcoder.com/?action=callback&regSource=arena'
@@ -44,7 +44,7 @@ export AWS_ACCESS_KEY=
 export AWS_BUCKET=
 export AWS_FOLDER='arena/md/web-v<%= pkg.version %>/'
 
-export GOOGLE_ANALYTICS_TRACKING_ID=
+export GOOGLE_ANALYTICS_TRACKING_ID=UA-6340959-1
 
 # the connection timeout to web socket
 export CONNECTION_TIMEOUT=30000
@@ -57,7 +57,7 @@ export CHAT_LENGTH=400
 export LOCAL_STORAGE_EXPIRE_TIME=1800
 
 # Facebook API client ID
-export FACEBOOK_API_ID=652496988181876
+export FACEBOOK_API_ID=360651577426310
 
 # Message template to post contestant status to Facebook and Twitter
 export SOCIAL_STATUS_TEMPLATE='I have participated in __MATCHES__ in #topcoder arena. My current rating is __RATING__.'
@@ -92,7 +92,7 @@ export PRACTICE_PROBLEM_LIST_PAGE_SIZE=10
 export SPINNER_TIMEOUT=90000
 
 # Google Docs Spreadsheet URL for saving feedbacks and its maxlength
-export FEEDBACK_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbxSDbXXaz5y1wDKWa_XToU2yyi0yAvAobXh8vF2WuT3VrFd14YN/exec
+export FEEDBACK_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzhERKzdIDtoj--WWKR-ealRBKSmtURczOaBC_ntc0_R2Mwcb-S/exec
 export FEEDBACK_MAXLENGTH=10000
 
 # shortcut configuration
