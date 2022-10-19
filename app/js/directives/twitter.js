@@ -55,7 +55,9 @@ var twitter = ['$rootScope', '$timeout', '$window', function ($rootScope, $timeo
                                 var html = '<a class="twitter-share-button" href="#" onclick="popUp=window.open(&quot;https://twitter.com/share?text='
                                         + attrs.message + '&url=' + attrs.url + '&count=' + (attrs.count || 'none')
                                         + '&quot;,&quot;popupwindow&quot;,&quot;scrollbar=yes,width=600,height=300&quot;);popUp.focus();return false;"></a>';
-                                element.html(html);
+                                $timeout(function() {
+                                    element.html(html);
+                                }, 100);
                             }
                         }
                     } else {

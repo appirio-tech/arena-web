@@ -286,7 +286,8 @@ resolvers.finishLogin = ['$rootScope', '$q', '$state', '$filter', 'cookies', 'se
         if (angular.isUndefined(data.userInfo.avatar) || data.userInfo.avatar === '') {
             data.userInfo.avatar = memberPhotoHost + '/i/m/nophoto_login.gif';
         } else {
-            data.userInfo.avatar = memberPhotoHost + data.userInfo.avatar;
+            data.userInfo.avatar = data.userInfo.avatar.startsWith('https://') || data.userInfo.avatar.startsWith('http://')
+                ? data.userInfo.avatar : memberPhotoHost + data.userInfo.avatar;
         }
         // persist userInfo in session
         sessionHelper.persist({userInfo: data.userInfo});
