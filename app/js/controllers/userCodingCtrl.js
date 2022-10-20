@@ -320,7 +320,7 @@ var userCodingCtrl = ['$scope', '$stateParams', '$rootScope', 'socket', '$window
                 ret += ')';
                 ret += ' As ';
                 ret += $scope.problem.allReturnType.typeMapping[langID];
-            } else if (langID === 6 || langID === 8) {
+            } else if (langID === 6 || langID === 9) {
                 // python style
                 ret += 'def ';
                 ret += $scope.problem.methodName;

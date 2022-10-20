@@ -144,7 +144,7 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                 },
                 {
                     name: 'Python3',
-                    id : 8,
+                    id : 9,
                     langKey: 'text/x-python',
                     langGutter: indentRangeFinder
                 }
