@@ -555,7 +555,7 @@ var activeContestsCtrl = ['$scope', '$rootScope', '$state', 'socket', 'appHelper
         }
 
         if (index === 0) {
-            if ($scope.isShownSummary(contest)) {
+            if ($scope.isShownSummary(contest) && !$rootScope.loadedAllDivSummary) {
                 // get div summary only if need to show summary
                 var isLoading = false;
                 $rootScope.loadedAllDivSummary = false;
