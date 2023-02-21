@@ -1,5 +1,5 @@
 # Use the base image with Node.js
-FROM node:10.22.1
+FROM node
 
 ARG APPNAME
 ARG APPENV
