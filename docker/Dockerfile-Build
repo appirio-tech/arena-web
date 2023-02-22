@@ -1,5 +1,5 @@
 # Use the base image with Node.js
-FROM node:10.22.1
+FROM node
 
 ARG APPNAME
 ARG APPENV
@@ -12,8 +12,8 @@ WORKDIR /$APPNAME
 # Install dependencies
 RUN npm install -g bower
 RUN npm install -g grunt-cli
-RUN npm install
-RUN bower install
+#RUN npm install
+RUN bower install --allow-root
 
 # Build
 
