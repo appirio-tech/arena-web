@@ -986,6 +986,21 @@ footer .right .sponsorLogo {
     color: rgb(255, 0, 51);
     font-style: italic!important;
 }
+/**** JavaScript language ****/
+.detailPage .leaderboardWrapper .colorSubmittedJavaScript {
+    color: rgb(255, 102, 255);
+}
+.detailPage .leaderboardWrapper .colorChallengedJavaScript {
+    color: rgb(255, 102, 255);
+    font-style: italic!important;
+}
+.detailPage .leaderboardWrapper .colorPassedJavaScript {
+    color: rgb(255, 102, 255);
+}
+.detailPage .leaderboardWrapper .colorFailedJavaScript {
+    color: rgb(255, 0, 51);
+    font-style: italic!important;
+}
 /**** Python3 language ****/
 .detailPage .leaderboardWrapper .colorSubmittedPython3 {
     color: rgb(255,150,50);
