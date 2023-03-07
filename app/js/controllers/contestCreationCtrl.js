@@ -121,7 +121,8 @@ var contestCreationCtrl = ['$scope', '$http', '$modalInstance', 'ok', 'cancel', 
                 item.language = language.text;
                 item.id = language.id;
                 if (language.text === 'Java' || language.text === 'C#' || language.text === 'VB'
-                        || language.text === 'C++' || language.text === 'Python' || language.text === 'Python3') {
+                        || language.text === 'C++' || language.text === 'Python' || language.text === 'Python3'
+                        || language.text === 'JavaScript') {
                     item.checked = true;
                 } else {
                     item.checked = false;

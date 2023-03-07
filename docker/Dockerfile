@@ -1,0 +1,21 @@
+# Use the base image with Node.js
+FROM node
+
+ARG APPNAME
+ARG APPENV
+ENV APPNAME=$APPNAME
+ENV APPENV=$APPENV
+
+COPY . /$APPNAME
+WORKDIR /$APPNAME
+
+# Install dependencies
+RUN npm install -g bower
+RUN npm install -g grunt-cli
+RUN bower install --allow-root
+
+# Build
+
+RUN . config/tc-$APPENV.sh && grunt && grunt deploy-compress
+
+
