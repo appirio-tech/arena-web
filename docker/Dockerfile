@@ -10,9 +10,10 @@ COPY . /$APPNAME
 WORKDIR /$APPNAME
 
 # Install dependencies
-RUN npm install -g bower
-RUN npm install grunt-cli
+RUN npm install bower --save-dev
+RUN npm install grunt --save-dev
 RUN bower install --allow-root
+RUN grunt install
 
 # Build
 
