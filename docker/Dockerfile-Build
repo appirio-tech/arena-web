@@ -17,5 +17,3 @@ RUN bower install --allow-root
 # Build
 
 RUN . config/tc-$APPENV.sh && grunt && grunt deploy-compress
-
-
