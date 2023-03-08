@@ -56,6 +56,14 @@ jobs:
       APPNAME: "arena-web"    
     steps: *builddeploy_steps
 
+  "build-qa":
+    <<: *defaults
+    environment:
+      DEPLOY_ENV: "QA"
+      LOGICAL_ENV: "qa"
+      APPNAME: "arena-web"    
+    steps: *builddeploy_steps
+
   "build-prod":
     <<: *defaults
     environment:
@@ -74,6 +82,13 @@ workflows:
           filters:
             branches:
               only: dev
+
+      # Development builds are executed on "develop" branch only.
+      - "build-qa":
+          context : org-global
+          filters:
+            branches:
+              only: qa
 
       # Production builds are exectuted only on tagged commits to the
       # master branch.
