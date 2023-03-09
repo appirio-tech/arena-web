@@ -28,9 +28,9 @@ export API_DOMAIN="https://api.topcoder-qa.com"
 export TC_HOSTNAME="https://www.topcoder-qa.com"
 
 
-export AUTH0_CONNECTION=vm-ldap-connection
-export AUTH0_DOMAIN=sma.auth0.com
-export AUTH0_CLIENT_ID=CMaBuwSnY0Vu68PLrWatvvu3iIiGPh7t
+export AUTH0_CONNECTION=LDAP
+export AUTH0_DOMAIN=topcoder-qa.auth0.com
+export AUTH0_CLIENT_ID=EVOgWZlCtIFlbehkq02treuRRoJk12UR
 export CALLBACK_URL=https://www.topcoder-qa.com/reg2/callback.action
 
 export REGISTRATION_URL='https://www.topcoder-qa.com/?action=callback&regSource=arena'
