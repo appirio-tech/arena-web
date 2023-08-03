@@ -39,7 +39,7 @@
     "auth0-js": "~2.0.10",
     "socket.io-client": "~0.9.16",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-aws": "~0.3.0",
+    "grunt-aws": "~0.7.1",
     "newrelic": ">=0.9"
   }
 }
