@@ -210,7 +210,7 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
             sortColumn = sortColumn.substring(1);
             sortOrder = 'desc';
         }
-        url = url + 'sortBy=' + sortColumn + '&sortOrder' + sortOrder + '&page=' + $scope.currentPage + '&perPage=' + $scope.numOfPage;
+        url = url + 'sortBy=' + sortColumn + '&sortOrder=' + sortOrder + '&page=' + $scope.currentPage + '&perPage=' + $scope.numOfPage;
 
         var filters = [];
         for (i = 0; i < keys.length; i += 1) {

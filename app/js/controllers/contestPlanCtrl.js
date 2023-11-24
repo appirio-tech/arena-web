@@ -129,7 +129,7 @@ var contestPlanCtrl = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '
     $scope.loadMatchSchedule = function (filter, pendingPlanMonth) {
         $scope.numCalendarRequests = 1;
         // Call tc-api server to get srm schedule
-        $http.get(config.v5ApiDomain + '/challenges/srms/schedule?' + filter).success(function (data, status, headers) {
+        $http.get(config.v5ApiDomain + '/challenges/srms/schedule?sortBy=registrationStartTime&sortOrder=desc&page=1&perPage=50&' + filter).success(function (data, status, headers) {
             $scope.numCalendarRequests -= 1;
             $scope.eventSources = appHelper.parseMatchScheduleData(data, pendingPlanMonth, $scope.eventSources);
             $rootScope.contestPlanList = $scope.eventSources[0];
