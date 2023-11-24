@@ -73,7 +73,9 @@ workflows:
           context : org-global
           filters:
             branches:
-              only: dev
+              only:
+                - dev
+                - CORE-141
 
       # Production builds are exectuted only on tagged commits to the
       # master branch.
