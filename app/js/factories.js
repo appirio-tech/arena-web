@@ -718,8 +718,8 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
      */
     retHelper.parseMatchScheduleData = function (data, pendingPlanMonth, eventSources) {
         var i, name;
-        if (data.result && data.result.content) {
-            data.result.content.forEach(function (item) {
+        if (Array.isArray(data)) {
+            data.forEach(function (item) {
                 var existing = eventSources[0].find(e => e.roundId === item.roundId);
                 if (existing) {
                     return;
@@ -803,9 +803,9 @@ factories.appHelper = ['$rootScope', 'localStorageService', 'sessionHelper', '$f
             tmpUrl;
 
         if (monthDate.getTime() > newDate.getTime()) {
-            tmpUrl = '&statuses=F';
+            tmpUrl = '&statuses[]=F';
         } else {
-            tmpUrl = '&statuses=P';
+            tmpUrl = '&statuses[]=P';
         }
 
         return tmpUrl;
