@@ -200,7 +200,7 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
      * Get practice problem list.
      */
     function getPracticeProblems() {
-        var url = '/srms/practice/problems?',
+        var url = '/challenges/srms/practice/problems?',
             sortColumn = $scope.problemKeys[0],
             sortOrder = 'asc',
             keys = ['type', 'difficulty', 'status'],
