@@ -6,7 +6,7 @@ install_dependency: &install_dependency
   name: Installation of build and deployment dependencies.
   command: |
     sudo apt update
-    sudo apt install jq
+    sudo apt install jq file
     sudo apt install python3-pip
     sudo pip3 install awscli --upgrade
     sudo pip3 install docker-compose
