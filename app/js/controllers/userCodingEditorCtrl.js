@@ -147,12 +147,6 @@ var userCodingEditorCtrl = ['$rootScope', '$scope', '$window', 'appHelper', 'soc
                     id : 9,
                     langKey: 'text/x-python',
                     langGutter: indentRangeFinder
-                },
-                {
-                    name: 'JavaScript',
-                    id : 8,
-                    langKey: 'text/x-java',
-                    langGutter: indentRangeFinder
                 }
             ],
             userInputDisabled = false,

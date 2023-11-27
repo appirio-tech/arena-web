@@ -6,7 +6,6 @@
         {"text": "Python", "id": 6},
         {"text": "VB", "id": 5},
         {"text": "R", "id": 7},
-        {"text": "JavaScript", "id":  8}, // same ID as server side
         {"text": "Python3", "id": 9}
     ],
     "commonSet": [
@@ -15,7 +14,6 @@
         "C#",
         "Python",
         "VB",
-        "Python3",
-        "JavaScript"
+        "Python3"
     ]
 }
