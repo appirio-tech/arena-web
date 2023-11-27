@@ -451,7 +451,7 @@ module.exports = {
     DATE_NOTIFICATION_FORMAT: 'MM/dd/yy h:mm a',
 
     // The time format in http request parameter
-    REQUEST_TIME_FORMAT: 'yyyy-MM-ddTHH:mm:ss.sssZ',
+    REQUEST_TIME_FORMAT: 'yyyy-MM-ddTHH:mm:ss',
 
     // Pop-up titles used for notification details
     NOTIFICATION_TITLES: {
