@@ -79,7 +79,7 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', 'appHelper
     $scope.loadMatchSchedule = function (filter, pendingPlanMonth) {
         $scope.numScheduleRequests = 1;
         // Call tc-api server to get srm schedule
-        $http.get(config.v4ApiDomain + '/srms/schedule?orderBy=registrationStartTime desc&filter=' + encodeURIComponent(filter)).success(function (data, status, headers) {
+        $http.get(config.v5ApiDomain + '/challenges/srms/schedule?sortBy=registrationStartTime&sortOrder=desc&page=1&perPage=50&' + filter).success(function (data, status, headers) {
             $scope.numScheduleRequests -= 1;
             $scope.eventSources = appHelper.parseMatchScheduleData(data, pendingPlanMonth, $scope.eventSources);
             $rootScope.contestPlanList = $scope.eventSources[0];
@@ -159,7 +159,7 @@ var matchScheduleCtrl = ['$scope', '$http', '$timeout', '$rootScope', 'appHelper
         $scope.eventSources[0] = $rootScope.contestPlanList;
         initCalendar();
     } else {
-        $scope.loadMatchSchedule(appHelper.getRegistrationStartTimeRangeUrl(new Date(), 3) + '&statuses=F,A,P',
+        $scope.loadMatchSchedule(appHelper.getRegistrationStartTimeRangeUrl(new Date(), 3) + '&statuses[]=F&statuses[]=A&statuses[]=P',
             appHelper.getComingThreeMonths());
     }
 

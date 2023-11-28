@@ -2,6 +2,7 @@
  * Copyright (C) 2014-2015 TopCoder Inc., All Rights Reserved.
  */
 /**
+
  * This controller handles user coding page logic.
  * Currently it can be used for coding and viewing others' code.
  * It is distinguished by states 'user.coding' and 'user.viewCode'.

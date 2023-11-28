@@ -12,11 +12,10 @@ WORKDIR /$APPNAME
 # Install dependencies
 RUN npm install -g bower
 RUN npm install -g grunt-cli
-RUN npm install
-RUN bower install
+RUN npm install grunt 
+RUN bower install --allow-root
+
 
 # Build
 
 RUN . config/tc-$APPENV.sh && grunt && grunt deploy-compress
-
-

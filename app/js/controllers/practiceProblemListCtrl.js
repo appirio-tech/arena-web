@@ -171,6 +171,9 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
      */
     function getErrorDetail(data, status) {
         var str = '';
+        if (data !== undefined && data.message !== undefined) {
+            return data.message;
+        }
         if (data !== undefined && data.error !== undefined) {
             return data.error.details !== undefined ? data.error.details : data.error;
         }
@@ -197,7 +200,7 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
      * Get practice problem list.
      */
     function getPracticeProblems() {
-        var url = '/srms/practice/problems?',
+        var url = '/challenges/srms/practice/problems?',
             sortColumn = $scope.problemKeys[0],
             sortOrder = 'asc',
             keys = ['type', 'difficulty', 'status'],
@@ -207,7 +210,7 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
             sortColumn = sortColumn.substring(1);
             sortOrder = 'desc';
         }
-        url = url + 'orderBy=' + sortColumn + ' ' + sortOrder + '&limit=' + $scope.numOfPage + '&offset=' + ($scope.currentPage - 1) * $scope.numOfPage;
+        url = url + 'sortBy=' + sortColumn + '&sortOrder=' + sortOrder + '&page=' + $scope.currentPage + '&perPage=' + $scope.numOfPage;
 
         var filters = [];
         for (i = 0; i < keys.length; i += 1) {
@@ -225,20 +228,18 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
             filters.push('pointsUpperBound=' + $scope.filterUsed.maxPoints);
         }
         if ($scope.searchText !== '') {
-            filters.push('problemName=' + $scope.searchText.replace(new RegExp("'", "gm"), "").replace(new RegExp("\"", "gm"), "").replace(new RegExp("%", "gm"), ""));
+            filters.push('problemName=' + $scope.searchText.replace(new RegExp("[^a-z0-9]", "gmi"), ""));
         }
         if (filters.length) {
-            url = url + '&filter=' + encodeURIComponent(filters.join('&'));
+            url = url + '&' + filters.join('&');
         }
 
         $scope.numPracticeProblemsRequests = 1;
-        $http.get(config.v4ApiDomain + url, header).success(function (data, status) {
+        $http.get(config.v5ApiDomain + url, header).success(function (data, status, headers) {
             $scope.numPracticeProblemsRequests -= 1;
-            if (data && data.result && !data.result.success) {
-                showDetailModal(data, status);
-            } else {
-                for (i = 0; i < data.result.content.data.length; i++) {
-                    var item = data.result.content.data[i];
+            if (Array.isArray(data)) {
+                for (i = 0; i < data.length; i++) {
+                    var item = data[i];
                     if (!item.status) {
                         item.status = 'New';
                     }
@@ -253,8 +254,8 @@ var practiceProblemListCtrl = ['$scope', '$http', '$timeout', '$rootScope', '$mo
                         }
                     }
                 }
-                $scope.problems = data.result.content.data;
-                $scope.totalRecords = data.result.content.rowCount;
+                $scope.problems = data;
+                $scope.totalRecords = headers('X-Total');
             }
         }).error(function (data, status) {
             $scope.numPracticeProblemsRequests -= 1;
